@@ -1,0 +1,13 @@
+#summary list of stuff to do
+
+separate or remove makefiles from the trunk.  makefiles should be generated at compile time by qmake for the desired platform
+
+make sure the project compiles on the current stable QT SDK for each platform
+
+make sure that the project runs correctly on all platforms
+
+remove extraneous files from the svn
+
+save settings and remove hard-coded paths & settings
+
+rearrange stuff and make the layout prettier
