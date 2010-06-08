@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Tue Jun 8 10:40:55 2010
+** Created: Tue Jun 8 12:34:05 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -80,14 +80,15 @@ public:
     QCheckBox *checkBox_3;
     QCheckBox *checkBox_4;
     QWidget *Edit_tab;
-    QTreeWidget *treeWidget;
-    QPushButton *edit_img_pushButton;
-    QWidget *widget;
+    QGridLayout *gridLayout_4;
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout;
     QLabel *label_edit_id;
     QLabel *label_edit_region;
     QLabel *label_edit_name;
+    QPushButton *edit_img_pushButton;
+    QTreeWidget *treeWidget;
+    QSpacerItem *horizontalSpacer_2;
     QWidget *settings_tab;
     QWidget *layoutWidget;
     QFormLayout *formLayout;
@@ -358,9 +359,48 @@ public:
         tabWidget->addTab(tab, QString());
         Edit_tab = new QWidget();
         Edit_tab->setObjectName(QString::fromUtf8("Edit_tab"));
+        gridLayout_4 = new QGridLayout(Edit_tab);
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setMargin(11);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        label_edit_id = new QLabel(Edit_tab);
+        label_edit_id->setObjectName(QString::fromUtf8("label_edit_id"));
+        label_edit_id->setMinimumSize(QSize(200, 0));
+
+        horizontalLayout->addWidget(label_edit_id);
+
+        label_edit_region = new QLabel(Edit_tab);
+        label_edit_region->setObjectName(QString::fromUtf8("label_edit_region"));
+        label_edit_region->setMinimumSize(QSize(100, 0));
+
+        horizontalLayout->addWidget(label_edit_region);
+
+
+        verticalLayout_3->addLayout(horizontalLayout);
+
+        label_edit_name = new QLabel(Edit_tab);
+        label_edit_name->setObjectName(QString::fromUtf8("label_edit_name"));
+        label_edit_name->setMinimumSize(QSize(475, 0));
+
+        verticalLayout_3->addWidget(label_edit_name);
+
+
+        gridLayout_4->addLayout(verticalLayout_3, 0, 0, 1, 1);
+
+        edit_img_pushButton = new QPushButton(Edit_tab);
+        edit_img_pushButton->setObjectName(QString::fromUtf8("edit_img_pushButton"));
+        edit_img_pushButton->setMinimumSize(QSize(110, 0));
+
+        gridLayout_4->addWidget(edit_img_pushButton, 0, 2, 1, 1);
+
         treeWidget = new QTreeWidget(Edit_tab);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
-        treeWidget->setGeometry(QRect(11, 80, 711, 351));
         QFont font1;
         font1.setPointSize(8);
         treeWidget->setFont(font1);
@@ -371,48 +411,19 @@ public:
         treeWidget->setIndentation(20);
         treeWidget->setSortingEnabled(true);
         treeWidget->setAnimated(true);
-        edit_img_pushButton = new QPushButton(Edit_tab);
-        edit_img_pushButton->setObjectName(QString::fromUtf8("edit_img_pushButton"));
-        edit_img_pushButton->setGeometry(QRect(610, 10, 111, 23));
-        edit_img_pushButton->setMinimumSize(QSize(110, 0));
-        widget = new QWidget(Edit_tab);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(10, 20, 481, 44));
-        verticalLayout_3 = new QVBoxLayout(widget);
-        verticalLayout_3->setSpacing(6);
-        verticalLayout_3->setMargin(11);
-        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setSpacing(6);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        label_edit_id = new QLabel(widget);
-        label_edit_id->setObjectName(QString::fromUtf8("label_edit_id"));
-        label_edit_id->setMinimumSize(QSize(200, 0));
 
-        horizontalLayout->addWidget(label_edit_id);
+        gridLayout_4->addWidget(treeWidget, 1, 0, 1, 3);
 
-        label_edit_region = new QLabel(widget);
-        label_edit_region->setObjectName(QString::fromUtf8("label_edit_region"));
-        label_edit_region->setMinimumSize(QSize(100, 0));
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout->addWidget(label_edit_region);
-
-
-        verticalLayout_3->addLayout(horizontalLayout);
-
-        label_edit_name = new QLabel(widget);
-        label_edit_name->setObjectName(QString::fromUtf8("label_edit_name"));
-        label_edit_name->setMinimumSize(QSize(475, 0));
-
-        verticalLayout_3->addWidget(label_edit_name);
+        gridLayout_4->addItem(horizontalSpacer_2, 0, 1, 1, 1);
 
         tabWidget->addTab(Edit_tab, QString());
         settings_tab = new QWidget();
         settings_tab->setObjectName(QString::fromUtf8("settings_tab"));
         layoutWidget = new QWidget(settings_tab);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 70, 202, 96));
+        layoutWidget->setGeometry(QRect(10, 70, 361, 96));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setMargin(11);
@@ -496,7 +507,7 @@ public:
         save_pushButton->setMinimumSize(QSize(115, 0));
         layoutWidget3 = new QWidget(settings_tab);
         layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
-        layoutWidget3->setGeometry(QRect(10, 210, 167, 29));
+        layoutWidget3->setGeometry(QRect(10, 210, 221, 29));
         formLayout_7 = new QFormLayout(layoutWidget3);
         formLayout_7->setSpacing(6);
         formLayout_7->setMargin(11);
@@ -535,7 +546,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
         comboBox->setCurrentIndex(2);
         verbose_combobox->setCurrentIndex(5);
         logging_combobox->setCurrentIndex(0);
@@ -571,11 +582,11 @@ public:
 #endif // QT_NO_TOOLTIP
         lineEdit->setText(QApplication::translate("MainWindow", "<input>", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        toolButton_2->setToolTip(QApplication::translate("MainWindow", "Ente the output file path", 0, QApplication::UnicodeUTF8));
+        toolButton_2->setToolTip(QApplication::translate("MainWindow", "Enter the output file path", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_2->setText(QApplication::translate("MainWindow", "Browse...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        lineEdit_2->setToolTip(QApplication::translate("MainWindow", "Ente the output file path", 0, QApplication::UnicodeUTF8));
+        lineEdit_2->setToolTip(QApplication::translate("MainWindow", "Enter the output file path", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         lineEdit_2->setText(QApplication::translate("MainWindow", "<output>", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("MainWindow", "Input:", 0, QApplication::UnicodeUTF8));
@@ -627,14 +638,14 @@ public:
 #endif // QT_NO_TOOLTIP
         checkBox_4->setText(QApplication::translate("MainWindow", "Tmd / Ticket", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Compose Image", 0, QApplication::UnicodeUTF8));
+        label_edit_id->setText(QString());
+        label_edit_region->setText(QString());
+        label_edit_name->setText(QString());
+        edit_img_pushButton->setText(QApplication::translate("MainWindow", "Load Image", 0, QApplication::UnicodeUTF8));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
         ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "Size", 0, QApplication::UnicodeUTF8));
         ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "Offset", 0, QApplication::UnicodeUTF8));
         ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Name", 0, QApplication::UnicodeUTF8));
-        edit_img_pushButton->setText(QApplication::translate("MainWindow", "Load Image", 0, QApplication::UnicodeUTF8));
-        label_edit_id->setText(QString());
-        label_edit_region->setText(QString());
-        label_edit_name->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(Edit_tab), QApplication::translate("MainWindow", "Edit Emage", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("MainWindow", "Text output:", 0, QApplication::UnicodeUTF8));
         verbose_combobox->clear();

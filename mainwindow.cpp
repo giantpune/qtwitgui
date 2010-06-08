@@ -3,6 +3,7 @@
 #include <qfiledialog.h>
 #include <QTreeWidget>
 #include <QMessageBox>
+#include <QFontMetrics>
 #include <stdarg.h>
 #include <QStringList>
 #include <qtextstream.h>
@@ -19,6 +20,8 @@
 
 
 #define SAFEDELETE( x ) if( x )delete( x )
+#define MAX( x, y ) ( ( x ) > ( y ) ? ( x ) : ( y ) )
+#define MIN( x, y ) ( ( x ) < ( y ) ? ( x ) : ( y ) )
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::MainWindow )
@@ -69,6 +72,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
     //load settings
     LoadSettings();
+
+    //make sure buttons are wide enough for text
+    ResizeGuiToLanguage();
 
     //everything should be ready to go now
     ui->statusBar->showMessage( tr( "Ready" ) );
@@ -969,4 +975,36 @@ void MainWindow::on_save_pushButton_clicked()
     SaveSettings();
     ui->statusBar->showMessage( tr( "Settings Saved" ), 5000 );
     //qDebug() << "settings saved";
+}
+
+
+void MainWindow::ResizeGuiToLanguage()
+{
+    int pad = 20;
+    int size = 0;
+    QFontMetrics fm( fontMetrics() );
+    ui->edit_img_pushButton->setMinimumWidth( MAX( ui->edit_img_pushButton->minimumWidth(), fm.width( ui->edit_img_pushButton->text() ) + pad ) );
+    ui->pushButton_2->setMinimumWidth( MAX( ui->pushButton_2->minimumWidth(), fm.width( ui->pushButton_2->text() ) + pad ) );
+    ui->pushButton_3->setMinimumWidth( MAX( ui->pushButton_3->minimumWidth(), fm.width( ui->pushButton_3->text() ) + pad ) );
+    ui->pushButton_4->setMinimumWidth( MAX( ui->pushButton_4->minimumWidth(), fm.width( ui->pushButton_4->text() ) + pad ) );
+    ui->save_pushButton->setMinimumWidth( MAX( ui->save_pushButton->minimumWidth(), fm.width( ui->save_pushButton->text() ) + pad ) );
+    ui->toolButton->setMinimumWidth( MAX( ui->toolButton->minimumWidth(), fm.width( ui->toolButton->text() ) + pad ) );
+    ui->toolButton_2->setMinimumWidth( MAX( ui->toolButton_2->minimumWidth(), fm.width( ui->toolButton_2->text() ) + pad ) );
+
+
+    for( int i = 0; i < ui->verbose_combobox->count(); i++ )
+    {
+	size = MAX( size, fm.width( ui->verbose_combobox->itemText( i ) ) + pad );
+    }
+    ui->verbose_combobox->setMinimumWidth( size );
+
+    for( int i = 0; i < ui->startupTab_combobox->count(); i++ )
+    {
+	size = MAX( size, fm.width( ui->startupTab_combobox->itemText( i ) ) + pad );
+    }
+    ui->startupTab_combobox->setMinimumWidth( size );
+
+
+
+
 }
