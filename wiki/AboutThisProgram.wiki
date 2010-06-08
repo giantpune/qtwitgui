@@ -42,7 +42,9 @@
 
 * I suggest getting the full SDK since its free anyways.  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
 
-* There is a compiler flag ( #define ) that specifies a couple little things like fonts.  Make sure this flag is set to your platform before compiling.
+* There is a compiler flag ( #define ) that specifies a couple little things like fonts.  Make sure this flag is set to your platform before compiling.  As of this writing ( r10 ) the only difference set by this flag is the font for the output window.  Since Mac and Windows both have "Courier New" font, they can be treated the same.
+
+* There is no ill effects of not setting this flag, except that a non-monosized font may end up getting used.
 ----
 
 
@@ -86,8 +88,8 @@
 
 
 == OS-X ==
-* The GUI works.  But reading output ( stdout & stderr ) from wit doesn't.  This effectively renders the program useless.
+* Wit path is ./wit . The default run settings for Qt will run the program in a different directory.  You must either put wit in that folder, or change the setting
 
-* All I have is OS-x 10.3 in a vmware PC.  I don't have much experience with it, and honestly I don't have much motivation to figure out what the issue is.  But I'm sure it is a quick fix.
+* Font is Courier New 8
 
-* If somebody knows what the issue is or how to fix it, I am open to suggestions.
+* There are issues with the Qt dialog boxes.  There is not one dialog that lets you select files or directories.  Instead I have added a dialog into this project.  This dialog works fine on windows and linux, but doesn't appear to work on OS-X.  Until I figure out the issue, the "find file/folder" dialogs are quite useless, and paths must be manually entered.
