@@ -14,21 +14,9 @@
 
 #define SAVEFILENAME "QtWitGui.ini"
 
-//#define _WIN32_
-#define _LINUX_
+//this syntax apparently works for all platforms
+#define WIT "./wit"
 
-//it seems that the linux syntax works fine for windows.
-//i still have no clue about OS-X
-#ifdef _WIN32_
-    #define WIT "./wit"
-    #define FONTNAME "Courier New"
-#endif
-
-
-#ifdef _LINUX_
-    #define WIT "./wit"
-    #define FONTNAME "Monospace"
-#endif
 
 #define SAFEDELETE( x ) if( x )delete( x )
 
@@ -41,10 +29,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     undoLastTextOperation = false;
     alreadyGotTitle = false;
 
-    //load a nice monospaced font for the output window
-    QFont font( FONTNAME, 8, 50 );
     ui->plainTextEdit->clear();
-    ui->plainTextEdit->setFont( font );
 
     //create the pointer to the process used to run wit
     witProcess = new QProcess( this );
