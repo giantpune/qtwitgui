@@ -10,3 +10,4 @@ SOURCES += main.cpp \
 HEADERS += mainwindow.h \
     filefolderdialog.h
 FORMS += mainwindow.ui
+TRANSLATIONS = witGuiTranslationExample.ts

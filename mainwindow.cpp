@@ -12,65 +12,96 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
+#define SAVEFILENAME "QtWitGui.ini"
+
+//#define _WIN32_
+#define _LINUX_
+
+//it seems that the linux syntax works fine for windows.
+//i still have no clue about OS-X
+#ifdef _WIN32_
+    #define WIT "./wit"
+    #define FONTNAME "Courier New"
+#endif
+
+
+#ifdef _LINUX_
+    #define WIT "./wit"
+    #define FONTNAME "Monospace"
+#endif
+
+#define SAFEDELETE( x ) if( x )delete( x )
+
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::MainWindow )
 {
     ui->setupUi( this );
-    ui->plainTextEdit->clear();
 
     witRunning = 0;
     undoLastTextOperation = false;
     alreadyGotTitle = false;
+
+    //load a nice monospaced font for the output window
+    QFont font( FONTNAME, 8, 50 );
+    ui->plainTextEdit->clear();
+    ui->plainTextEdit->setFont( font );
 
     //create the pointer to the process used to run wit
     witProcess = new QProcess( this );
 
     //connect output and input signals between the process and the main window so we can get information from it
     //and also send a "kill" message if the main window is closed while the process is running
-    connect(witProcess, SIGNAL( readyReadStandardOutput() ), this, SLOT( ReadyReadStdOutSlot() ) );
-    connect(witProcess, SIGNAL( finished( int, QProcess::ExitStatus ) ), this, SLOT( ProcessFinishedSlot(  int, QProcess::ExitStatus ) ) );
-    connect(this, SIGNAL( KillProcess() ), witProcess, SLOT( kill() ) );
+    connect( witProcess, SIGNAL( readyReadStandardOutput() ), this, SLOT( ReadyReadStdOutSlot() ) );
+    connect( witProcess, SIGNAL( finished( int, QProcess::ExitStatus ) ), this, SLOT( ProcessFinishedSlot(  int, QProcess::ExitStatus ) ) );
+    connect( this, SIGNAL( KillProcess() ), witProcess, SLOT( kill() ) );
 
     //get the version of wit and append it to the titlebar
-    QString str = "./wit";
+    QString str = WIT;
     witProcess->start( str );
     if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
     {
 	qDebug() << "failed to start wit";
-	ui->statusBar->showMessage( "Error starting wit!" );
+	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
     }
 
     //create and add the tree window
-    groupIcon.addPixmap(style()->standardPixmap(QStyle::SP_DirClosedIcon), QIcon::Normal, QIcon::Off);
-    groupIcon.addPixmap(style()->standardPixmap(QStyle::SP_DirOpenIcon), QIcon::Normal, QIcon::On);
-    keyIcon.addPixmap(style()->standardPixmap(QStyle::SP_FileIcon));
+	//icons
+    groupIcon.addPixmap( style()->standardPixmap( QStyle::SP_DirClosedIcon ), QIcon::Normal, QIcon::Off );
+    groupIcon.addPixmap( style()->standardPixmap( QStyle::SP_DirOpenIcon ), QIcon::Normal, QIcon::On );
+    keyIcon.addPixmap( style()->standardPixmap( QStyle::SP_FileIcon ) );
 
+	//make sure the name column is wide enough
     ui->treeWidget->header()->resizeSection( 0, 300 );
 
-
-    extractAct = new QAction( "Extract", this );
-    replaceAct = new QAction( "Replace", this );
-
+	//create the actions and stuff for the context menu
+    extractAct = new QAction( tr( "Extract" ), this );
+    replaceAct = new QAction( tr( "Replace" ), this );
     ui->treeWidget->addAction( extractAct );
     ui->treeWidget->addAction( replaceAct );
-    ui->treeWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(extractAct, SIGNAL(triggered()), this, SLOT(ExtractSlot()));
-    connect(replaceAct, SIGNAL(triggered()), this, SLOT(ReplaceSlot()));
+    ui->treeWidget->setContextMenuPolicy( Qt::ActionsContextMenu );
+    connect( extractAct, SIGNAL( triggered() ), this, SLOT( ExtractSlot() ) );
+    connect( replaceAct, SIGNAL( triggered() ), this, SLOT( ReplaceSlot() ) );
 
-    ui->statusBar->showMessage( "Ready" );
+    //load settings
+    LoadSettings();
+
+    //everything should be ready to go now
+    ui->statusBar->showMessage( tr( "Ready" ) );
 }
 
 //destructor
 MainWindow::~MainWindow()
 {
+    //SaveSettings();
     delete ui;
     if( witRunning )
     {
 	emit KillProcess();
 //	qsleep( 1 );
     }
-    delete( witProcess );
-    //if( filepaths )
-	//delete( filepaths );
+    SAFEDELETE( extractAct  );
+    SAFEDELETE( replaceAct );
+    SAFEDELETE( witProcess );
 }
 
 //copy text
@@ -89,10 +120,7 @@ void MainWindow::AddText( const char in[] )
 //input file
 void MainWindow::on_toolButton_clicked()
 {
-
-    //QFileDialog dialog(this);
     FileFolderDialog dialog(this);
-    //dialog.setFileMode(QFileDialog::Directory);
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
     dialog.setDirectory( ui->lineEdit_default_path->text() );
 
@@ -111,7 +139,7 @@ void MainWindow::on_pushButton_4_clicked()
 {
     if( witRunning )
     {
-	QMessageBox::warning(this, tr("Slow your roll!"),tr("Wit is still running.\nWait for the current job to finish."),"Ok");
+	QMessageBox::warning(this, tr( "Slow your roll!" ),tr( "Wit is still running.\nWait for the current job to finish." ), tr( "Ok" ) );
 	return;
     }
     witRunning = 1;
@@ -229,23 +257,24 @@ void MainWindow::on_pushButton_4_clicked()
     args << "--progress";
 
     //show the command in the console window
-    QString str = "./wit";
+    QString str = WIT;
     ui->plainTextEdit->insertPlainText( str + " " );
     for( int i = 0; i < args.size(); i++ )
 	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
+    ui->plainTextEdit->insertPlainText( "\n" );
 
-    //start a process using wit from the current working directory
+    //start a process using wit and give it the arg string
     witProcess->start( str, args );
     if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
     {
 	qDebug( "!waitforstarted()" );
-	ui->statusBar->showMessage( "Error starting wit!" );
+	ui->statusBar->showMessage( tr(  "Error starting wit!" ) );
 	return;
     }
-    ui->statusBar->showMessage( "Wit is running..." );
+    ui->statusBar->showMessage( tr( "Wit is running..." ) );
 }
 
-//output file
+//search for output file
 void MainWindow::on_toolButton_2_clicked()
 {
     QFileDialog dialog(this);
@@ -259,40 +288,6 @@ void MainWindow::on_toolButton_2_clicked()
 	if( !item.isEmpty() )
 	    ui->lineEdit_2->setText( item );
     }
-}
-
-//write new region string
-void MainWindow::UpdateRegStr( int i )
-{
-    /*region = i;
-    switch( i )
-    {
-	case 1:
-	    sprintf(regStr, "JAP" );
-	    break;
-
-	case 2:
-	    sprintf(regStr, "USA" );
-	    break;
-
-	case 3:
-	    sprintf(regStr, "PAL" );
-	    break;
-
-	case 4:
-	    sprintf(regStr, "KOR" );
-	    break;
-
-	default:
-	    memset( regStr, 0, strlen( regStr ) );
-	    break;
-    }*/
-}
-
-//region changed
-void MainWindow::on_comboBox_currentIndexChanged( int index )
-{
-    //this->UpdateRegStr( index );
 }
 
 //update the window & available settings
@@ -361,8 +356,9 @@ void MainWindow::UpdateOptions()
     }
     else
     {
-	ui->spinBox->setDisabled( true );
-	QString m = "\"" + ui->lineEdit->text() + "\" is not a valid game directory";
+	ui->spinBox->setDisabled( false );
+	tmdIOS = ui->spinBox->value();
+	QString m = "Unknown IOS for \"" + ui->lineEdit->text() + "\" - action not supported yet.";
 	ui->statusBar->showMessage( m );
     }
 }
@@ -387,15 +383,13 @@ void MainWindow::on_lineEdit_editingFinished()
 void MainWindow::ShowMessage( const QString &s )
 {
     ui->plainTextEdit->insertPlainText( s );
-    if( s.contains( "%" ) )
-	qDebug( "\"%s\" contains %% ", s.toLatin1().data() );
 }
 
 //get "done" status from the workthread
 void MainWindow::GetThreadDone( int i )
 {
     witRunning = i;
-    ui->statusBar->showMessage( "Ready for more work" );
+    ui->statusBar->showMessage( tr( "Ready for more work" ) );
 }
 
 //get messages from the procces running wit and convert the messages to stuff to use in the GUI
@@ -404,6 +398,8 @@ void MainWindow::ReadyReadStdOutSlot()
     //read text from wit
     QString read = witProcess->readAllStandardOutput();
 
+    //qDebug() << "gotmessage" << read;
+
     //this is the initial run of wit triggered by creating teh window.  just get the program name & version from it and return;
     if( read.contains( "wit: Wiimms") && !alreadyGotTitle )
     {
@@ -411,9 +407,6 @@ void MainWindow::ReadyReadStdOutSlot()
 	s = s.trimmed();
 	s.resize( s.indexOf( "\n", 0) - 1 );
 	setWindowTitle( s );
-	//now merge the stdout and stderr into 1 channel for easier reading while actually doing work
-	witProcess->setReadChannelMode( QProcess::MergedChannels );
-	alreadyGotTitle = true;
 	return;
     }
 
@@ -427,12 +420,31 @@ void MainWindow::ReadyReadStdOutSlot()
 		    undoLastTextOperation = false;
 		}
 
-    //does the current message need to be flagged to be deleted next time this function is called?
     if( read.contains( "\r" ) )
-	undoLastTextOperation = true;
+    {
+	//add the current text 1 line at a time so it can be undone if needed
+	QString insertText;
+	QString readCopy = read;
+	while( readCopy.contains( "\n") )
+	{
+	    while( !readCopy.startsWith( "\n" ) && !readCopy.isEmpty() )
+	    {
+		   insertText += readCopy.at( 0 );
+		   readCopy.remove( 0, 1 );
+	    }
+	    insertText += "\n";
+	    readCopy.remove( 0, 1 );
+	    ui->plainTextEdit->insertPlainText( readCopy );
+	}
+	ui->plainTextEdit->insertPlainText( readCopy );
 
-    //add the current text
-    ui->plainTextEdit->insertPlainText( read );
+	//does the current message need to be flagged to be deleted next time this function is called?
+	undoLastTextOperation = true;
+    }
+
+
+    else
+	ui->plainTextEdit->insertPlainText( read );
 
     if( ui->tabWidget->currentIndex() == 0 )
     {
@@ -455,20 +467,22 @@ void MainWindow::ReadyReadStdOutSlot()
 	     }
 	}
      }
-    else if( ui->tabWidget->currentIndex() == 1 )
+    else if( ui->tabWidget->currentIndex() == 1 && alreadyGotTitle )
     {
 	//get all the text output from wit and run it into 1 string
-	//read.remove( QChar('\r') );
 	filepaths += read;
     }
 }
+
+//triggered after the wit process is done
 void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 {
 //    qDebug( "process is done running\nExitCode: %d\nExitStatus: %d", i, s );
     if( !i && !s )
     {
 	ui->progressBar->setValue( 100 );
-	ui->plainTextEdit->insertPlainText( "Done!" );
+	if( alreadyGotTitle )
+	    ui->plainTextEdit->insertPlainText( tr( "Done!" ) );
     }
     else
     {
@@ -479,22 +493,34 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 
     if( ui->tabWidget->currentIndex() == 1 && alreadyGotTitle )
     {
-	ui->statusBar->showMessage( "Got FST list from wit, parsing it into a pretty file tree..." );
+	ui->statusBar->showMessage( tr( "Got FST list from wit, parsing it into a pretty file tree..." ) );
 	ParseFileList();
     }
-    ui->statusBar->showMessage( "Ready" );
+    ui->statusBar->showMessage( tr( "Ready") );
     witRunning = 0;
     ui->tabWidget->setDisabled( false );
+
+    //the first time this function runs (the first time wit finishes running) it will set this flag
+    if( !alreadyGotTitle )
+    {
+	alreadyGotTitle = true;
+	//now merge the stdout and stderr into 1 channel for easier reading while actually doing work
+	witProcess->setReadChannelMode( QProcess::MergedChannels );
+    }
 }
 
 //load game to edit
 void MainWindow::on_edit_img_pushButton_clicked()
 {
-    //currentReadLine = 0;
+    FileFolderDialog dialog(this);
+    dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
+    dialog.setDirectory( ui->lineEdit_default_path->text() );
 
-    //if( filepaths ) delete( filepaths );
-    //filepaths = new QStringList;
-    QString path = QFileDialog::getOpenFileName( this, tr("Open Wii Image"), "/media/1TB_3GbS_2/BackUp_of_Wii_HDD/wbfs", tr("Wii Games (*.iso *.wbfs *.wdf *.ciso)"));
+    if ( !dialog.exec() )
+	return;
+
+    QString path = dialog.selectedFiles()[ 0 ];
+
     if( path.isEmpty() )
 	return;
 
@@ -518,26 +544,27 @@ void MainWindow::on_edit_img_pushButton_clicked()
     if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
     {
 	qDebug( "!waitforstarted()" );
-	ui->statusBar->showMessage( "Error starting wit!" );
+	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
 	return;
     }
-    ui->statusBar->showMessage( "Wit is running..." );
+    ui->statusBar->showMessage( tr( "Wit is running..." ) );
 }
 
 //process the long string of fst files to the tree view
 void MainWindow::ParseFileList()
 {
+    if( filepaths.isEmpty() )return;
     //split the output from wit at "\n" and remove spaces and shit
-    QStringList list = filepaths.split("\n", QString::SkipEmptyParts);
+    QStringList list = filepaths.split("\n", QString::SkipEmptyParts );
 
     //remove the non-file strings
-    for ( int i = 0; i < 3 ; ++i )
+    for ( int i = 0; i < 3 ; i++ )
     {
 	list.removeFirst();
     }
 
     //add each full path to the free view
-    for ( int i = 0; i < list.size() ; ++i )
+    for ( int i = 0; i < list.size(); i++ )
     {
 	if( !list[ i ].isEmpty() )
 	{
@@ -704,8 +731,158 @@ QString MainWindow::ItemToFullPath( QTreeWidgetItem * item )
     }
     return key;
 }
+
 //"clear" button clicked
 void MainWindow::on_pushButton_2_clicked()
 {
     ui->plainTextEdit->clear();
+}
+
+//save settings to disc
+bool MainWindow::SaveSettings()
+{
+    QFile file( SAVEFILENAME );
+    if ( !file.open( QIODevice::WriteOnly | QIODevice::Text ) )
+	 return false;
+
+    QTextStream out( &file );
+    out << "test:"	    << ui->checkBox->checkState()
+	<< "\noverwrite:"   << ui->overwrite_checkbox->checkState()
+	<< "\ntext:"	    << ui->verbose_combobox->currentIndex()
+	<< "\nlogging:"	    << ui->logging_combobox->currentIndex()
+	<< "\nios:"	    << ui->default_ios_spinbox->value()
+	<< "\npath:"	    << ui->lineEdit_default_path->text()
+	<< "\nregion:"	    << ui->comboBox->currentIndex()
+	<< "\nstarttab:"    << ui->startupTab_combobox->currentIndex()
+	<< "\nupdatetitle:" << ui->checkBox_6->checkState()
+	<< "\nupdateid:"    << ui->checkBox_7->checkState()
+	<< "\ndischdr:"	    << ui->checkBox_2->checkState()
+	<< "\ntmdticket:"   << ui->checkBox_4->checkState()
+	<< "\nparthdr:"	    << ui->checkBox_3->checkState()
+	<< "\ninputpath:"   << ui->lineEdit->text()
+	<< "\noutputpath:"  << ui->lineEdit_2->text();
+
+    return true;
+
+}
+
+//read settings file and set values from it
+bool MainWindow::LoadSettings()
+{
+    QFile file( SAVEFILENAME );
+    if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+	 return false;
+
+    while ( !file.atEnd() )
+    {
+
+	 QString setting;
+	 QString value = file.readLine().trimmed();		//get a line from the file and remove whitespace from the start and end
+	 bool ok = false;
+
+	 if( value.startsWith( "#" ) || value.isEmpty() )	//allow for # used as comments and empty lines in the ini file just in case
+	     continue;
+
+	 //split the string into setting and value
+	 while( !value.startsWith( ":" ) )
+	 {
+		setting += value.at( 0 );
+		value.remove( 0, 1 );
+	 }
+	 value.remove( 0, 1 );
+
+	//match the setting string and then set a value in the gui
+	if( setting == "test" )
+	{
+	    int v = value.toInt( &ok, 10 );			//for checkboxes, 0 is not checked / 2 is checked
+	    ui->checkBox->setChecked( ok && v );		//turn "ok" signals that the string was successfully turned into a int ( base 10 )
+	}							//use ok & int as a bool value
+	else if( setting == "overwrite" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->overwrite_checkbox->setChecked( ok && v );
+	}
+	else if( setting == "text" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		ui->verbose_combobox->setCurrentIndex( v );
+	}
+	else if( setting == "logging" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		ui->logging_combobox->setCurrentIndex( v );
+	}
+	else if( setting == "ios" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		ui->default_ios_spinbox->setValue( v );
+	}
+	else if( setting == "region" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		ui->comboBox->setCurrentIndex( v );
+	}
+	else if( setting == "path" )
+	{
+	    ui->lineEdit_default_path->setText( value );
+	}
+	else if( setting == "starttab" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+	    {
+		ui->tabWidget->setCurrentIndex( v );
+		ui->startupTab_combobox->setCurrentIndex( v );
+	    }
+	}
+	else if( setting == "updatetitle" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_6->setChecked( ok && v );
+	}
+	else if( setting == "updateid" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_7->setChecked( ok && v );
+	}
+	else if( setting == "dischdr" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_2->setChecked( ok && v );
+	}
+	else if( setting == "tmdticket" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_4->setChecked( ok && v );
+	}
+	else if( setting == "parthdr" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_3->setChecked( ok && v );
+	}
+	else if( setting == "inputpath" )
+	{
+	    ui->lineEdit->setText( value );
+	}
+	else if( setting == "outputpath" )
+	{
+	    ui->lineEdit_2->setText( value );
+	}
+
+
+    }
+
+    return true;
+}
+
+//save button clicked
+void MainWindow::on_save_pushButton_clicked()
+{
+    SaveSettings();
+    ui->statusBar->showMessage( tr( "Settings Saved" ), 5000 );
+    //qDebug() << "settings saved";
 }
