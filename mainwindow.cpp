@@ -25,9 +25,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 {
     ui->setupUi( this );
 
-    witRunning = 0;
     undoLastTextOperation = false;
-    alreadyGotTitle = false;
+    //alreadyGotTitle = false;
 
     ui->plainTextEdit->clear();
 
@@ -42,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
     //get the version of wit and append it to the titlebar
     QString str = WIT;
+    witJob = witGetVersion;
     witProcess->start( str );
     if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
     {
@@ -79,7 +79,7 @@ MainWindow::~MainWindow()
 {
     //SaveSettings();
     delete ui;
-    if( witRunning )
+    if( witJob != witNoJob )
     {
 	emit KillProcess();
 //	qsleep( 1 );
@@ -119,15 +119,14 @@ void MainWindow::on_toolButton_clicked()
     }
 }
 
-//send command to wit
+//send command to wit [tab 1]
 void MainWindow::on_pushButton_4_clicked()
 {
-    if( witRunning )
+    if( witJob != witNoJob )
     {
 	QMessageBox::warning(this, tr( "Slow your roll!" ),tr( "Wit is still running.\nWait for the current job to finish." ), tr( "Ok" ) );
 	return;
     }
-    witRunning = 1;
     ui->progressBar->setValue( 0 );
 
     QStringList args;
@@ -249,11 +248,13 @@ void MainWindow::on_pushButton_4_clicked()
     ui->plainTextEdit->insertPlainText( "\n" );
 
     //start a process using wit and give it the arg string
+    witJob = witCopy;
     witProcess->start( str, args );
-    if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
+    if( !witProcess->waitForStarted() )
     {
 	qDebug( "!waitforstarted()" );
 	ui->statusBar->showMessage( tr(  "Error starting wit!" ) );
+	witJob = witNoJob;
 	return;
     }
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
@@ -370,10 +371,10 @@ void MainWindow::ShowMessage( const QString &s )
     ui->plainTextEdit->insertPlainText( s );
 }
 
-//get "done" status from the workthread
+//get "done" status from the workthread [depreciated]
 void MainWindow::GetThreadDone( int i )
 {
-    witRunning = i;
+    //witRunning = i;
     ui->statusBar->showMessage( tr( "Ready for more work" ) );
 }
 
@@ -386,7 +387,7 @@ void MainWindow::ReadyReadStdOutSlot()
     //qDebug() << "gotmessage" << read;
 
     //this is the initial run of wit triggered by creating the window.  just get the program name & version from it and return;
-    if( read.contains( "wit: Wiimms") && !alreadyGotTitle )
+    if( read.contains( "wit: Wiimms") && witJob == witGetVersion )
     {
 	QString s = read;
 	s = s.trimmed();
@@ -403,10 +404,10 @@ void MainWindow::ReadyReadStdOutSlot()
 
     //delete the last text appended to the console if the last message was flagged to be deleted
     if( undoLastTextOperation )
-		{
-		    ui->plainTextEdit->undo();
-		    undoLastTextOperation = false;
-		}
+    {
+	ui->plainTextEdit->undo();
+	undoLastTextOperation = false;
+    }
 
     if( read.contains( "\r" ) )
     {
@@ -434,32 +435,43 @@ void MainWindow::ReadyReadStdOutSlot()
     else
 	ui->plainTextEdit->insertPlainText( read );
 
-    if( ui->tabWidget->currentIndex() == 0 )
+    switch ( witJob )
     {
-	//turn the % message into a int and pass it to the progress bar
-	 if( read.contains( "%" ) )
-	{
-	     QString str = read.simplified(); //remove extra whitespace
-	     QString numText;
-	     int perChar = str.indexOf( "%" );
-	     int num = 0;
-	     if( perChar < 4 )
-	     {
-		     for( int i = 0; i < perChar; i++ ) //copy the number to another string
-			numText += str.toLatin1().data()[ i ];
+	case witCopy:
+	    //turn the % message into a int and pass it to the progress bar
+	    if( read.contains( "%" ) )
+	    {
+		 QString str = read.simplified(); //remove extra whitespace
+		 QString numText;
+		 int perChar = str.indexOf( "%" );
+		 int num = 0;
+		 if( perChar < 4 )
+		 {
+			 for( int i = 0; i < perChar; i++ ) //copy the number to another string
+			    numText += str.toLatin1().data()[ i ];
 
-		     num = numText.toInt();//convert to int
-		     if( num < 101 )
-			 ui->progressBar->setValue( num );
-		     //qDebug( "numText: %s\nnum: %d", numText.toLatin1().data(), num );
-	     }
-	}
-     }
-    else if( ui->tabWidget->currentIndex() == 1 && alreadyGotTitle )
-    {
-	//get all the text output from wit and run it into 1 string
-	filepaths += read;
+			 num = numText.toInt();//convert to int
+			 if( num < 101 )
+			     ui->progressBar->setValue( num );
+			 //qDebug( "numText: %s\nnum: %d", numText.toLatin1().data(), num );
+		 }
+	    }
+	    break;
+
+	case witIlist:
+	    //get all the text output from wit and run it into 1 string
+	    filepaths += read;
+	    break;
+
+	case witDump:
+	    filepaths += read;
+	    break;
+
+	default:
+	    break;
+
     }
+
 }
 
 //triggered after the wit process is done
@@ -469,7 +481,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     if( !i && !s )
     {
 	ui->progressBar->setValue( 100 );
-	if( alreadyGotTitle )
+	if( witJob != witGetVersion )
 	    ui->plainTextEdit->insertPlainText( tr( "Done!" ) );
     }
     else
@@ -478,23 +490,106 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	QTextStream( &st ) <<"Done, but with error [ ExitCode: " << i << "  ErrorStatus: " << s << "]";
 	ui->plainTextEdit->insertPlainText( st );
     }
+    QStringList list;
 
-    if( ui->tabWidget->currentIndex() == 1 && alreadyGotTitle )
+    //qDebug() << "witJob: " << witJob;
+    switch ( witJob )
     {
-	ui->statusBar->showMessage( tr( "Got FST list from wit, parsing it into a pretty file tree..." ) );
-	ParseFileList();
+	case witIlist:
+	    ui->statusBar->showMessage( tr( "Got FST list from wit, parsing it into a pretty file tree..." ) );
+	    ParseFileList();
+	    witJob = witNoJob;
+	    break;
+
+	case witDump:
+	    if( filepaths.isEmpty() )
+		break;
+	    //split the output from wit at "\n" and remove spaces and shit
+	    list = filepaths.split("\n", QString::SkipEmptyParts );
+	    foreach( QString str, list )
+	    {
+		str = str.trimmed();
+		if( str.contains( "ID & type" ) )
+		{
+		    str.remove( 0, 10 );
+		    str = str.trimmed();
+		    str.resize( 6 );
+		    ui->label_edit_id->setText( str );
+		}
+		else if( str.contains( "Disc name:" ) )
+		{
+		    str.remove( 0, 10 );
+		    str = str.trimmed();
+		    ui->label_edit_name->setText( str );
+		}
+		else if( str.contains( "Region:" ) )
+		{
+		    str.remove( 0, 7 );
+		    str = str.trimmed();
+		    ui->label_edit_region->setText( str );
+		}
+
+	    }
+	    DoIlist();
+	    break;
+
+
+	case witGetVersion:
+	    //now merge the stdout and stderr into 1 channel for easier reading while actually doing work
+	    witProcess->setReadChannelMode( QProcess::MergedChannels );
+	    witJob = witNoJob;
+	    break;
+
+	default:
+	    witJob = witNoJob;
+	    break;
+
     }
-    ui->statusBar->showMessage( tr( "Ready") );
-    witRunning = 0;
+
+    ui->statusBar->showMessage( tr( "Ready" ) );
     ui->tabWidget->setDisabled( false );
 
-    //the first time this function runs (the first time wit finishes running) it will set this flag
-    if( !alreadyGotTitle )
+
+}
+
+//build the ILIST-L command and start the process with it
+void MainWindow::DoIlist()
+{
+//    qDebug() << "DoIlist()";
+    if( isoPath.isEmpty() )
     {
-	alreadyGotTitle = true;
-	//now merge the stdout and stderr into 1 channel for easier reading while actually doing work
-	witProcess->setReadChannelMode( QProcess::MergedChannels );
+	qDebug() << "isoPath.isEmpty()";
+	return;
     }
+
+    //clear the last loaded ISO
+    filepaths.clear();
+    while( ui->treeWidget->takeTopLevelItem( 0 ) );
+
+    QStringList args;
+    args << "ILIST-L";
+    args << isoPath;
+
+    QString str = WIT;
+    ui->plainTextEdit->insertPlainText( "\n" + str + " " );
+    ui->tabWidget->setDisabled( true );
+    for( int i = 0; i < args.size(); i++ )
+	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
+
+    //start a process using wit from the current working directory
+    witJob = witIlist;
+//    qDebug() << "Starting Ilist - witJob: " << witJob;
+    witProcess->start( str, args );
+    if( !witProcess->waitForStarted() )
+    {
+	qDebug( "!waitforstarted()" );
+	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
+	witJob = witNoJob;
+	return;
+    }
+    ui->statusBar->showMessage( tr( "Wit is running..." ) );
+//    qDebug() << "mmmmkay";
+
 }
 
 //load game to edit
@@ -507,20 +602,16 @@ void MainWindow::on_edit_img_pushButton_clicked()
     if ( !dialog.exec() )
 	return;
 
-    QString path = dialog.selectedFiles()[ 0 ];
+    isoPath = dialog.selectedFiles()[ 0 ];
 
-    if( path.isEmpty() )
+    if( isoPath.isEmpty() )
 	return;
 
-    //clear the last loaded ISO
-    filepaths.clear();
-    while( ui->treeWidget->takeTopLevelItem( 0 ) );
-
     QStringList args;
-    args << "ILIST-L";
-    args << path;
+    args << "DUMP";
+    args << isoPath;
 
-    QString str = "./wit";
+    QString str = WIT;
     ui->plainTextEdit->clear();
     ui->plainTextEdit->insertPlainText( str + " " );
     ui->tabWidget->setDisabled( true );
@@ -528,11 +619,13 @@ void MainWindow::on_edit_img_pushButton_clicked()
 	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
 
     //start a process using wit from the current working directory
+    witJob = witDump;
     witProcess->start( str, args );
-    if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
+    if( !witProcess->waitForStarted() )
     {
 	qDebug( "!waitforstarted()" );
 	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
+	witJob = witNoJob;
 	return;
     }
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
@@ -541,6 +634,7 @@ void MainWindow::on_edit_img_pushButton_clicked()
 //process the long string of fst files to the tree view
 void MainWindow::ParseFileList()
 {
+//    qDebug() << "ParseFileList()";
     if( filepaths.isEmpty() )return;
     //split the output from wit at "\n" and remove spaces and shit
     QStringList list = filepaths.split("\n", QString::SkipEmptyParts );
@@ -554,6 +648,8 @@ void MainWindow::ParseFileList()
     //add each full path to the free view
     for ( int i = 0; i < list.size(); i++ )
     {
+	if( ui->checkBox_hiddenFiles->isChecked() &&
+	    list[ i ].contains( "/.svn/" ) ) continue;
 	if( !list[ i ].isEmpty() )
 	{
 	    AddItemToTree( list[ i ] );
@@ -579,8 +675,6 @@ void MainWindow::AddItemToTree( const QString s )
 	path.remove( 0, 1 );
     }
     path.remove( 0, 1 );
-
-
 
     int index = 0;
 
@@ -743,7 +837,8 @@ bool MainWindow::SaveSettings()
 	<< "\ntmdticket:"   << ui->checkBox_4->checkState()
 	<< "\nparthdr:"	    << ui->checkBox_3->checkState()
 	<< "\ninputpath:"   << ui->lineEdit->text()
-	<< "\noutputpath:"  << ui->lineEdit_2->text();
+	<< "\noutputpath:"  << ui->lineEdit_2->text()
+	<< "\nignoreidden:"  << ui->checkBox_hiddenFiles->checkState();
 
     return true;
 
@@ -855,6 +950,12 @@ bool MainWindow::LoadSettings()
 	{
 	    ui->lineEdit_2->setText( value );
 	}
+	else if( setting == "ignoreidden" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_hiddenFiles->setChecked( ok && v );
+	}
+
 
 
     }

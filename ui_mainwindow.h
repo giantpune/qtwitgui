@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Tue Jun 8 01:26:53 2010
+** Created: Tue Jun 8 10:40:55 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -19,6 +19,7 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QFrame>
 #include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -81,6 +82,12 @@ public:
     QWidget *Edit_tab;
     QTreeWidget *treeWidget;
     QPushButton *edit_img_pushButton;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label_edit_id;
+    QLabel *label_edit_region;
+    QLabel *label_edit_name;
     QWidget *settings_tab;
     QWidget *layoutWidget;
     QFormLayout *formLayout;
@@ -103,6 +110,7 @@ public:
     QFormLayout *formLayout_7;
     QLabel *label_7;
     QComboBox *startupTab_combobox;
+    QCheckBox *checkBox_hiddenFiles;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -352,7 +360,7 @@ public:
         Edit_tab->setObjectName(QString::fromUtf8("Edit_tab"));
         treeWidget = new QTreeWidget(Edit_tab);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
-        treeWidget->setGeometry(QRect(11, 40, 711, 391));
+        treeWidget->setGeometry(QRect(11, 80, 711, 351));
         QFont font1;
         font1.setPointSize(8);
         treeWidget->setFont(font1);
@@ -367,6 +375,38 @@ public:
         edit_img_pushButton->setObjectName(QString::fromUtf8("edit_img_pushButton"));
         edit_img_pushButton->setGeometry(QRect(610, 10, 111, 23));
         edit_img_pushButton->setMinimumSize(QSize(110, 0));
+        widget = new QWidget(Edit_tab);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(10, 20, 481, 44));
+        verticalLayout_3 = new QVBoxLayout(widget);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setMargin(11);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        label_edit_id = new QLabel(widget);
+        label_edit_id->setObjectName(QString::fromUtf8("label_edit_id"));
+        label_edit_id->setMinimumSize(QSize(200, 0));
+
+        horizontalLayout->addWidget(label_edit_id);
+
+        label_edit_region = new QLabel(widget);
+        label_edit_region->setObjectName(QString::fromUtf8("label_edit_region"));
+        label_edit_region->setMinimumSize(QSize(100, 0));
+
+        horizontalLayout->addWidget(label_edit_region);
+
+
+        verticalLayout_3->addLayout(horizontalLayout);
+
+        label_edit_name = new QLabel(widget);
+        label_edit_name->setObjectName(QString::fromUtf8("label_edit_name"));
+        label_edit_name->setMinimumSize(QSize(475, 0));
+
+        verticalLayout_3->addWidget(label_edit_name);
+
         tabWidget->addTab(Edit_tab, QString());
         settings_tab = new QWidget();
         settings_tab->setObjectName(QString::fromUtf8("settings_tab"));
@@ -473,6 +513,10 @@ public:
 
         formLayout_7->setWidget(0, QFormLayout::FieldRole, startupTab_combobox);
 
+        checkBox_hiddenFiles = new QCheckBox(settings_tab);
+        checkBox_hiddenFiles->setObjectName(QString::fromUtf8("checkBox_hiddenFiles"));
+        checkBox_hiddenFiles->setGeometry(QRect(10, 250, 300, 22));
+        checkBox_hiddenFiles->setChecked(true);
         tabWidget->addTab(settings_tab, QString());
 
         gridLayout_3->addWidget(tabWidget, 0, 0, 1, 5);
@@ -491,7 +535,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
         comboBox->setCurrentIndex(2);
         verbose_combobox->setCurrentIndex(5);
         logging_combobox->setCurrentIndex(0);
@@ -588,6 +632,9 @@ public:
         ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "Offset", 0, QApplication::UnicodeUTF8));
         ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Name", 0, QApplication::UnicodeUTF8));
         edit_img_pushButton->setText(QApplication::translate("MainWindow", "Load Image", 0, QApplication::UnicodeUTF8));
+        label_edit_id->setText(QString());
+        label_edit_region->setText(QString());
+        label_edit_name->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(Edit_tab), QApplication::translate("MainWindow", "Edit Emage", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("MainWindow", "Text output:", 0, QApplication::UnicodeUTF8));
         verbose_combobox->clear();
@@ -628,6 +675,10 @@ public:
          << QApplication::translate("MainWindow", "Edit", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("MainWindow", "Settings", 0, QApplication::UnicodeUTF8)
         );
+#ifndef QT_NO_TOOLTIP
+        checkBox_hiddenFiles->setToolTip(QApplication::translate("MainWindow", "Skip \".svn\" files in tree view to speed up parsing", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        checkBox_hiddenFiles->setText(QApplication::translate("MainWindow", "Ignore svn Files in Filetree", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(settings_tab), QApplication::translate("MainWindow", "Settings", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(MainWindow);
     } // retranslateUi

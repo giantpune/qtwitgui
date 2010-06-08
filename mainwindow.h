@@ -25,6 +25,15 @@ namespace Ui
     class MainWindow;
 }
 
+enum
+{
+    witNoJob = 0,
+    witGetVersion,
+    witCopy,
+    witIlist,
+    witDump
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -49,6 +58,7 @@ private:
     QIcon groupIcon;
     QIcon keyIcon;
     QString filepaths;
+    QString isoPath;
     QAction *extractAct;
     QAction *replaceAct;
     QStringList extractPaths;
@@ -57,17 +67,19 @@ private:
 
     //int region;
     u8 tmdIOS;
-    int witRunning;
+    //int witRunning;
     bool undoLastTextOperation;
     int numFstFiles;
+    u8 witJob;
     //int currentReadLine;
 
     char id[ 7 ];
     char name[ 0x40 ];
     //char regStr[ 5 ];
-    bool alreadyGotTitle;
+    //bool alreadyGotTitle;
 
     void ParseFileList();
+    void DoIlist();
     void AddItemToTree( const QString s );
     int findItem(  const QString s, QTreeWidgetItem *parent, int startIndex );
     int childCount( QTreeWidgetItem * parent );
