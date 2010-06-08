@@ -11,3 +11,8 @@ HEADERS += mainwindow.h \
     filefolderdialog.h
 FORMS += mainwindow.ui
 TRANSLATIONS = witGuiTranslationExample.ts
+
+VERSION = r$(shell svnversion .) #get svn revision
+VERSTR = '\\"$${VERSION}\\"'  # place quotes around the version string
+DEFINES += SVNVER=\"$${VERSTR}\" # create a VER macro containing the version string
+
