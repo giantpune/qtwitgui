@@ -2,6 +2,16 @@
 
 = Usage =
 
+== General ==
+
+* Wit path is ./wit.  You need wit in the same path as this program, as well as any dependencies for it ( like cygwin.dll ).
+
+* This program works by getting input from the user, then building a list of commands and runs wit as a process and passes it those commands.
+
+* Then when wit sends output through stdout or stderr ( the stuff you usually see in the console ) this program reads it and interprets it into data to use in the GUI.  Due to this, changes in the formatting of the output text from wit can break this program easily.
+
+* Why not just incorporate code from wit into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
+
 == Tab 1 ( wit CP )==
 
 * This tab is designed for composing games from extracted files.  Enter a path into the first field.  Enter an output file in the second field.  Select any options you want and click "do it".
@@ -41,10 +51,6 @@
 * Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  At the very least, you need the libraries and the files in /bin/.  Qmake is used to generate makefiles.  
 
 * I suggest getting the full SDK since its free anyways.  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
-
-* There is a compiler flag ( #define ) that specifies a couple little things like fonts.  Make sure this flag is set to your platform before compiling.  As of this writing ( r10 ) the only difference set by this flag is the font for the output window.  Since Mac and Windows both have "Courier New" font, they can be treated the same.
-
-* There is no ill effects of not setting this flag, except that a non-monosized font may end up getting used.
 ----
 
 
@@ -67,10 +73,6 @@
 = Platform Specific Stuff =
 
 == linux ==
-* Wit path is ./wit
-
-* Font is Monospace 8
-
 * Everything should just work.
 ----
 
@@ -78,8 +80,6 @@
 
 == windows ==
 * Wit path is ./wit .  The default build for Qt will put the executable & working directory in "./Debug or ./Release"  Either change that, or put all the necessary files in that folder.
-
-* Font is Courier New 8
 
 * It is possible to run this exe without having Qt installed, but it requires 2 .dll files:  QtCored4.dll and QtGuid4.dll.
 ----
@@ -89,7 +89,5 @@
 
 == OS-X ==
 * Wit path is ./wit . The default run settings for Qt will run the program in a different directory.  You must either put wit in that folder, or change the setting
-
-* Font is Courier New 8
 
 * There are issues with the Qt dialog boxes.  There is not one dialog that lets you select files or directories.  Instead I have added a dialog into this project.  This dialog works fine on windows and linux, but doesn't appear to work on OS-X.  Until I figure out the issue, the "find file/folder" dialogs are quite useless, and paths must be manually entered.
