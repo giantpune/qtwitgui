@@ -2,9 +2,9 @@
 
 <s>separate or remove makefiles from the trunk.  makefiles should be generated at compile time by qmake for the desired platform</s>
 
-make sure the project compiles on the current stable QT SDK for each platform
+<s>make sure the project compiles on the current stable QT SDK for each platform</s>
 
-make sure that the project runs correctly on all platforms
+<s>make sure that the project runs correctly on all platforms</s>
 
 <s>remove extraneous files from the svn</s>
 
