@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Mon Jun 7 07:39:47 2010
+** Created: Tue Jun 8 01:26:53 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -365,8 +365,8 @@ public:
         treeWidget->setAnimated(true);
         edit_img_pushButton = new QPushButton(Edit_tab);
         edit_img_pushButton->setObjectName(QString::fromUtf8("edit_img_pushButton"));
-        edit_img_pushButton->setGeometry(QRect(640, 10, 90, 23));
-        edit_img_pushButton->setMinimumSize(QSize(90, 0));
+        edit_img_pushButton->setGeometry(QRect(610, 10, 111, 23));
+        edit_img_pushButton->setMinimumSize(QSize(110, 0));
         tabWidget->addTab(Edit_tab, QString());
         settings_tab = new QWidget();
         settings_tab->setObjectName(QString::fromUtf8("settings_tab"));
@@ -452,7 +452,8 @@ public:
 
         save_pushButton = new QPushButton(settings_tab);
         save_pushButton->setObjectName(QString::fromUtf8("save_pushButton"));
-        save_pushButton->setGeometry(QRect(10, 400, 101, 28));
+        save_pushButton->setGeometry(QRect(10, 400, 115, 28));
+        save_pushButton->setMinimumSize(QSize(115, 0));
         layoutWidget3 = new QWidget(settings_tab);
         layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
         layoutWidget3->setGeometry(QRect(10, 210, 167, 29));
@@ -490,7 +491,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
         comboBox->setCurrentIndex(2);
         verbose_combobox->setCurrentIndex(5);
         logging_combobox->setCurrentIndex(0);
