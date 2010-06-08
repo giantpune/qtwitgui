@@ -1,0 +1,93 @@
+#summary About this program
+
+= Usage =
+
+== Tab 1 ( wit CP )==
+
+* This tab is designed for composing games from extracted files.  Enter a path into the first field.  Enter an output file in the second field.  Select any options you want and click "do it".
+
+* This tab should also work for converting & editing existing images, as it uses wit COPY.  It was designed around extracted files, though, so using a existing image as input is not fully functional in the gui.
+----
+
+
+
+== Tab 2 ( file extract / replace ) ==
+
+* This tab is not what I would call "done" yet.  As it stands, this tab performs "wit ILIST-L" and then turns the output into a browse-able file tree.
+
+* You can select multiple files using shift & ctrl.  
+
+* You can even right-click -> extract/replace.  But thats about as far as it goes.  Wit does not support those 2 actions yet, so I cannot go any farther with it. 
+----
+
+
+
+
+== Tab 3 ( general settings ) ==
+
+* As the name suggests, this is a place to select some settings.
+
+* For descriptions for settings, hover the mouse over them.  Most should have tooltips.
+
+* Clicking the "save settings" button writes a ini file in the same path that this program is running.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
+----
+
+
+
+
+
+== Compiling ==
+
+* Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  At the very least, you need the libraries and the files in /bin/.  Qmake is used to generate makefiles.  
+
+* I suggest getting the full SDK since its free anyways.  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
+
+* There is a compiler flag ( #define ) that specifies a couple little things like fonts.  Make sure this flag is set to your platform before compiling.
+----
+
+
+== Creating and using language files ==
+
+* This program determines the appropriate language file to use by checking the environmental variable at startup.
+
+* I have added a bit of debug output viewable if running this program from a terminal to display the region variable.
+
+* open the .ts file from this svn in Qt Linguist.  Select your country and language.  Select a string and enter new text for your language.  Then do file->release and save a .qm file.  
+
+* Since I am using USA/english (en_US )  on my PC, the program will first try to load "witGuiLang_en_US.qm".  Failing that, it will try "witGuiLang_en.qm".
+
+* there is no guarantee that the .ts file will be up-to-date.  There may be strings used in the project that are not in the current .ts file.  This file in no automatically updated.  You can run "lupdate -verbose ./witGui.pro".  This will grab the current strings used in the program and slap them in the .ts file.  Then you can use that to create a .qm file.
+----
+
+
+
+
+= Platform Specific Stuff =
+
+== linux ==
+* Wit path is ./wit
+
+* Font is Monospace 8
+
+* Everything should just work.
+----
+
+
+
+== windows ==
+* Wit path is ./wit .  The default build for Qt will put the executable & working directory in "./Debug or ./Release"  Either change that, or put all the necessary files in that folder.
+
+* Font is Courier New 8
+
+* It is possible to run this exe without having Qt installed, but it requires 2 .dll files:  QtCored4.dll and QtGuid4.dll.
+----
+
+
+
+
+== OS-X ==
+* The GUI works.  But reading output ( stdout & stderr ) from wit doesn't.  This effectively renders the program useless.
+
+* All I have is OS-x 10.3 in a vmware PC.  I don't have much experience with it, and honestly I don't have much motivation to figure out what the issue is.  But I'm sure it is a quick fix.
+
+* If somebody knows what the issue is or how to fix it, I am open to suggestions.
