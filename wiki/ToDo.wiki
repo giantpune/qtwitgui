@@ -1,13 +1,13 @@
 #summary list of stuff to do
 
-separate or remove makefiles from the trunk.  makefiles should be generated at compile time by qmake for the desired platform
+<s>separate or remove makefiles from the trunk.  makefiles should be generated at compile time by qmake for the desired platform</s>
 
 make sure the project compiles on the current stable QT SDK for each platform
 
 make sure that the project runs correctly on all platforms
 
-remove extraneous files from the svn
+<s>remove extraneous files from the svn</s>
 
-save settings and remove hard-coded paths & settings
+<s>save settings and remove hard-coded paths & settings</s>
 
 rearrange stuff and make the layout prettier
