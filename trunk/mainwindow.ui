@@ -161,7 +161,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -477,9 +477,9 @@
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>40</y>
+          <y>80</y>
           <width>711</width>
-          <height>391</height>
+          <height>351</height>
          </rect>
         </property>
         <property name="font">
@@ -542,6 +542,61 @@
         <property name="text">
          <string>Load Image</string>
         </property>
+       </widget>
+       <widget class="QWidget" name="">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>481</width>
+          <height>44</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label_edit_id">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_edit_region">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_edit_name">
+           <property name="minimumSize">
+            <size>
+             <width>475</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
       <widget class="QWidget" name="settings_tab">
@@ -788,6 +843,25 @@
           </widget>
          </item>
         </layout>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_hiddenFiles">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>250</y>
+          <width>300</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Skip &quot;.svn&quot; files in tree view to speed up parsing</string>
+        </property>
+        <property name="text">
+         <string>Ignore svn Files in Filetree</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </widget>
      </widget>
