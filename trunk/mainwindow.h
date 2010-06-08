@@ -88,6 +88,7 @@ private:
     QString ItemToFullPath( QTreeWidgetItem * item );
     bool SaveSettings();
     bool LoadSettings();
+    void ResizeGuiToLanguage();
 
 
 

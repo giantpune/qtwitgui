@@ -42,18 +42,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;input folder&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ente the output file path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>/home/j/c/gui_fork/___TMPETP.wbfs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Input:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -308,6 +296,30 @@ Wait for the current job to finish.</source>
     </message>
     <message>
         <source>Got FST list from wit, parsing it into a pretty file tree...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;input&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;output&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip &quot;.svn&quot; files in tree view to speed up parsing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore svn Files in Filetree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings Saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the output file path</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
