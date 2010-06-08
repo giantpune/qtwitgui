@@ -385,12 +385,15 @@ void MainWindow::ReadyReadStdOutSlot()
 
     //qDebug() << "gotmessage" << read;
 
-    //this is the initial run of wit triggered by creating teh window.  just get the program name & version from it and return;
+    //this is the initial run of wit triggered by creating the window.  just get the program name & version from it and return;
     if( read.contains( "wit: Wiimms") && !alreadyGotTitle )
     {
 	QString s = read;
 	s = s.trimmed();
 	s.resize( s.indexOf( "\n", 0) - 1 );
+	//add the svn version of this program
+	s += " | Gui: ";
+	s += SVNVER;
 	setWindowTitle( s );
 	return;
     }
@@ -589,16 +592,17 @@ void MainWindow::AddItemToTree( const QString s )
     {
 	QString string;
 	bool isFolder = false;
-	int firstSlash = path.indexOf( "/" );
 
-	if( firstSlash > -1 )
+	while( !path.startsWith( "/" ) && !path.isEmpty() )
 	{
-	    for( int i = 0; i < firstSlash; i++ ) //copy the first part of the path to another string
-		string += path.toLatin1().data()[ i ];
-
-	    isFolder = true;
+	    string += path.at( 0 );
+	    path.remove( 0, 1 );
 	}
-	else string = path;
+	if( path.startsWith( "/" ) )
+	{
+	    isFolder = true;
+	    path.remove( 0, 1 );
+	}
 
 	//qDebug() << path;
 
@@ -610,12 +614,6 @@ void MainWindow::AddItemToTree( const QString s )
 	{
 	    parent = childAt( parent, findItem( string, parent, index ) );
 	}
-
-	if( firstSlash > -1 )
-	    path.remove( 0, firstSlash + 1 );
-
-	else
-	    path.clear();
 
 	//set the icon for this item
 	if( isFolder )
