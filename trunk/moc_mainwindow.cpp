@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Sun Jun 6 03:13:16 2010
+** Created: Mon Jun 7 08:25:02 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-      19,   12, // methods
+      18,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,39 +33,37 @@ static const uint qt_meta_data_MainWindow[] = {
 
  // slots: signature, parameters, type, tag, flags
       26,   11,   11,   11, 0x08,
-      52,   11,   11,   11, 0x08,
-      85,   11,   11,   11, 0x08,
-     115,   11,   11,   11, 0x08,
-     139,   11,   11,   11, 0x08,
-     169,  163,   11,   11, 0x08,
-     206,   11,   11,   11, 0x08,
-     232,   11,   11,   11, 0x08,
-     258,   11,   11,   11, 0x08,
-     282,   11,   11,   11, 0x08,
-     310,  308,   11,   11, 0x08,
-     328,   11,   11,   11, 0x08,
-     344,   11,   11,   11, 0x08,
-     368,  366,   11,   11, 0x08,
-     414,   11,   11,   11, 0x08,
-     428,   11,   11,   11, 0x08,
-     442,   11,   11,   11, 0x0a,
-     463,   11,   11,   11, 0x0a,
+      55,   11,   11,   11, 0x08,
+      81,   11,   11,   11, 0x08,
+     114,   11,   11,   11, 0x08,
+     144,   11,   11,   11, 0x08,
+     168,   11,   11,   11, 0x08,
+     192,   11,   11,   11, 0x08,
+     218,   11,   11,   11, 0x08,
+     244,   11,   11,   11, 0x08,
+     268,   11,   11,   11, 0x08,
+     294,   11,   11,   11, 0x08,
+     310,   11,   11,   11, 0x08,
+     334,  332,   11,   11, 0x08,
+     380,   11,   11,   11, 0x08,
+     394,   11,   11,   11, 0x08,
+     408,   11,   11,   11, 0x0a,
+     429,   11,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0KillProcess()\0"
+    "on_save_pushButton_clicked()\0"
     "on_pushButton_2_clicked()\0"
     "on_edit_img_pushButton_clicked()\0"
     "on_lineEdit_editingFinished()\0"
     "on_checkBox_7_clicked()\0on_checkBox_6_clicked()\0"
-    "index\0on_comboBox_currentIndexChanged(int)\0"
     "on_toolButton_2_clicked()\0"
     "on_pushButton_4_clicked()\0"
     "on_toolButton_clicked()\0"
-    "on_pushButton_3_clicked()\0i\0"
-    "UpdateRegStr(int)\0UpdateOptions()\0"
+    "on_pushButton_3_clicked()\0UpdateOptions()\0"
     "ReadyReadStdOutSlot()\0,\0"
     "ProcessFinishedSlot(int,QProcess::ExitStatus)\0"
     "ExtractSlot()\0ReplaceSlot()\0"
@@ -98,27 +96,26 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: KillProcess(); break;
-        case 1: on_pushButton_2_clicked(); break;
-        case 2: on_edit_img_pushButton_clicked(); break;
-        case 3: on_lineEdit_editingFinished(); break;
-        case 4: on_checkBox_7_clicked(); break;
-        case 5: on_checkBox_6_clicked(); break;
-        case 6: on_comboBox_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 1: on_save_pushButton_clicked(); break;
+        case 2: on_pushButton_2_clicked(); break;
+        case 3: on_edit_img_pushButton_clicked(); break;
+        case 4: on_lineEdit_editingFinished(); break;
+        case 5: on_checkBox_7_clicked(); break;
+        case 6: on_checkBox_6_clicked(); break;
         case 7: on_toolButton_2_clicked(); break;
         case 8: on_pushButton_4_clicked(); break;
         case 9: on_toolButton_clicked(); break;
         case 10: on_pushButton_3_clicked(); break;
-        case 11: UpdateRegStr((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 12: UpdateOptions(); break;
-        case 13: ReadyReadStdOutSlot(); break;
-        case 14: ProcessFinishedSlot((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< QProcess::ExitStatus(*)>(_a[2]))); break;
-        case 15: ExtractSlot(); break;
-        case 16: ReplaceSlot(); break;
-        case 17: ShowMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 18: GetThreadDone((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 11: UpdateOptions(); break;
+        case 12: ReadyReadStdOutSlot(); break;
+        case 13: ProcessFinishedSlot((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< QProcess::ExitStatus(*)>(_a[2]))); break;
+        case 14: ExtractSlot(); break;
+        case 15: ReplaceSlot(); break;
+        case 16: ShowMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 17: GetThreadDone((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 19;
+        _id -= 18;
     }
     return _id;
 }

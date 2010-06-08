@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Sun Jun 6 04:05:01 2010
+** Created: Mon Jun 7 07:39:47 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -44,6 +44,12 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QGridLayout *gridLayout_3;
+    QPlainTextEdit *plainTextEdit;
+    QProgressBar *progressBar;
+    QPushButton *pushButton_4;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
+    QSpacerItem *horizontalSpacer;
     QTabWidget *tabWidget;
     QWidget *tab;
     QGridLayout *gridLayout_2;
@@ -92,12 +98,11 @@ public:
     QVBoxLayout *verticalLayout;
     QCheckBox *checkBox;
     QCheckBox *overwrite_checkbox;
-    QPlainTextEdit *plainTextEdit;
-    QProgressBar *progressBar;
-    QPushButton *pushButton_4;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
-    QSpacerItem *horizontalSpacer;
+    QPushButton *save_pushButton;
+    QWidget *layoutWidget3;
+    QFormLayout *formLayout_7;
+    QLabel *label_7;
+    QComboBox *startupTab_combobox;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -106,13 +111,72 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(759, 782);
+        MainWindow->resize(753, 780);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout_3 = new QGridLayout(centralWidget);
         gridLayout_3->setSpacing(6);
         gridLayout_3->setMargin(11);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        plainTextEdit = new QPlainTextEdit(centralWidget);
+        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(plainTextEdit->sizePolicy().hasHeightForWidth());
+        plainTextEdit->setSizePolicy(sizePolicy);
+        plainTextEdit->setMinimumSize(QSize(0, 175));
+        plainTextEdit->setSizeIncrement(QSize(1, 1));
+        QFont font;
+        font.setFamily(QString::fromUtf8("Courier New"));
+        font.setPointSize(8);
+        font.setBold(true);
+        font.setWeight(75);
+        plainTextEdit->setFont(font);
+        plainTextEdit->viewport()->setProperty("cursor", QVariant(QCursor(Qt::ArrowCursor)));
+        plainTextEdit->setFrameShadow(QFrame::Sunken);
+        plainTextEdit->setLineWidth(1);
+        plainTextEdit->setReadOnly(true);
+        plainTextEdit->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
+
+        gridLayout_3->addWidget(plainTextEdit, 1, 0, 1, 5);
+
+        progressBar = new QProgressBar(centralWidget);
+        progressBar->setObjectName(QString::fromUtf8("progressBar"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(progressBar->sizePolicy().hasHeightForWidth());
+        progressBar->setSizePolicy(sizePolicy1);
+        progressBar->setMinimumSize(QSize(200, 0));
+        progressBar->setValue(0);
+
+        gridLayout_3->addWidget(progressBar, 2, 0, 1, 1);
+
+        pushButton_4 = new QPushButton(centralWidget);
+        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
+        pushButton_4->setMaximumSize(QSize(100, 16777215));
+
+        gridLayout_3->addWidget(pushButton_4, 2, 2, 1, 1);
+
+        pushButton_2 = new QPushButton(centralWidget);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        sizePolicy1.setHeightForWidth(pushButton_2->sizePolicy().hasHeightForWidth());
+        pushButton_2->setSizePolicy(sizePolicy1);
+
+        gridLayout_3->addWidget(pushButton_2, 2, 3, 1, 1);
+
+        pushButton_3 = new QPushButton(centralWidget);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+        sizePolicy1.setHeightForWidth(pushButton_3->sizePolicy().hasHeightForWidth());
+        pushButton_3->setSizePolicy(sizePolicy1);
+
+        gridLayout_3->addWidget(pushButton_3, 2, 4, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_3->addItem(horizontalSpacer, 2, 1, 1, 1);
+
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         tabWidget->setMinimumSize(QSize(735, 464));
@@ -289,9 +353,9 @@ public:
         treeWidget = new QTreeWidget(Edit_tab);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
         treeWidget->setGeometry(QRect(11, 40, 711, 391));
-        QFont font;
-        font.setPointSize(8);
-        treeWidget->setFont(font);
+        QFont font1;
+        font1.setPointSize(8);
+        treeWidget->setFont(font1);
         treeWidget->setFrameShape(QFrame::StyledPanel);
         treeWidget->setFrameShadow(QFrame::Sunken);
         treeWidget->setAlternatingRowColors(true);
@@ -301,7 +365,8 @@ public:
         treeWidget->setAnimated(true);
         edit_img_pushButton = new QPushButton(Edit_tab);
         edit_img_pushButton->setObjectName(QString::fromUtf8("edit_img_pushButton"));
-        edit_img_pushButton->setGeometry(QRect(640, 10, 75, 23));
+        edit_img_pushButton->setGeometry(QRect(640, 10, 90, 23));
+        edit_img_pushButton->setMinimumSize(QSize(90, 0));
         tabWidget->addTab(Edit_tab, QString());
         settings_tab = new QWidget();
         settings_tab->setObjectName(QString::fromUtf8("settings_tab"));
@@ -348,7 +413,7 @@ public:
 
         layoutWidget1 = new QWidget(settings_tab);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(10, 170, 312, 34));
+        layoutWidget1->setGeometry(QRect(10, 170, 360, 34));
         formLayout_3 = new QFormLayout(layoutWidget1);
         formLayout_3->setSpacing(6);
         formLayout_3->setMargin(11);
@@ -368,7 +433,7 @@ public:
 
         layoutWidget2 = new QWidget(settings_tab);
         layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(10, 10, 150, 54));
+        layoutWidget2->setGeometry(QRect(10, 10, 151, 54));
         verticalLayout = new QVBoxLayout(layoutWidget2);
         verticalLayout->setSpacing(6);
         verticalLayout->setMargin(11);
@@ -385,71 +450,36 @@ public:
 
         verticalLayout->addWidget(overwrite_checkbox);
 
+        save_pushButton = new QPushButton(settings_tab);
+        save_pushButton->setObjectName(QString::fromUtf8("save_pushButton"));
+        save_pushButton->setGeometry(QRect(10, 400, 101, 28));
+        layoutWidget3 = new QWidget(settings_tab);
+        layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
+        layoutWidget3->setGeometry(QRect(10, 210, 167, 29));
+        formLayout_7 = new QFormLayout(layoutWidget3);
+        formLayout_7->setSpacing(6);
+        formLayout_7->setMargin(11);
+        formLayout_7->setObjectName(QString::fromUtf8("formLayout_7"));
+        formLayout_7->setContentsMargins(0, 0, 0, 0);
+        label_7 = new QLabel(layoutWidget3);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+
+        formLayout_7->setWidget(0, QFormLayout::LabelRole, label_7);
+
+        startupTab_combobox = new QComboBox(layoutWidget3);
+        startupTab_combobox->setObjectName(QString::fromUtf8("startupTab_combobox"));
+        startupTab_combobox->setMinimumSize(QSize(107, 0));
+
+        formLayout_7->setWidget(0, QFormLayout::FieldRole, startupTab_combobox);
+
         tabWidget->addTab(settings_tab, QString());
 
         gridLayout_3->addWidget(tabWidget, 0, 0, 1, 5);
 
-        plainTextEdit = new QPlainTextEdit(centralWidget);
-        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(plainTextEdit->sizePolicy().hasHeightForWidth());
-        plainTextEdit->setSizePolicy(sizePolicy);
-        plainTextEdit->setMinimumSize(QSize(0, 199));
-        plainTextEdit->setSizeIncrement(QSize(1, 1));
-        QFont font1;
-        font1.setFamily(QString::fromUtf8("Monospace"));
-        font1.setPointSize(8);
-        plainTextEdit->setFont(font1);
-        plainTextEdit->viewport()->setProperty("cursor", QVariant(QCursor(Qt::ArrowCursor)));
-        plainTextEdit->setFrameShadow(QFrame::Sunken);
-        plainTextEdit->setLineWidth(1);
-        plainTextEdit->setReadOnly(true);
-        plainTextEdit->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
-
-        gridLayout_3->addWidget(plainTextEdit, 1, 0, 1, 5);
-
-        progressBar = new QProgressBar(centralWidget);
-        progressBar->setObjectName(QString::fromUtf8("progressBar"));
-        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(progressBar->sizePolicy().hasHeightForWidth());
-        progressBar->setSizePolicy(sizePolicy1);
-        progressBar->setMinimumSize(QSize(200, 0));
-        progressBar->setValue(0);
-
-        gridLayout_3->addWidget(progressBar, 2, 0, 1, 1);
-
-        pushButton_4 = new QPushButton(centralWidget);
-        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
-        pushButton_4->setMaximumSize(QSize(100, 16777215));
-
-        gridLayout_3->addWidget(pushButton_4, 2, 2, 1, 1);
-
-        pushButton_2 = new QPushButton(centralWidget);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        sizePolicy1.setHeightForWidth(pushButton_2->sizePolicy().hasHeightForWidth());
-        pushButton_2->setSizePolicy(sizePolicy1);
-
-        gridLayout_3->addWidget(pushButton_2, 2, 3, 1, 1);
-
-        pushButton_3 = new QPushButton(centralWidget);
-        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-        sizePolicy1.setHeightForWidth(pushButton_3->sizePolicy().hasHeightForWidth());
-        pushButton_3->setSizePolicy(sizePolicy1);
-
-        gridLayout_3->addWidget(pushButton_3, 2, 4, 1, 1);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_3->addItem(horizontalSpacer, 2, 1, 1, 1);
-
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 759, 25));
+        menuBar->setGeometry(QRect(0, 0, 753, 25));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -460,7 +490,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
         comboBox->setCurrentIndex(2);
         verbose_combobox->setCurrentIndex(5);
         logging_combobox->setCurrentIndex(0);
@@ -473,13 +503,28 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
+        plainTextEdit->setToolTip(QApplication::translate("MainWindow", "Useful information", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        pushButton_4->setToolTip(QApplication::translate("MainWindow", "Tell wit to create a image using the selected parameters", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        pushButton_4->setText(QApplication::translate("MainWindow", "Do It", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushButton_2->setToolTip(QApplication::translate("MainWindow", "Clear the text", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        pushButton_2->setText(QApplication::translate("MainWindow", "Clear", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushButton_3->setToolTip(QApplication::translate("MainWindow", "Copy the text in the output box", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        pushButton_3->setText(QApplication::translate("MainWindow", "Copy", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
         toolButton->setToolTip(QApplication::translate("MainWindow", "Enter the path to the files to be used to make the disc image", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton->setText(QApplication::translate("MainWindow", "Browse...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         lineEdit->setToolTip(QApplication::translate("MainWindow", "Enter the path to the files to be used to make the disc image", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
-        lineEdit->setText(QApplication::translate("MainWindow", "<input folder>", 0, QApplication::UnicodeUTF8));
+        lineEdit->setText(QApplication::translate("MainWindow", "<input>", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         toolButton_2->setToolTip(QApplication::translate("MainWindow", "Ente the output file path", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -487,7 +532,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         lineEdit_2->setToolTip(QApplication::translate("MainWindow", "Ente the output file path", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
-        lineEdit_2->setText(QApplication::translate("MainWindow", "/home/j/c/gui_fork/___TMPETP.wbfs", 0, QApplication::UnicodeUTF8));
+        lineEdit_2->setText(QApplication::translate("MainWindow", "<output>", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("MainWindow", "Input:", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("MainWindow", "Output:", 0, QApplication::UnicodeUTF8));
         comboBox->clear();
@@ -499,14 +544,14 @@ public:
          << QApplication::translate("MainWindow", "KOREA", 0, QApplication::UnicodeUTF8)
         );
 #ifndef QT_NO_TOOLTIP
-        comboBox->setToolTip(QApplication::translate("MainWindow", "Set the region used for the output image.  This is independant of the TID.  If auto is selected, wit will try to guess the region based on the TID.", 0, QApplication::UnicodeUTF8));
+        comboBox->setToolTip(QApplication::translate("MainWindow", "Set the region used for the output image.  This is independent of the TID.  If auto is selected, wit will try to guess the region based on the TID.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
         label->setToolTip(QApplication::translate("MainWindow", "What IOS should be used in the TMD", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         label->setText(QApplication::translate("MainWindow", "Game IOS", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        spinBox->setToolTip(QApplication::translate("MainWindow", "what IOS should be used in the TMD", 0, QApplication::UnicodeUTF8));
+        spinBox->setToolTip(QApplication::translate("MainWindow", "What IOS should be used in the TMD", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
         lineEdit_4->setToolTip(QApplication::translate("MainWindow", "Enter a new game name", 0, QApplication::UnicodeUTF8));
@@ -557,7 +602,7 @@ public:
         logging_combobox->clear();
         logging_combobox->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "Off", 0, QApplication::UnicodeUTF8)
-         << QApplication::translate("MainWindow", "Fst", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("MainWindow", "Disc", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("MainWindow", "Disc + Part", 0, QApplication::UnicodeUTF8)
         );
 #ifndef QT_NO_TOOLTIP
@@ -567,29 +612,22 @@ public:
 #ifndef QT_NO_TOOLTIP
         default_ios_spinbox->setToolTip(QApplication::translate("MainWindow", "Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
-        label_4->setText(QApplication::translate("MainWindow", "Default Path:", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("MainWindow", "Search Path:", 0, QApplication::UnicodeUTF8));
         lineEdit_default_path->setText(QApplication::translate("MainWindow", "/media", 0, QApplication::UnicodeUTF8));
         checkBox->setText(QApplication::translate("MainWindow", "Test Mode", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         overwrite_checkbox->setToolTip(QApplication::translate("MainWindow", "Tell wit to overwrite existing files", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         overwrite_checkbox->setText(QApplication::translate("MainWindow", "Overwrite Existing", 0, QApplication::UnicodeUTF8));
+        save_pushButton->setText(QApplication::translate("MainWindow", "Save Settings", 0, QApplication::UnicodeUTF8));
+        label_7->setText(QApplication::translate("MainWindow", "Start at:", 0, QApplication::UnicodeUTF8));
+        startupTab_combobox->clear();
+        startupTab_combobox->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "Compose", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("MainWindow", "Edit", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("MainWindow", "Settings", 0, QApplication::UnicodeUTF8)
+        );
         tabWidget->setTabText(tabWidget->indexOf(settings_tab), QApplication::translate("MainWindow", "Settings", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        plainTextEdit->setToolTip(QApplication::translate("MainWindow", "Useful information", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_TOOLTIP
-        pushButton_4->setToolTip(QApplication::translate("MainWindow", "Tell wit to create a image using the selected parameters", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-        pushButton_4->setText(QApplication::translate("MainWindow", "Do It", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        pushButton_2->setToolTip(QApplication::translate("MainWindow", "Clear the text", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-        pushButton_2->setText(QApplication::translate("MainWindow", "Clear", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        pushButton_3->setToolTip(QApplication::translate("MainWindow", "copy the text in the output box", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-        pushButton_3->setText(QApplication::translate("MainWindow", "Copy", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(MainWindow);
     } // retranslateUi
 

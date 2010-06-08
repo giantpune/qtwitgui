@@ -3,8 +3,8 @@
 void FileFolderDialog::accept()
 {
     QStringList files = selectedFiles();
-    if (files.isEmpty())
+    if ( files.isEmpty() )
 	return;
-    emit filesSelected(files);
+    emit filesSelected( files );
     QDialog::accept();
 }

@@ -55,41 +55,44 @@ private:
     QStringList replacePaths;
 
 
-    int region;
+    //int region;
     u8 tmdIOS;
     int witRunning;
     bool undoLastTextOperation;
     int numFstFiles;
-    int currentReadLine;
+    //int currentReadLine;
 
     char id[ 7 ];
     char name[ 0x40 ];
-    char regStr[ 5 ];
+    //char regStr[ 5 ];
     bool alreadyGotTitle;
 
     void ParseFileList();
     void AddItemToTree( const QString s );
     int findItem(  const QString s, QTreeWidgetItem *parent, int startIndex );
     int childCount( QTreeWidgetItem * parent );
-    QTreeWidgetItem *childAt(QTreeWidgetItem *parent, int index);
-    QTreeWidgetItem *createItem(const QString &text, QTreeWidgetItem *parent, int index);
+    QTreeWidgetItem *childAt( QTreeWidgetItem *parent, int index );
+    QTreeWidgetItem *createItem( const QString &text, QTreeWidgetItem *parent, int index );
     QString ItemToFullPath( QTreeWidgetItem * item );
+    bool SaveSettings();
+    bool LoadSettings();
 
 
 
 private slots:
 
+    void on_save_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_edit_img_pushButton_clicked();
     void on_lineEdit_editingFinished();
     void on_checkBox_7_clicked();
     void on_checkBox_6_clicked();
-    void on_comboBox_currentIndexChanged(int index);
+    //void on_comboBox_currentIndexChanged(int index);
     void on_toolButton_2_clicked();
     void on_pushButton_4_clicked();
     void on_toolButton_clicked();
     void on_pushButton_3_clicked();
-    void UpdateRegStr( int i );
+    //void UpdateRegStr( int i );
     void UpdateOptions();
     void ReadyReadStdOutSlot();
     void ProcessFinishedSlot( int, QProcess::ExitStatus );
