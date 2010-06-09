@@ -32,6 +32,8 @@
 #include <QAction>
 #include <qpushbutton.h>
 
+#include "wiitreethread.h"
+
 
 typedef char			s8;
 typedef short			s16;
@@ -84,28 +86,18 @@ private:
     QAction *replaceAct;
     QStringList extractPaths;
     QStringList replacePaths;
+    WiiTreeThread *wiithread;
 
 
-    //int region;
     u8 tmdIOS;
-    //int witRunning;
     bool undoLastTextOperation;
-    int numFstFiles;
     u8 witJob;
-    //int currentReadLine;
 
     char id[ 7 ];
     char name[ 0x40 ];
-    //char regStr[ 5 ];
-    //bool alreadyGotTitle;
 
-    void ParseFileList();
+    //void ParseFileList();
     void DoIlist();
-    void AddItemToTree( const QString s );
-    int findItem(  const QString s, QTreeWidgetItem *parent, int startIndex );
-    int childCount( QTreeWidgetItem * parent );
-    QTreeWidgetItem *childAt( QTreeWidgetItem *parent, int index );
-    QTreeWidgetItem *createItem( const QString &text, QTreeWidgetItem *parent, int index );
     QString ItemToFullPath( QTreeWidgetItem * item );
     bool SaveSettings();
     bool LoadSettings();
@@ -121,17 +113,20 @@ private slots:
     void on_lineEdit_editingFinished();
     void on_checkBox_7_clicked();
     void on_checkBox_6_clicked();
-    //void on_comboBox_currentIndexChanged(int index);
     void on_toolButton_2_clicked();
     void on_pushButton_4_clicked();
     void on_toolButton_clicked();
     void on_pushButton_3_clicked();
-    //void UpdateRegStr( int i );
     void UpdateOptions();
     void ReadyReadStdOutSlot();
     void ProcessFinishedSlot( int, QProcess::ExitStatus );
     void ExtractSlot();
     void ReplaceSlot();
+
+    // get output from a thread used to make a filetree
+    void UpdateProgressFromThread( int );
+    void ThreadIsDoneRunning( QTreeWidgetItem * );
+
 
 public slots:
     void ShowMessage( const QString & );
