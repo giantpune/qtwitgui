@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Tue Jun 8 23:59:21 2010
+** Created: Wed Jun 9 02:24:36 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -531,7 +531,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
         comboBox->setCurrentIndex(2);
         verbose_combobox->setCurrentIndex(5);
         logging_combobox->setCurrentIndex(0);

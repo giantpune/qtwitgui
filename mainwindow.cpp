@@ -34,6 +34,7 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
+
 #define SAVEFILENAME "QtWitGui.ini"
 
 //this syntax apparently works for all platforms
@@ -62,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     connect( witProcess, SIGNAL( readyReadStandardOutput() ), this, SLOT( ReadyReadStdOutSlot() ) );
     connect( witProcess, SIGNAL( finished( int, QProcess::ExitStatus ) ), this, SLOT( ProcessFinishedSlot(  int, QProcess::ExitStatus ) ) );
     connect( this, SIGNAL( KillProcess() ), witProcess, SLOT( kill() ) );
+    wiithread = new WiiTreeThread;
 
     //get the version of wit and append it to the titlebar
     QString str = WIT;
@@ -81,6 +83,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
 	//make sure the name column is wide enough
     ui->treeWidget->header()->resizeSection( 0, 300 );
+
+	//connect the wiitreethread to this main window so we can read the output
+    connect( wiithread , SIGNAL( SendProgress( int ) ), this, SLOT( UpdateProgressFromThread( int ) ) );
+    connect( wiithread , SIGNAL( SendDone( QTreeWidgetItem * ) ), this, SLOT( ThreadIsDoneRunning( QTreeWidgetItem * ) ) );
 
 	//create the actions and stuff for the context menu
     extractAct = new QAction( tr( "Extract" ), this );
@@ -524,8 +530,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     {
 	case witIlist:
 	    ui->statusBar->showMessage( tr( "Got FST list from wit, parsing it into a pretty file tree..." ) );
-	    ParseFileList();
-	    witJob = witNoJob;
+	    wiithread->DoCommand( filepaths, ui->checkBox_hiddenFiles->isChecked(), keyIcon, groupIcon );
 	    break;
 
 	case witDump:
@@ -658,147 +663,19 @@ void MainWindow::on_edit_img_pushButton_clicked()
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
 }
 
-//process the long string of fst files to the tree view
-void MainWindow::ParseFileList()
+//update the progressbar based on output from the tree-creating thread
+void MainWindow::UpdateProgressFromThread( int i )
 {
-//    qDebug() << "ParseFileList()";
-    if( filepaths.isEmpty() )return;
-    //split the output from wit at "\n" and remove spaces and shit
-    QStringList list = filepaths.split("\n", QString::SkipEmptyParts );
-
-    //remove the non-file strings
-    for ( int i = 0; i < 3 ; i++ )
-    {
-	list.removeFirst();
-    }
-
-    //add each full path to the free view
-    for ( int i = 0; i < list.size(); i++ )
-    {
-	if( ui->checkBox_hiddenFiles->isChecked() &&
-	    list[ i ].contains( "/.svn/" ) ) continue;
-	if( !list[ i ].isEmpty() )
-	{
-	    AddItemToTree( list[ i ] );
-	    //update the progressbar
-	    ui->progressBar->setValue( (int)( ( (float)( i + 1 ) / (float)list.size() ) * (float)100 ) );
-	}
-    }
-    ui->progressBar->setValue( 100 );
+    ui->progressBar->setValue( i );
 }
 
-//adds an item to the tree view given a full path
-void MainWindow::AddItemToTree( const QString s )
+//triggered when the tree-creating thread is done.  it passes a root item filled with the directory structure for the game
+void MainWindow::ThreadIsDoneRunning( QTreeWidgetItem *i )
 {
-    //qDebug() << "AddItemToTree( " << s << " )";
-    QString path = s;
-    path = path.trimmed();
-    QString sizeText;
-
-    //get the size from the start of the string
-    while( !path.startsWith( " " ) )
-    {
-	sizeText += path.at( 0 );
-	path.remove( 0, 1 );
-    }
-    path.remove( 0, 1 );
-
-    int index = 0;
-
-    QTreeWidgetItem *parent = ui->treeWidget->invisibleRootItem();
-
-    // start at the beginning of the full path and add each folder to the tree if it needs to be added
-    // change the pointer to the new folder and continue down the string till we get to the end
-    while( !path.isEmpty() )
-    {
-	QString string;
-	bool isFolder = false;
-
-	while( !path.startsWith( "/" ) && !path.isEmpty() )
-	{
-	    string += path.at( 0 );
-	    path.remove( 0, 1 );
-	}
-	if( path.startsWith( "/" ) )
-	{
-	    isFolder = true;
-	    path.remove( 0, 1 );
-	}
-
-	//qDebug() << path;
-
-	if( findItem( string, parent, index ) == -1 )
-	{
-	    parent = createItem( string, parent, childCount( parent ) );
-	}
-	else
-	{
-	    parent = childAt( parent, findItem( string, parent, index ) );
-	}
-
-	//set the icon for this item
-	if( isFolder )
-	    parent->setIcon(0, groupIcon);
-	else
-	{
-	    parent->setIcon( 0, keyIcon );
-	    parent->setText( 2, sizeText );
-	}
-    }
-}
-
-//returns the index of the child named "s" of the given parent or -1 if the child is not found
-int MainWindow::findItem( const QString s, QTreeWidgetItem *parent, int startIndex )
-{
-//    qDebug() << "findItem( " << s << " )";
-    int ret = -1;
-    for( int i = startIndex; i < childCount( parent ); i++ )
-    {
-	if ( childAt( parent, i )->text( 0 ) == s )
-	{
-	    ret = i;
-	    break;
-	}
-    }
- //   qDebug() << " = " << ret;
-    return ret;
-}
-
-//returns how many child items an item has ( non-recursive )
-int MainWindow::childCount( QTreeWidgetItem *parent )
-{
-    if ( parent )
-	return parent->childCount();
-    else
-	return ui->treeWidget->topLevelItemCount();
-}
-
-//returns a reference to a item at index of given parent
-QTreeWidgetItem *MainWindow::childAt( QTreeWidgetItem *parent, int index )
-{
-    if ( parent )
-	return parent->child( index );
-    else
-	return ui->treeWidget->topLevelItem( index );
-}
-
-//add a new item to the tree view as a chald of the given parent
-QTreeWidgetItem *MainWindow::createItem(const QString &text, QTreeWidgetItem *parent, int index)
-{
-    //qDebug() << "adding " << text << " index " << index;
-    QTreeWidgetItem *after = 0;
-    if (index != 0)
-	after = childAt(parent, index - 1);
-
-    QTreeWidgetItem *item;
-    if (parent)
-	item = new QTreeWidgetItem( parent , after);
-    else
-	item = new QTreeWidgetItem( ui->treeWidget , after);
-
-    item->setText(0, text);
-    //item->setFlags(item->flags() | Qt::ItemIsEditable);
-    return item;
+    QList<QTreeWidgetItem *> rootlist = i->takeChildren();
+    ui->treeWidget->addTopLevelItems( rootlist );
+    witJob = witNoJob;
+    ui->statusBar->showMessage( tr( "Ready" ) );
 }
 
 //this is triggered on right-click -> extract
@@ -998,7 +875,7 @@ void MainWindow::on_save_pushButton_clicked()
     //qDebug() << "settings saved";
 }
 
-
+//get the size of text strings used in different parts of the GUI and resize gui elements based on that size
 void MainWindow::ResizeGuiToLanguage()
 {
     int pad = 40;
