@@ -161,7 +161,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -417,7 +417,7 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>250</width>
+              <width>220</width>
               <height>0</height>
              </size>
             </property>
@@ -436,7 +436,7 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>250</width>
+              <width>220</width>
               <height>0</height>
              </size>
             </property>
@@ -530,6 +530,9 @@
             <pointsize>8</pointsize>
            </font>
           </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -541,6 +544,9 @@
           </property>
           <property name="selectionMode">
            <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="verticalScrollMode">
+           <enum>QAbstractItemView::ScrollPerItem</enum>
           </property>
           <property name="indentation">
            <number>20</number>
@@ -591,9 +597,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
-          <width>361</width>
-          <height>96</height>
+          <y>100</y>
+          <width>391</width>
+          <height>161</height>
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout">
@@ -696,33 +702,24 @@
            </property>
           </widget>
          </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>170</y>
-          <width>360</width>
-          <height>34</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout_3">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
+         <item row="3" column="0">
+          <widget class="QPushButton" name="pushButton_settings_searchPath">
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Search Path:</string>
+            <string>Search Path...</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="3" column="1">
           <widget class="QLineEdit" name="lineEdit_default_path">
            <property name="minimumSize">
             <size>
-             <width>220</width>
+             <width>224</width>
              <height>0</height>
             </size>
            </property>
@@ -731,77 +728,14 @@
            </property>
           </widget>
          </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>151</width>
-          <height>54</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QCheckBox" name="checkBox">
-           <property name="text">
-            <string>Test Mode</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="overwrite_checkbox">
-           <property name="toolTip">
-            <string>Tell wit to overwrite existing files</string>
-           </property>
-           <property name="text">
-            <string>Overwrite Existing</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QPushButton" name="save_pushButton">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>400</y>
-          <width>115</width>
-          <height>28</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>115</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Save Settings</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>210</y>
-          <width>221</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout_7">
-         <item row="0" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>Start at:</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="4" column="1">
           <widget class="QComboBox" name="startupTab_combobox">
            <property name="minimumSize">
             <size>
@@ -828,23 +762,68 @@
          </item>
         </layout>
        </widget>
-       <widget class="QCheckBox" name="checkBox_hiddenFiles">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>250</y>
-          <width>300</width>
-          <height>22</height>
+          <y>10</y>
+          <width>202</width>
+          <height>80</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>Skip &quot;.svn&quot; files in tree view to speed up parsing</string>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QCheckBox" name="checkBox">
+           <property name="text">
+            <string>Test Mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="overwrite_checkbox">
+           <property name="toolTip">
+            <string>Tell wit to overwrite existing files</string>
+           </property>
+           <property name="text">
+            <string>Overwrite Existing</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_hiddenFiles">
+           <property name="toolTip">
+            <string>Skip &quot;.svn&quot; files in tree view to speed up parsing</string>
+           </property>
+           <property name="text">
+            <string>Ignore svn Files in Filetree</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="save_pushButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>400</y>
+          <width>115</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>115</width>
+          <height>0</height>
+         </size>
         </property>
         <property name="text">
-         <string>Ignore svn Files in Filetree</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Save Settings</string>
         </property>
        </widget>
       </widget>

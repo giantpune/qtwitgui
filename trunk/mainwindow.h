@@ -107,6 +107,7 @@ private:
 
 private slots:
 
+    void on_pushButton_settings_searchPath_clicked();
     void on_save_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_edit_img_pushButton_clicked();

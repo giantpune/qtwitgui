@@ -13,7 +13,8 @@ HEADERS += mainwindow.h \
     wiitreethread.h
 FORMS += mainwindow.ui
 TRANSLATIONS = language/witGuiTranslationExample.ts \
-    language/witGuiTranslation_nl_NL.ts
+    language/witGuiTranslation_nl_NL.ts \
+    language/witGuiTranslation_fr_FR.ts
 VERSION = r$(shell svnversion .) # get svn revision
 VERSTR = '\\"$${VERSION}\\"' # place quotes around the version string
 DEFINES += SVNVER=\"$${VERSTR}\" # create a VER macro containing the version string

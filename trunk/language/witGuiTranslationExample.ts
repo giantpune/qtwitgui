@@ -206,10 +206,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search Path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>/media</source>
         <translation type="unfinished"></translation>
     </message>
@@ -320,6 +316,14 @@ Wait for the current job to finish.</source>
     </message>
     <message>
         <source>Edit Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search Path...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
