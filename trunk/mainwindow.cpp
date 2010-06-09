@@ -569,6 +569,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	case witGetVersion:
 	    //now merge the stdout and stderr into 1 channel for easier reading while actually doing work
 	    witProcess->setReadChannelMode( QProcess::MergedChannels );
+	    ui->statusBar->showMessage( tr( "Ready" ) );
 	    witJob = witNoJob;
 	    break;
 
@@ -578,7 +579,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 
     }
 
-    ui->statusBar->showMessage( tr( "Ready" ) );
+
     ui->tabWidget->setDisabled( false );
 
 

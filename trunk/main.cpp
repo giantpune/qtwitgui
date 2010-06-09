@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     qDebug() << "\nqm files can be generated from the example .ts file using qt linguist\n";
 
     //load up a translation if it exists
-    translator.load( QString( "witGuiLang_" ) + QLocale::system().name() );
+    translator.load( QString( "language/witGuiLang_" ) + QLocale::system().name() );
     a.installTranslator( &translator );
 
     MainWindow w;
