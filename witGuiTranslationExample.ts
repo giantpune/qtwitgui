@@ -134,10 +134,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit Emage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -320,6 +316,10 @@ Wait for the current job to finish.</source>
     </message>
     <message>
         <source>Enter the output file path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Image</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
