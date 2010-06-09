@@ -1001,7 +1001,7 @@ void MainWindow::on_save_pushButton_clicked()
 
 void MainWindow::ResizeGuiToLanguage()
 {
-    int pad = 20;
+    int pad = 40;
     int size = 0;
     QFontMetrics fm( fontMetrics() );
     ui->edit_img_pushButton->setMinimumWidth( MAX( ui->edit_img_pushButton->minimumWidth(), fm.width( ui->edit_img_pushButton->text() ) + pad ) );

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Tue Jun 8 12:34:05 2010
+** Created: Tue Jun 8 23:59:21 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -68,17 +68,15 @@ public:
     QLabel *label;
     QSpinBox *spinBox;
     QFrame *line_2;
-    QVBoxLayout *verticalLayout_4;
-    QFormLayout *formLayout_4;
-    QLineEdit *lineEdit_4;
-    QCheckBox *checkBox_6;
-    QFormLayout *formLayout_5;
-    QLineEdit *lineEdit_3;
-    QCheckBox *checkBox_7;
     QGridLayout *gridLayout;
     QCheckBox *checkBox_2;
     QCheckBox *checkBox_3;
     QCheckBox *checkBox_4;
+    QGridLayout *gridLayout_6;
+    QCheckBox *checkBox_6;
+    QCheckBox *checkBox_7;
+    QLineEdit *lineEdit_4;
+    QLineEdit *lineEdit_3;
     QWidget *Edit_tab;
     QGridLayout *gridLayout_4;
     QVBoxLayout *verticalLayout_3;
@@ -148,7 +146,7 @@ public:
         plainTextEdit->setReadOnly(true);
         plainTextEdit->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
-        gridLayout_3->addWidget(plainTextEdit, 1, 0, 1, 5);
+        gridLayout_3->addWidget(plainTextEdit, 6, 0, 1, 5);
 
         progressBar = new QProgressBar(centralWidget);
         progressBar->setObjectName(QString::fromUtf8("progressBar"));
@@ -160,31 +158,31 @@ public:
         progressBar->setMinimumSize(QSize(200, 0));
         progressBar->setValue(0);
 
-        gridLayout_3->addWidget(progressBar, 2, 0, 1, 1);
+        gridLayout_3->addWidget(progressBar, 7, 0, 1, 1);
 
         pushButton_4 = new QPushButton(centralWidget);
         pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
         pushButton_4->setMaximumSize(QSize(100, 16777215));
 
-        gridLayout_3->addWidget(pushButton_4, 2, 2, 1, 1);
+        gridLayout_3->addWidget(pushButton_4, 7, 2, 1, 1);
 
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         sizePolicy1.setHeightForWidth(pushButton_2->sizePolicy().hasHeightForWidth());
         pushButton_2->setSizePolicy(sizePolicy1);
 
-        gridLayout_3->addWidget(pushButton_2, 2, 3, 1, 1);
+        gridLayout_3->addWidget(pushButton_2, 7, 3, 1, 1);
 
         pushButton_3 = new QPushButton(centralWidget);
         pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
         sizePolicy1.setHeightForWidth(pushButton_3->sizePolicy().hasHeightForWidth());
         pushButton_3->setSizePolicy(sizePolicy1);
 
-        gridLayout_3->addWidget(pushButton_3, 2, 4, 1, 1);
+        gridLayout_3->addWidget(pushButton_3, 7, 4, 1, 1);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout_3->addItem(horizontalSpacer, 2, 1, 1, 1);
+        gridLayout_3->addItem(horizontalSpacer, 7, 1, 1, 1);
 
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
@@ -244,7 +242,7 @@ public:
         line_3->setFrameShape(QFrame::VLine);
         line_3->setFrameShadow(QFrame::Sunken);
 
-        gridLayout_2->addWidget(line_3, 0, 1, 2, 1);
+        gridLayout_2->addWidget(line_3, 0, 2, 2, 1);
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(6);
@@ -274,59 +272,14 @@ public:
         verticalLayout_2->addLayout(formLayout_6);
 
 
-        gridLayout_2->addLayout(verticalLayout_2, 0, 2, 2, 1);
+        gridLayout_2->addLayout(verticalLayout_2, 0, 3, 2, 1);
 
         line_2 = new QFrame(tab);
         line_2->setObjectName(QString::fromUtf8("line_2"));
         line_2->setFrameShape(QFrame::HLine);
         line_2->setFrameShadow(QFrame::Sunken);
 
-        gridLayout_2->addWidget(line_2, 2, 0, 1, 3);
-
-        verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setSpacing(6);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
-        verticalLayout_4->setSizeConstraint(QLayout::SetDefaultConstraint);
-        formLayout_4 = new QFormLayout();
-        formLayout_4->setSpacing(6);
-        formLayout_4->setObjectName(QString::fromUtf8("formLayout_4"));
-        lineEdit_4 = new QLineEdit(tab);
-        lineEdit_4->setObjectName(QString::fromUtf8("lineEdit_4"));
-        lineEdit_4->setEnabled(false);
-        lineEdit_4->setMinimumSize(QSize(250, 0));
-
-        formLayout_4->setWidget(0, QFormLayout::LabelRole, lineEdit_4);
-
-        checkBox_6 = new QCheckBox(tab);
-        checkBox_6->setObjectName(QString::fromUtf8("checkBox_6"));
-
-        formLayout_4->setWidget(0, QFormLayout::FieldRole, checkBox_6);
-
-
-        verticalLayout_4->addLayout(formLayout_4);
-
-        formLayout_5 = new QFormLayout();
-        formLayout_5->setSpacing(6);
-        formLayout_5->setObjectName(QString::fromUtf8("formLayout_5"));
-        lineEdit_3 = new QLineEdit(tab);
-        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
-        lineEdit_3->setEnabled(false);
-        lineEdit_3->setMinimumSize(QSize(250, 0));
-        lineEdit_3->setMaxLength(6);
-        lineEdit_3->setDragEnabled(true);
-
-        formLayout_5->setWidget(0, QFormLayout::LabelRole, lineEdit_3);
-
-        checkBox_7 = new QCheckBox(tab);
-        checkBox_7->setObjectName(QString::fromUtf8("checkBox_7"));
-
-        formLayout_5->setWidget(0, QFormLayout::FieldRole, checkBox_7);
-
-
-        verticalLayout_4->addLayout(formLayout_5);
-
-
-        gridLayout_2->addLayout(verticalLayout_4, 3, 0, 1, 1);
+        gridLayout_2->addWidget(line_2, 2, 0, 1, 4);
 
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
@@ -354,7 +307,39 @@ public:
         gridLayout->addWidget(checkBox_4, 1, 1, 1, 1);
 
 
-        gridLayout_2->addLayout(gridLayout, 3, 1, 1, 2);
+        gridLayout_2->addLayout(gridLayout, 3, 2, 1, 2);
+
+        gridLayout_6 = new QGridLayout();
+        gridLayout_6->setSpacing(6);
+        gridLayout_6->setObjectName(QString::fromUtf8("gridLayout_6"));
+        checkBox_6 = new QCheckBox(tab);
+        checkBox_6->setObjectName(QString::fromUtf8("checkBox_6"));
+
+        gridLayout_6->addWidget(checkBox_6, 0, 1, 1, 1);
+
+        checkBox_7 = new QCheckBox(tab);
+        checkBox_7->setObjectName(QString::fromUtf8("checkBox_7"));
+
+        gridLayout_6->addWidget(checkBox_7, 1, 1, 1, 1);
+
+        lineEdit_4 = new QLineEdit(tab);
+        lineEdit_4->setObjectName(QString::fromUtf8("lineEdit_4"));
+        lineEdit_4->setEnabled(false);
+        lineEdit_4->setMinimumSize(QSize(250, 0));
+
+        gridLayout_6->addWidget(lineEdit_4, 0, 0, 1, 1);
+
+        lineEdit_3 = new QLineEdit(tab);
+        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
+        lineEdit_3->setEnabled(false);
+        lineEdit_3->setMinimumSize(QSize(250, 0));
+        lineEdit_3->setMaxLength(6);
+        lineEdit_3->setDragEnabled(true);
+
+        gridLayout_6->addWidget(lineEdit_3, 1, 0, 1, 1);
+
+
+        gridLayout_2->addLayout(gridLayout_6, 3, 0, 1, 1);
 
         tabWidget->addTab(tab, QString());
         Edit_tab = new QWidget();
@@ -546,7 +531,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
         comboBox->setCurrentIndex(2);
         verbose_combobox->setCurrentIndex(5);
         logging_combobox->setCurrentIndex(0);
@@ -610,22 +595,6 @@ public:
         spinBox->setToolTip(QApplication::translate("MainWindow", "What IOS should be used in the TMD", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        lineEdit_4->setToolTip(QApplication::translate("MainWindow", "Enter a new game name", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-        lineEdit_4->setText(QApplication::translate("MainWindow", "<Game Name>", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        checkBox_6->setToolTip(QApplication::translate("MainWindow", "Do you want to change the title of the game?", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-        checkBox_6->setText(QApplication::translate("MainWindow", "Update Title", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        lineEdit_3->setToolTip(QApplication::translate("MainWindow", "Enter a new TID ( 6 characters )", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-        lineEdit_3->setText(QApplication::translate("MainWindow", "<ID>", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        checkBox_7->setToolTip(QApplication::translate("MainWindow", "Do you want to change the TID of the game?", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-        checkBox_7->setText(QApplication::translate("MainWindow", "Update ID", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
         checkBox_2->setToolTip(QApplication::translate("MainWindow", "Apply title & TID changes to the disc header", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         checkBox_2->setText(QApplication::translate("MainWindow", "Disc Hdr", 0, QApplication::UnicodeUTF8));
@@ -637,6 +606,22 @@ public:
         checkBox_4->setToolTip(QApplication::translate("MainWindow", "Apply the new TID to the TMD & ticket", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         checkBox_4->setText(QApplication::translate("MainWindow", "Tmd / Ticket", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        checkBox_6->setToolTip(QApplication::translate("MainWindow", "Do you want to change the title of the game?", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        checkBox_6->setText(QApplication::translate("MainWindow", "Update Title", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        checkBox_7->setToolTip(QApplication::translate("MainWindow", "Do you want to change the TID of the game?", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        checkBox_7->setText(QApplication::translate("MainWindow", "Update ID", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        lineEdit_4->setToolTip(QApplication::translate("MainWindow", "Enter a new game name", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        lineEdit_4->setText(QApplication::translate("MainWindow", "<Game Name>", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        lineEdit_3->setToolTip(QApplication::translate("MainWindow", "Enter a new TID ( 6 characters )", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        lineEdit_3->setText(QApplication::translate("MainWindow", "<ID>", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Compose Image", 0, QApplication::UnicodeUTF8));
         label_edit_id->setText(QString());
         label_edit_region->setText(QString());
@@ -646,7 +631,7 @@ public:
         ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "Size", 0, QApplication::UnicodeUTF8));
         ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "Offset", 0, QApplication::UnicodeUTF8));
         ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Name", 0, QApplication::UnicodeUTF8));
-        tabWidget->setTabText(tabWidget->indexOf(Edit_tab), QApplication::translate("MainWindow", "Edit Emage", 0, QApplication::UnicodeUTF8));
+        tabWidget->setTabText(tabWidget->indexOf(Edit_tab), QApplication::translate("MainWindow", "Edit Image", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("MainWindow", "Text output:", 0, QApplication::UnicodeUTF8));
         verbose_combobox->clear();
         verbose_combobox->insertItems(0, QStringList()
