@@ -4,30 +4,30 @@
 
 == General ==
 
-* Wit path is ./wit.  You need wit in the same path as this program, as well as any dependencies for it ( like cygwin.dll ).
+  * Wit path is ./wit.  You need wit in the same path as this program, as well as any dependencies for it ( like cygwin.dll ).
 
-* This program works by getting input from the user, then building a list of commands and runs wit as a process and passes it those commands.
+  * This program works by getting input from the user, then building a list of commands and runs wit as a process and passes it those commands.
 
-* Then when wit sends output through stdout or stderr ( the stuff you usually see in the console ) this program reads it and interprets it into data to use in the GUI.  Due to this, changes in the formatting of the output text from wit can break this program easily.
+  * Then when wit sends output through stdout or stderr ( the stuff you usually see in the console ) this program reads it and interprets it into data to use in the GUI.  Due to this, changes in the formatting of the output text from wit can break this program easily.
 
-* Why not just incorporate code from wit into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
+  * Why not just incorporate code from wit into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
 
 == Tab 1 ( wit CP )==
 
-* This tab is designed for composing games from extracted files.  Enter a path into the first field.  Enter an output file in the second field.  Select any options you want and click "do it".
+  * This tab is designed for composing games from extracted files.  Enter a path into the first field.  Enter an output file in the second field.  Select any options you want and click "do it".
 
-* This tab should also work for converting & editing existing images, as it uses wit COPY.  It was designed around extracted files, though, so using a existing image as input is not fully functional in the gui.
+  * This tab should also work for converting & editing existing images, as it uses wit COPY.  It was designed around extracted files, though, so using a existing image as input is not fully functional in the gui.
 ----
 
 
 
 == Tab 2 ( file extract / replace ) ==
 
-* This tab is not what I would call "done" yet.  As it stands, this tab performs "wit ILIST-L" and then turns the output into a browse-able file tree.
+  * This tab is not what I would call "done" yet.  As it stands, this tab performs "wit ILIST-L" and then turns the output into a browse-able file tree.
 
-* You can select multiple files using shift & ctrl.  
+  * You can select multiple files using shift & ctrl.  
 
-* You can even right-click -> extract/replace.  But thats about as far as it goes.  Wit does not support those 2 actions yet, so I cannot go any farther with it. 
+  * You can even right-click -> extract/replace.  But thats about as far as it goes.  Wit does not support those 2 actions yet, so I cannot go any farther with it. 
 ----
 
 
@@ -35,11 +35,11 @@
 
 == Tab 3 ( general settings ) ==
 
-* As the name suggests, this is a place to select some settings.
+  * As the name suggests, this is a place to select some settings.
 
-* For descriptions for settings, hover the mouse over them.  Most should have tooltips.
+  * For descriptions for settings, hover the mouse over them.  Most should have tooltips.
 
-* Clicking the "save settings" button writes a ini file in the same path that this program is running.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
+  * Clicking the "save settings" button writes a ini file in the same path that this program is running.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
 ----
 
 
@@ -48,23 +48,23 @@
 
 == Compiling ==
 
-* Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  At the very least, you need the libraries and the files in /bin/.  Qmake is used to generate makefiles.  
+  * Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  At the very least, you need the libraries and the files in /bin/.  Qmake is used to generate makefiles.  
 
-* I suggest getting the full SDK since its free anyways.  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
+  * I suggest getting the full SDK since its free anyways.  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
 ----
 
 
 == Creating and using language files ==
 
-* This program determines the appropriate language file to use by checking the environmental variable at startup.
+  * This program determines the appropriate language file to use by checking the environmental variable at startup.
 
-* I have added a bit of debug output viewable if running this program from a terminal to display the region variable.
+  * I have added a bit of debug output viewable if running this program from a terminal to display the region variable.
 
-* open the .ts file from this svn in Qt Linguist.  Select your country and language.  Select a string and enter new text for your language.  Then do file->release and save a .qm file.  
+  * open the .ts file from this svn in Qt Linguist.  Select your country and language.  Select a string and enter new text for your language.  Then do file->release and save a .qm file.  
 
-* Since I am using USA/english (en_US )  on my PC, the program will first try to load "witGuiLang_en_US.qm".  Failing that, it will try "witGuiLang_en.qm".
+  * Since I am using USA/english (en_US )  on my PC, the program will first try to load "witGuiLang_en_US.qm".  Failing that, it will try "witGuiLang_en.qm".
 
-* there is no guarantee that the .ts file will be up-to-date.  There may be strings used in the project that are not in the current .ts file.  This file in no automatically updated.  You can run "lupdate -verbose ./witGui.pro".  This will grab the current strings used in the program and slap them in the .ts file.  Then you can use that to create a .qm file.
+  * there is no guarantee that the .ts file will be up-to-date.  There may be strings used in the project that are not in the current .ts file.  This file in no automatically updated.  You can run "lupdate -verbose ./witGui.pro".  This will grab the current strings used in the program and slap them in the .ts file.  Then you can use that to create a .qm file.
 ----
 
 
@@ -73,21 +73,21 @@
 = Platform Specific Stuff =
 
 == linux ==
-* Everything should just work.
+  * Everything should just work.
 ----
 
 
 
 == windows ==
-* Wit path is ./wit .  The default build for Qt will put the executable & working directory in "./Debug or ./Release"  Either change that, or put all the necessary files in that folder.
+  * Wit path is ./wit .  The default build for Qt will put the executable & working directory in "./Debug or ./Release"  Either change that, or put all the necessary files in that folder.
 
-* It is possible to run this exe without having Qt installed, but it requires 2 .dll files:  QtCored4.dll and QtGuid4.dll.
+  * It is possible to run this exe without having Qt installed, but it requires 2 .dll files:  QtCored4.dll and QtGuid4.dll.
 ----
 
 
 
 
 == OS-X ==
-* Wit path is ./wit . The default run settings for Qt will run the program in a different directory.  You must either put wit in that folder, or change the setting
+  * Wit path is ./wit . The default run settings for Qt will run the program in a different directory.  You must either put wit in that folder, or change the setting
 
-* There are issues with the Qt dialog boxes.  There is not one dialog that lets you select files or directories.  Instead I have added a dialog into this project.  This dialog works fine on windows and linux, but doesn't appear to work on OS-X.  Until I figure out the issue, the "find file/folder" dialogs are quite useless, and paths must be manually entered.
+  * There are issues with the Qt dialog boxes.  There is not one dialog that lets you select files or directories.  Instead I have added a dialog into this project.  This dialog works fine on windows and linux, but doesn't appear to work on OS-X.  Until I figure out the issue, the "find file/folder" dialogs are quite useless, and paths must be manually entered.
