@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Wed Jun 9 02:24:36 2010
+** Created: Wed Jun 9 18:05:08 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -96,20 +96,16 @@ public:
     QComboBox *logging_combobox;
     QLabel *def_ios_lbl;
     QSpinBox *default_ios_spinbox;
-    QWidget *layoutWidget1;
-    QFormLayout *formLayout_3;
-    QLabel *label_4;
+    QPushButton *pushButton_settings_searchPath;
     QLineEdit *lineEdit_default_path;
-    QWidget *layoutWidget2;
+    QLabel *label_7;
+    QComboBox *startupTab_combobox;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout;
     QCheckBox *checkBox;
     QCheckBox *overwrite_checkbox;
-    QPushButton *save_pushButton;
-    QWidget *layoutWidget3;
-    QFormLayout *formLayout_7;
-    QLabel *label_7;
-    QComboBox *startupTab_combobox;
     QCheckBox *checkBox_hiddenFiles;
+    QPushButton *save_pushButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -325,14 +321,14 @@ public:
         lineEdit_4 = new QLineEdit(tab);
         lineEdit_4->setObjectName(QString::fromUtf8("lineEdit_4"));
         lineEdit_4->setEnabled(false);
-        lineEdit_4->setMinimumSize(QSize(250, 0));
+        lineEdit_4->setMinimumSize(QSize(220, 0));
 
         gridLayout_6->addWidget(lineEdit_4, 0, 0, 1, 1);
 
         lineEdit_3 = new QLineEdit(tab);
         lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
         lineEdit_3->setEnabled(false);
-        lineEdit_3->setMinimumSize(QSize(250, 0));
+        lineEdit_3->setMinimumSize(QSize(220, 0));
         lineEdit_3->setMaxLength(6);
         lineEdit_3->setDragEnabled(true);
 
@@ -389,10 +385,12 @@ public:
         QFont font1;
         font1.setPointSize(8);
         treeWidget->setFont(font1);
+        treeWidget->setAutoFillBackground(false);
         treeWidget->setFrameShape(QFrame::StyledPanel);
         treeWidget->setFrameShadow(QFrame::Sunken);
         treeWidget->setAlternatingRowColors(true);
         treeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        treeWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerItem);
         treeWidget->setIndentation(20);
         treeWidget->setSortingEnabled(true);
         treeWidget->setAnimated(true);
@@ -408,7 +406,7 @@ public:
         settings_tab->setObjectName(QString::fromUtf8("settings_tab"));
         layoutWidget = new QWidget(settings_tab);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 70, 361, 96));
+        layoutWidget->setGeometry(QRect(10, 100, 391, 161));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setMargin(11);
@@ -447,72 +445,58 @@ public:
 
         formLayout->setWidget(2, QFormLayout::FieldRole, default_ios_spinbox);
 
+        pushButton_settings_searchPath = new QPushButton(layoutWidget);
+        pushButton_settings_searchPath->setObjectName(QString::fromUtf8("pushButton_settings_searchPath"));
+        pushButton_settings_searchPath->setMinimumSize(QSize(75, 0));
+
+        formLayout->setWidget(3, QFormLayout::LabelRole, pushButton_settings_searchPath);
+
+        lineEdit_default_path = new QLineEdit(layoutWidget);
+        lineEdit_default_path->setObjectName(QString::fromUtf8("lineEdit_default_path"));
+        lineEdit_default_path->setMinimumSize(QSize(224, 0));
+
+        formLayout->setWidget(3, QFormLayout::FieldRole, lineEdit_default_path);
+
+        label_7 = new QLabel(layoutWidget);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+
+        formLayout->setWidget(4, QFormLayout::LabelRole, label_7);
+
+        startupTab_combobox = new QComboBox(layoutWidget);
+        startupTab_combobox->setObjectName(QString::fromUtf8("startupTab_combobox"));
+        startupTab_combobox->setMinimumSize(QSize(107, 0));
+
+        formLayout->setWidget(4, QFormLayout::FieldRole, startupTab_combobox);
+
         layoutWidget1 = new QWidget(settings_tab);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(10, 170, 360, 34));
-        formLayout_3 = new QFormLayout(layoutWidget1);
-        formLayout_3->setSpacing(6);
-        formLayout_3->setMargin(11);
-        formLayout_3->setObjectName(QString::fromUtf8("formLayout_3"));
-        formLayout_3->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-        formLayout_3->setContentsMargins(0, 0, 0, 0);
-        label_4 = new QLabel(layoutWidget1);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-
-        formLayout_3->setWidget(0, QFormLayout::LabelRole, label_4);
-
-        lineEdit_default_path = new QLineEdit(layoutWidget1);
-        lineEdit_default_path->setObjectName(QString::fromUtf8("lineEdit_default_path"));
-        lineEdit_default_path->setMinimumSize(QSize(220, 0));
-
-        formLayout_3->setWidget(0, QFormLayout::FieldRole, lineEdit_default_path);
-
-        layoutWidget2 = new QWidget(settings_tab);
-        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(10, 10, 151, 54));
-        verticalLayout = new QVBoxLayout(layoutWidget2);
+        layoutWidget1->setGeometry(QRect(10, 10, 202, 80));
+        verticalLayout = new QVBoxLayout(layoutWidget1);
         verticalLayout->setSpacing(6);
         verticalLayout->setMargin(11);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        checkBox = new QCheckBox(layoutWidget2);
+        checkBox = new QCheckBox(layoutWidget1);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
 
         verticalLayout->addWidget(checkBox);
 
-        overwrite_checkbox = new QCheckBox(layoutWidget2);
+        overwrite_checkbox = new QCheckBox(layoutWidget1);
         overwrite_checkbox->setObjectName(QString::fromUtf8("overwrite_checkbox"));
         overwrite_checkbox->setChecked(true);
 
         verticalLayout->addWidget(overwrite_checkbox);
 
+        checkBox_hiddenFiles = new QCheckBox(layoutWidget1);
+        checkBox_hiddenFiles->setObjectName(QString::fromUtf8("checkBox_hiddenFiles"));
+        checkBox_hiddenFiles->setChecked(true);
+
+        verticalLayout->addWidget(checkBox_hiddenFiles);
+
         save_pushButton = new QPushButton(settings_tab);
         save_pushButton->setObjectName(QString::fromUtf8("save_pushButton"));
         save_pushButton->setGeometry(QRect(10, 400, 115, 28));
         save_pushButton->setMinimumSize(QSize(115, 0));
-        layoutWidget3 = new QWidget(settings_tab);
-        layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
-        layoutWidget3->setGeometry(QRect(10, 210, 221, 29));
-        formLayout_7 = new QFormLayout(layoutWidget3);
-        formLayout_7->setSpacing(6);
-        formLayout_7->setMargin(11);
-        formLayout_7->setObjectName(QString::fromUtf8("formLayout_7"));
-        formLayout_7->setContentsMargins(0, 0, 0, 0);
-        label_7 = new QLabel(layoutWidget3);
-        label_7->setObjectName(QString::fromUtf8("label_7"));
-
-        formLayout_7->setWidget(0, QFormLayout::LabelRole, label_7);
-
-        startupTab_combobox = new QComboBox(layoutWidget3);
-        startupTab_combobox->setObjectName(QString::fromUtf8("startupTab_combobox"));
-        startupTab_combobox->setMinimumSize(QSize(107, 0));
-
-        formLayout_7->setWidget(0, QFormLayout::FieldRole, startupTab_combobox);
-
-        checkBox_hiddenFiles = new QCheckBox(settings_tab);
-        checkBox_hiddenFiles->setObjectName(QString::fromUtf8("checkBox_hiddenFiles"));
-        checkBox_hiddenFiles->setGeometry(QRect(10, 250, 300, 22));
-        checkBox_hiddenFiles->setChecked(true);
         tabWidget->addTab(settings_tab, QString());
 
         gridLayout_3->addWidget(tabWidget, 0, 0, 1, 5);
@@ -531,7 +515,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
         comboBox->setCurrentIndex(2);
         verbose_combobox->setCurrentIndex(5);
         logging_combobox->setCurrentIndex(0);
@@ -656,14 +640,8 @@ public:
 #ifndef QT_NO_TOOLTIP
         default_ios_spinbox->setToolTip(QApplication::translate("MainWindow", "Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
-        label_4->setText(QApplication::translate("MainWindow", "Search Path:", 0, QApplication::UnicodeUTF8));
+        pushButton_settings_searchPath->setText(QApplication::translate("MainWindow", "Search Path...", 0, QApplication::UnicodeUTF8));
         lineEdit_default_path->setText(QApplication::translate("MainWindow", "/media", 0, QApplication::UnicodeUTF8));
-        checkBox->setText(QApplication::translate("MainWindow", "Test Mode", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        overwrite_checkbox->setToolTip(QApplication::translate("MainWindow", "Tell wit to overwrite existing files", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-        overwrite_checkbox->setText(QApplication::translate("MainWindow", "Overwrite Existing", 0, QApplication::UnicodeUTF8));
-        save_pushButton->setText(QApplication::translate("MainWindow", "Save Settings", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("MainWindow", "Start at:", 0, QApplication::UnicodeUTF8));
         startupTab_combobox->clear();
         startupTab_combobox->insertItems(0, QStringList()
@@ -671,10 +649,16 @@ public:
          << QApplication::translate("MainWindow", "Edit", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("MainWindow", "Settings", 0, QApplication::UnicodeUTF8)
         );
+        checkBox->setText(QApplication::translate("MainWindow", "Test Mode", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        overwrite_checkbox->setToolTip(QApplication::translate("MainWindow", "Tell wit to overwrite existing files", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        overwrite_checkbox->setText(QApplication::translate("MainWindow", "Overwrite Existing", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         checkBox_hiddenFiles->setToolTip(QApplication::translate("MainWindow", "Skip \".svn\" files in tree view to speed up parsing", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         checkBox_hiddenFiles->setText(QApplication::translate("MainWindow", "Ignore svn Files in Filetree", 0, QApplication::UnicodeUTF8));
+        save_pushButton->setText(QApplication::translate("MainWindow", "Save Settings", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(settings_tab), QApplication::translate("MainWindow", "Settings", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(MainWindow);
     } // retranslateUi

@@ -907,3 +907,11 @@ void MainWindow::ResizeGuiToLanguage()
 
 
 }
+
+//browse for a "default search path" folder
+void MainWindow::on_pushButton_settings_searchPath_clicked()
+{
+    QString dir = QFileDialog::getExistingDirectory( this, tr("Open Directory"), ui->lineEdit_default_path->text(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks );
+    if( !dir.isEmpty() )
+	ui->lineEdit_default_path->setText( dir );
+}
