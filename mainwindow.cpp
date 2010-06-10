@@ -59,6 +59,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     //create the pointer to the process used to run wit
     witProcess = new QProcess( this );
 
+
+#ifdef Q_WS_WIN
+    // Add an environment variable to shut up the cygwin warning in windows
+    QStringList env = QProcess::systemEnvironment();
+    env << "CYGWIN=nodosfilewarning";
+    witProcess->setEnvironment(env);
+#endif
+
     //connect output and input signals between the process and the main window so we can get information from it
     //and also send a "kill" message if the main window is closed while the process is running
     connect( witProcess, SIGNAL( readyReadStandardOutput() ), this, SLOT( ReadyReadStdOutSlot() ) );
@@ -429,6 +437,8 @@ void MainWindow::ReadyReadStdOutSlot()
 	//add the svn version of this program
 	s += " | Gui: ";
 	s += SVN_REV_STR;
+	if( s.endsWith( "m", Qt::CaseInsensitive ) )
+	    s.resize( s.size() - 1 );
 	setWindowTitle( s );
 	return;
     }
