@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "svnrev.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
@@ -427,7 +428,7 @@ void MainWindow::ReadyReadStdOutSlot()
 	s.resize( s.indexOf( "\n", 0) - 1 );
 	//add the svn version of this program
 	s += " | Gui: ";
-	s += SVNVER;
+	s += SVN_REV_STR;
 	setWindowTitle( s );
 	return;
     }
