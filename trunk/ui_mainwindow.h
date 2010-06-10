@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Wed Jun 9 18:05:08 2010
+** Created: Thu Jun 10 10:02:57 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -114,7 +114,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(753, 780);
+        MainWindow->resize(800, 756);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout_3 = new QGridLayout(centralWidget);
@@ -470,7 +470,7 @@ public:
 
         layoutWidget1 = new QWidget(settings_tab);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(10, 10, 202, 80));
+        layoutWidget1->setGeometry(QRect(10, 10, 391, 80));
         verticalLayout = new QVBoxLayout(layoutWidget1);
         verticalLayout->setSpacing(6);
         verticalLayout->setMargin(11);
@@ -504,7 +504,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 753, 25));
+        menuBar->setGeometry(QRect(0, 0, 800, 25));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -515,7 +515,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
         comboBox->setCurrentIndex(2);
         verbose_combobox->setCurrentIndex(5);
         logging_combobox->setCurrentIndex(0);

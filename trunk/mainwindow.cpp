@@ -915,3 +915,4 @@ void MainWindow::on_pushButton_settings_searchPath_clicked()
     if( !dir.isEmpty() )
 	ui->lineEdit_default_path->setText( dir );
 }
+

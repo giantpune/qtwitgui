@@ -27,7 +27,10 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+   QApplication a(argc, argv);
+
+    Q_INIT_RESOURCE( resources );
+
     QTranslator translator;
 
     //tell people what their locale is
@@ -37,7 +40,9 @@ int main(int argc, char *argv[])
     qDebug() << "\nqm files can be generated from the example .ts file using qt linguist\n";
 
     //load up a translation if it exists
-    translator.load( QString( "language/witGuiLang_" ) + QLocale::system().name() );
+    if( !translator.load( QString( "language/witGuiLang_" ) + QLocale::system().name() ) )
+	translator.load( QString( ":/language/witGuiLang_" ) + QLocale::system().name() );
+
     a.installTranslator( &translator );
 
     MainWindow w;

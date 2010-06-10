@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>language/witGuiLang_de.qm</file>
+        <file>language/witGuiLang_fr.qm</file>
+        <file>language/witGuiLang_ja.qm</file>
+        <file>language/witGuiLang_nl.qm</file>
+        <file>language/witGuiLang_da.qm</file>
+    </qresource>
+</RCC>
