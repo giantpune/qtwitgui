@@ -131,7 +131,7 @@ private slots:
 
 public slots:
     void ShowMessage( const QString & );
-    void GetThreadDone( int );
+    //void GetThreadDone( int );
 
 signals:
     // send a kill message to the external running process

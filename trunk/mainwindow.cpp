@@ -414,12 +414,12 @@ void MainWindow::ShowMessage( const QString &s )
 }
 
 //get "done" status from the workthread [depreciated]
-void MainWindow::GetThreadDone( int i )
+/*void MainWindow::GetThreadDone( int i )
 {
     //witRunning = i;
     ui->statusBar->showMessage( tr( "Ready for more work" ) );
 }
-
+*/
 //get messages from the procces running wit and convert the messages to stuff to use in the GUI
 void MainWindow::ReadyReadStdOutSlot()
 {
@@ -435,7 +435,7 @@ void MainWindow::ReadyReadStdOutSlot()
 	s = s.trimmed();
 	s.resize( s.indexOf( "\n", 0) - 1 );
 	//add the svn version of this program
-	s += " | Gui: ";
+	s += " | Gui: r";
 	s += SVN_REV_STR;
 	if( s.endsWith( "m", Qt::CaseInsensitive ) )
 	    s.resize( s.size() - 1 );
@@ -489,10 +489,16 @@ void MainWindow::ReadyReadStdOutSlot()
 		 QString numText;
 		 int perChar = str.indexOf( "%" );
 		 int num = 0;
-		 if( perChar < 4 )
+		 if( perChar < 4 && perChar > 0)
 		 {
-			 for( int i = 0; i < perChar; i++ ) //copy the number to another string
-			    numText += str.toLatin1().data()[ i ];
+		     while( str.at( 0 ) != '%' )
+		     {
+			 numText += str.at( 0 );
+			 str.remove( 0, 1 );
+		     }
+			 //for( int i = 0; i < perChar; i++ ) //copy the number to another string
+			  //  numText += str.at( i );
+			    //numText += str.toLatin1().data()[ i ];
 
 			 num = numText.toInt();//convert to int
 			 if( num < 101 )
@@ -687,6 +693,7 @@ void MainWindow::ThreadIsDoneRunning( QTreeWidgetItem *i )
     QList<QTreeWidgetItem *> rootlist = i->takeChildren();
     ui->treeWidget->addTopLevelItems( rootlist );
     witJob = witNoJob;
+    SAFEDELETE( i );
     ui->statusBar->showMessage( tr( "Ready" ) );
 }
 
