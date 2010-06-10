@@ -17,7 +17,15 @@ TRANSLATIONS = language/witGuiTranslationExample.ts \
     language/witGuiTranslation_fr_FR.ts \
     language/witGuiTranslation_ja_JP.ts \
     language/witGuiTranslation_da_DK.ts
-VERSION = r$(shell svnversion .) # get svn revision
-VERSTR = '\\"$${VERSION}\\"' # place quotes around the version string
-DEFINES += SVNVER=\"$${VERSTR}\" # create a VER macro containing the version string
+
+unix {
+    system(chmod 755 ./makesvnrev.sh)
+#    system(chmod 555 ./makesvnrev.sh)
+#    system(chmod +x ./makesvnrev.sh)
+    system(./makesvnrev.sh)
+}
+win32 {
+    system(SubWCRev.exe "." "./svnrev_template.h" "./svnrev.h")
+}
+
 RESOURCES += resources.qrc
