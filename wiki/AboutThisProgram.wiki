@@ -83,7 +83,7 @@
 == windows ==
   * Wit path is ./wit .  The default build for Qt will put the executable & working directory in "./Debug or ./Release"  Either change that, or put all the necessary files in that folder.
 
-  * It is possible to run this exe without having Qt installed, but it requires 2 .dll files:  QtCored4.dll and QtGuid4.dll.
+ * It is possible to run this exe without having the Qt SDK installed, but it requires 3 .dll files:  QtCore4.dll, QtGui4.dll, libgcc_s_dw2-1.dll.
 ----
 
 
