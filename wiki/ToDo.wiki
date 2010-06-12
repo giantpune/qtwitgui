@@ -11,3 +11,5 @@
 <s>save settings and remove hard-coded paths & settings</s>
 
 rearrange stuff and make the layout prettier
+
+get some super cool images for this home page and also an icon for the program
