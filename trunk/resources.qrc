@@ -6,5 +6,6 @@
         <file>language/witGuiLang_nl.qm</file>
         <file>language/witGuiLang_da.qm</file>
         <file>language/witGuiLang_it.qm</file>
+        <file>language/witGuiLang_es.qm</file>
     </qresource>
 </RCC>
