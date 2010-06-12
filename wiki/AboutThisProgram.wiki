@@ -1,5 +1,7 @@
 #summary About this program
 
+<wiki:toc max_depth="2"/>
+
 = Usage =
 
 == General ==
@@ -60,11 +62,14 @@
 
   * I have added a bit of debug output viewable if running this program from a terminal to display the region variable.
 
-  * open the .ts file from this svn in Qt Linguist.  Select your country and language.  Select a string and enter new text for your language.  Then do file->release and save a .qm file.  
+  * open the .ts file from this svn in Qt Linguist.  Select your country and language.  Select a string and enter new text for your language.  Then do "translation -> Done and Next" (ctrl+Enter).  It will give a green check mark and move on to the next string. Once you are done, do file->release and save a .qm file. 
+        <a target='_blank' href='http://img808.imageshack.us/img808/9990/qtlinguist.png'><img src='http://img808.imageshack.us/img808/9990/qtlinguist.th.png' border='0'/></a>
 
-  * Since I am using USA/english (en_US )  on my PC, the program will first try to load "witGuiLang_en_US.qm".  Failing that, it will try "witGuiLang_en.qm".
+  * Since I am using USA/english (en_US )  on my PC, the program will first try to load "witGuiLang_en_US.qm".  Failing that, it will try "witGuiLang_en.qm".  If there still is no language file found, it will fall back to the version compiled within the program itself.  This makes it possible for the program to have a French translation embedded within itself and the user is still able to load their own translation if they disagree with the translation.
 
-  * there is no guarantee that the .ts file will be up-to-date.  There may be strings used in the project that are not in the current .ts file.  This file in no automatically updated.  You can run "lupdate -verbose ./witGui.pro".  This will grab the current strings used in the program and slap them in the .ts file.  Then you can use that to create a .qm file.
+  * The qm files embedded in this program are given generic names ( language only, no country specification ).  The same French will be used for French-Canada and French-France.
+
+  * There is no guarantee that the .ts file will be up-to-date.  There is an instruction in the project file to update the ts files, but this instruction only gets executed when qmake is run, not every time the program is compiled.  Because of this, there may be strings used in the project that are not in the current .ts file.  This file in no automatically updated.  You can run "lupdate -verbose ./witGui.pro".  This will grab the current strings used in the program and slap them in the .ts file.  Then you can use that to create a .qm file.
 
   * You can submit to me a filled out .ts file and I may include it in the project.  This will allow myself and others to keep all the translated strings and add new ones to be translated when needed, making updating translations much easier.
 ----
