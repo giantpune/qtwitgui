@@ -23,6 +23,9 @@
 #include <QTranslator>
 #include <QApplication>
 
+#include <QCleanlooksStyle>
+#include <QWindowsStyle>
+
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
@@ -46,6 +49,11 @@ int main(int argc, char *argv[])
     a.installTranslator( &translator );
 
     MainWindow w;
+    //QCleanlooksStyle *style = new QCleanlooksStyle;
+    QWindowsStyle *style = new QWindowsStyle;
+    w.setStyle( style );
+
+
     w.show();
     return a.exec();
 }

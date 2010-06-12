@@ -284,7 +284,7 @@ Wait for the current job to finish.</source>
     </message>
     <message>
         <source>Ready for more work</source>
-        <translation type="unfinished">Klaar voor meer werk</translation>
+        <translation type="obsolete">Klaar voor meer werk</translation>
     </message>
     <message>
         <source>Done!</source>

@@ -279,10 +279,6 @@ Wait for the current job to finish.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ready for more work</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Done!</source>
         <translation type="unfinished"></translation>
     </message>

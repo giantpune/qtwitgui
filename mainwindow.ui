@@ -26,7 +26,7 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>175</height>
+        <height>150</height>
        </size>
       </property>
       <property name="sizeIncrement">
@@ -723,8 +723,17 @@
              <height>0</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string notr="true"/>
+           </property>
+           <property name="inputMask">
+            <string notr="true"/>
+           </property>
            <property name="text">
-            <string>/media</string>
+            <string notr="true">/media</string>
+           </property>
+           <property name="placeholderText">
+            <string notr="true"/>
            </property>
           </widget>
          </item>

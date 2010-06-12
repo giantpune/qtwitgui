@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindow.ui'
+** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Thu Jun 10 12:35:15 2010
-**      by: Qt User Interface Compiler version 4.6.2
+** Created: Sat Jun 12 14:18:22 2010
+**      by: Qt User Interface Compiler version 4.5.2
 **
-** WARNING! All changes made in this file will be lost when recompiling UI file!
+** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
 
 #ifndef UI_MAINWINDOW_H
@@ -119,7 +119,7 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout_3 = new QGridLayout(centralWidget);
         gridLayout_3->setSpacing(6);
-        gridLayout_3->setContentsMargins(11, 11, 11, 11);
+        gridLayout_3->setMargin(11);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         plainTextEdit = new QPlainTextEdit(centralWidget);
         plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
@@ -128,7 +128,7 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(plainTextEdit->sizePolicy().hasHeightForWidth());
         plainTextEdit->setSizePolicy(sizePolicy);
-        plainTextEdit->setMinimumSize(QSize(0, 175));
+        plainTextEdit->setMinimumSize(QSize(0, 150));
         plainTextEdit->setSizeIncrement(QSize(1, 1));
         QFont font;
         font.setFamily(QString::fromUtf8("Courier New"));
@@ -190,7 +190,7 @@ public:
         tab->setObjectName(QString::fromUtf8("tab"));
         gridLayout_2 = new QGridLayout(tab);
         gridLayout_2->setSpacing(6);
-        gridLayout_2->setContentsMargins(11, 11, 11, 11);
+        gridLayout_2->setMargin(11);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         formLayout_2 = new QFormLayout();
         formLayout_2->setSpacing(6);
@@ -342,7 +342,7 @@ public:
         Edit_tab->setObjectName(QString::fromUtf8("Edit_tab"));
         gridLayout_4 = new QGridLayout(Edit_tab);
         gridLayout_4->setSpacing(6);
-        gridLayout_4->setContentsMargins(11, 11, 11, 11);
+        gridLayout_4->setMargin(11);
         gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setSpacing(6);
@@ -409,7 +409,7 @@ public:
         layoutWidget->setGeometry(QRect(10, 100, 391, 161));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
-        formLayout->setContentsMargins(11, 11, 11, 11);
+        formLayout->setMargin(11);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setContentsMargins(0, 0, 0, 0);
         label_2 = new QLabel(layoutWidget);
@@ -454,6 +454,11 @@ public:
         lineEdit_default_path = new QLineEdit(layoutWidget);
         lineEdit_default_path->setObjectName(QString::fromUtf8("lineEdit_default_path"));
         lineEdit_default_path->setMinimumSize(QSize(224, 0));
+#ifndef QT_NO_TOOLTIP
+        lineEdit_default_path->setToolTip(QString::fromUtf8(""));
+#endif // QT_NO_TOOLTIP
+        lineEdit_default_path->setInputMask(QString::fromUtf8(""));
+	lineEdit_default_path->setText(QString::fromUtf8("/media"));
 
         formLayout->setWidget(3, QFormLayout::FieldRole, lineEdit_default_path);
 
@@ -473,7 +478,7 @@ public:
         layoutWidget1->setGeometry(QRect(10, 10, 391, 80));
         verticalLayout = new QVBoxLayout(layoutWidget1);
         verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setMargin(11);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
         checkBox = new QCheckBox(layoutWidget1);
@@ -641,7 +646,6 @@ public:
         default_ios_spinbox->setToolTip(QApplication::translate("MainWindow", "Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         pushButton_settings_searchPath->setText(QApplication::translate("MainWindow", "Search Path...", 0, QApplication::UnicodeUTF8));
-        lineEdit_default_path->setText(QApplication::translate("MainWindow", "/media", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("MainWindow", "Start at:", 0, QApplication::UnicodeUTF8));
         startupTab_combobox->clear();
         startupTab_combobox->insertItems(0, QStringList()
@@ -660,6 +664,7 @@ public:
         checkBox_hiddenFiles->setText(QApplication::translate("MainWindow", "Ignore svn Files in Filetree", 0, QApplication::UnicodeUTF8));
         save_pushButton->setText(QApplication::translate("MainWindow", "Save Settings", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(settings_tab), QApplication::translate("MainWindow", "Settings", 0, QApplication::UnicodeUTF8));
+        Q_UNUSED(MainWindow);
     } // retranslateUi
 
 };
