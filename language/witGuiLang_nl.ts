@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <source>MainWindow</source>
-        <translation type="unfinished">Hoofdscherm</translation>
+        <translation>Hoofdscherm</translation>
     </message>
     <message>
         <source>Useful information</source>
