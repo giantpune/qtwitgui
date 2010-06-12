@@ -3,99 +3,99 @@
     <name>MainWindow</name>
     <message>
         <source>MainWindow</source>
-        <translation>メインウインドウ</translation>
+        <translation>Finestra principale</translation>
     </message>
     <message>
         <source>Useful information</source>
-        <translation>お役立ち情報</translation>
+        <translation>Informazioni utili</translation>
     </message>
     <message>
         <source>Tell wit to create a image using the selected parameters</source>
-        <translation>選択したパラメータで画像を作成します</translation>
+        <translation>Dì a WIT di creare un&apos;immagine usando i parametri selezionati</translation>
     </message>
     <message>
         <source>Do It</source>
-        <translation>する</translation>
+        <translation>Crea</translation>
     </message>
     <message>
         <source>Clear the text</source>
-        <translation>テキストを消去</translation>
+        <translation>Cancella testo</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>消去</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>コピー</translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <source>Compose Image</source>
-        <translation>画像を作成</translation>
+        <translation>Crea immagine</translation>
     </message>
     <message>
         <source>Enter the path to the files to be used to make the disc image</source>
-        <translation>ディスク画像の作成に使うファイルのパスを入力してください</translation>
+        <translation>Entra il percorso ai file da usare per creare l&apos;immagine disco</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation>参照...</translation>
+        <translation>Sfoglia...</translation>
     </message>
     <message>
         <source>Input:</source>
-        <translation>入力:</translation>
+        <translation>Input:</translation>
     </message>
     <message>
         <source>Output:</source>
-        <translation>出力:</translation>
+        <translation>Output:</translation>
     </message>
     <message>
         <source>Region &lt;auto&gt;</source>
-        <translation>リージョン&lt;自動&gt;</translation>
+        <translation>Regione &lt;auto&gt;</translation>
     </message>
     <message>
         <source>JAPAN</source>
-        <translation>日本</translation>
+        <translation>GIAPPONE</translation>
     </message>
     <message>
         <source>USA</source>
-        <translation>アメリカ</translation>
+        <translation>USA</translation>
     </message>
     <message>
         <source>EUROPE</source>
-        <translation>ヨーロッパ</translation>
+        <translation>EUROPA</translation>
     </message>
     <message>
         <source>KOREA</source>
-        <translation>韓国</translation>
+        <translation>COREA</translation>
     </message>
     <message>
         <source>What IOS should be used in the TMD</source>
-        <translation>TMDの中のどのIOSを使用しますか</translation>
+        <translation>Quale IOS dovrebbe essere usato nel TMD</translation>
     </message>
     <message>
         <source>Game IOS</source>
-        <translation>ゲームのIOS</translation>
+        <translation>IOS gioco</translation>
     </message>
     <message>
         <source>Enter a new game name</source>
-        <translation>新しいゲーム名を入力してください</translation>
+        <translation>Entra un nuovo nome gioco</translation>
     </message>
     <message>
         <source>&lt;Game Name&gt;</source>
-        <translation>&lt;ゲーム名&gt;</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Do you want to change the title of the game?</source>
-        <translation>ゲーム名を変更しますか?</translation>
+        <translation>Vuoi cambiare il titolo del gioco?</translation>
     </message>
     <message>
         <source>Update Title</source>
-        <translation>ゲーム名を更新</translation>
+        <translation>Aggiorna titolo</translation>
     </message>
     <message>
         <source>Enter a new TID ( 6 characters )</source>
-        <translation>新しいゲームIDを入力してください(6文字)</translation>
+        <translation>Inserisci nuovo ID ( 6 caratteri )</translation>
     </message>
     <message>
         <source>&lt;ID&gt;</source>
@@ -103,229 +103,229 @@
     </message>
     <message>
         <source>Do you want to change the TID of the game?</source>
-        <translation>ゲームIDを変更しますか?</translation>
+        <translation>Vuoi cambiare l&apos;ID del gioco?</translation>
     </message>
     <message>
         <source>Update ID</source>
-        <translation>IDを更新</translation>
+        <translation>Aggiorna ID</translation>
     </message>
     <message>
         <source>Apply title &amp; TID changes to the disc header</source>
-        <translation>ディスクヘッダにゲーム名&amp;ゲームIDの変更を適用する</translation>
+        <translation>Applica i cambiamenti di titolo e ID all&apos;intestazione del disco</translation>
     </message>
     <message>
         <source>Disc Hdr</source>
-        <translation>ディスクヘッダ</translation>
+        <translation>Intestazione disco</translation>
     </message>
     <message>
         <source>Apply the title &amp; TID changes to the partition header</source>
-        <translation>領域ヘッダにゲーム名&amp;ゲームIDの変更を適用する</translation>
+        <translation>Applica i cambiamenti di titolo e ID all&apos;intestazione della partizione</translation>
     </message>
     <message>
         <source>Partition Hdr</source>
-        <translation>領域ヘッダ</translation>
+        <translation>Intestazione partizione</translation>
     </message>
     <message>
         <source>Apply the new TID to the TMD &amp; ticket</source>
-        <translation>新しいゲームIDをTMD&amp;チケットに適用する</translation>
+        <translation>Applica nuovo ID a TMD e ticket</translation>
     </message>
     <message>
         <source>Tmd / Ticket</source>
-        <translation>TMD/チケット</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>名前</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <source>Offset</source>
-        <translation>オフセット</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Size</source>
-        <translation>サイズ</translation>
+        <translation>Dimensione</translation>
     </message>
     <message>
         <source>Load Image</source>
-        <translation>画像を読み込む</translation>
+        <translation>Carica immagine</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>設定</translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <source>Text output:</source>
-        <translation>テキスト出力:</translation>
+        <translation>Testo in output:</translation>
     </message>
     <message>
         <source>Normal</source>
-        <translation>普通</translation>
+        <translation>Normale</translation>
     </message>
     <message>
         <source>Quiet</source>
-        <translation>静かに</translation>
+        <translation>Silenzioso</translation>
     </message>
     <message>
         <source>Verbose</source>
-        <translation>冗長</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Verbose+</source>
-        <translation>冗長+</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Verbose++</source>
-        <translation>冗長++</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Verbose+++</source>
-        <translation>冗長+++</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Logging :</source>
-        <translation>ロギング:</translation>
+        <translation>Livello di log:</translation>
     </message>
     <message>
         <source>Off</source>
-        <translation>オフ</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Disc</source>
-        <translation>ディスク</translation>
+        <translation>Disco</translation>
     </message>
     <message>
         <source>Disc + Part</source>
-        <translation>ディスク+パート</translation>
+        <translation>Disco + Partizione</translation>
     </message>
     <message>
         <source>Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used</source>
-        <translation>起動に使うデフォルトIOS: 3以下ならTMDのIOSが使われます</translation>
+        <translation>IOS di default per l&apos;avvio: se è minore di 3, verrà usato l&apos;IOS del TMD</translation>
     </message>
     <message>
         <source>Default IOS:</source>
-        <translation>デフォルトIOS:</translation>
+        <translation>IOS di default:</translation>
     </message>
     <message>
         <source>/media</source>
-        <translation>/media</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Test Mode</source>
-        <translation>テストモード</translation>
+        <translation>Modalità test</translation>
     </message>
     <message>
         <source>Tell wit to overwrite existing files</source>
-        <translation>存在するファイルを上書きします</translation>
+        <translation>Sovrascrivi file esistenti</translation>
     </message>
     <message>
         <source>Overwrite Existing</source>
-        <translation>存在するものを上書き</translation>
+        <translation>Sovrascrivi esistenti</translation>
     </message>
     <message>
         <source>Save Settings</source>
-        <translation>設定を保存</translation>
+        <translation>Salva impostazioni</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>始める場所:</translation>
+        <translation>Avvia in:</translation>
     </message>
     <message>
         <source>Compose</source>
-        <translation>作成</translation>
+        <translation>Componi</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>編集</translation>
+        <translation>Modifica</translation>
     </message>
     <message>
         <source>Slow your roll!</source>
-        <translation>低速のロール!</translation>
+        <translation>Rallenta!</translation>
     </message>
     <message>
         <source>Wit is still running.
 Wait for the current job to finish.</source>
-        <translation>Witは動作中です
-終了するまでお待ちください。</translation>
+        <translation>WIT è ancora aperto.
+Aspetta che finisca il lavoro corrente.</translation>
     </message>
     <message>
         <source>Copy the text in the output box</source>
-        <translation>出力ボックスのテキストをコピー</translation>
+        <translation>Copia il testo nella casella di output</translation>
     </message>
     <message>
         <source>Set the region used for the output image.  This is independent of the TID.  If auto is selected, wit will try to guess the region based on the TID.</source>
-        <translation>出力する画像のリージョンをセットしてください。自動が選択されたらゲーム名IDのリージョンを使用します。</translation>
+        <translation>Imposta la regione usata per l&apos;immagine di output.  Questo è indipendente dall&apos;ID titolo.  Se è selezionato &quot;auto&quot;, WIT proverà ad indovinare la regione basandosi sull&apos;ID titolo.</translation>
     </message>
     <message>
         <source>Error starting wit!</source>
-        <translation>Witの起動に失敗しました!</translation>
+        <translation>Errore all&apos;avvio di WIT!</translation>
     </message>
     <message>
         <source>Extract</source>
-        <translation>抽出</translation>
+        <translation>Estrai</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation>置き換え</translation>
+        <translation>Rimpiazza</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation>準備完了</translation>
+        <translation>Pronto</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation>OK</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Wit is running...</source>
-        <translation>Witは動作中です…</translation>
+        <translation>WIT è aperto...</translation>
     </message>
     <message>
         <source>Ready for more work</source>
-        <translation>準備完了</translation>
+        <translation type="obsolete">Pronto per altro lavoro</translation>
     </message>
     <message>
         <source>Done!</source>
-        <translation>完了しました!</translation>
+        <translation>Fatto!</translation>
     </message>
     <message>
         <source>Got FST list from wit, parsing it into a pretty file tree...</source>
-        <translation>WitからFSTリストを入手しています…</translation>
+        <translation>Ottenuta lista FST da WIT, creazione di un grafico ad albero dei file in corso...</translation>
     </message>
     <message>
         <source>&lt;input&gt;</source>
-        <translation>&lt;入力&gt;</translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;output&gt;</source>
-        <translation>&lt;出力&gt;</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Skip &quot;.svn&quot; files in tree view to speed up parsing</source>
-        <translation>構文解析の速度向上のため「.svn」ファイルを無視する</translation>
+        <translation>Salta i file &quot;.svn&quot; nell&apos;albero per velocizzare l&apos;analisi</translation>
     </message>
     <message>
         <source>Ignore svn Files in Filetree</source>
-        <translation>svnファイルを無視する</translation>
+        <translation>Ignora i file svn nel Filetree</translation>
     </message>
     <message>
         <source>Settings Saved</source>
-        <translation>設定が保存されました</translation>
+        <translation>Impostazioni salvate</translation>
     </message>
     <message>
         <source>Enter the output file path</source>
-        <translation>出力ファイルのパスを入力してください</translation>
+        <translation>Inserisci il percorso per il file di output</translation>
     </message>
     <message>
         <source>Edit Image</source>
-        <translation>画像を編集</translation>
+        <translation>Modifica immagine</translation>
     </message>
     <message>
         <source>Search Path...</source>
-        <translation>パスを検索...</translation>
+        <translation>Cerca percorso...</translation>
     </message>
     <message>
         <source>Open Directory</source>
-        <translation>フォルダを開く</translation>
+        <translation>Apri cartella</translation>
     </message>
 </context>
 </TS>

@@ -3,59 +3,59 @@
     <name>MainWindow</name>
     <message>
         <source>MainWindow</source>
-        <translation type="unfinished">Fenêtre principale</translation>
+        <translation type="unfinished">Hovedvindue</translation>
     </message>
     <message>
         <source>Useful information</source>
-        <translation type="unfinished">Information utile</translation>
+        <translation type="unfinished">Nyttig information</translation>
     </message>
     <message>
         <source>Tell wit to create a image using the selected parameters</source>
-        <translation type="unfinished">Demandez à wit de créer une image en utilisant les paramètres sélectionnés</translation>
+        <translation type="unfinished">Fortæl wit at skabe et billede ved at bruge de valgte parametere</translation>
     </message>
     <message>
         <source>Do It</source>
-        <translation type="unfinished">Fait le</translation>
+        <translation type="unfinished">Gør Det</translation>
     </message>
     <message>
         <source>Clear the text</source>
-        <translation type="unfinished">Effacer le texte</translation>
+        <translation type="unfinished">Ryd tekst</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Effacer</translation>
+        <translation type="unfinished">Ryd</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Copier</translation>
+        <translation type="unfinished">Kopi</translation>
     </message>
     <message>
         <source>Compose Image</source>
-        <translation type="unfinished">Composer l&apos;image</translation>
+        <translation type="unfinished">Compose Billede</translation>
     </message>
     <message>
         <source>Enter the path to the files to be used to make the disc image</source>
-        <translation type="unfinished">Entrez le chemin vers les fichiers à utiliser pour faire l&apos;image disque</translation>
+        <translation type="unfinished">Vælg den sti som skal bruges til lave dics billede</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation type="unfinished">Parcourir...</translation>
+        <translation type="unfinished">Gennemse...</translation>
     </message>
     <message>
         <source>Input:</source>
-        <translation type="unfinished">Entrée :</translation>
+        <translation type="unfinished">Input:</translation>
     </message>
     <message>
         <source>Output:</source>
-        <translation type="unfinished">Sortie :</translation>
+        <translation type="unfinished">Output:</translation>
     </message>
     <message>
         <source>Region &lt;auto&gt;</source>
-        <translation type="unfinished">Région &lt;auto&gt;</translation>
+        <translation type="unfinished">Region&lt;auto&gt;</translation>
     </message>
     <message>
         <source>JAPAN</source>
-        <translation type="unfinished">JAPON</translation>
+        <translation type="unfinished">JAPAN</translation>
     </message>
     <message>
         <source>USA</source>
@@ -63,39 +63,39 @@
     </message>
     <message>
         <source>EUROPE</source>
-        <translation type="unfinished">EUROPE</translation>
+        <translation type="unfinished">EUROPA</translation>
     </message>
     <message>
         <source>KOREA</source>
-        <translation type="unfinished">CORÉE</translation>
+        <translation type="unfinished">KOREA</translation>
     </message>
     <message>
         <source>What IOS should be used in the TMD</source>
-        <translation type="unfinished">Quel IOS doit être utilisé dans le TMD</translation>
+        <translation type="unfinished">Hvilken IOS skal der bruges i TMD</translation>
     </message>
     <message>
         <source>Game IOS</source>
-        <translation type="unfinished">IOS du jeu</translation>
+        <translation type="unfinished">Spil IOS</translation>
     </message>
     <message>
         <source>Enter a new game name</source>
-        <translation type="unfinished">Entrez le nouveau nom du jeu</translation>
+        <translation type="unfinished">Skriv et nyt spil navn</translation>
     </message>
     <message>
         <source>&lt;Game Name&gt;</source>
-        <translation type="unfinished">&lt;Nom du jeu&gt;</translation>
+        <translation type="unfinished">&lt;Spil Navn&gt;</translation>
     </message>
     <message>
         <source>Do you want to change the title of the game?</source>
-        <translation type="unfinished">Voulez vous changer le titre du jeu ?</translation>
+        <translation type="unfinished">Vil du skifte titlen på dette spil?</translation>
     </message>
     <message>
         <source>Update Title</source>
-        <translation type="unfinished">Mettre à jour le titre</translation>
+        <translation type="unfinished">Opdater Titel</translation>
     </message>
     <message>
         <source>Enter a new TID ( 6 characters )</source>
-        <translation type="unfinished">Entrez le nouveau ID (6 caractères)</translation>
+        <translation type="unfinished">Skriv en ny TID(6 karakter)</translation>
     </message>
     <message>
         <source>&lt;ID&gt;</source>
@@ -103,31 +103,31 @@
     </message>
     <message>
         <source>Do you want to change the TID of the game?</source>
-        <translation type="unfinished">Voulez vous changer le TID du jeu ?</translation>
+        <translation type="unfinished">Vil du ændre TID for dette spil?</translation>
     </message>
     <message>
         <source>Update ID</source>
-        <translation type="unfinished">Mettre à jour l&apos;ID</translation>
+        <translation type="unfinished">Opdater ID</translation>
     </message>
     <message>
         <source>Apply title &amp; TID changes to the disc header</source>
-        <translation type="unfinished">Appliquer les changements du titre &amp; TID sur l&apos;en-tête du disque</translation>
+        <translation type="unfinished">Bekræft Titel &amp; TID ændringer på disc header</translation>
     </message>
     <message>
         <source>Disc Hdr</source>
-        <translation type="unfinished">En-tête du disque</translation>
+        <translation type="unfinished">Disc Hdr</translation>
     </message>
     <message>
         <source>Apply the title &amp; TID changes to the partition header</source>
-        <translation type="unfinished">Appliquer les changements du titre &amp; TID sur l&apos;en-tête de la partition</translation>
+        <translation type="unfinished">Bekræft titel &amp; TID ændringer på partitions header</translation>
     </message>
     <message>
         <source>Partition Hdr</source>
-        <translation type="unfinished">En-tête de la partition</translation>
+        <translation type="unfinished">Partition Hdr</translation>
     </message>
     <message>
         <source>Apply the new TID to the TMD &amp; ticket</source>
-        <translation type="unfinished">Appliquez le nouveau TID au TMD &amp; ticket</translation>
+        <translation type="unfinished">Bekræft den nye TID til TMD &amp; ticket</translation>
     </message>
     <message>
         <source>Tmd / Ticket</source>
@@ -135,27 +135,27 @@
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation type="unfinished">Navn</translation>
     </message>
     <message>
         <source>Offset</source>
-        <translation type="unfinished">Offset</translation>
+        <translation type="unfinished">offset</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished">Taille</translation>
+        <translation type="unfinished">Størrelse</translation>
     </message>
     <message>
         <source>Load Image</source>
-        <translation type="unfinished">Charger l&apos;image</translation>
+        <translation type="unfinished">Indlæs Billede</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Réglages</translation>
+        <translation type="unfinished">Indstillinger</translation>
     </message>
     <message>
         <source>Text output:</source>
-        <translation type="unfinished">Sortie de texte :</translation>
+        <translation type="unfinished">Tekst output:</translation>
     </message>
     <message>
         <source>Normal</source>
@@ -163,51 +163,47 @@
     </message>
     <message>
         <source>Quiet</source>
-        <translation type="unfinished">Calme</translation>
+        <translation type="unfinished">Stille</translation>
     </message>
     <message>
         <source>Verbose</source>
-        <translation type="unfinished">Verbose</translation>
+        <translation type="unfinished">Ordrig</translation>
     </message>
     <message>
         <source>Verbose+</source>
-        <translation type="unfinished">Verbose+</translation>
+        <translation type="unfinished">Ordrig+</translation>
     </message>
     <message>
         <source>Verbose++</source>
-        <translation type="unfinished">Verbose++</translation>
+        <translation type="unfinished">Ordrig++</translation>
     </message>
     <message>
         <source>Verbose+++</source>
-        <translation type="unfinished">Verbose+++</translation>
+        <translation type="unfinished">Ordrig+++</translation>
     </message>
     <message>
         <source>Logging :</source>
-        <translation type="unfinished">Enregistrement :</translation>
+        <translation type="unfinished">Logning:</translation>
     </message>
     <message>
         <source>Off</source>
-        <translation type="unfinished">Non</translation>
+        <translation type="unfinished">Fra</translation>
     </message>
     <message>
         <source>Disc</source>
-        <translation type="unfinished">Disque</translation>
+        <translation type="unfinished">Disc</translation>
     </message>
     <message>
         <source>Disc + Part</source>
-        <translation type="unfinished">Disque + Partition</translation>
+        <translation type="unfinished">Disc + Del</translation>
     </message>
     <message>
         <source>Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used</source>
-        <translation type="unfinished">IOS par défaut à utiliser pour le démarrage : Si il est inférieur à 3, l&apos;IOS dans le TMD sera utilisé</translation>
+        <translation type="unfinished">Standard IOS til brug for booting: hvis den er mindre end 3,så vil IOS i TMD blive brugt</translation>
     </message>
     <message>
         <source>Default IOS:</source>
-        <translation type="unfinished">IOS par défaut :</translation>
-    </message>
-    <message>
-        <source>Search Path:</source>
-        <translation type="obsolete">Chemin de recherche :</translation>
+        <translation type="unfinished">Standard IOS:</translation>
     </message>
     <message>
         <source>/media</source>
@@ -215,65 +211,64 @@
     </message>
     <message>
         <source>Test Mode</source>
-        <translation type="unfinished">Mode de teste</translation>
+        <translation type="unfinished">Test Mode</translation>
     </message>
     <message>
         <source>Tell wit to overwrite existing files</source>
-        <translation type="unfinished">Demandez à wit d&apos;écraser les fichiers existants</translation>
+        <translation type="unfinished">Fortæl wit om at overskrive eksisterende filer</translation>
     </message>
     <message>
         <source>Overwrite Existing</source>
-        <translation type="unfinished">Écraser l&apos;existant</translation>
+        <translation type="unfinished">Overskriv Eksisterende</translation>
     </message>
     <message>
         <source>Save Settings</source>
-        <translation type="unfinished">Sauvegarder les réglages</translation>
+        <translation type="unfinished">Gem Indstillinger</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation type="unfinished">Démarrer à :</translation>
+        <translation type="unfinished">Start ved:</translation>
     </message>
     <message>
         <source>Compose</source>
-        <translation type="unfinished">Composer</translation>
+        <translation type="unfinished">Compose</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Editer</translation>
+        <translation type="unfinished">Rediger</translation>
     </message>
     <message>
         <source>Slow your roll!</source>
-        <translation type="unfinished">Calmez vous !</translation>
+        <translation type="unfinished">Nedsæt dit rul!</translation>
     </message>
     <message>
         <source>Wit is still running.
 Wait for the current job to finish.</source>
-        <translation type="unfinished">Wit est toujours en fonctionnement.
-Attendez que le travail en cours se termine.</translation>
+        <translation type="unfinished">Wit kører stadig. Vent på at nuværende job er færdig.</translation>
     </message>
     <message>
         <source>Copy the text in the output box</source>
-        <translation type="unfinished">Copie le texte dans la boite de sortie</translation>
+        <translation type="unfinished">Kopier tekst i output box</translation>
     </message>
     <message>
         <source>Set the region used for the output image.  This is independent of the TID.  If auto is selected, wit will try to guess the region based on the TID.</source>
-        <translation type="unfinished">Donnez la région utilisée pour l&apos;image de sortie.  Ceci est indépendant du TID.  Si auto est sélectionné, wit va essayer de deviner la région, fondée sur le TID.</translation>
+        <translation type="unfinished">Sæt region til brug af output billede.  Dette er uafhængig af TID.  hvis auto er valgt, wit vil prøve at gætte regionen baseret på TID.</translation>
     </message>
     <message>
         <source>Error starting wit!</source>
-        <translation type="unfinished">Erreur au démarrage de wit !</translation>
+        <translation type="unfinished">Fejlede at starte wit!</translation>
     </message>
     <message>
         <source>Extract</source>
-        <translation type="unfinished">Extraire</translation>
+        <translation type="unfinished">Udpakke</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished">Remplacer</translation>
+        <translation type="unfinished">Erstatte</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished">Prêt</translation>
+        <translation type="unfinished">Klar</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -281,55 +276,55 @@ Attendez que le travail en cours se termine.</translation>
     </message>
     <message>
         <source>Wit is running...</source>
-        <translation type="unfinished">Wit fonctionne...</translation>
+        <translation type="unfinished">Wit kører...</translation>
     </message>
     <message>
         <source>Ready for more work</source>
-        <translation type="unfinished">Prêt pour plus de travail</translation>
+        <translation type="obsolete">Klar til mere arbejde</translation>
     </message>
     <message>
         <source>Done!</source>
-        <translation type="unfinished">Fait !</translation>
+        <translation type="unfinished">Færdig!</translation>
     </message>
     <message>
         <source>Got FST list from wit, parsing it into a pretty file tree...</source>
-        <translation type="unfinished">La liste FST de wit à été obtenu, il l&apos;analyse dans une joli arborescence de fichiers...</translation>
+        <translation type="unfinished">Har FST list fra wit, analyser det til kønt fil tree...</translation>
     </message>
     <message>
         <source>&lt;input&gt;</source>
-        <translation type="unfinished">&lt;entrée&gt;</translation>
+        <translation type="unfinished">&lt;input&gt;</translation>
     </message>
     <message>
         <source>&lt;output&gt;</source>
-        <translation type="unfinished">&lt;sortie&gt;</translation>
+        <translation type="unfinished">&lt;output&gt;</translation>
     </message>
     <message>
         <source>Skip &quot;.svn&quot; files in tree view to speed up parsing</source>
-        <translation type="unfinished">Éviter les fichiers &quot;.svn&quot; dans l&apos;arborescence afin d&apos;accélérer l&apos;analyse</translation>
+        <translation type="unfinished">Spring over &quot;.svn&quot; filer i tree view for at sætter hastigheden op under parsing</translation>
     </message>
     <message>
         <source>Ignore svn Files in Filetree</source>
-        <translation type="unfinished">Ignore les fichiers svn dans Filetree</translation>
+        <translation type="unfinished">Ignorer svn filer i filetree</translation>
     </message>
     <message>
         <source>Settings Saved</source>
-        <translation type="unfinished">Réglages sauvegardés</translation>
+        <translation type="unfinished">Indstillinger Gemt</translation>
     </message>
     <message>
         <source>Enter the output file path</source>
-        <translation type="unfinished">Entrez le chemin du fichier de sortie</translation>
+        <translation type="unfinished">Skriv output fil sti</translation>
     </message>
     <message>
         <source>Edit Image</source>
-        <translation type="unfinished">Editer l&apos;image</translation>
+        <translation type="unfinished">Rediger Billede</translation>
     </message>
     <message>
         <source>Search Path...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Søg Sti...</translation>
     </message>
     <message>
         <source>Open Directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Åben Mappe</translation>
     </message>
 </context>
 </TS>

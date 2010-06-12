@@ -12,14 +12,14 @@ HEADERS += mainwindow.h \
     filefolderdialog.h \
     wiitreethread.h
 FORMS += mainwindow.ui
-TRANSLATIONS = language/witGuiTranslationExample.ts \
-    language/witGuiTranslation_nl_NL.ts \
-    language/witGuiTranslation_fr_FR.ts \
-    language/witGuiTranslation_ja_JP.ts \
-    language/witGuiTranslation_da_DK.ts
+TRANSLATIONS = language/witGuiLang_empty.ts \
+    language/witGuiLang_nl.ts \
+    language/witGuiLang_fr.ts \
+    language/witGuiLang_ja.ts \
+    language/witGuiLang_da.ts \
+    language/witGuiLang_it.ts
 #create new svnrev.h
 unix {
-    message(boobs)
     system(chmod 755 ./makesvnrev.sh)
     system(./makesvnrev.sh)
 }
@@ -27,7 +27,10 @@ win32 {
     system(SubWCRev.exe "." "./svnrev_template.h" "./svnrev.h")
 }
 
-#update language files
+#update language files (.ts)
 system(lupdate -verbose ./witGui.pro)
+
+#turn .ts into .qm files.  strip identical strings
+system(lrelease -verbose ./witGui.pro)
 
 RESOURCES += resources.qrc
