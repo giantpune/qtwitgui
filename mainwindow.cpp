@@ -21,6 +21,7 @@
 *************************************************************************************/
 
 #include <QTreeWidget>
+#include <QDesktopServices>
 #include <QMessageBox>
 #include <QFontMetrics>
 #include <QStringList>
@@ -106,6 +107,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     connect( extractAct, SIGNAL( triggered() ), this, SLOT( ExtractSlot() ) );
     connect( replaceAct, SIGNAL( triggered() ), this, SLOT( ReplaceSlot() ) );
 
+
+    //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
+    ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
+
     //load settings
     LoadSettings();
 
@@ -147,7 +152,13 @@ void MainWindow::AddText( const char in[] )
 //input file
 void MainWindow::on_toolButton_clicked()
 {
-    FileFolderDialog dialog(this);
+    FileFolderDialog dialog( this );
+
+    //the default OS-x dialog doesnt let me select files & directories
+#ifdef Q_WS_MAC
+    dialog.setOption( QFileDialog::DontUseNativeDialog );
+#endif
+
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
     dialog.setDirectory( ui->lineEdit_default_path->text() );
 
@@ -305,8 +316,10 @@ void MainWindow::on_pushButton_4_clicked()
 //search for output file
 void MainWindow::on_toolButton_2_clicked()
 {
-    QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::AnyFile);
+    QFileDialog dialog( this );
+#ifdef Q_WS_MAC
+    dialog.setOption( QFileDialog::DontUseNativeDialog );
+#endif
     dialog.setDirectory( ui->lineEdit_default_path->text() );
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
 
@@ -335,10 +348,13 @@ void MainWindow::UpdateOptions()
     char path[ 256 ];
     snprintf( path, sizeof( path ), "%s/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
 
+    qDebug() << path;
     FILE *f = fopen( path, "rb" );
     if( !f )
     {
+
 	snprintf( path, sizeof( path ), "%s/DATA/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
+	qDebug() << path;
 	f = fopen( path, "rb" );
     }
     if( f )
@@ -356,10 +372,12 @@ void MainWindow::UpdateOptions()
 
     //IOS
     snprintf( path, sizeof( path ), "%s/tmd.bin", ui->lineEdit->text().toLatin1().data() );
+    qDebug() << path;
     f = fopen( path, "rb" );
     if( !f )
     {
-	snprintf( path, sizeof( path ), "%s/DATA/sys/tmd.bin", ui->lineEdit->text().toLatin1().data() );
+	snprintf( path, sizeof( path ), "%s/DATA/tmd.bin", ui->lineEdit->text().toLatin1().data() );
+	qDebug() << path;
 	f = fopen( path, "rb" );
     }
     if( f )
@@ -647,6 +665,9 @@ void MainWindow::on_edit_img_pushButton_clicked()
 {
     FileFolderDialog dialog(this);
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
+#ifdef Q_WS_MAC
+    dialog.setOption( QFileDialog::DontUseNativeDialog );
+#endif
     dialog.setDirectory( ui->lineEdit_default_path->text() );
 
     if ( !dialog.exec() )
