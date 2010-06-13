@@ -161,7 +161,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -730,7 +730,7 @@
             <string notr="true"/>
            </property>
            <property name="text">
-            <string notr="true">/media</string>
+            <string notr="true"/>
            </property>
           </widget>
          </item>

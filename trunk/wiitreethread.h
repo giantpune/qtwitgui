@@ -1,5 +1,6 @@
 #ifndef WIITREETHREAD_H
 #define WIITREETHREAD_H
+// about 95% of this class is pieced together from the Qt examples, 2% I wrote on purpose, and 3% I accidentally wrote and it worked so it stayed
 
 
 #include <QThread>
