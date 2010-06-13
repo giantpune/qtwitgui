@@ -80,21 +80,17 @@
 = Platform Specific Stuff =
 
 == linux ==
-  * Everything should just work.
+  * Everything should just work.  I don't have a Linux box without the Qt SDK installed, so I can't say for sure if there are required dynamically linked libraries or anything.
 ----
 
 
 
 == windows ==
-  * Wit path is ./wit .  The default build for Qt will put the executable & working directory in "./Debug or ./Release"  Either change that, or put all the necessary files in that folder.
-
- * It is possible to run this exe without having the Qt SDK installed, but it requires 3 .dll files:  QtCore4.dll, QtGui4.dll, libgcc_s_dw2-1.dll.
+  * It is possible to run this exe without having the Qt SDK installed, but it requires at least 3 .dll files:  QtCore4.dll, QtGui4.dll, libgcc_s_dw2-1.dll.
 ----
 
 
 
 
 == OS-X ==
-  * Wit path is ./wit . The default run settings for Qt will run the program in a different directory.  You must either put wit in that folder, or change the setting
-
-  * There are issues with the Qt dialog boxes.  There is not one dialog that lets you select files or directories.  Instead I have added a dialog into this project.  This dialog works fine on windows and linux, but doesn't appear to work on OS-X.  Until I figure out the issue, the "find file/folder" dialogs are quite useless, and paths must be manually entered.
+  * Everything should just work.  I don't have a Mac without the Qt SDK installed, so I can't say for sure, though.
