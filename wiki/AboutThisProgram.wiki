@@ -14,22 +14,29 @@
 
   * Why not just incorporate code from wit into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
 
-== Tab 1 ( wit CP )==
+== Tab 1 ( Game )==
+  * Load a game by using file-> open ( ctrl+O ).  You can select a file or a folder containing an extracted game filesystem.  The program will run a couple processes of wit to gather information about the selected game, and then display the information in the GUI.
 
-  * This tab is designed for composing games from extracted files.  Enter a path into the first field.  Enter an output file in the second field.  Select any options you want and click "do it".
+  * Once a game has been loaded, you can select file->save as ( ctrl+ A ) to open a dialog box and save the game.
 
-  * This tab should also work for converting & editing existing images, as it uses wit COPY.  It was designed around extracted files, though, so using a existing image as input is not fully functional in the gui.
+  * You can browse the filesystem of the game, or select different parameters such as the name, ID, and IOS.  Changing these values has no effect on the game that you have loaded, these changes are only used when you save a game.
+
+  * For certain fields, editing is disabled.  You must enable these...  To edit the title, you must check the "update title" box.
+
+  * For IOS and region, there is a global setting.  If these settings are enabled, every time you save a game, it will use the values from the "settings" tab.  If these settings are not used, you can use the drop boxes in the "game" tab to change the IOS and region on a game by game basis.
+
+  *  This tab has a couple things set up that are not functional yet, as there is no direct support for it in wit...  Detecting the game IOS, extracting files, replacing files
 ----
 
 
 
-== Tab 2 ( file extract / replace ) ==
+== Tab 2 ( wit output ) ==
 
-  * This tab is not what I would call "done" yet.  As it stands, this tab performs "wit ILIST-L" and then turns the output into a browse-able file tree.
+  * This tab is used to display output from wit.  There is no console class in Qt, so I have improvised this.  It will try to mimic the console, but it is not intended to be fully functional.  It is read-only.
 
-  * You can select multiple files using shift & ctrl.  
+  * The text is cleared automatically between jobs.
 
-  * You can even right-click -> extract/replace.  But thats about as far as it goes.  Wit does not support those 2 actions yet, so I cannot go any farther with it. 
+  * There is a copy button which selects all the text and copies it to the clipboard.  Also supported are direct mouse highlighting, ctrl+c, and right click-copy.
 ----
 
 
@@ -41,6 +48,8 @@
 
   * For descriptions for settings, hover the mouse over them.  Most should have tooltips.
 
+  * Any settings here will supersede one from another tab with the same function.  This is to say, the IOS & region settings here must be disabled to use the ones in the first tab.
+
   * Clicking the "save settings" button writes a ini file in the same path that this program is running.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
 ----
 
@@ -50,7 +59,7 @@
 
 == Compiling ==
 
-  * Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  At the very least, you need the libraries and the files in /bin/.  Qmake is used to generate makefiles.  
+  * Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  At the very least, you need the libraries and the files in /bin/.  Qmake is used to generate makefiles.  Once you have a makefile, good ole, everyday make is used to build the project.
 
   * I suggest getting the full SDK since its free anyways.  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
 ----
