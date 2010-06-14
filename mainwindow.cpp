@@ -714,13 +714,15 @@ void MainWindow::ResizeGuiToLanguage()
     int pad = 40;
     int size = 0;
     QFontMetrics fm( fontMetrics() );
-    //ui->edit_img_pushButton->setMinimumWidth( MAX( ui->edit_img_pushButton->minimumWidth(), fm.width( ui->edit_img_pushButton->text() ) + pad ) );
     ui->pushButton_2->setMinimumWidth( MAX( ui->pushButton_2->minimumWidth(), fm.width( ui->pushButton_2->text() ) + pad ) );
     ui->pushButton_3->setMinimumWidth( MAX( ui->pushButton_3->minimumWidth(), fm.width( ui->pushButton_3->text() ) + pad ) );
-    //ui->pushButton_4->setMinimumWidth( MAX( ui->pushButton_4->minimumWidth(), fm.width( ui->pushButton_4->text() ) + pad ) );
     ui->save_pushButton->setMinimumWidth( MAX( ui->save_pushButton->minimumWidth(), fm.width( ui->save_pushButton->text() ) + pad ) );
-    //ui->toolButton->setMinimumWidth( MAX( ui->toolButton->minimumWidth(), fm.width( ui->toolButton->text() ) + pad ) );
-    //ui->toolButton_2->setMinimumWidth( MAX( ui->toolButton_2->minimumWidth(), fm.width( ui->toolButton_2->text() ) + pad ) );
+    ui->checkBox_defaultIos->setMinimumWidth( MAX( ui->checkBox_defaultIos->minimumWidth(), fm.width( ui->checkBox_defaultIos->text() ) + pad ) );
+    ui->checkBox_defaultRegion->setMinimumWidth( MAX( ui->checkBox_defaultRegion->minimumWidth(), fm.width( ui->checkBox_defaultRegion->text() ) + pad ) );
+    ui->label->setMinimumWidth( MAX( ui->label->minimumWidth(), fm.width( ui->label->text() ) + pad ) );
+    ui->label_2->setMinimumWidth( MAX( ui->label_2->minimumWidth(), fm.width( ui->label_2->text() ) + pad ) );
+    ui->label_3->setMinimumWidth( MAX( ui->label_3->minimumWidth(), fm.width( ui->label_3->text() ) + pad ) );
+    ui->label_7->setMinimumWidth( MAX( ui->label_7->minimumWidth(), fm.width( ui->label_7->text() ) + pad ) );
 
 
     for( int i = 0; i < ui->verbose_combobox->count(); i++ )
