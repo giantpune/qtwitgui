@@ -22,6 +22,7 @@
 
 #include <QTreeWidget>
 #include <QFileInfo>
+#include <QMessageBox>
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QFontMetrics>
@@ -42,11 +43,18 @@
 
 //this syntax apparently works for all platforms
 #define WIT "./wit"
+#define MINIMUM_WIT_VERSION 1214
+
+#define PROGRAM_NAME "QtWitGui"
+#define PROGRAM_VERSION "0.0.3"
+#define WEBSITE_STRING "http://code.google.com/p/qtwitgui/"
+
 
 
 #define SAFEDELETE( x ) if( x )delete( x )
 #define MAX( x, y ) ( ( x ) > ( y ) ? ( x ) : ( y ) )
 #define MIN( x, y ) ( ( x ) < ( y ) ? ( x ) : ( y ) )
+
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::MainWindow )
@@ -78,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     wiithread = new WiiTreeThread;
 
     //get the version of wit and append it to the titlebar
+    witVersionString = "wit: " + tr( "Unknown" );
     QString str = WIT;
     witJob = witGetVersion;
     witProcess->start( str );
@@ -115,6 +124,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
     //load settings
     LoadSettings();
+    this->UpdateOptions();
 
     //make sure buttons are wide enough for text
     ResizeGuiToLanguage();
@@ -346,6 +356,14 @@ void MainWindow::UpdateOptions()
     ui->checkBox_3->setEnabled( checked );
     ui->checkBox_4->setEnabled( checked );
 
+    //default IOS & region settings
+    ui->default_ios_spinbox->setEnabled( ui->checkBox_defaultIos->isChecked() );
+    ui->comboBox_defaultRegion->setEnabled( ui->checkBox_defaultRegion->isChecked() );
+
+    //IOS & region [ tab 1 ]
+    ui->spinBox_gameIOS->setEnabled( !ui->checkBox_defaultIos->isChecked() );
+    ui->comboBox_region->setEnabled( !ui->checkBox_defaultRegion->isChecked() );
+
     //title & id
 /*    char path[ 256 ];
     snprintf( path, sizeof( path ), "%s/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
@@ -455,12 +473,18 @@ void MainWindow::ReadyReadStdOutSlot()
 	QString s = read;
 	s = s.trimmed();
 	s.resize( s.indexOf( "\n", 0) - 1 );
+	witVersionString = s;
 	//add the svn version of this program
 	s += " | Gui: r";
 	s += SVN_REV_STR;
 	if( s.endsWith( "m", Qt::CaseInsensitive ) )
 	    s.resize( s.size() - 1 );
 	setWindowTitle( s );
+
+	//save part of this string for the "about" box
+	int firstDash = witVersionString.indexOf( " -", 0);
+	witVersionString.resize( firstDash );
+	//qDebug() << witVersionString;
 	return;
     }
 
@@ -604,7 +628,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    int v = str.toInt( &ok, 10 );
 		    if( ok && v < 4 )
 		    {
-			ui->comboBox->setCurrentIndex( v + 1 );
+			ui->comboBox_region->setCurrentIndex( v + 1 );
 		    }
 
 		    //ui->label_edit_region->setText( str );
@@ -799,16 +823,20 @@ bool MainWindow::SaveSettings()
 	<< "\nlogging:"	    << ui->logging_combobox->currentIndex()
 	<< "\nios:"	    << ui->default_ios_spinbox->value()
 	<< "\npath:"	    << ui->lineEdit_default_path->text()
-	<< "\nregion:"	    << ui->comboBox->currentIndex()
+	<< "\nregion:"	    << ui->comboBox_region->currentIndex()
 	<< "\nstarttab:"    << ui->startupTab_combobox->currentIndex()
 	<< "\nupdatetitle:" << ui->checkBox_6->checkState()
 	<< "\nupdateid:"    << ui->checkBox_7->checkState()
 	<< "\ndischdr:"	    << ui->checkBox_2->checkState()
 	<< "\ntmdticket:"   << ui->checkBox_4->checkState()
 	<< "\nparthdr:"	    << ui->checkBox_3->checkState()
-//	<< "\ninputpath:"   << ui->lineEdit->text()
-//	<< "\noutputpath:"  << ui->lineEdit_2->text()
-	<< "\nignoreidden:"  << ui->checkBox_hiddenFiles->checkState();
+	<< "\nignoreidden:" << ui->checkBox_hiddenFiles->checkState()
+	<< "\ndefaultiosch:"<< ui->checkBox_defaultIos->checkState()
+	<< "\ndefaultios:"  << ui->spinBox_gameIOS->value()
+	<< "\ndefaultregch:"<< ui->checkBox_defaultRegion->checkState()
+	<< "\ndefaultreg:"  << ui->comboBox_defaultRegion->currentIndex()
+
+	;
 
     return true;
 
@@ -872,7 +900,7 @@ bool MainWindow::LoadSettings()
 	{
 	    int v = value.toInt( &ok, 10 );
 	    if( ok )
-		ui->comboBox->setCurrentIndex( v );
+		ui->comboBox_region->setCurrentIndex( v );
 	}
 	else if( setting == "path" )
 	{
@@ -912,20 +940,37 @@ bool MainWindow::LoadSettings()
 	    int v = value.toInt( &ok, 10 );
 	    ui->checkBox_3->setChecked( ok && v );
 	}
-	/*else if( setting == "inputpath" )
-	{
-	    ui->lineEdit->setText( value );
-	}
-	else if( setting == "outputpath" )
-	{
-	    ui->lineEdit_2->setText( value );
-	}*/
 	else if( setting == "ignoreidden" )
 	{
 	    int v = value.toInt( &ok, 10 );
 	    ui->checkBox_hiddenFiles->setChecked( ok && v );
 	}
-
+	else if( setting == "defaultiosch" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_defaultIos->setChecked( ok && v );
+	}
+	else if( setting == "defaultregch" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_defaultRegion->setChecked( ok && v );
+	}
+	else if( setting == "defaultios" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+	    {
+		ui->spinBox_gameIOS->setValue( v );
+	    }
+	}
+	else if( setting == "defaultreg" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+	    {
+		ui->comboBox_defaultRegion->setCurrentIndex( v );
+	    }
+	}
 
 
     }
@@ -933,7 +978,7 @@ bool MainWindow::LoadSettings()
     return true;
 }
 
-//save button clicked
+//save settings button clicked
 void MainWindow::on_save_pushButton_clicked()
 {
     SaveSettings();
@@ -1074,7 +1119,7 @@ void MainWindow::on_actionSave_As_triggered()
 
     //region
     QString reg;
-    switch( ui->comboBox->currentIndex() )
+    switch( ui->comboBox_region->currentIndex() )
     {
 	case 0:
 	default:
@@ -1098,10 +1143,10 @@ void MainWindow::on_actionSave_As_triggered()
     }
 
     //ios
-    if( ui->spinBox->value() != tmdIOS )
+    if( ui->spinBox_gameIOS->value() != tmdIOS )
     {
 	QString ios;
-	QTextStream( &ios ) << "--ios=" << ui->spinBox->value();
+	QTextStream( &ios ) << "--ios=" << ui->spinBox_gameIOS->value();
 	args << ios;
     }
 
@@ -1196,4 +1241,36 @@ void MainWindow::on_actionSave_As_triggered()
 	return;
     }
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
+}
+
+//about this program
+void MainWindow::on_actionAbout_triggered()
+{
+    QString aboutText;
+    QTextStream( &aboutText ) << PROGRAM_NAME << tr( " is a cross-platform GUI for wit.\n"\
+						     "This software comes to you with a GPLv3 license\n\n")
+
+						<< tr( "Version: " ) << PROGRAM_VERSION << "\n"
+						<< tr( "Revision: " ) << SVN_REV_STR << "\n"
+						<< tr( "Website: " ) << WEBSITE_STRING << "\n"
+						<< "2010 Giantpune\n\n"
+						<< witVersionString << "\n";
+
+    QMessageBox::about( this, tr( "About " ) + PROGRAM_NAME, aboutText );
+}
+
+//about Qt
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QApplication::aboutQt();
+}
+
+void MainWindow::on_checkBox_defaultIos_clicked()
+{
+    this->UpdateOptions();
+}
+
+void MainWindow::on_checkBox_defaultRegion_clicked()
+{
+    this->UpdateOptions();
 }

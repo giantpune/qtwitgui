@@ -83,6 +83,7 @@ private:
     QString filepaths;
     QString isoPath;
     QString lastPathLoadedCorrectly;
+    QString witVersionString;
     QAction *extractAct;
     QAction *replaceAct;
     QStringList extractPaths;
@@ -109,6 +110,10 @@ private:
 
 private slots:
 
+    void on_checkBox_defaultRegion_clicked();
+    void on_checkBox_defaultIos_clicked();
+    void on_actionAbout_Qt_triggered();
+    void on_actionAbout_triggered();
     void on_actionSave_As_triggered();
     void on_actionOpen_triggered();
     void on_pushButton_settings_searchPath_clicked();

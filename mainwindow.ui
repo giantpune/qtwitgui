@@ -65,28 +65,18 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Compose Image</string>
+        <string>Game</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="checkBox_7">
-            <property name="toolTip">
-             <string>Do you want to change the TID of the game?</string>
-            </property>
-            <property name="text">
-             <string>Update ID</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="2">
            <widget class="QCheckBox" name="checkBox_4">
             <property name="enabled">
@@ -104,12 +94,12 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QComboBox" name="comboBox">
+           <widget class="QComboBox" name="comboBox_region">
             <property name="toolTip">
              <string>Set the region used for the output image.  This is independent of the TID.  If auto is selected, wit will try to guess the region based on the TID.</string>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <item>
              <property name="text">
@@ -136,16 +126,6 @@
               <string>KOREA</string>
              </property>
             </item>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="checkBox_6">
-            <property name="toolTip">
-             <string>Do you want to change the title of the game?</string>
-            </property>
-            <property name="text">
-             <string>Update Title</string>
-            </property>
            </widget>
           </item>
           <item row="0" column="2">
@@ -276,9 +256,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox">
+             <widget class="QSpinBox" name="spinBox_gameIOS">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="toolTip">
                <string>What IOS should be used in the TMD</string>
@@ -292,6 +272,26 @@
              </widget>
             </item>
            </layout>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="checkBox_7">
+            <property name="toolTip">
+             <string>Do you want to change the TID of the game?</string>
+            </property>
+            <property name="text">
+             <string>Update ID</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="checkBox_6">
+            <property name="toolTip">
+             <string>Do you want to change the title of the game?</string>
+            </property>
+            <property name="text">
+             <string>Update Title</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -351,9 +351,9 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="Edit_tab">
+      <widget class="QWidget" name="wit_tab">
        <attribute name="title">
-        <string>Edit Image</string>
+        <string>Output</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="1" column="0" colspan="4">
@@ -461,10 +461,19 @@
           <x>10</x>
           <y>100</y>
           <width>391</width>
-          <height>161</height>
+          <height>212</height>
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="formAlignment">
+          <set>Qt::AlignCenter</set>
+         </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
@@ -542,10 +551,7 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="def_ios_lbl">
-           <property name="toolTip">
-            <string>Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used</string>
-           </property>
+          <widget class="QCheckBox" name="checkBox_defaultIos">
            <property name="text">
             <string>Default IOS:</string>
            </property>
@@ -553,8 +559,14 @@
          </item>
          <item row="2" column="1">
           <widget class="QSpinBox" name="default_ios_spinbox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="toolTip">
-            <string>Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used</string>
+            <string>Default IOS to use for booting</string>
+           </property>
+           <property name="minimum">
+            <number>3</number>
            </property>
            <property name="maximum">
             <number>255</number>
@@ -564,7 +576,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <widget class="QPushButton" name="pushButton_settings_searchPath">
            <property name="minimumSize">
             <size>
@@ -577,7 +589,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="4" column="1">
           <widget class="QLineEdit" name="lineEdit_default_path">
            <property name="minimumSize">
             <size>
@@ -596,14 +608,14 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>Start at:</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <widget class="QComboBox" name="startupTab_combobox">
            <property name="minimumSize">
             <size>
@@ -613,17 +625,51 @@
            </property>
            <item>
             <property name="text">
-             <string>Compose</string>
+             <string>Game</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Edit</string>
+             <string>Output</string>
             </property>
            </item>
            <item>
             <property name="text">
              <string>Settings</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="checkBox_defaultRegion">
+           <property name="text">
+            <string>Default Region:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="comboBox_defaultRegion">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>JAPAN</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>USA</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>PAL</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>KOREA</string>
             </property>
            </item>
           </widget>
@@ -694,6 +740,11 @@
          <string>Save Settings</string>
         </property>
        </widget>
+       <zorder>layoutWidget</zorder>
+       <zorder>layoutWidget</zorder>
+       <zorder>save_pushButton</zorder>
+       <zorder>default_ios_spinbox</zorder>
+       <zorder>checkBox_defaultIos</zorder>
       </widget>
      </widget>
     </item>
@@ -720,6 +771,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="actionAbout_Qt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
@@ -747,6 +799,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="text">
+    <string>About Qt...</string>
    </property>
   </action>
  </widget>
