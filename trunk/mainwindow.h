@@ -77,13 +77,13 @@ private:
     Ui::MainWindow *ui;
     QProcess *witProcess;
 
-    //for the edit tab
     QIcon groupIcon;
     QIcon keyIcon;
     QString filepaths;
     QString isoPath;
     QString lastPathLoadedCorrectly;
     QString witVersionString;
+    QString witErrorStr;
     QAction *extractAct;
     QAction *replaceAct;
     QStringList extractPaths;
@@ -91,7 +91,8 @@ private:
     WiiTreeThread *wiithread;
 
 
-    u8 tmdIOS;
+    u8 gameIOS;
+    u8 gameRegion;
     bool undoLastTextOperation;
     u8 witJob;
     //bool gameIsLoadedOk;
@@ -105,6 +106,10 @@ private:
     bool SaveSettings();
     bool LoadSettings();
     void ResizeGuiToLanguage();
+    void AbortLoadingGame( QString message );
+    void ErrorMessage( QString message );
+    int GetRegion();
+    int GetIOS();
 
 
 
@@ -129,6 +134,7 @@ private slots:
     void on_pushButton_3_clicked();
     void UpdateOptions();
     void ReadyReadStdOutSlot();
+    void ReadyReadStdErrSlot();
     void ProcessFinishedSlot( int, QProcess::ExitStatus );
     void ExtractSlot();
     void ReplaceSlot();
