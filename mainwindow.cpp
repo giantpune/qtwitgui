@@ -20,6 +20,7 @@
 *
 *************************************************************************************/
 
+#include <QUrl>
 #include <QTreeWidget>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -60,6 +61,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::MainWindow )
 {
     ui->setupUi( this );
+    setAcceptDrops(true);
 
     undoLastTextOperation = false;
     //gameIsLoadedOk = false;
@@ -775,6 +777,11 @@ void MainWindow::on_actionOpen_triggered()
     if( isoPath.isEmpty() )
 	return;
 
+    OpenGame();
+}
+
+void MainWindow::OpenGame()
+{
     QStringList args;
     args << "DUMP";
     args << isoPath;
@@ -1150,4 +1157,33 @@ void MainWindow::on_checkBox_defaultIos_clicked()
 void MainWindow::on_checkBox_defaultRegion_clicked()
 {
     this->UpdateOptions();
+}
+
+void MainWindow::dropEvent( QDropEvent *event )
+{
+    QUrl url( event->mimeData()->text() );
+    QString path = url.toLocalFile().trimmed();
+
+    QFile file( path );
+    if( file.exists() )
+    {
+	isoPath = path;
+	OpenGame();
+    }
+    else
+    {
+	event->ignore();
+    }
+}
+
+void MainWindow::dragEnterEvent( QDragEnterEvent *event )
+{
+    if( event->mimeData()->hasText() )
+    {
+	event->acceptProposedAction();
+    }
+    else
+    {
+	event->ignore();
+    }
 }
