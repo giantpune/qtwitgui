@@ -8,6 +8,8 @@
 
   * Wit path is ./wit.  You need wit in the same path as this program, as well as any dependencies for it ( like cygwin.dll ).
 
+  * This program is designed to deal with 1 game at a time, not with folders cantaining multiple games.
+
   * This program works by getting input from the user, then building a list of commands and runs wit as a process and passes it those commands.
 
   * Then when wit sends output through stdout or stderr ( the stuff you usually see in the console ) this program reads it and interprets it into data to use in the GUI.  Due to this, changes in the formatting of the output text from wit can break this program easily.
@@ -15,7 +17,7 @@
   * Why not just incorporate code from wit into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
 
 == Tab 1 ( Game )==
-  * Load a game by using file-> open ( ctrl+O ).  You can select a file or a folder containing an extracted game filesystem.  The program will run a couple processes of wit to gather information about the selected game, and then display the information in the GUI.
+  * Load a game by using file-> open ( ctrl+O ) or dragging a game onto the window.  You can use a file or a folder containing an extracted game filesystem.  The program will run a couple processes of wit to gather information about the selected game, and then display the information in the GUI.
 
   * Once a game has been loaded, you can select file->save as ( ctrl+ A ) to open a dialog box and save the game.
 
