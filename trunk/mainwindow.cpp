@@ -152,7 +152,7 @@ void MainWindow::AddText( const char in[] )
 }
 
 //input file
-void MainWindow::on_toolButton_clicked()
+/*void MainWindow::on_toolButton_clicked()
 {
     FileFolderDialog dialog( this );
 
@@ -172,8 +172,8 @@ void MainWindow::on_toolButton_clicked()
 	ui->lineEdit->setText( item );
 	UpdateOptions();
     }
-}
-
+}*/
+/*
 //send command to wit [tab 1]
 void MainWindow::on_pushButton_4_clicked()
 {
@@ -314,9 +314,9 @@ void MainWindow::on_pushButton_4_clicked()
     }
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
 }
-
+*/
 //search for output file
-void MainWindow::on_toolButton_2_clicked()
+/*void MainWindow::on_toolButton_2_clicked()
 {
     QFileDialog dialog( this );
 #ifdef Q_WS_MAC
@@ -332,7 +332,7 @@ void MainWindow::on_toolButton_2_clicked()
 	    ui->lineEdit_2->setText( item );
     }
 }
-
+*/
 //update the window & available settings
 void MainWindow::UpdateOptions()
 {
@@ -347,7 +347,7 @@ void MainWindow::UpdateOptions()
     ui->checkBox_4->setEnabled( checked );
 
     //title & id
-    char path[ 256 ];
+/*    char path[ 256 ];
     snprintf( path, sizeof( path ), "%s/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
 
     qDebug() << path;
@@ -409,6 +409,7 @@ void MainWindow::UpdateOptions()
 	QString m = "Unknown IOS for \"" + ui->lineEdit->text() + "\" - action not supported yet.";
 	ui->statusBar->showMessage( m );
     }
+*/
 }
 
 void MainWindow::on_checkBox_6_clicked()
@@ -422,11 +423,11 @@ void MainWindow::on_checkBox_7_clicked()
 }
 
 //after typing in the "source" text field
-void MainWindow::on_lineEdit_editingFinished()
+/*void MainWindow::on_lineEdit_editingFinished()
 {
     this->UpdateOptions();
 }
-
+*/
 //get message from the workthread
 void MainWindow::ShowMessage( const QString &s )
 {
@@ -674,7 +675,7 @@ void MainWindow::DoIlist()
 }
 
 //load game to edit
-void MainWindow::on_edit_img_pushButton_clicked()
+/*void MainWindow::on_edit_img_pushButton_clicked()
 {
     FileFolderDialog dialog(this);
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
@@ -714,7 +715,7 @@ void MainWindow::on_edit_img_pushButton_clicked()
     }
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
 }
-
+*/
 //update the progressbar based on output from the tree-creating thread
 void MainWindow::UpdateProgressFromThread( int i )
 {
@@ -805,8 +806,8 @@ bool MainWindow::SaveSettings()
 	<< "\ndischdr:"	    << ui->checkBox_2->checkState()
 	<< "\ntmdticket:"   << ui->checkBox_4->checkState()
 	<< "\nparthdr:"	    << ui->checkBox_3->checkState()
-	<< "\ninputpath:"   << ui->lineEdit->text()
-	<< "\noutputpath:"  << ui->lineEdit_2->text()
+//	<< "\ninputpath:"   << ui->lineEdit->text()
+//	<< "\noutputpath:"  << ui->lineEdit_2->text()
 	<< "\nignoreidden:"  << ui->checkBox_hiddenFiles->checkState();
 
     return true;
@@ -911,14 +912,14 @@ bool MainWindow::LoadSettings()
 	    int v = value.toInt( &ok, 10 );
 	    ui->checkBox_3->setChecked( ok && v );
 	}
-	else if( setting == "inputpath" )
+	/*else if( setting == "inputpath" )
 	{
 	    ui->lineEdit->setText( value );
 	}
 	else if( setting == "outputpath" )
 	{
 	    ui->lineEdit_2->setText( value );
-	}
+	}*/
 	else if( setting == "ignoreidden" )
 	{
 	    int v = value.toInt( &ok, 10 );
@@ -946,13 +947,13 @@ void MainWindow::ResizeGuiToLanguage()
     int pad = 40;
     int size = 0;
     QFontMetrics fm( fontMetrics() );
-    ui->edit_img_pushButton->setMinimumWidth( MAX( ui->edit_img_pushButton->minimumWidth(), fm.width( ui->edit_img_pushButton->text() ) + pad ) );
+    //ui->edit_img_pushButton->setMinimumWidth( MAX( ui->edit_img_pushButton->minimumWidth(), fm.width( ui->edit_img_pushButton->text() ) + pad ) );
     ui->pushButton_2->setMinimumWidth( MAX( ui->pushButton_2->minimumWidth(), fm.width( ui->pushButton_2->text() ) + pad ) );
     ui->pushButton_3->setMinimumWidth( MAX( ui->pushButton_3->minimumWidth(), fm.width( ui->pushButton_3->text() ) + pad ) );
-    ui->pushButton_4->setMinimumWidth( MAX( ui->pushButton_4->minimumWidth(), fm.width( ui->pushButton_4->text() ) + pad ) );
+    //ui->pushButton_4->setMinimumWidth( MAX( ui->pushButton_4->minimumWidth(), fm.width( ui->pushButton_4->text() ) + pad ) );
     ui->save_pushButton->setMinimumWidth( MAX( ui->save_pushButton->minimumWidth(), fm.width( ui->save_pushButton->text() ) + pad ) );
-    ui->toolButton->setMinimumWidth( MAX( ui->toolButton->minimumWidth(), fm.width( ui->toolButton->text() ) + pad ) );
-    ui->toolButton_2->setMinimumWidth( MAX( ui->toolButton_2->minimumWidth(), fm.width( ui->toolButton_2->text() ) + pad ) );
+    //ui->toolButton->setMinimumWidth( MAX( ui->toolButton->minimumWidth(), fm.width( ui->toolButton->text() ) + pad ) );
+    //ui->toolButton_2->setMinimumWidth( MAX( ui->toolButton_2->minimumWidth(), fm.width( ui->toolButton_2->text() ) + pad ) );
 
 
     for( int i = 0; i < ui->verbose_combobox->count(); i++ )
@@ -1059,6 +1060,7 @@ void MainWindow::on_actionSave_As_triggered()
     args << lastPathLoadedCorrectly;		//source path
     args << outputPath;				//dest path
 
+    //add a --fst arg if needed, since wit will asume we want a .wdf file usually
     QFileInfo fi( outputPath );
     if( fi.isDir() ||
 	(  !outputPath.endsWith( ".wbfs", Qt::CaseInsensitive)

@@ -114,13 +114,13 @@ private slots:
     void on_pushButton_settings_searchPath_clicked();
     void on_save_pushButton_clicked();
     void on_pushButton_2_clicked();
-    void on_edit_img_pushButton_clicked();
-    void on_lineEdit_editingFinished();
+    //void on_edit_img_pushButton_clicked();
+    //void on_lineEdit_editingFinished();
     void on_checkBox_7_clicked();
     void on_checkBox_6_clicked();
-    void on_toolButton_2_clicked();
-    void on_pushButton_4_clicked();
-    void on_toolButton_clicked();
+    //void on_toolButton_2_clicked();
+    //void on_pushButton_4_clicked();
+    //void on_toolButton_clicked();
     void on_pushButton_3_clicked();
     void UpdateOptions();
     void ReadyReadStdOutSlot();
