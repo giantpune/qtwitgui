@@ -82,6 +82,7 @@ private:
     QIcon keyIcon;
     QString filepaths;
     QString isoPath;
+    QString lastPathLoadedCorrectly;
     QAction *extractAct;
     QAction *replaceAct;
     QStringList extractPaths;
@@ -92,6 +93,7 @@ private:
     u8 tmdIOS;
     bool undoLastTextOperation;
     u8 witJob;
+    //bool gameIsLoadedOk;
 
     char id[ 7 ];
     char name[ 0x40 ];
@@ -107,6 +109,8 @@ private:
 
 private slots:
 
+    void on_actionSave_As_triggered();
+    void on_actionOpen_triggered();
     void on_pushButton_settings_searchPath_clicked();
     void on_save_pushButton_clicked();
     void on_pushButton_2_clicked();
