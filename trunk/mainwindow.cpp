@@ -21,6 +21,7 @@
 *************************************************************************************/
 
 #include <QTreeWidget>
+#include <QFileInfo>
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QFontMetrics>
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     ui->setupUi( this );
 
     undoLastTextOperation = false;
+    //gameIsLoadedOk = false;
     //alreadyGotTitle = false;
 
     ui->plainTextEdit->clear();
@@ -581,19 +583,30 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    str.remove( 0, 10 );
 		    str = str.trimmed();
 		    str.resize( 6 );
-		    ui->label_edit_id->setText( str );
+		    ui->lineEdit_3->setText( str );
+		    //ui->label_edit_id->setText( str );
 		}
 		else if( str.contains( "Disc name:" ) )
 		{
 		    str.remove( 0, 10 );
 		    str = str.trimmed();
-		    ui->label_edit_name->setText( str );
+		    ui->lineEdit_4->setText( str );
+		    //ui->label_edit_name->setText( str );
 		}
-		else if( str.contains( "Region:" ) )
+		else if( str.contains( "Region setting:" ) )
 		{
-		    str.remove( 0, 7 );
+		    str.remove( 0, 15 );
 		    str = str.trimmed();
-		    ui->label_edit_region->setText( str );
+		    str.resize( 1 );
+		    qDebug() << "region: " << str;
+		    bool ok;
+		    int v = str.toInt( &ok, 10 );
+		    if( ok && v < 4 )
+		    {
+			ui->comboBox->setCurrentIndex( v + 1 );
+		    }
+
+		    //ui->label_edit_region->setText( str );
 		}
 
 	    }
@@ -711,10 +724,22 @@ void MainWindow::UpdateProgressFromThread( int i )
 //triggered when the tree-creating thread is done.  it passes a root item filled with the directory structure for the game
 void MainWindow::ThreadIsDoneRunning( QTreeWidgetItem *i )
 {
-    QList<QTreeWidgetItem *> rootlist = i->takeChildren();
-    ui->treeWidget->addTopLevelItems( rootlist );
-    witJob = witNoJob;
+    //move the file tree
+    ui->treeWidget->addTopLevelItems( i->takeChildren() );
+
+    //delete the pointer of the root item used by the thread
     SAFEDELETE( i );
+
+    //reset the flag for the current job
+    witJob = witNoJob;
+
+    //loading this game was successful, so change the path for use when extracting/saving
+    lastPathLoadedCorrectly = isoPath;
+
+    //enable "save" now that there has been a game successfully loaded
+    ui->actionSave_As->setEnabled( true );
+
+    //tell the user that we are ready to do something else
     ui->statusBar->showMessage( tr( "Ready" ) );
 }
 
@@ -955,3 +980,218 @@ void MainWindow::on_pushButton_settings_searchPath_clicked()
 	ui->lineEdit_default_path->setText( dir );
 }
 
+//file->open / ctrl+O
+void MainWindow::on_actionOpen_triggered()
+{
+    qDebug() << "open triggered";
+    FileFolderDialog dialog(this);
+    dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
+#ifdef Q_WS_MAC
+    dialog.setOption( QFileDialog::DontUseNativeDialog );
+#endif
+    dialog.setDirectory( ui->lineEdit_default_path->text() );
+
+    if ( !dialog.exec() )
+	return;
+
+    isoPath = dialog.selectedFiles()[ 0 ];
+
+    if( isoPath.isEmpty() )
+	return;
+
+    QStringList args;
+    args << "DUMP";
+    args << isoPath;
+
+    QString str = WIT;
+    ui->plainTextEdit->clear();
+    ui->plainTextEdit->insertPlainText( str + " " );
+    ui->tabWidget->setDisabled( true );
+    for( int i = 0; i < args.size(); i++ )
+	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
+
+    //start a process using wit from the current working directory
+    witJob = witDump;
+    witProcess->start( str, args );
+    if( !witProcess->waitForStarted() )
+    {
+	qDebug( "!waitforstarted()" );
+	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
+	witJob = witNoJob;
+	return;
+    }
+    ui->statusBar->showMessage( tr( "Wit is running..." ) );
+}
+
+//file->save as / ctrl + s
+void MainWindow::on_actionSave_As_triggered()
+{
+    qDebug() << "save as";
+    if( !ui->actionSave_As->isEnabled() //should never happen
+	|| lastPathLoadedCorrectly.isEmpty() )
+	return;
+
+    if( witJob != witNoJob )
+    {
+	QMessageBox::warning(this, tr( "Slow your roll!" ),tr( "Wit is still running.\nWait for the current job to finish." ), tr( "Ok" ) );
+	return;
+    }
+
+    //open a dialog and browse for an output file
+    QString outputPath;
+    QFileDialog dialog( this );
+#ifdef Q_WS_MAC						    //the OS-x default dialog box doesn't let me select files & folders
+    dialog.setOption( QFileDialog::DontUseNativeDialog );
+#endif
+    dialog.setDirectory( ui->lineEdit_default_path->text() );
+    dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
+
+    if ( !dialog.exec() || dialog.selectedFiles()[ 0 ].isEmpty() )
+	return;
+
+
+    ui->progressBar->setValue( 0 );
+
+    outputPath = dialog.selectedFiles()[ 0 ];
+
+    QStringList args;
+    args << "CP";				// copy command
+    args << lastPathLoadedCorrectly;		//source path
+    args << outputPath;				//dest path
+
+    QFileInfo fi( outputPath );
+    if( fi.isDir() ||
+	(  !outputPath.endsWith( ".wbfs", Qt::CaseInsensitive)
+	&& !outputPath.endsWith( ".wdf", Qt::CaseInsensitive)
+	&& !outputPath.endsWith( ".iso", Qt::CaseInsensitive)
+	&& !outputPath.endsWith( ".ciso", Qt::CaseInsensitive) ) )
+    {
+	qDebug() << "treating " << outputPath << "as fst";
+	args << "--fst";
+    }
+
+    //region
+    QString reg;
+    switch( ui->comboBox->currentIndex() )
+    {
+	case 0:
+	default:
+	    break;
+	case 1:
+	    QTextStream( &reg ) << "--region=" << 0;//jap
+	    args << reg;
+	    break;
+	case 2:
+	    QTextStream( &reg ) << "--region=" << 1;//usa
+	    args << reg;
+	    break;
+	case 3:
+	    QTextStream( &reg ) << "--region=" << 2;//pal
+	    args << reg;
+	    break;
+	case 4:
+	    QTextStream( &reg ) << "--region=" << 4;//korea
+	    args << reg;
+	    break;
+    }
+
+    //ios
+    if( ui->spinBox->value() != tmdIOS )
+    {
+	QString ios;
+	QTextStream( &ios ) << "--ios=" << ui->spinBox->value();
+	args << ios;
+    }
+
+    //id
+    if( ui->checkBox_7->isChecked() )
+    {
+	args << "--id=" + ui->lineEdit_3->text();
+    }
+
+    //title
+    if( ui->checkBox_6->isChecked() )
+    {
+	args << "\'--name=" + ui->lineEdit_4->text() + "\'";
+    }
+
+    //modify
+    if( ( ui->checkBox_2->isChecked() ||
+	ui->checkBox_3->isChecked() ||
+	ui->checkBox_4->isChecked() )
+	&& ( ui->checkBox_6->isChecked() ||
+	ui->checkBox_7->isChecked() ) )
+    {
+	QString mod = "--modify=";
+	u8 checked = 0;
+
+	if( ui->checkBox_2->isChecked() )
+	{
+	    checked++;
+	    mod += "DISC";
+	}
+	if( ui->checkBox_3->isChecked() )
+	{
+	    if( checked )mod += ",";
+	    mod += "BOOT";
+	    checked++;
+	}
+	if( ui->checkBox_4->isChecked() )
+	{
+	    if( checked )mod += ",";
+	    mod += "TMD,TICKET";
+	}
+
+	args << mod;
+    }
+
+    //verbose
+    if( ui->verbose_combobox->currentIndex() )
+    {
+	if( ui->verbose_combobox->currentIndex() == 1)
+	    args << "--quiet";
+	else
+	{
+	    for( int i = 1; i < ui->verbose_combobox->currentIndex(); i++ )
+	    args << "-v";
+	}
+    }
+
+    //logging
+    for( int i = 0; i < ui->logging_combobox->currentIndex(); i++ )
+	args << "-L";
+
+    //overwrite existing files
+    if( ui->overwrite_checkbox->isChecked() )
+	args << "--overwrite";
+
+    //test mode
+    if( ui->checkBox->isChecked() )
+	args << "--test";
+
+    //clear the current text window
+    ui->plainTextEdit->clear();
+    ui->tabWidget->setDisabled( true );
+
+    //make sure we get the progress output
+    args << "--progress";
+
+    //show the command in the console window
+    QString str = WIT;
+    ui->plainTextEdit->insertPlainText( str + " " );
+    for( int i = 0; i < args.size(); i++ )
+	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
+    ui->plainTextEdit->insertPlainText( "\n" );
+
+    //start a process using wit and give it the arg string
+    witJob = witCopy;
+    witProcess->start( str, args );
+    if( !witProcess->waitForStarted() )
+    {
+	qDebug( "!waitforstarted()" );
+	ui->statusBar->showMessage( tr(  "Error starting wit!" ) );
+	witJob = witNoJob;
+	return;
+    }
+    ui->statusBar->showMessage( tr( "Wit is running..." ) );
+}
