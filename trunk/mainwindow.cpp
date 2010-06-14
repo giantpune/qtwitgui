@@ -151,11 +151,22 @@ MainWindow::~MainWindow()
     SAFEDELETE( witProcess );
 }
 
+/**************************************************
+*
+*   buttons for the wit tab
+*
+***************************************************/
 //copy text
 void MainWindow::on_pushButton_3_clicked()
 {
     ui->plainTextEdit->selectAll();
     ui->plainTextEdit->copy();
+}
+
+//"clear" button clicked
+void MainWindow::on_pushButton_2_clicked()
+{
+    ui->plainTextEdit->clear();
 }
 
 //append text to the message box
@@ -164,103 +175,11 @@ void MainWindow::AddText( const char in[] )
     ui->plainTextEdit->insertPlainText( in );
 }
 
-//update the window & available settings
-void MainWindow::UpdateOptions()
-{
-    // title & ID line edits
-    ui->lineEdit_4->setEnabled( ui->checkBox_6->isChecked() );
-    ui->lineEdit_3->setEnabled( ui->checkBox_7->isChecked() );
-
-    // check boxes
-    bool checked = ui->checkBox_6->isChecked() || ui->checkBox_7->isChecked();
-    ui->checkBox_2->setEnabled( checked );
-    ui->checkBox_3->setEnabled( checked );
-    ui->checkBox_4->setEnabled( checked );
-
-    //default IOS & region settings
-    ui->default_ios_spinbox->setEnabled( ui->checkBox_defaultIos->isChecked() );
-    ui->comboBox_defaultRegion->setEnabled( ui->checkBox_defaultRegion->isChecked() );
-
-    //IOS & region [ tab 1 ]
-    ui->spinBox_gameIOS->setEnabled( !ui->checkBox_defaultIos->isChecked() );
-    ui->comboBox_region->setEnabled( !ui->checkBox_defaultRegion->isChecked() );
-
-    //title & id
-/*    char path[ 256 ];
-    snprintf( path, sizeof( path ), "%s/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
-
-    qDebug() << path;
-    FILE *f = fopen( path, "rb" );
-    if( !f )
-    {
-
-	snprintf( path, sizeof( path ), "%s/DATA/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
-	qDebug() << path;
-	f = fopen( path, "rb" );
-    }
-    if( f )
-    {
-	fseek( f, 0, 0 );
-	fread( &id, 6, 1, f );
-	ui->lineEdit_3->setText( id );
-
-	fseek( f, 0x20, 0 );
-	fread( &name, 0x40, 1, f );
-	ui->lineEdit_4->setText( name );
-
-	fclose( f );
-    }
-
-    //IOS
-    snprintf( path, sizeof( path ), "%s/tmd.bin", ui->lineEdit->text().toLatin1().data() );
-    qDebug() << path;
-    f = fopen( path, "rb" );
-    if( !f )
-    {
-	snprintf( path, sizeof( path ), "%s/DATA/tmd.bin", ui->lineEdit->text().toLatin1().data() );
-	qDebug() << path;
-	f = fopen( path, "rb" );
-    }
-    if( f )
-    {
-	fseek( f, 0x18b, 0 );
-	fread( &tmdIOS, 1, 1, f );
-	fclose( f );
-
-	if( ui->default_ios_spinbox->value() < 3 )
-	{
-	    ui->spinBox->setValue( tmdIOS );
-	}
-	else
-	{
-	    ui->spinBox->setValue( ui->default_ios_spinbox->value() );
-	}
-
-	ui->spinBox->setDisabled( false );
-
-	QString m = "\"" + ui->lineEdit->text() + "\" loaded";
-	ui->statusBar->showMessage( m );
-    }
-    else
-    {
-	ui->spinBox->setDisabled( false );
-	tmdIOS = ui->spinBox->value();
-	QString m = "Unknown IOS for \"" + ui->lineEdit->text() + "\" - action not supported yet.";
-	ui->statusBar->showMessage( m );
-    }
-*/
-}
-
-void MainWindow::on_checkBox_6_clicked()
-{
-    this->UpdateOptions();
-}
-
-void MainWindow::on_checkBox_7_clicked()
-{
-    this->UpdateOptions();
-}
-
+/**************************************************
+*
+*   get messages and data from threads & processes
+*
+***************************************************/
 //get message from the workthread
 void MainWindow::ShowMessage( const QString &s )
 {
@@ -387,6 +306,7 @@ void MainWindow::ReadyReadStdOutSlot()
 
 }
 
+//read stderr from wit's process
 void MainWindow::ReadyReadStdErrSlot()
 {
     QString read = witProcess->readAllStandardError();
@@ -480,6 +400,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		ui->lineEdit_3->setText( idStr );
 		ui->lineEdit_4->setText( nameStr );
 		ui->comboBox_region->setCurrentIndex( regionInt );
+		gameRegion = regionInt -1;
 	    }
 	    else
 	    {
@@ -577,6 +498,11 @@ void MainWindow::ThreadIsDoneRunning( QTreeWidgetItem *i )
     ui->statusBar->showMessage( tr( "Ready" ) );
 }
 
+/*******************************************
+*
+*   rght-click actions
+*
+********************************************/
 //this is triggered on right-click -> extract
 void MainWindow::ExtractSlot()
 {
@@ -600,24 +526,11 @@ void MainWindow::ReplaceSlot()
     qDebug() << "replaceSlotTriggered";
 }
 
-//returns the full path of a item in the tree view
-QString MainWindow::ItemToFullPath( QTreeWidgetItem * item )
-{
-    QString key = item->text(0);
-    QTreeWidgetItem *ancestor = item->parent();
-    while ( ancestor ) {
-	key.prepend(ancestor->text(0) + "/");
-	ancestor = ancestor->parent();
-    }
-    return key;
-}
-
-//"clear" button clicked
-void MainWindow::on_pushButton_2_clicked()
-{
-    ui->plainTextEdit->clear();
-}
-
+/*******************************************
+*
+*   settings functions
+*
+********************************************/
 //save settings to disc
 bool MainWindow::SaveSettings()
 {
@@ -835,6 +748,12 @@ void MainWindow::on_pushButton_settings_searchPath_clicked()
 	ui->lineEdit_default_path->setText( dir );
 }
 
+/*******************************************
+*
+*  file/help menu actions & functions
+*
+********************************************/
+
 //file->open / ctrl+O
 void MainWindow::on_actionOpen_triggered()
 {
@@ -878,7 +797,7 @@ void MainWindow::on_actionOpen_triggered()
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
 }
 
-//file->save as / ctrl + s
+//file->save as / ctrl+A
 void MainWindow::on_actionSave_As_triggered()
 {
     qDebug() << "save as";
@@ -1038,13 +957,29 @@ void MainWindow::on_actionSave_As_triggered()
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
 }
 
-void MainWindow::ErrorMessage( QString message )
+//about this program
+void MainWindow::on_actionAbout_triggered()
 {
-    QString text;
-    QTextStream( &text ) << message;
-    QMessageBox::critical( this, tr( "Error"), text );
+    QString aboutText;
+    QTextStream( &aboutText ) << PROGRAM_NAME << tr( " is a cross-platform GUI for wit.\n"\
+						     "This software comes to you with a GPLv3 license\n\n")
+
+						<< tr( "Version: " ) << PROGRAM_VERSION << "\n"
+						<< tr( "Revision: " ) << SVN_REV_STR << "\n"
+						<< tr( "Website: " ) << WEBSITE_STRING << "\n"
+						<< "2010 Giantpune\n\n"
+						<< witVersionString << "\n";
+
+    QMessageBox::about( this, tr( "About " ) + PROGRAM_NAME, aboutText );
 }
 
+//about Qt
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QApplication::aboutQt();
+}
+
+//for aborting loading a game...  doesn't really do anything yet
 void MainWindow::AbortLoadingGame( QString message )
 {
     ErrorMessage( message );
@@ -1076,33 +1011,133 @@ int MainWindow::GetIOS()
     else
 	ret = ui->spinBox_gameIOS->value();
 
-    qDebug() << ret;
+    //qDebug() << ret;
     if( ret != gameIOS )
 	return ret;
 
     return -1;
 }
 
-//about this program
-void MainWindow::on_actionAbout_triggered()
+//returns the full path of a item in the tree view
+QString MainWindow::ItemToFullPath( QTreeWidgetItem * item )
 {
-    QString aboutText;
-    QTextStream( &aboutText ) << PROGRAM_NAME << tr( " is a cross-platform GUI for wit.\n"\
-						     "This software comes to you with a GPLv3 license\n\n")
-
-						<< tr( "Version: " ) << PROGRAM_VERSION << "\n"
-						<< tr( "Revision: " ) << SVN_REV_STR << "\n"
-						<< tr( "Website: " ) << WEBSITE_STRING << "\n"
-						<< "2010 Giantpune\n\n"
-						<< witVersionString << "\n";
-
-    QMessageBox::about( this, tr( "About " ) + PROGRAM_NAME, aboutText );
+    QString key = item->text(0);
+    QTreeWidgetItem *ancestor = item->parent();
+    while ( ancestor ) {
+	key.prepend(ancestor->text(0) + "/");
+	ancestor = ancestor->parent();
+    }
+    return key;
 }
 
-//about Qt
-void MainWindow::on_actionAbout_Qt_triggered()
+/*******************************************
+*
+*   prompts and message windows
+*
+********************************************/
+//error prompt window
+void MainWindow::ErrorMessage( QString message )
 {
-    QApplication::aboutQt();
+    QString text;
+    QTextStream( &text ) << message;
+    QMessageBox::critical( this, tr( "Error"), text );
+}
+
+//update the window & available settings
+void MainWindow::UpdateOptions()
+{
+    // title & ID line edits
+    ui->lineEdit_4->setEnabled( ui->checkBox_6->isChecked() );
+    ui->lineEdit_3->setEnabled( ui->checkBox_7->isChecked() );
+
+    // check boxes
+    bool checked = ui->checkBox_6->isChecked() || ui->checkBox_7->isChecked();
+    ui->checkBox_2->setEnabled( checked );
+    ui->checkBox_3->setEnabled( checked );
+    ui->checkBox_4->setEnabled( checked );
+
+    //default IOS & region settings
+    ui->default_ios_spinbox->setEnabled( ui->checkBox_defaultIos->isChecked() );
+    ui->comboBox_defaultRegion->setEnabled( ui->checkBox_defaultRegion->isChecked() );
+
+    //IOS & region [ tab 1 ]
+    ui->spinBox_gameIOS->setEnabled( !ui->checkBox_defaultIos->isChecked() );
+    ui->comboBox_region->setEnabled( !ui->checkBox_defaultRegion->isChecked() );
+
+    //title & id
+/*    char path[ 256 ];
+    snprintf( path, sizeof( path ), "%s/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
+
+    qDebug() << path;
+    FILE *f = fopen( path, "rb" );
+    if( !f )
+    {
+
+	snprintf( path, sizeof( path ), "%s/DATA/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
+	qDebug() << path;
+	f = fopen( path, "rb" );
+    }
+    if( f )
+    {
+	fseek( f, 0, 0 );
+	fread( &id, 6, 1, f );
+	ui->lineEdit_3->setText( id );
+
+	fseek( f, 0x20, 0 );
+	fread( &name, 0x40, 1, f );
+	ui->lineEdit_4->setText( name );
+
+	fclose( f );
+    }
+
+    //IOS
+    snprintf( path, sizeof( path ), "%s/tmd.bin", ui->lineEdit->text().toLatin1().data() );
+    qDebug() << path;
+    f = fopen( path, "rb" );
+    if( !f )
+    {
+	snprintf( path, sizeof( path ), "%s/DATA/tmd.bin", ui->lineEdit->text().toLatin1().data() );
+	qDebug() << path;
+	f = fopen( path, "rb" );
+    }
+    if( f )
+    {
+	fseek( f, 0x18b, 0 );
+	fread( &tmdIOS, 1, 1, f );
+	fclose( f );
+
+	if( ui->default_ios_spinbox->value() < 3 )
+	{
+	    ui->spinBox->setValue( tmdIOS );
+	}
+	else
+	{
+	    ui->spinBox->setValue( ui->default_ios_spinbox->value() );
+	}
+
+	ui->spinBox->setDisabled( false );
+
+	QString m = "\"" + ui->lineEdit->text() + "\" loaded";
+	ui->statusBar->showMessage( m );
+    }
+    else
+    {
+	ui->spinBox->setDisabled( false );
+	tmdIOS = ui->spinBox->value();
+	QString m = "Unknown IOS for \"" + ui->lineEdit->text() + "\" - action not supported yet.";
+	ui->statusBar->showMessage( m );
+    }
+*/
+}
+
+void MainWindow::on_checkBox_6_clicked()
+{
+    this->UpdateOptions();
+}
+
+void MainWindow::on_checkBox_7_clicked()
+{
+    this->UpdateOptions();
 }
 
 void MainWindow::on_checkBox_defaultIos_clicked()
