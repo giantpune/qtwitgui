@@ -81,6 +81,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     //connect output and input signals between the process and the main window so we can get information from it
     //and also send a "kill" message if the main window is closed while the process is running
     connect( witProcess, SIGNAL( readyReadStandardOutput() ), this, SLOT( ReadyReadStdOutSlot() ) );
+    connect( witProcess, SIGNAL( readyReadStandardError() ), this, SLOT( ReadyReadStdErrSlot() ) );
     connect( witProcess, SIGNAL( finished( int, QProcess::ExitStatus ) ), this, SLOT( ProcessFinishedSlot(  int, QProcess::ExitStatus ) ) );
     connect( this, SIGNAL( KillProcess() ), witProcess, SLOT( kill() ) );
     wiithread = new WiiTreeThread;
@@ -88,8 +89,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     //get the version of wit and append it to the titlebar
     witVersionString = "wit: " + tr( "Unknown" );
     QString str = WIT;
+    QStringList arg;
+    arg << "version";
     witJob = witGetVersion;
-    witProcess->start( str );
+    witProcess->start( str, arg );
     if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
     {
 	qDebug() << "failed to start wit";
@@ -161,188 +164,6 @@ void MainWindow::AddText( const char in[] )
     ui->plainTextEdit->insertPlainText( in );
 }
 
-//input file
-/*void MainWindow::on_toolButton_clicked()
-{
-    FileFolderDialog dialog( this );
-
-    //the default OS-x dialog doesnt let me select files & directories
-#ifdef Q_WS_MAC
-    dialog.setOption( QFileDialog::DontUseNativeDialog );
-#endif
-
-    dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
-    dialog.setDirectory( ui->lineEdit_default_path->text() );
-
-    if (dialog.exec())
-    {
-	QString item = dialog.selectedFiles()[ 0 ];
-	QByteArray ba  = item.toLatin1();
-
-	ui->lineEdit->setText( item );
-	UpdateOptions();
-    }
-}*/
-/*
-//send command to wit [tab 1]
-void MainWindow::on_pushButton_4_clicked()
-{
-    if( witJob != witNoJob )
-    {
-	QMessageBox::warning(this, tr( "Slow your roll!" ),tr( "Wit is still running.\nWait for the current job to finish." ), tr( "Ok" ) );
-	return;
-    }
-    ui->progressBar->setValue( 0 );
-
-    QStringList args;
-    args << "CP";				// copy command
-    args << ui->lineEdit->text();		//source path
-    args << ui->lineEdit_2->text();		//dest path
-
-    //region
-    QString reg;
-    switch( ui->comboBox->currentIndex() )
-    {
-	case 0:
-	default:
-	    break;
-	case 1:
-	    QTextStream( &reg ) << "--region=" << 0;//jap
-	    args << reg;
-	    break;
-	case 2:
-	    QTextStream( &reg ) << "--region=" << 1;//usa
-	    args << reg;
-	    break;
-	case 3:
-	    QTextStream( &reg ) << "--region=" << 2;//pal
-	    args << reg;
-	    break;
-	case 4:
-	    QTextStream( &reg ) << "--region=" << 4;//korea
-	    args << reg;
-	    break;
-    }
-
-    //ios
-    if( ui->spinBox->value() != tmdIOS )
-    {
-	QString ios;
-	QTextStream( &ios ) << "--ios=" << ui->spinBox->value();
-	args << ios;
-    }
-
-    //id
-    if( ui->checkBox_7->isChecked() )
-    {
-	args << "--id=" + ui->lineEdit_3->text();
-    }
-
-    //title
-    if( ui->checkBox_6->isChecked() )
-    {
-	args << "\'--name=" + ui->lineEdit_4->text() + "\'";
-    }
-
-    //modify
-    if( ( ui->checkBox_2->isChecked() ||
-	ui->checkBox_3->isChecked() ||
-	ui->checkBox_4->isChecked() )
-	&& ( ui->checkBox_6->isChecked() ||
-	ui->checkBox_7->isChecked() ) )
-    {
-	QString mod = "--modify=";
-	u8 checked = 0;
-
-	if( ui->checkBox_2->isChecked() )
-	{
-	    checked++;
-	    mod += "DISC";
-	}
-	if( ui->checkBox_3->isChecked() )
-	{
-	    if( checked )mod += ",";
-	    mod += "BOOT";
-	    checked++;
-	}
-	if( ui->checkBox_4->isChecked() )
-	{
-	    if( checked )mod += ",";
-	    mod += "TMD,TICKET";
-	}
-
-	args << mod;
-    }
-
-    //verbose
-    if( ui->verbose_combobox->currentIndex() )
-    {
-	if( ui->verbose_combobox->currentIndex() == 1)
-	    args << "--quiet";
-	else
-	{
-	    for( int i = 1; i < ui->verbose_combobox->currentIndex(); i++ )
-	    args << "-v";
-	}
-    }
-
-    //logging
-    for( int i = 0; i < ui->logging_combobox->currentIndex(); i++ )
-	args << "-L";
-
-    //overwrite existing files
-    if( ui->overwrite_checkbox->isChecked() )
-	args << "--overwrite";
-
-    //test mode
-    if( ui->checkBox->isChecked() )
-	args << "--test";
-
-    //clear the current text window
-    ui->plainTextEdit->clear();
-    ui->tabWidget->setDisabled( true );
-
-    //make sure we get the progress output
-    args << "--progress";
-
-    //show the command in the console window
-    QString str = WIT;
-    ui->plainTextEdit->insertPlainText( str + " " );
-    for( int i = 0; i < args.size(); i++ )
-	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
-    ui->plainTextEdit->insertPlainText( "\n" );
-
-    //start a process using wit and give it the arg string
-    witJob = witCopy;
-    witProcess->start( str, args );
-    if( !witProcess->waitForStarted() )
-    {
-	qDebug( "!waitforstarted()" );
-	ui->statusBar->showMessage( tr(  "Error starting wit!" ) );
-	witJob = witNoJob;
-	return;
-    }
-    ui->statusBar->showMessage( tr( "Wit is running..." ) );
-}
-*/
-//search for output file
-/*void MainWindow::on_toolButton_2_clicked()
-{
-    QFileDialog dialog( this );
-#ifdef Q_WS_MAC
-    dialog.setOption( QFileDialog::DontUseNativeDialog );
-#endif
-    dialog.setDirectory( ui->lineEdit_default_path->text() );
-    dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
-
-    if (dialog.exec())
-    {
-	QString item = dialog.selectedFiles()[ 0 ];
-	if( !item.isEmpty() )
-	    ui->lineEdit_2->setText( item );
-    }
-}
-*/
 //update the window & available settings
 void MainWindow::UpdateOptions()
 {
@@ -440,25 +261,12 @@ void MainWindow::on_checkBox_7_clicked()
     this->UpdateOptions();
 }
 
-//after typing in the "source" text field
-/*void MainWindow::on_lineEdit_editingFinished()
-{
-    this->UpdateOptions();
-}
-*/
 //get message from the workthread
 void MainWindow::ShowMessage( const QString &s )
 {
     ui->plainTextEdit->insertPlainText( s );
 }
 
-//get "done" status from the workthread [depreciated]
-/*void MainWindow::GetThreadDone( int i )
-{
-    //witRunning = i;
-    ui->statusBar->showMessage( tr( "Ready for more work" ) );
-}
-*/
 //get messages from the procces running wit and convert the messages to stuff to use in the GUI
 void MainWindow::ReadyReadStdOutSlot()
 {
@@ -472,7 +280,6 @@ void MainWindow::ReadyReadStdOutSlot()
     {
 	QString s = read;
 	s = s.trimmed();
-	s.resize( s.indexOf( "\n", 0) - 1 );
 	witVersionString = s;
 	//add the svn version of this program
 	s += " | Gui: r";
@@ -481,10 +288,21 @@ void MainWindow::ReadyReadStdOutSlot()
 	    s.resize( s.size() - 1 );
 	setWindowTitle( s );
 
-	//save part of this string for the "about" box
+	//save part of this string for the "about" box...    "wit: Wiimms ISO Tool v1.00a r1214 x86_64"
 	int firstDash = witVersionString.indexOf( " -", 0);
 	witVersionString.resize( firstDash );
-	//qDebug() << witVersionString;
+
+	//get the svn revision of wit so we can compare it to a set minimum version... "1214"
+	int revStart = witVersionString.indexOf( " r", 0 );
+	QString witRevStr = witVersionString;
+	witRevStr.remove( 0, revStart + 2 );
+	witRevStr.resize( 4 );			//assume that the svn number will be 4 characters long.  good up to r9999
+
+	bool ok = false;
+	int witSVNr = witRevStr.toInt( &ok );
+	if( ok && witSVNr < MINIMUM_WIT_VERSION )
+	    ErrorMessage( tr( "The version of wit cannot be determined" ) );
+
 	return;
     }
 
@@ -569,6 +387,13 @@ void MainWindow::ReadyReadStdOutSlot()
 
 }
 
+void MainWindow::ReadyReadStdErrSlot()
+{
+    QString read = witProcess->readAllStandardError();
+    witErrorStr += read;
+    ui->plainTextEdit->insertPlainText( read );
+}
+
 //triggered after the wit process is done
 void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 {
@@ -584,8 +409,24 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	QString st;
 	QTextStream( &st ) <<"Done, but with error [ ExitCode: " << i << "  ErrorStatus: " << s << "]";
 	ui->plainTextEdit->insertPlainText( st );
+
+	if( !witErrorStr.isEmpty() )
+	    ErrorMessage( witErrorStr );
+
+	//clear old errors
+	witErrorStr.clear();
+
+	witJob = witNoJob;
+	return;
     }
+
+    //clear old errors
+    witErrorStr.clear();
+
     QStringList list;
+    QString idStr;
+    QString nameStr;
+    int regionInt = -1;
 
     //qDebug() << "witJob: " << witJob;
     switch ( witJob )
@@ -598,6 +439,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	case witDump:
 	    if( filepaths.isEmpty() )
 		break;
+
 	    //split the output from wit at "\n" and remove spaces and shit
 	    list = filepaths.split("\n", QString::SkipEmptyParts );
 	    foreach( QString str, list )
@@ -608,32 +450,41 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    str.remove( 0, 10 );
 		    str = str.trimmed();
 		    str.resize( 6 );
-		    ui->lineEdit_3->setText( str );
-		    //ui->label_edit_id->setText( str );
+		    idStr = str;
 		}
 		else if( str.contains( "Disc name:" ) )
 		{
 		    str.remove( 0, 10 );
 		    str = str.trimmed();
-		    ui->lineEdit_4->setText( str );
-		    //ui->label_edit_name->setText( str );
+		    nameStr = str;
 		}
 		else if( str.contains( "Region setting:" ) )
 		{
 		    str.remove( 0, 15 );
 		    str = str.trimmed();
 		    str.resize( 1 );
-		    qDebug() << "region: " << str;
+		    //qDebug() << "region: " << str;
 		    bool ok;
 		    int v = str.toInt( &ok, 10 );
 		    if( ok && v < 4 )
 		    {
-			ui->comboBox_region->setCurrentIndex( v + 1 );
+			regionInt = v + 1;
 		    }
-
-		    //ui->label_edit_region->setText( str );
 		}
 
+	    }
+	    if( !idStr.isEmpty()
+		&& !nameStr.isEmpty()
+		&& regionInt >= 0 )
+	    {
+		ui->lineEdit_3->setText( idStr );
+		ui->lineEdit_4->setText( nameStr );
+		ui->comboBox_region->setCurrentIndex( regionInt );
+	    }
+	    else
+	    {
+		AbortLoadingGame( tr( "Error parsing data from wit.  The game cannot be loaded.") );
+		break;
 	    }
 	    DoIlist();
 	    break;
@@ -641,7 +492,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 
 	case witGetVersion:
 	    //now merge the stdout and stderr into 1 channel for easier reading while actually doing work
-	    witProcess->setReadChannelMode( QProcess::MergedChannels );
+	    //witProcess->setReadChannelMode( QProcess::MergedChannels );
 	    ui->statusBar->showMessage( tr( "Ready" ) );
 	    witJob = witNoJob;
 	    break;
@@ -653,7 +504,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     }
 
 
-    ui->tabWidget->setDisabled( false );
+    //ui->tabWidget->setDisabled( false );
 
 
 }
@@ -678,7 +529,7 @@ void MainWindow::DoIlist()
 
     QString str = WIT;
     ui->plainTextEdit->insertPlainText( "\n" + str + " " );
-    ui->tabWidget->setDisabled( true );
+    //ui->tabWidget->setDisabled( true );
     for( int i = 0; i < args.size(); i++ )
 	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
 
@@ -698,48 +549,6 @@ void MainWindow::DoIlist()
 
 }
 
-//load game to edit
-/*void MainWindow::on_edit_img_pushButton_clicked()
-{
-    FileFolderDialog dialog(this);
-    dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
-#ifdef Q_WS_MAC
-    dialog.setOption( QFileDialog::DontUseNativeDialog );
-#endif
-    dialog.setDirectory( ui->lineEdit_default_path->text() );
-
-    if ( !dialog.exec() )
-	return;
-
-    isoPath = dialog.selectedFiles()[ 0 ];
-
-    if( isoPath.isEmpty() )
-	return;
-
-    QStringList args;
-    args << "DUMP";
-    args << isoPath;
-
-    QString str = WIT;
-    ui->plainTextEdit->clear();
-    ui->plainTextEdit->insertPlainText( str + " " );
-    ui->tabWidget->setDisabled( true );
-    for( int i = 0; i < args.size(); i++ )
-	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
-
-    //start a process using wit from the current working directory
-    witJob = witDump;
-    witProcess->start( str, args );
-    if( !witProcess->waitForStarted() )
-    {
-	qDebug( "!waitforstarted()" );
-	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
-	witJob = witNoJob;
-	return;
-    }
-    ui->statusBar->showMessage( tr( "Wit is running..." ) );
-}
-*/
 //update the progressbar based on output from the tree-creating thread
 void MainWindow::UpdateProgressFromThread( int i )
 {
@@ -1052,7 +861,7 @@ void MainWindow::on_actionOpen_triggered()
     QString str = WIT;
     ui->plainTextEdit->clear();
     ui->plainTextEdit->insertPlainText( str + " " );
-    ui->tabWidget->setDisabled( true );
+    //ui->tabWidget->setDisabled( true );
     for( int i = 0; i < args.size(); i++ )
 	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
 
@@ -1118,35 +927,21 @@ void MainWindow::on_actionSave_As_triggered()
     }
 
     //region
-    QString reg;
-    switch( ui->comboBox_region->currentIndex() )
+    int regInt = GetRegion();
+    qDebug() << "got reg: " << regInt;
+    if( regInt >= 0 )
     {
-	case 0:
-	default:
-	    break;
-	case 1:
-	    QTextStream( &reg ) << "--region=" << 0;//jap
-	    args << reg;
-	    break;
-	case 2:
-	    QTextStream( &reg ) << "--region=" << 1;//usa
-	    args << reg;
-	    break;
-	case 3:
-	    QTextStream( &reg ) << "--region=" << 2;//pal
-	    args << reg;
-	    break;
-	case 4:
-	    QTextStream( &reg ) << "--region=" << 4;//korea
-	    args << reg;
-	    break;
+	QString regString;
+	QTextStream( &regString ) << "--region=" << regInt;
+	args << regString;
     }
 
     //ios
-    if( ui->spinBox_gameIOS->value() != tmdIOS )
+    int iosInt = GetIOS();
+    if( iosInt >= 0 )
     {
 	QString ios;
-	QTextStream( &ios ) << "--ios=" << ui->spinBox_gameIOS->value();
+	QTextStream( &ios ) << "--ios=" << iosInt;
 	args << ios;
     }
 
@@ -1218,7 +1013,7 @@ void MainWindow::on_actionSave_As_triggered()
 
     //clear the current text window
     ui->plainTextEdit->clear();
-    ui->tabWidget->setDisabled( true );
+    //ui->tabWidget->setDisabled( true );
 
     //make sure we get the progress output
     args << "--progress";
@@ -1241,6 +1036,51 @@ void MainWindow::on_actionSave_As_triggered()
 	return;
     }
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
+}
+
+void MainWindow::ErrorMessage( QString message )
+{
+    QString text;
+    QTextStream( &text ) << message;
+    QMessageBox::critical( this, tr( "Error"), text );
+}
+
+void MainWindow::AbortLoadingGame( QString message )
+{
+    ErrorMessage( message );
+}
+
+//determine which region to use based on all the different checkboxes and options and crap
+//return -1 for "auto"
+int MainWindow::GetRegion()
+{
+    int ret = -1;
+    if( ui->checkBox_defaultRegion->isChecked() )//if default region is set
+    {
+	ret = ui->comboBox_defaultRegion->currentIndex() - 1;
+    }
+    else
+    {
+	ret = ui->comboBox_region->currentIndex() - 1;
+    }
+    qDebug() << "GetRegion(): " << ret;
+    return ret;
+}
+
+int MainWindow::GetIOS()
+{
+    int ret = -1;
+    if( ui->checkBox_defaultIos->isChecked() )
+	ret = ui->default_ios_spinbox->value();
+
+    else
+	ret = ui->spinBox_gameIOS->value();
+
+    qDebug() << ret;
+    if( ret != gameIOS )
+	return ret;
+
+    return -1;
 }
 
 //about this program
