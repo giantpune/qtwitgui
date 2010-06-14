@@ -69,8 +69,10 @@ public:
     void SetStatus( const char str[] );
     void UpdateEffects();
 
-//protected:
+protected:
 //    void contextMenuEvent(QContextMenuEvent *event);
+    void dropEvent( QDropEvent *event );
+    void dragEnterEvent( QDragEnterEvent *event );
 
 private:
     //mutable QMutex mutex;
@@ -110,6 +112,7 @@ private:
     void ErrorMessage( QString message );
     int GetRegion();
     int GetIOS();
+    void OpenGame();
 
 
 
