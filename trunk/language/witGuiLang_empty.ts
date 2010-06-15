@@ -10,14 +10,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tell wit to create a image using the selected parameters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do It</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clear the text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -27,26 +19,6 @@
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Compose Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter the path to the files to be used to make the disc image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Browse...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Input:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Output:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -71,10 +43,6 @@
     </message>
     <message>
         <source>What IOS should be used in the TMD</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Game IOS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -146,10 +114,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Load Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -198,15 +162,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Default IOS:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>/media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -227,14 +183,6 @@
     </message>
     <message>
         <source>Start at:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Compose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -287,14 +235,6 @@ Wait for the current job to finish.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;input&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;output&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Skip &quot;.svn&quot; files in tree view to speed up parsing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -307,19 +247,114 @@ Wait for the current job to finish.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enter the output file path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Search Path...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Game IOS:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default IOS to use for booting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Region:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AUTO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About Qt...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The version of wit cannot be determined.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The version of wit is too low.  Upgrade it!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error parsing data from wit.  The game cannot be loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is a cross-platform GUI for wit.
+This software comes to you with a GPLv3 license
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Revision: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
