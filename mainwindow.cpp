@@ -90,16 +90,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
     //get the version of wit and append it to the titlebar
     witVersionString = "wit: " + tr( "Unknown" );
-    QString str = WIT;
+
     QStringList arg;
     arg << "version";
-    witJob = witGetVersion;
-    witProcess->start( str, arg );
-    if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
-    {
-	qDebug() << "failed to start wit";
-	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
-    }
+    SendWitCommand( arg, witGetVersion );
 
     //create and add the tree window
 	//icons
@@ -134,8 +128,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     //make sure buttons are wide enough for text
     ResizeGuiToLanguage();
 
-    //everything should be ready to go now
-    ui->statusBar->showMessage( tr( "Ready" ) );
+    ui->plainTextEdit->clear();
 }
 
 //destructor
@@ -356,6 +349,19 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     switch ( witJob )
     {
 	case witIlist:
+	    if( filepaths.trimmed().isEmpty() )
+	    {
+		//reset the flag for the current job
+		witJob = witNoJob;
+
+		//loading this game was successful, so change the path for use when extracting/saving
+		lastPathLoadedCorrectly = isoPath;
+
+		//tell the user that we are ready to do something else
+		ui->statusBar->showMessage( tr( "Didn't get any files to display" ) );
+		break;
+	    }
+
 	    ui->statusBar->showMessage( tr( "Got FST list from wit, parsing it into a pretty file tree..." ) );
 	    wiithread->DoCommand( filepaths, ui->checkBox_hiddenFiles->isChecked(), keyIcon, groupIcon );
 	    break;
@@ -425,19 +431,13 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	default:
 	    witJob = witNoJob;
 	    break;
-
     }
-
-
-    //ui->tabWidget->setDisabled( false );
-
-
 }
 
 //build the ILIST-L command and start the process with it
 void MainWindow::DoIlist()
 {
-//    qDebug() << "DoIlist()";
+    //qDebug() << "DoIlist()";
     if( isoPath.isEmpty() )
     {
 	qDebug() << "isoPath.isEmpty()";
@@ -452,26 +452,11 @@ void MainWindow::DoIlist()
     args << "ILIST-L";
     args << isoPath;
 
-    QString str = WIT;
-    ui->plainTextEdit->insertPlainText( "\n" + str + " " );
-    //ui->tabWidget->setDisabled( true );
-    for( int i = 0; i < args.size(); i++ )
-	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
+    //partition select
+    if( ui->comboBox_partition->currentIndex() )
+	args << "--psel=" + ui->comboBox_partition->currentText();
 
-    //start a process using wit from the current working directory
-    witJob = witIlist;
-//    qDebug() << "Starting Ilist - witJob: " << witJob;
-    witProcess->start( str, args );
-    if( !witProcess->waitForStarted() )
-    {
-	qDebug( "!waitforstarted()" );
-	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
-	witJob = witNoJob;
-	return;
-    }
-    ui->statusBar->showMessage( tr( "Wit is running..." ) );
-//    qDebug() << "mmmmkay";
-
+    SendWitCommand( args, witIlist );
 }
 
 //update the progressbar based on output from the tree-creating thread
@@ -560,6 +545,7 @@ bool MainWindow::SaveSettings()
 	<< "\ndefaultiosch:"<< ui->checkBox_defaultIos->checkState()
 	<< "\ndefaultios:"  << ui->spinBox_gameIOS->value()
 	<< "\ndefaultregch:"<< ui->checkBox_defaultRegion->checkState()
+	<< "\npselect:"	    << ui->comboBox_partition->currentIndex()
 	<< "\nwheight:"	    << this->height()
 	<< "\nwwidth:"	    << this->width()
 	<< "\nwposx:"	    << this->x()
@@ -705,6 +691,12 @@ bool MainWindow::LoadSettings()
 		ui->comboBox_defaultRegion->setCurrentIndex( v );
 	    }
 	}
+	else if( setting == "pselect" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		ui->comboBox_partition->setCurrentIndex( v );
+	}
 	else if( setting == "wheight" )
 	{
 	    int v = value.toInt( &ok, 10 );
@@ -765,6 +757,7 @@ void MainWindow::ResizeGuiToLanguage()
     ui->label_2->setMinimumWidth( MAX( ui->label_2->minimumWidth(), fm.width( ui->label_2->text() ) + pad ) );
     ui->label_3->setMinimumWidth( MAX( ui->label_3->minimumWidth(), fm.width( ui->label_3->text() ) + pad ) );
     ui->label_7->setMinimumWidth( MAX( ui->label_7->minimumWidth(), fm.width( ui->label_7->text() ) + pad ) );
+    ui->label_partition->setMinimumWidth( MAX( ui->label_partition->minimumWidth(), fm.width( ui->label_partition->text() ) + pad ) );
 
 
     for( int i = 0; i < ui->verbose_combobox->count(); i++ )
@@ -826,24 +819,9 @@ void MainWindow::OpenGame()
     args << "DUMP";
     args << isoPath;
 
-    QString str = WIT;
     ui->plainTextEdit->clear();
-    ui->plainTextEdit->insertPlainText( str + " " );
-    //ui->tabWidget->setDisabled( true );
-    for( int i = 0; i < args.size(); i++ )
-	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
 
-    //start a process using wit from the current working directory
-    witJob = witDump;
-    witProcess->start( str, args );
-    if( !witProcess->waitForStarted() )
-    {
-	qDebug( "!waitforstarted()" );
-	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
-	witJob = witNoJob;
-	return;
-    }
-    ui->statusBar->showMessage( tr( "Wit is running..." ) );
+    SendWitCommand( args, witDump );
 }
 
 //file->save as / ctrl+A
@@ -955,6 +933,10 @@ void MainWindow::on_actionSave_As_triggered()
 	args << mod;
     }
 
+    //partition select
+    if( ui->comboBox_partition->currentIndex() )
+	args << "--psel=" + ui->comboBox_partition->currentText();
+
     //verbose
     if( ui->verbose_combobox->currentIndex() )
     {
@@ -979,28 +961,33 @@ void MainWindow::on_actionSave_As_triggered()
     if( ui->checkBox->isChecked() )
 	args << "--test";
 
-    //clear the current text window
-    ui->plainTextEdit->clear();
-    //ui->tabWidget->setDisabled( true );
-
     //make sure we get the progress output
     args << "--progress";
 
-    //show the command in the console window
-    QString str = WIT;
-    ui->plainTextEdit->insertPlainText( str + " " );
-    for( int i = 0; i < args.size(); i++ )
-	ui->plainTextEdit->insertPlainText( args[ i ] + " " );
-    ui->plainTextEdit->insertPlainText( "\n" );
+    //clear the current text window
+    ui->plainTextEdit->clear();
 
-    //start a process using wit and give it the arg string
-    witJob = witCopy;
-    witProcess->start( str, args );
-    if( !witProcess->waitForStarted() )
+    SendWitCommand( args, witCopy );
+}
+
+//actually start the process with the given list of args and set the jobtype flag for the functions getting output from the process
+void MainWindow::SendWitCommand( QStringList args, int jobType )
+{
+    QString str;
+    str += "\n";
+    str += WIT;
+    str += " ";
+    ui->plainTextEdit->insertPlainText( str );
+
+    foreach( QString arg, args)
+	ui->plainTextEdit->insertPlainText( arg + " " );
+
+    witJob = jobType;
+    witProcess->start( WIT, args );
+    if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
     {
-	qDebug( "!waitforstarted()" );
-	ui->statusBar->showMessage( tr(  "Error starting wit!" ) );
-	witJob = witNoJob;
+	qDebug() << "failed to start wit";
+	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
 	return;
     }
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
@@ -1204,11 +1191,10 @@ void MainWindow::on_checkBox_defaultRegion_clicked()
 *   drag and drop stuff
 *
 ********************************************/
-//triggered on dragging a file around the mainwindow
+//triggered on dropping a file in the main window
 void MainWindow::dropEvent( QDropEvent *event )
 {
     QString path = event->mimeData()->urls().at( 0 ).toLocalFile().trimmed();
-    qDebug() << path;
 
     QFile file( path );
     if( file.exists() )
@@ -1223,7 +1209,7 @@ void MainWindow::dropEvent( QDropEvent *event )
     }
 }
 
-//triggered on dropping a file in the main window
+//triggered on dragging a file around the mainwindow
 void MainWindow::dragEnterEvent( QDragEnterEvent *event )
 {
     if( event->mimeData()->hasUrls() )
@@ -1235,3 +1221,4 @@ void MainWindow::dragEnterEvent( QDragEnterEvent *event )
 	event->ignore();
     }
 }
+

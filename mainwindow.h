@@ -113,6 +113,7 @@ private:
     int GetRegion();
     int GetIOS();
     void OpenGame();
+    void SendWitCommand( QStringList args, int jobType );
 
 
 
