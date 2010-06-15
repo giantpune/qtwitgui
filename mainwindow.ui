@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>753</width>
-    <height>560</height>
+    <width>552</width>
+    <height>465</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,8 +51,8 @@
      <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
-        <width>735</width>
-        <height>464</height>
+        <width>0</width>
+        <height>0</height>
        </size>
       </property>
       <property name="baseSize">
@@ -65,7 +65,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -248,7 +248,7 @@
             <item>
              <widget class="QLabel" name="label">
               <property name="toolTip">
-               <string>What IOS should be used in the TMD</string>
+               <string>What IOS should be used in the TMD?</string>
               </property>
               <property name="text">
                <string>Game IOS:</string>
@@ -261,7 +261,7 @@
                <bool>true</bool>
               </property>
               <property name="toolTip">
-               <string>What IOS should be used in the TMD</string>
+               <string>What IOS should be used in the TMD?</string>
               </property>
               <property name="minimum">
                <number>3</number>
@@ -304,6 +304,9 @@
           </property>
           <property name="acceptDrops">
            <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string/>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
@@ -461,301 +464,334 @@
        <attribute name="title">
         <string>Settings</string>
        </attribute>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>100</y>
-          <width>391</width>
-          <height>212</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
-         <property name="labelAlignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="formAlignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Text output:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="verbose_combobox">
-           <property name="currentIndex">
-            <number>5</number>
-           </property>
-           <property name="frame">
-            <bool>true</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>Normal</string>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QCheckBox" name="checkBox">
+              <property name="toolTip">
+               <string>Don't write any changes to disc</string>
+              </property>
+              <property name="text">
+               <string>Test Mode</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="overwrite_checkbox">
+              <property name="toolTip">
+               <string>Tell wit to overwrite existing files</string>
+              </property>
+              <property name="text">
+               <string>Overwrite Existing</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_hiddenFiles">
+              <property name="toolTip">
+               <string>Skip &quot;.svn&quot; files in tree view to speed up parsing</string>
+              </property>
+              <property name="text">
+               <string>Ignore svn Files in Filetree</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QFormLayout" name="formLayout">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Quiet</string>
+            <property name="labelAlignment">
+             <set>Qt::AlignCenter</set>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Verbose</string>
+            <property name="formAlignment">
+             <set>Qt::AlignCenter</set>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Verbose+</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Verbose++</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Verbose+++</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Logging :</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="logging_combobox">
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <item>
-            <property name="text">
-             <string>Off</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Disc</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Disc + Part</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="checkBox_defaultIos">
-           <property name="text">
-            <string>Default IOS:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="default_ios_spinbox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>Default IOS to use for booting</string>
-           </property>
-           <property name="minimum">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <number>255</number>
-           </property>
-           <property name="value">
-            <number>36</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QPushButton" name="pushButton_settings_searchPath">
-           <property name="minimumSize">
-            <size>
-             <width>75</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Search Path...</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="lineEdit_default_path">
-           <property name="minimumSize">
-            <size>
-             <width>224</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string notr="true"/>
-           </property>
-           <property name="inputMask">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string notr="true"/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Start at:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QComboBox" name="startupTab_combobox">
-           <property name="minimumSize">
-            <size>
-             <width>107</width>
-             <height>0</height>
-            </size>
-           </property>
-           <item>
-            <property name="text">
-             <string>Game</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Output</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Settings</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QCheckBox" name="checkBox_defaultRegion">
-           <property name="text">
-            <string>Default Region:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QComboBox" name="comboBox_defaultRegion">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>AUTO</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>JAPAN</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>USA</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>PAL</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>KOREA</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>391</width>
-          <height>80</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QCheckBox" name="checkBox">
-           <property name="text">
-            <string>Test Mode</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="overwrite_checkbox">
-           <property name="toolTip">
-            <string>Tell wit to overwrite existing files</string>
-           </property>
-           <property name="text">
-            <string>Overwrite Existing</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_hiddenFiles">
-           <property name="toolTip">
-            <string>Skip &quot;.svn&quot; files in tree view to speed up parsing</string>
-           </property>
-           <property name="text">
-            <string>Ignore svn Files in Filetree</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QPushButton" name="save_pushButton">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>400</y>
-          <width>115</width>
-          <height>28</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>115</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Save Settings</string>
-        </property>
-       </widget>
-       <zorder>layoutWidget</zorder>
-       <zorder>layoutWidget</zorder>
-       <zorder>save_pushButton</zorder>
-       <zorder>default_ios_spinbox</zorder>
-       <zorder>checkBox_defaultIos</zorder>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Text output:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="verbose_combobox">
+              <property name="currentIndex">
+               <number>5</number>
+              </property>
+              <property name="frame">
+               <bool>true</bool>
+              </property>
+              <item>
+               <property name="text">
+                <string>Normal</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Quiet</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Verbose</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Verbose+</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Verbose++</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Verbose+++</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Logging :</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="logging_combobox">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Off</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Disc</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Disc + Part</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QCheckBox" name="checkBox_defaultIos">
+              <property name="toolTip">
+               <string>Default IOS to use for booting</string>
+              </property>
+              <property name="text">
+               <string>Default IOS:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="default_ios_spinbox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>Default IOS to use for booting</string>
+              </property>
+              <property name="minimum">
+               <number>3</number>
+              </property>
+              <property name="maximum">
+               <number>255</number>
+              </property>
+              <property name="value">
+               <number>36</number>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QPushButton" name="pushButton_settings_searchPath">
+              <property name="minimumSize">
+               <size>
+                <width>75</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Base path used when searching for files</string>
+              </property>
+              <property name="text">
+               <string>Search Path...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="lineEdit_default_path">
+              <property name="minimumSize">
+               <size>
+                <width>224</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string notr="true">Base path used when searching for files</string>
+              </property>
+              <property name="inputMask">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="toolTip">
+               <string>Where to start this program</string>
+              </property>
+              <property name="text">
+               <string>Start at:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QComboBox" name="startupTab_combobox">
+              <property name="minimumSize">
+               <size>
+                <width>107</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Where to start this program</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Game</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Output</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Settings</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QCheckBox" name="checkBox_defaultRegion">
+              <property name="toolTip">
+               <string>Always use the same region flag when saving a game</string>
+              </property>
+              <property name="text">
+               <string>Default Region:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QComboBox" name="comboBox_defaultRegion">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>Always use the same region flag when saving a game</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>AUTO</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>JAPAN</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>USA</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>PAL</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>KOREA</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QPushButton" name="save_pushButton">
+              <property name="minimumSize">
+               <size>
+                <width>115</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Save an .ini with these settings</string>
+              </property>
+              <property name="text">
+               <string>Save Settings</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>141</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -766,7 +802,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>753</width>
+     <width>552</width>
      <height>25</height>
     </rect>
    </property>

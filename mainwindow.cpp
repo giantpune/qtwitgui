@@ -141,7 +141,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 //destructor
 MainWindow::~MainWindow()
 {
-    //SaveSettings();
+    SaveSettings();
     delete ui;
     if( witJob != witNoJob )
     {
@@ -560,7 +560,10 @@ bool MainWindow::SaveSettings()
 	<< "\ndefaultiosch:"<< ui->checkBox_defaultIos->checkState()
 	<< "\ndefaultios:"  << ui->spinBox_gameIOS->value()
 	<< "\ndefaultregch:"<< ui->checkBox_defaultRegion->checkState()
-	<< "\ndefaultreg:"  << ui->comboBox_defaultRegion->currentIndex()
+	<< "\nwheight:"	    << this->height()
+	<< "\nwwidth:"	    << this->width()
+	<< "\nwposx:"	    << this->x()
+	<< "\nwposy:"	    << this->y()
 
 	;
 
@@ -574,6 +577,11 @@ bool MainWindow::LoadSettings()
     QFile file( SAVEFILENAME );
     if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
 	 return false;
+
+    int newHeight = -1,
+	newWidth = -1,
+	newX = -1,
+	newY = -1;
 
     while ( !file.atEnd() )
     {
@@ -697,10 +705,37 @@ bool MainWindow::LoadSettings()
 		ui->comboBox_defaultRegion->setCurrentIndex( v );
 	    }
 	}
+	else if( setting == "wheight" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		newHeight = v;
+	}
+	else if( setting == "wwidth" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		newWidth = v;
+	}
+	else if( setting == "wposx" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		newX = v;
+	}
+	else if( setting == "wposy" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		newY = v;
+	}
 
 
     }
 
+    if( newHeight > 0 && newWidth > 0 && newX > 0 && newY > 0 )
+	this->setGeometry( newX, newY, newWidth, newHeight );
+    else qDebug() << "using default size & pos";
     return true;
 }
 
