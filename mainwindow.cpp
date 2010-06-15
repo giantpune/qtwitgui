@@ -734,7 +734,10 @@ bool MainWindow::LoadSettings()
     }
 
     if( newHeight > 0 && newWidth > 0 && newX > 0 && newY > 0 )
-	this->setGeometry( newX, newY, newWidth, newHeight );
+    {
+	this->resize( newWidth, newHeight );
+	this->move( newX, newY );
+    }
     else qDebug() << "using default size & pos";
     return true;
 }
