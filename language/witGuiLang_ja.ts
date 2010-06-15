@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation>編集</translation>
+        <translation type="obsolete">編集</translation>
     </message>
     <message>
         <source>Name</source>
@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>Do It</source>
-        <translation>する</translation>
+        <translation type="obsolete">する</translation>
     </message>
     <message>
         <source>Done!</source>
@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Enter the path to the files to be used to make the disc image</source>
-        <translation>ディスクイメージの作成に使うファイルのパスを入力してください</translation>
+        <translation type="obsolete">ディスクイメージの作成に使うファイルのパスを入力してください</translation>
     </message>
     <message>
         <source>Tell wit to overwrite existing files</source>
@@ -111,11 +111,11 @@
     </message>
     <message>
         <source>&lt;input&gt;</source>
-        <translation type="unfinished">&lt;入力&gt;</translation>
+        <translation type="obsolete">&lt;入力&gt;</translation>
     </message>
     <message>
         <source>/media</source>
-        <translation>/media</translation>
+        <translation type="obsolete">/media</translation>
     </message>
     <message>
         <source>Text output:</source>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>Input:</source>
-        <translation>入力:</translation>
+        <translation type="obsolete">入力:</translation>
     </message>
     <message>
         <source>Wit is running...</source>
@@ -163,23 +163,23 @@
     </message>
     <message>
         <source>Load Image</source>
-        <translation>ISOを読み込む</translation>
+        <translation type="obsolete">ISOを読み込む</translation>
     </message>
     <message>
         <source>Edit Image</source>
-        <translation>ISOを編集</translation>
+        <translation type="obsolete">ISOを編集</translation>
     </message>
     <message>
         <source>&lt;output&gt;</source>
-        <translation type="unfinished">&lt;出力&gt;</translation>
+        <translation type="obsolete">&lt;出力&gt;</translation>
     </message>
     <message>
         <source>Output:</source>
-        <translation>出力:</translation>
+        <translation type="obsolete">出力:</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation>参照...</translation>
+        <translation type="obsolete">参照...</translation>
     </message>
     <message>
         <source>Do you want to change the title of the game?</source>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used</source>
-        <translation>起動に使うデフォルトIOS: 3以下ならTMDのIOSが使われます</translation>
+        <translation type="obsolete">起動に使うデフォルトIOS: 3以下ならTMDのIOSが使われます</translation>
     </message>
     <message>
         <source>Default IOS:</source>
@@ -199,7 +199,7 @@
     </message>
     <message>
         <source>Game IOS</source>
-        <translation>ゲームのIOS</translation>
+        <translation type="obsolete">ゲームのIOS</translation>
     </message>
     <message>
         <source>Start at:</source>
@@ -231,7 +231,7 @@
     </message>
     <message>
         <source>Compose</source>
-        <translation>作成</translation>
+        <translation type="obsolete">作成</translation>
     </message>
     <message>
         <source>Test Mode</source>
@@ -251,7 +251,7 @@
     </message>
     <message>
         <source>Tell wit to create a image using the selected parameters</source>
-        <translation>選択したパラメータでISOを作成します</translation>
+        <translation type="obsolete">選択したパラメータでISOを作成します</translation>
     </message>
     <message>
         <source>Copy the text in the output box</source>
@@ -291,7 +291,7 @@
     </message>
     <message>
         <source>Compose Image</source>
-        <translation>ISOを作成</translation>
+        <translation type="obsolete">ISOを作成</translation>
     </message>
     <message>
         <source>Enter a new game name</source>
@@ -315,7 +315,7 @@
     </message>
     <message>
         <source>Enter the output file path</source>
-        <translation>出力ファイルのパスを入力してください</translation>
+        <translation type="obsolete">出力ファイルのパスを入力してください</translation>
     </message>
     <message>
         <source>Open Directory</source>
@@ -326,6 +326,109 @@
 Wait for the current job to finish.</source>
         <translation>Witは動作中です
 ジョブが終了するまでお待ちください。</translation>
+    </message>
+    <message>
+        <source>Game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Game IOS:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default IOS to use for booting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Region:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AUTO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About Qt...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The version of wit cannot be determined.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The version of wit is too low.  Upgrade it!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error parsing data from wit.  The game cannot be loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is a cross-platform GUI for wit.
+This software comes to you with a GPLv3 license
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Revision: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

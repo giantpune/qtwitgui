@@ -11,11 +11,11 @@
     </message>
     <message>
         <source>Tell wit to create a image using the selected parameters</source>
-        <translation type="unfinished">Demandez à wit de créer une image en utilisant les paramètres sélectionnés</translation>
+        <translation type="obsolete">Demandez à wit de créer une image en utilisant les paramètres sélectionnés</translation>
     </message>
     <message>
         <source>Do It</source>
-        <translation type="unfinished">Fait le</translation>
+        <translation type="obsolete">Fait le</translation>
     </message>
     <message>
         <source>Clear the text</source>
@@ -31,23 +31,23 @@
     </message>
     <message>
         <source>Compose Image</source>
-        <translation type="unfinished">Composer l&apos;image</translation>
+        <translation type="obsolete">Composer l&apos;image</translation>
     </message>
     <message>
         <source>Enter the path to the files to be used to make the disc image</source>
-        <translation type="unfinished">Entrez le chemin vers les fichiers à utiliser pour faire l&apos;image disque</translation>
+        <translation type="obsolete">Entrez le chemin vers les fichiers à utiliser pour faire l&apos;image disque</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation type="unfinished">Parcourir...</translation>
+        <translation type="obsolete">Parcourir...</translation>
     </message>
     <message>
         <source>Input:</source>
-        <translation type="unfinished">Entrée :</translation>
+        <translation type="obsolete">Entrée :</translation>
     </message>
     <message>
         <source>Output:</source>
-        <translation type="unfinished">Sortie :</translation>
+        <translation type="obsolete">Sortie :</translation>
     </message>
     <message>
         <source>Region &lt;auto&gt;</source>
@@ -75,7 +75,7 @@
     </message>
     <message>
         <source>Game IOS</source>
-        <translation type="unfinished">IOS du jeu</translation>
+        <translation type="obsolete">IOS du jeu</translation>
     </message>
     <message>
         <source>Enter a new game name</source>
@@ -147,7 +147,7 @@
     </message>
     <message>
         <source>Load Image</source>
-        <translation type="unfinished">Charger l&apos;image</translation>
+        <translation type="obsolete">Charger l&apos;image</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -199,7 +199,7 @@
     </message>
     <message>
         <source>Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used</source>
-        <translation type="unfinished">IOS par défaut à utiliser pour le démarrage : Si il est inférieur à 3, l&apos;IOS dans le TMD sera utilisé</translation>
+        <translation type="obsolete">IOS par défaut à utiliser pour le démarrage : Si il est inférieur à 3, l&apos;IOS dans le TMD sera utilisé</translation>
     </message>
     <message>
         <source>Default IOS:</source>
@@ -211,7 +211,7 @@
     </message>
     <message>
         <source>/media</source>
-        <translation type="unfinished">/media</translation>
+        <translation type="obsolete">/media</translation>
     </message>
     <message>
         <source>Test Mode</source>
@@ -235,11 +235,11 @@
     </message>
     <message>
         <source>Compose</source>
-        <translation type="unfinished">Composer</translation>
+        <translation type="obsolete">Composer</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Editer</translation>
+        <translation type="obsolete">Editer</translation>
     </message>
     <message>
         <source>Slow your roll!</source>
@@ -297,11 +297,11 @@ Attendez que le travail en cours se termine.</translation>
     </message>
     <message>
         <source>&lt;input&gt;</source>
-        <translation type="unfinished">&lt;entrée&gt;</translation>
+        <translation type="obsolete">&lt;entrée&gt;</translation>
     </message>
     <message>
         <source>&lt;output&gt;</source>
-        <translation type="unfinished">&lt;sortie&gt;</translation>
+        <translation type="obsolete">&lt;sortie&gt;</translation>
     </message>
     <message>
         <source>Skip &quot;.svn&quot; files in tree view to speed up parsing</source>
@@ -317,11 +317,11 @@ Attendez que le travail en cours se termine.</translation>
     </message>
     <message>
         <source>Enter the output file path</source>
-        <translation type="unfinished">Entrez le chemin du fichier de sortie</translation>
+        <translation type="obsolete">Entrez le chemin du fichier de sortie</translation>
     </message>
     <message>
         <source>Edit Image</source>
-        <translation type="unfinished">Editer l&apos;image</translation>
+        <translation type="obsolete">Editer l&apos;image</translation>
     </message>
     <message>
         <source>Search Path...</source>
@@ -329,6 +329,109 @@ Attendez que le travail en cours se termine.</translation>
     </message>
     <message>
         <source>Open Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Game IOS:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default IOS to use for booting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Region:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AUTO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About Qt...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The version of wit cannot be determined.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The version of wit is too low.  Upgrade it!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error parsing data from wit.  The game cannot be loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is a cross-platform GUI for wit.
+This software comes to you with a GPLv3 license
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Revision: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

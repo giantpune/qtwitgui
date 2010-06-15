@@ -221,8 +221,10 @@ void MainWindow::ReadyReadStdOutSlot()
 
 	bool ok = false;
 	int witSVNr = witRevStr.toInt( &ok );
-	if( ok && witSVNr < MINIMUM_WIT_VERSION )
-	    ErrorMessage( tr( "The version of wit cannot be determined" ) );
+	if( !ok )
+	    ErrorMessage( tr( "The version of wit cannot be determined." ) );
+	else if( witSVNr < MINIMUM_WIT_VERSION )
+	    ErrorMessage( tr( "The version of wit is too low.  Upgrade it!" ) );
 
 	return;
     }
@@ -1159,10 +1161,16 @@ void MainWindow::on_checkBox_defaultRegion_clicked()
     this->UpdateOptions();
 }
 
+/*******************************************
+*
+*   drag and drop stuff
+*
+********************************************/
+//triggered on dragging a file around the mainwindow
 void MainWindow::dropEvent( QDropEvent *event )
 {
-    QUrl url( event->mimeData()->text() );
-    QString path = url.toLocalFile().trimmed();
+    QString path = event->mimeData()->urls().at( 0 ).toLocalFile().trimmed();
+    qDebug() << path;
 
     QFile file( path );
     if( file.exists() )
@@ -1172,13 +1180,15 @@ void MainWindow::dropEvent( QDropEvent *event )
     }
     else
     {
+	qDebug() << path << "doesn't exist";
 	event->ignore();
     }
 }
 
+//triggered on dropping a file in the main window
 void MainWindow::dragEnterEvent( QDragEnterEvent *event )
 {
-    if( event->mimeData()->hasText() )
+    if( event->mimeData()->hasUrls() )
     {
 	event->acceptProposedAction();
     }

@@ -11,11 +11,11 @@
     </message>
     <message>
         <source>Tell wit to create a image using the selected parameters</source>
-        <translation>Dì a WIT di creare un&apos;immagine usando i parametri selezionati</translation>
+        <translation type="obsolete">Dì a WIT di creare un&apos;immagine usando i parametri selezionati</translation>
     </message>
     <message>
         <source>Do It</source>
-        <translation>Crea</translation>
+        <translation type="obsolete">Crea</translation>
     </message>
     <message>
         <source>Clear the text</source>
@@ -31,23 +31,23 @@
     </message>
     <message>
         <source>Compose Image</source>
-        <translation>Crea immagine</translation>
+        <translation type="obsolete">Crea immagine</translation>
     </message>
     <message>
         <source>Enter the path to the files to be used to make the disc image</source>
-        <translation>Entra il percorso ai file da usare per creare l&apos;immagine disco</translation>
+        <translation type="obsolete">Entra il percorso ai file da usare per creare l&apos;immagine disco</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation>Sfoglia...</translation>
+        <translation type="obsolete">Sfoglia...</translation>
     </message>
     <message>
         <source>Input:</source>
-        <translation>Input:</translation>
+        <translation type="obsolete">Input:</translation>
     </message>
     <message>
         <source>Output:</source>
-        <translation>Output:</translation>
+        <translation type="obsolete">Output:</translation>
     </message>
     <message>
         <source>Region &lt;auto&gt;</source>
@@ -75,7 +75,7 @@
     </message>
     <message>
         <source>Game IOS</source>
-        <translation>IOS gioco</translation>
+        <translation type="obsolete">IOS gioco</translation>
     </message>
     <message>
         <source>Enter a new game name</source>
@@ -147,7 +147,7 @@
     </message>
     <message>
         <source>Load Image</source>
-        <translation>Carica immagine</translation>
+        <translation type="obsolete">Carica immagine</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -199,15 +199,11 @@
     </message>
     <message>
         <source>Default IOS to use for booting: If this is less than 3, the IOS in the TMD will be used</source>
-        <translation>IOS di default per l&apos;avvio: se è minore di 3, verrà usato l&apos;IOS del TMD</translation>
+        <translation type="obsolete">IOS di default per l&apos;avvio: se è minore di 3, verrà usato l&apos;IOS del TMD</translation>
     </message>
     <message>
         <source>Default IOS:</source>
         <translation>IOS di default:</translation>
-    </message>
-    <message>
-        <source>/media</source>
-        <translation></translation>
     </message>
     <message>
         <source>Test Mode</source>
@@ -231,11 +227,11 @@
     </message>
     <message>
         <source>Compose</source>
-        <translation>Componi</translation>
+        <translation type="obsolete">Componi</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Modifica</translation>
+        <translation type="obsolete">Modifica</translation>
     </message>
     <message>
         <source>Slow your roll!</source>
@@ -292,14 +288,6 @@ Aspetta che finisca il lavoro corrente.</translation>
         <translation>Ottenuta lista FST da WIT, creazione di un grafico ad albero dei file in corso...</translation>
     </message>
     <message>
-        <source>&lt;input&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>&lt;output&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Skip &quot;.svn&quot; files in tree view to speed up parsing</source>
         <translation>Salta i file &quot;.svn&quot; nell&apos;albero per velocizzare l&apos;analisi</translation>
     </message>
@@ -313,11 +301,11 @@ Aspetta che finisca il lavoro corrente.</translation>
     </message>
     <message>
         <source>Enter the output file path</source>
-        <translation>Inserisci il percorso per il file di output</translation>
+        <translation type="obsolete">Inserisci il percorso per il file di output</translation>
     </message>
     <message>
         <source>Edit Image</source>
-        <translation>Modifica immagine</translation>
+        <translation type="obsolete">Modifica immagine</translation>
     </message>
     <message>
         <source>Search Path...</source>
@@ -326,6 +314,109 @@ Aspetta che finisca il lavoro corrente.</translation>
     <message>
         <source>Open Directory</source>
         <translation>Apri cartella</translation>
+    </message>
+    <message>
+        <source>Game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Game IOS:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default IOS to use for booting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Region:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AUTO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About Qt...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The version of wit cannot be determined.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The version of wit is too low.  Upgrade it!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error parsing data from wit.  The game cannot be loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is a cross-platform GUI for wit.
+This software comes to you with a GPLv3 license
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Revision: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
