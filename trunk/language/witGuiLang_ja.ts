@@ -329,106 +329,109 @@ Wait for the current job to finish.</source>
     </message>
     <message>
         <source>Game</source>
-        <translation type="unfinished"></translation>
+        <translation>ゲーム</translation>
     </message>
     <message>
         <source>Game IOS:</source>
-        <translation type="unfinished"></translation>
+        <translation>ゲームIOS:</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>出力</translation>
     </message>
     <message>
         <source>Default IOS to use for booting</source>
-        <translation type="unfinished"></translation>
+        <translation>起動に使うデフォルトIOS</translation>
     </message>
     <message>
         <source>Default Region:</source>
-        <translation type="unfinished"></translation>
+        <translation>リージョン:</translation>
     </message>
     <message>
         <source>AUTO</source>
-        <translation type="unfinished"></translation>
+        <translation>自動</translation>
     </message>
     <message>
         <source>PAL</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>ヘルプ</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>開く</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Save As</source>
-        <translation type="unfinished"></translation>
+        <translation>名前を付けて保存</translation>
     </message>
     <message>
         <source>Ctrl+A</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About...</source>
-        <translation type="unfinished"></translation>
+        <translation>概要...</translation>
     </message>
     <message>
         <source>About Qt...</source>
-        <translation type="unfinished"></translation>
+        <translation>Qtについて...</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>不明</translation>
     </message>
     <message>
         <source>The version of wit cannot be determined.</source>
-        <translation type="unfinished"></translation>
+        <translation>新しいバージョンは見つかりませんでした。</translation>
     </message>
     <message>
         <source>The version of wit is too low.  Upgrade it!</source>
-        <translation type="unfinished"></translation>
+        <translation>更新があります。更新しますか?</translation>
     </message>
     <message>
         <source>Error parsing data from wit.  The game cannot be loaded.</source>
-        <translation type="unfinished"></translation>
+        <translation>ゲームはエラーにより読み込めませんでした。</translation>
     </message>
     <message>
         <source> is a cross-platform GUI for wit.
 This software comes to you with a GPLv3 license
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>はwitのための多プラットフォーム対応のGUIです
+GPLv3ライセンスで配布されています
+
+</translation>
     </message>
     <message>
         <source>Version: </source>
-        <translation type="unfinished"></translation>
+        <translation>バージョン:</translation>
     </message>
     <message>
         <source>Revision: </source>
-        <translation type="unfinished"></translation>
+        <translation>リビジョン:</translation>
     </message>
     <message>
         <source>Website: </source>
-        <translation type="unfinished"></translation>
+        <translation>公式サイト:</translation>
     </message>
     <message>
         <source>About </source>
-        <translation type="unfinished"></translation>
+        <translation>概要</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
 </context>
 </TS>
