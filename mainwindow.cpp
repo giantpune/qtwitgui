@@ -213,7 +213,7 @@ void MainWindow::ReadyReadStdOutSlot()
 	    }
 	    insertText += "\n";
 	    readCopy.remove( 0, 1 );
-	    ui->plainTextEdit->insertPlainText( readCopy );
+	    ui->plainTextEdit->insertPlainText( insertText );
 	}
 	ui->plainTextEdit->insertPlainText( readCopy );
 
