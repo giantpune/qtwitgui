@@ -48,7 +48,6 @@
 
 #define PROGRAM_NAME "QtWitGui"
 #define PROGRAM_VERSION "0.0.3"
-#define WEBSITE_STRING "http://code.google.com/p/qtwitgui/"
 
 
 
@@ -416,9 +415,9 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    bool ok = false;
 		    int witSVNr = str.toInt( &ok );
 		    if( !ok )
-			ErrorMessage( tr( "The version of wit cannot be determined." ) );
+			ErrorMessage( tr( "The version of wit cannot be determined." ) + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
 		    else if( witSVNr < MINIMUM_WIT_VERSION )
-			ErrorMessage( tr( "The version of wit is too low.  Upgrade it!" ) );
+			ErrorMessage( tr( "The version of wit is too low.  Upgrade it!" ) + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
 		}
 		else if( str.contains( "system" ) )
 		{
@@ -1014,15 +1013,17 @@ void MainWindow::SendWitCommand( QStringList args, int jobType )
 //about this program
 void MainWindow::on_actionAbout_triggered()
 {
+    QString link = "<a href=\"http://code.google.com/p/qtwitgui/\">http://code.google.com/p/qtwitgui/</a><br>";
     QString aboutText;
-    QTextStream( &aboutText ) << PROGRAM_NAME << tr( " is a cross-platform GUI for wit.\n"\
-						     "This software comes to you with a GPLv3 license\n\n")
 
-						<< tr( "Version: " ) << PROGRAM_VERSION << "\n"
-						<< tr( "Revision: " ) << SVN_REV_STR << "\n"
-						<< tr( "Website: " ) << WEBSITE_STRING << "\n"
-						<< "2010 Giantpune\n\n"
-						<< witVersionString << "\n";
+    QTextStream( &aboutText ) << PROGRAM_NAME << tr( " is a cross-platform GUI for wit.<br>"\
+						     "This software comes to you with a GPLv3 license<br><br>")
+
+						<< tr( "Version: " ) << PROGRAM_VERSION << "<br>"
+						<< tr( "Revision: " ) << SVN_REV_STR << "<br>";
+						aboutText += tr( "Website: " ) + link;
+						aboutText += "2010 Giantpune<br><br>";
+						aboutText +=  witVersionString + "<br>";
 
     QMessageBox::about( this, tr( "About " ) + PROGRAM_NAME, aboutText );
 }
