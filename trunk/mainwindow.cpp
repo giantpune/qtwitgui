@@ -454,7 +454,10 @@ void MainWindow::DoIlist()
 
     //partition select
     if( ui->comboBox_partition->currentIndex() )
+    {
 	args << "--psel=" + ui->comboBox_partition->currentText();
+	args << "--pmode=name";
+    }
 
     SendWitCommand( args, witIlist );
 }
@@ -935,7 +938,10 @@ void MainWindow::on_actionSave_As_triggered()
 
     //partition select
     if( ui->comboBox_partition->currentIndex() )
+    {
 	args << "--psel=" + ui->comboBox_partition->currentText();
+	args << "--pmode=name";
+    }
 
     //verbose
     if( ui->verbose_combobox->currentIndex() )
