@@ -93,6 +93,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
     QStringList arg;
     arg << "version";
+    arg << "--sections";
     SendWitCommand( arg, witGetVersion );
 
     //create and add the tree window
@@ -188,40 +189,6 @@ void MainWindow::ReadyReadStdOutSlot()
     QString read = witProcess->readAllStandardOutput();
 
     //qDebug() << "gotmessage" << read;
-
-    //this is the initial run of wit triggered by creating the window.  just get the program name & version from it and return;
-    if( read.contains( "wit: Wiimms") && witJob == witGetVersion )
-    {
-	QString s = read;
-	s = s.trimmed();
-	witVersionString = s;
-	//add the svn version of this program
-	s += " | Gui: r";
-	s += SVN_REV_STR;
-	if( s.endsWith( "m", Qt::CaseInsensitive ) )
-	    s.resize( s.size() - 1 );
-	setWindowTitle( s );
-
-	//save part of this string for the "about" box...    "wit: Wiimms ISO Tool v1.00a r1214 x86_64"
-	int firstDash = witVersionString.indexOf( " -", 0);
-	witVersionString.resize( firstDash );
-
-	//get the svn revision of wit so we can compare it to a set minimum version... "1214"
-	int revStart = witVersionString.indexOf( " r", 0 );
-	QString witRevStr = witVersionString;
-	witRevStr.remove( 0, revStart + 2 );
-	witRevStr.resize( 4 );			//assume that the svn number will be 4 characters long.  good up to r9999
-
-	bool ok = false;
-	int witSVNr = witRevStr.toInt( &ok );
-	if( !ok )
-	    ErrorMessage( tr( "The version of wit cannot be determined." ) );
-	else if( witSVNr < MINIMUM_WIT_VERSION )
-	    ErrorMessage( tr( "The version of wit is too low.  Upgrade it!" ) );
-
-	return;
-    }
-
     //get rid of stupid windows new lines
     read.replace( "\r\n", "\n" );
 
@@ -253,7 +220,6 @@ void MainWindow::ReadyReadStdOutSlot()
 	//does the current message need to be flagged to be deleted next time this function is called?
 	undoLastTextOperation = true;
     }
-
 
     else
 	ui->plainTextEdit->insertPlainText( read );
@@ -288,11 +254,9 @@ void MainWindow::ReadyReadStdOutSlot()
 	    break;
 
 	case witIlist:
-	    //get all the text output from wit and run it into 1 string
-	    filepaths += read;
-	    break;
-
 	case witDump:
+	case witGetVersion:
+	    //get all the text output from wit and run it into 1 string and process it all at once
 	    filepaths += read;
 	    break;
 
@@ -367,7 +331,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    break;
 
 	case witDump:
-	    if( filepaths.isEmpty() )
+	    if( filepaths.trimmed().isEmpty() )
 		break;
 
 	    //split the output from wit at "\n" and remove spaces and shit
@@ -422,8 +386,53 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 
 
 	case witGetVersion:
-	    //now merge the stdout and stderr into 1 channel for easier reading while actually doing work
-	    //witProcess->setReadChannelMode( QProcess::MergedChannels );
+	    if( filepaths.trimmed().isEmpty() )
+	    {
+		ErrorMessage( tr( "The version of wit cannot be determined." ) );
+		ui->statusBar->showMessage( tr( "The version of wit cannot be determined." ) );
+		witJob = witNoJob;
+		break;
+	    }
+
+	    //split the output from wit at "\n" and remove spaces
+	    list = filepaths.split("\n", QString::SkipEmptyParts );
+	    foreach( QString str, list )
+	    {
+		if( str.contains( "name" ) )
+		{
+		    str.remove( 0, 6 );
+		    str.resize( str.size() - 1 );
+		    witVersionString = str + " ";
+		}
+		else if( str.contains( "version" ) )
+		{
+		    str.remove( 0, 8 );
+		    witVersionString += str + " ";
+		}
+		else if( str.contains( "revision" ) )
+		{
+		    str.remove( 0, 9 );
+		    witVersionString += "r" + str + " ";
+		    bool ok = false;
+		    int witSVNr = str.toInt( &ok );
+		    if( !ok )
+			ErrorMessage( tr( "The version of wit cannot be determined." ) );
+		    else if( witSVNr < MINIMUM_WIT_VERSION )
+			ErrorMessage( tr( "The version of wit is too low.  Upgrade it!" ) );
+		}
+		else if( str.contains( "system" ) )
+		{
+		    str.remove( 0, 7 );
+		    witVersionString += str ;
+		    QString title = witVersionString + " | Gui: r" + SVN_REV_STR;
+
+		    if( title.endsWith( "m", Qt::CaseInsensitive ) )
+			title.resize( title.size() - 1 );
+
+		    setWindowTitle( title );
+		}
+	    }
+
 	    ui->statusBar->showMessage( tr( "Ready" ) );
 	    witJob = witNoJob;
 	    break;
