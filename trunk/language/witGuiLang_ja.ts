@@ -211,7 +211,7 @@
     </message>
     <message>
         <source>What IOS should be used in the TMD</source>
-        <translation>TMDの中のどのIOSを使用しますか</translation>
+        <translation type="obsolete">TMDの中のどのIOSを使用しますか</translation>
     </message>
     <message>
         <source>Replace</source>
@@ -432,6 +432,74 @@ GPLv3ライセンスで配布されています
     <message>
         <source>Error</source>
         <translation>エラー</translation>
+    </message>
+    <message>
+        <source>What IOS should be used in the TMD?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t write any changes to disc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base path used when searching for files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Where to start this program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always use the same region flag when saving a game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Partition Select:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No-Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No-Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No-Channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whole</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Raw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save an .ini with these settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Didn&apos;t get any files to display</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
