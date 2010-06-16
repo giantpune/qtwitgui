@@ -459,6 +459,9 @@ void MainWindow::DoIlist()
 	args << "--pmode=name";
     }
 
+    //args << "--sort=offset";
+    args << "--sort=none";
+
     SendWitCommand( args, witIlist );
 }
 
