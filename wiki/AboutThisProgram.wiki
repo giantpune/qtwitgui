@@ -5,10 +5,9 @@
 = Usage =
 
 == General ==
+  * The first time the program is run, or any other time there is nothing in the "wit path" variable and it tries to look for wit, you should be presented a window to select the wit executable.
 
-  * Wit path is ./wit.  You need wit in the same path as this program, as well as any dependencies for it ( like cygwin.dll ).
-
-  * This program is designed to deal with 1 game at a time, not with folders cantaining multiple games.
+  * This program is designed to deal with 1 game at a time, not with folders containing multiple games.
 
   * This program works by getting input from the user, then building a list of commands and runs wit as a process and passes it those commands.
 
@@ -17,7 +16,7 @@
   * Why not just incorporate code from wit into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
 
 == Tab 1 ( Game )==
-  * Load a game by using file-> open ( ctrl+O ) or dragging a game onto the window.  You can use a file or a folder containing an extracted game filesystem.  The program will run a couple processes of wit to gather information about the selected game, and then display the information in the GUI.
+  * Load a game by using file-> open ( ctrl+O ), dragging a game onto the window, or argv[ 1 ] ( open with... ).  You can use a file or a folder containing an extracted game filesystem.  The program will run a couple processes of wit to gather information about the selected game, and then display the information in the GUI.
 
   * Once a game has been loaded, you can select file->save as ( ctrl+ A ) to open a dialog box and save the game.
 
@@ -52,7 +51,7 @@
 
   * Any settings here will supersede one from another tab with the same function.  This is to say, the IOS & region settings here must be disabled to use the ones in the first tab.
 
-  * Clicking the "save settings" button writes a ini file in the same path that this program is running.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
+  * Clicking the "save settings" button writes a "QtWitGui.ini" file in the user's home directory.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
 ----
 
 
