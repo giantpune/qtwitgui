@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <source>MainWindow</source>
-        <translation type="unfinished">Hovedvindue</translation>
+        <translation type="obsolete">Hovedvindue</translation>
     </message>
     <message>
         <source>Useful information</source>
@@ -403,13 +403,6 @@ Wait for the current job to finish.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source> is a cross-platform GUI for wit.
-This software comes to you with a GPLv3 license
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Version: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -495,6 +488,10 @@ This software comes to you with a GPLv3 license
     </message>
     <message>
         <source>Didn&apos;t get any files to display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is a cross-platform GUI for wit.&lt;br&gt;This software comes to you with a GPLv3 license&lt;br&gt;&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

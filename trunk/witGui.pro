@@ -23,15 +23,17 @@ TRANSLATIONS = language/witGuiLang_empty.ts \
 unix {
     system(chmod 755 ./makesvnrev.sh)
     system(./makesvnrev.sh)
+    macx{
+	RC_FILE = icon.icns
+    }
 }
 win32 {
     system(SubWCRev.exe "." "./svnrev_template.h" "./svnrev.h")
+    RC_FILE = rcfile.rc
 }
 
-#update language files (.ts)
-system(lupdate -verbose ./witGui.pro)
 
-#turn .ts into .qm files.  strip identical strings
+system(lupdate -verbose ./witGui.pro)
 system(lrelease -verbose ./witGui.pro)
 
 RESOURCES += resources.qrc

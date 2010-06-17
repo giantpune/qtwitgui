@@ -123,7 +123,7 @@
     </message>
     <message>
         <source>MainWindow</source>
-        <translation>メインウインドウ</translation>
+        <translation type="obsolete">メインウインドウ</translation>
     </message>
     <message>
         <source>Useful information</source>
@@ -408,7 +408,7 @@ Wait for the current job to finish.</source>
 This software comes to you with a GPLv3 license
 
 </source>
-        <translation>はwitのための多プラットフォーム対応のGUIです
+        <translation type="obsolete">はwitのための多プラットフォーム対応のGUIです
 GPLv3ライセンスで配布されています
 
 </translation>
@@ -499,6 +499,10 @@ GPLv3ライセンスで配布されています
     </message>
     <message>
         <source>Didn&apos;t get any files to display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is a cross-platform GUI for wit.&lt;br&gt;This software comes to you with a GPLv3 license&lt;br&gt;&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
