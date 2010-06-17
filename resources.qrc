@@ -7,5 +7,6 @@
         <file>language/witGuiLang_da.qm</file>
         <file>language/witGuiLang_it.qm</file>
         <file>language/witGuiLang_es.qm</file>
+        <file>icon.ico</file>
     </qresource>
 </RCC>

@@ -53,6 +53,9 @@ int main(int argc, char *argv[])
     QWindowsStyle *style = new QWindowsStyle;
     w.setStyle( style );
 
+    QIcon windowIcon( ":/icon.ico" );w.setWindowIcon( windowIcon );
+    w.setWindowIcon( windowIcon );
+
 
     w.show();
     return a.exec();

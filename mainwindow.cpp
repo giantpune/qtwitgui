@@ -68,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
     ui->plainTextEdit->clear();
 
+
     //create the pointer to the process used to run wit
     witProcess = new QProcess( this );
 
@@ -93,7 +94,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     QStringList arg;
     arg << "version";
     arg << "--sections";
-    SendWitCommand( arg, witGetVersion );
+    if( !SendWitCommand( arg, witGetVersion ) )
+	ErrorMessage( tr( "The version of wit cannot be determined." )
+		      + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
 
     //create and add the tree window
 	//icons
@@ -988,7 +991,7 @@ void MainWindow::on_actionSave_As_triggered()
 }
 
 //actually start the process with the given list of args and set the jobtype flag for the functions getting output from the process
-void MainWindow::SendWitCommand( QStringList args, int jobType )
+int MainWindow::SendWitCommand( QStringList args, int jobType )
 {
     QString str;
     str += "\n";
@@ -1005,9 +1008,10 @@ void MainWindow::SendWitCommand( QStringList args, int jobType )
     {
 	qDebug() << "failed to start wit";
 	ui->statusBar->showMessage( tr( "Error starting wit!" ) );
-	return;
+	return 0;
     }
     ui->statusBar->showMessage( tr( "Wit is running..." ) );
+    return 1;
 }
 
 //about this program

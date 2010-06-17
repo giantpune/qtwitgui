@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <source>MainWindow</source>
-        <translation>Finestra principale</translation>
+        <translation type="obsolete">Finestra principale</translation>
     </message>
     <message>
         <source>Useful information</source>
@@ -392,13 +392,6 @@ Aspetta che finisca il lavoro corrente.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source> is a cross-platform GUI for wit.
-This software comes to you with a GPLv3 license
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Version: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -484,6 +477,10 @@ This software comes to you with a GPLv3 license
     </message>
     <message>
         <source>Didn&apos;t get any files to display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is a cross-platform GUI for wit.&lt;br&gt;This software comes to you with a GPLv3 license&lt;br&gt;&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
