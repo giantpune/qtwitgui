@@ -39,9 +39,6 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-
-#define SAVEFILENAME "QtWitGui.ini"
-
 #define MINIMUM_WIT_VERSION 1214
 
 #define PROGRAM_NAME "QtWitGui"
@@ -58,16 +55,17 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::MainWindow )
 {
     ui->setupUi( this );
-    setAcceptDrops(true);
+    setAcceptDrops( true );
 
     undoLastTextOperation = false;
-    //gameIsLoadedOk = false;
-    //alreadyGotTitle = false;
 
-    ui->plainTextEdit->clear();
+    //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
+    ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
 
     //load settings
     LoadSettings();
+
+    UpdateOptions();
 
     //create the pointer to the process used to run wit
     witProcess = new QProcess( this );
@@ -98,7 +96,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 	ErrorMessage( tr( "The version of wit cannot be determined." )
 		      + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
 
-    //create and add the tree window
+    //create stuff for the tree window
 	//icons
     groupIcon.addPixmap( style()->standardPixmap( QStyle::SP_DirClosedIcon ), QIcon::Normal, QIcon::Off );
     groupIcon.addPixmap( style()->standardPixmap( QStyle::SP_DirOpenIcon ), QIcon::Normal, QIcon::On );
@@ -120,13 +118,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     connect( extractAct, SIGNAL( triggered() ), this, SLOT( ExtractSlot() ) );
     connect( replaceAct, SIGNAL( triggered() ), this, SLOT( ReplaceSlot() ) );
 
-
-    //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
-    ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
-
-
-    this->UpdateOptions();
-
     //make sure buttons are wide enough for text
     ResizeGuiToLanguage();
 }
@@ -139,7 +130,6 @@ MainWindow::~MainWindow()
     if( witJob != witNoJob )
     {
 	emit KillProcess();
-//	qsleep( 1 );
     }
     SAFEDELETE( extractAct  );
     SAFEDELETE( replaceAct );
@@ -162,12 +152,6 @@ void MainWindow::on_pushButton_3_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     ui->plainTextEdit->clear();
-}
-
-//append text to the message box
-void MainWindow::AddText( const char in[] )
-{
-    ui->plainTextEdit->insertPlainText( in );
 }
 
 /**************************************************
@@ -320,6 +304,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     switch ( witJob )
     {
 	case witIlist:
+	{
 	    if( filepaths.trimmed().isEmpty() )
 	    {
 		//reset the flag for the current job
@@ -334,10 +319,14 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    }
 
 	    ui->statusBar->showMessage( tr( "Got FST list from wit, parsing it into a pretty file tree..." ) );
+
+	    //start the thread and give it all the filenames from the game and the icons for files & folders
 	    wiithread->DoCommand( filepaths, ui->checkBox_hiddenFiles->isChecked(), keyIcon, groupIcon );
 	    break;
+	}
 
 	case witDump:
+	{
 	    if( filepaths.trimmed().isEmpty() )
 		break;
 
@@ -388,12 +377,14 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		AbortLoadingGame( tr( "Error parsing data from wit.  The game cannot be loaded.") );
 		break;
 	    }
+
+	    //do the ILIST-L command to get the filenames from the game
 	    DoIlist();
 	    break;
-
+	}
 
 	case witGetVersion:
-	    {
+	{
             ui->progressBar->setValue( 0 );
 	    if( filepaths.trimmed().isEmpty() )
 	    {
@@ -445,6 +436,8 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    ui->statusBar->showMessage( tr( "Ready" ) );
             ui->plainTextEdit->clear();
 	    witJob = witNoJob;
+
+	    //if this program was started with an arg ( "QtWitGui someGame.iso" ) try to load it.
 	    QStringList args = QCoreApplication::instance()->arguments();
 	    args.takeFirst();
 	    if ( !args.isEmpty() )
@@ -456,8 +449,10 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	}
 
 	default:
+	{
 	    witJob = witNoJob;
 	    break;
+	}
     }
 }
 
@@ -486,7 +481,6 @@ void MainWindow::DoIlist()
 	args << "--pmode=name";
     }
 
-    //args << "--sort=offset";
     args << "--sort=none";
 
     SendWitCommand( args, witIlist );
@@ -535,11 +529,6 @@ void MainWindow::ExtractSlot()
     {
 	extractPaths << ItemToFullPath( selectedItems[ i ] );
     }
-
-    /*for( int i = 0; i < extractPaths.size(); i++ )
-    {
-	qDebug() << extractPaths[ i ] ;
-    }*/
 }
 
 //this is triggered on right-click -> replace
@@ -1019,13 +1008,10 @@ void MainWindow::on_actionSave_As_triggered()
 int MainWindow::SendWitCommand( QStringList args, int jobType )
 {
     if( witPath.isEmpty() )
-	FindWit();
+	if( !FindWit() )
+	    return 0;
 
-    QString str = "\n" + witPath + " ";
-    //str += "\n";
-    //str += witPath;
-    //str += " ";
-    ui->plainTextEdit->insertPlainText( str );
+    ui->plainTextEdit->insertPlainText( "\n" + witPath + " " );
 
     foreach( QString arg, args)
 	ui->plainTextEdit->insertPlainText( arg + " " );
@@ -1273,6 +1259,7 @@ void MainWindow::dragEnterEvent( QDragEnterEvent *event )
     }
 }
 
+//open a dialog to find the wit binary
 bool MainWindow::FindWit()
 {
     witPath = QFileDialog::getOpenFileName(this, tr("Where is wit?") );
@@ -1284,6 +1271,7 @@ bool MainWindow::FindWit()
     return true;
 }
 
+//when the "wit path" button is clicked
 void MainWindow::on_pushButton_wit_clicked()
 {
     FindWit();

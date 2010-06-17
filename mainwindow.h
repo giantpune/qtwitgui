@@ -65,10 +65,6 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void AddText( const char in[] );
-    void SetStatus( const char str[] );
-    void UpdateEffects();
-
 protected:
 //    void contextMenuEvent(QContextMenuEvent *event);
     void dropEvent( QDropEvent *event );
@@ -98,12 +94,8 @@ private:
     u8 gameRegion;
     bool undoLastTextOperation;
     u8 witJob;
-    //bool gameIsLoadedOk;
 
-    //char id[ 7 ];
-    //char name[ 0x40 ];
 
-    //void ParseFileList();
     void DoIlist();
     QString ItemToFullPath( QTreeWidgetItem * item );
     bool SaveSettings();
@@ -131,13 +123,8 @@ private slots:
     void on_pushButton_settings_searchPath_clicked();
     void on_save_pushButton_clicked();
     void on_pushButton_2_clicked();
-    //void on_edit_img_pushButton_clicked();
-    //void on_lineEdit_editingFinished();
     void on_checkBox_7_clicked();
     void on_checkBox_6_clicked();
-    //void on_toolButton_2_clicked();
-    //void on_pushButton_4_clicked();
-    //void on_toolButton_clicked();
     void on_pushButton_3_clicked();
     void UpdateOptions();
     void ReadyReadStdOutSlot();
@@ -153,7 +140,6 @@ private slots:
 
 public slots:
     void ShowMessage( const QString & );
-    //void GetThreadDone( int );
 
 signals:
     // send a kill message to the external running process
