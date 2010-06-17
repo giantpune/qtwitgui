@@ -83,6 +83,7 @@ private:
     QIcon keyIcon;
     QString filepaths;
     QString isoPath;
+    QString witPath;
     QString lastPathLoadedCorrectly;
     QString witVersionString;
     QString witErrorStr;
@@ -99,8 +100,8 @@ private:
     u8 witJob;
     //bool gameIsLoadedOk;
 
-    char id[ 7 ];
-    char name[ 0x40 ];
+    //char id[ 7 ];
+    //char name[ 0x40 ];
 
     //void ParseFileList();
     void DoIlist();
@@ -114,11 +115,13 @@ private:
     int GetIOS();
     void OpenGame();
     int SendWitCommand( QStringList args, int jobType );
+    bool FindWit();
 
 
 
 private slots:
 
+    void on_pushButton_wit_clicked();
     void on_checkBox_defaultRegion_clicked();
     void on_checkBox_defaultIos_clicked();
     void on_actionAbout_Qt_triggered();

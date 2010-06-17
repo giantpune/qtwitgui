@@ -42,8 +42,6 @@
 
 #define SAVEFILENAME "QtWitGui.ini"
 
-//this syntax apparently works for all platforms
-#define WIT "./wit"
 #define MINIMUM_WIT_VERSION 1214
 
 #define PROGRAM_NAME "QtWitGui"
@@ -68,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
     ui->plainTextEdit->clear();
 
+    //load settings
+    LoadSettings();
 
     //create the pointer to the process used to run wit
     witProcess = new QProcess( this );
@@ -124,14 +124,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
     ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
 
-    //load settings
-    LoadSettings();
+
     this->UpdateOptions();
 
     //make sure buttons are wide enough for text
     ResizeGuiToLanguage();
-
-    ui->plainTextEdit->clear();
 }
 
 //destructor
@@ -289,8 +286,15 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     }
     else
     {
+#ifdef Q_WS_WIN
+        if( i == 128 )
+            ui->plainTextEdit->insertPlainText( tr( "Maybe cygwin1.dll is missing" ) + "\n" );
+#endif
+        if( s )
+            ui->plainTextEdit->insertPlainText( tr( "Wit appears to have crashed" ) + "\n" );
+
 	QString st;
-	QTextStream( &st ) <<"Done, but with error [ ExitCode: " << i << "  ErrorStatus: " << s << "]";
+        QTextStream( &st ) << tr( "Done, but with error" ) + " [ ExitCode: " << i << "  ErrorStatus: " << s << " ]";
 	ui->plainTextEdit->insertPlainText( st );
 
 	if( !witErrorStr.isEmpty() )
@@ -300,6 +304,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	witErrorStr.clear();
 
 	witJob = witNoJob;
+        ui->statusBar->showMessage( tr( "Error... Check the log" )  );
 	return;
     }
 
@@ -388,6 +393,8 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 
 
 	case witGetVersion:
+	    {
+            ui->progressBar->setValue( 0 );
 	    if( filepaths.trimmed().isEmpty() )
 	    {
 		ErrorMessage( tr( "The version of wit cannot be determined." ) );
@@ -436,8 +443,17 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    }
 
 	    ui->statusBar->showMessage( tr( "Ready" ) );
+            ui->plainTextEdit->clear();
 	    witJob = witNoJob;
+	    QStringList args = QCoreApplication::instance()->arguments();
+	    args.takeFirst();
+	    if ( !args.isEmpty() )
+	    {
+		isoPath = args.at( 0 );
+		OpenGame();
+	    }
 	    break;
+	}
 
 	default:
 	    witJob = witNoJob;
@@ -540,7 +556,7 @@ void MainWindow::ReplaceSlot()
 //save settings to disc
 bool MainWindow::SaveSettings()
 {
-    QFile file( SAVEFILENAME );
+    QFile file( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) + "/QtWitGui.ini" );
     if ( !file.open( QIODevice::WriteOnly | QIODevice::Text ) )
 	 return false;
 
@@ -567,6 +583,7 @@ bool MainWindow::SaveSettings()
 	<< "\nwwidth:"	    << this->width()
 	<< "\nwposx:"	    << this->x()
 	<< "\nwposy:"	    << this->y()
+	<< "\nwitpath:"	    << witPath
 
 	;
 
@@ -577,7 +594,7 @@ bool MainWindow::SaveSettings()
 //read settings file and set values from it
 bool MainWindow::LoadSettings()
 {
-    QFile file( SAVEFILENAME );
+    QFile file( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) + "/QtWitGui.ini" );
     if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
 	 return false;
 
@@ -738,6 +755,11 @@ bool MainWindow::LoadSettings()
 	    if( ok )
 		newY = v;
 	}
+	else if( setting == "witpath" )
+	{
+	    witPath = value;
+	    ui->lineEdit_wit->setText( value );
+	}
 
 
     }
@@ -775,6 +797,9 @@ void MainWindow::ResizeGuiToLanguage()
     ui->label_3->setMinimumWidth( MAX( ui->label_3->minimumWidth(), fm.width( ui->label_3->text() ) + pad ) );
     ui->label_7->setMinimumWidth( MAX( ui->label_7->minimumWidth(), fm.width( ui->label_7->text() ) + pad ) );
     ui->label_partition->setMinimumWidth( MAX( ui->label_partition->minimumWidth(), fm.width( ui->label_partition->text() ) + pad ) );
+    ui->pushButton_settings_searchPath->setMinimumWidth( MAX( ui->pushButton_settings_searchPath->minimumWidth(), fm.width( ui->pushButton_settings_searchPath->text() ) + pad ) );
+    ui->pushButton_wit->setMinimumWidth( ui->pushButton_settings_searchPath->minimumWidth() );
+
 
 
     for( int i = 0; i < ui->verbose_combobox->count(); i++ )
@@ -993,17 +1018,20 @@ void MainWindow::on_actionSave_As_triggered()
 //actually start the process with the given list of args and set the jobtype flag for the functions getting output from the process
 int MainWindow::SendWitCommand( QStringList args, int jobType )
 {
-    QString str;
-    str += "\n";
-    str += WIT;
-    str += " ";
+    if( witPath.isEmpty() )
+	FindWit();
+
+    QString str = "\n" + witPath + " ";
+    //str += "\n";
+    //str += witPath;
+    //str += " ";
     ui->plainTextEdit->insertPlainText( str );
 
     foreach( QString arg, args)
 	ui->plainTextEdit->insertPlainText( arg + " " );
 
     witJob = jobType;
-    witProcess->start( WIT, args );
+    witProcess->start( witPath, args );
     if( !witProcess->waitForStarted() )//default timeout 30,000 msecs
     {
 	qDebug() << "failed to start wit";
@@ -1245,3 +1273,18 @@ void MainWindow::dragEnterEvent( QDragEnterEvent *event )
     }
 }
 
+bool MainWindow::FindWit()
+{
+    witPath = QFileDialog::getOpenFileName(this, tr("Where is wit?") );
+
+    if( witPath.isEmpty() )
+	return false;
+
+    ui->lineEdit_wit->setText( witPath );
+    return true;
+}
+
+void MainWindow::on_pushButton_wit_clicked()
+{
+    FindWit();
+}

@@ -483,5 +483,21 @@ Aspetta che finisca il lavoro corrente.</translation>
         <source> is a cross-platform GUI for wit.&lt;br&gt;This software comes to you with a GPLv3 license&lt;br&gt;&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Maybe cygwin1.dll is missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wit appears to have crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Done, but with error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error... Check the log</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
