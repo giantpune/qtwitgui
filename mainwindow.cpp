@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
     // Add an environment variable to shut up the cygwin warning in windows
     QStringList env = QProcess::systemEnvironment();
     env << "CYGWIN=nodosfilewarning";
-    witProcess->setEnvironment(env);
+    witProcess->setEnvironment( env );
 #endif
 
     //connect output and input signals between the process and the main window so we can get information from it
@@ -168,6 +168,9 @@ void MainWindow::ShowMessage( const QString &s )
 //get messages from the procces running wit and convert the messages to stuff to use in the GUI
 void MainWindow::ReadyReadStdOutSlot()
 {
+    //since we are getting more stdout, assume that existing errors are not fatal and clear them from the error cache
+    witErrorStr.clear();
+
     //read text from wit
     QString read = witProcess->readAllStandardOutput();
 
@@ -255,7 +258,15 @@ void MainWindow::ReadyReadStdErrSlot()
 {
     QString read = witProcess->readAllStandardError();
     witErrorStr += read;
-    ui->plainTextEdit->insertPlainText( read );
+
+    read.replace( "\r\n", "\n" );
+    read.replace( "\n", "<br>" );
+
+    QString htmlString = "<text style=\"color:red\">" + read + "</text>";
+
+    ui->plainTextEdit->appendHtml( htmlString );
+
+    //ui->plainTextEdit->insertPlainText( read );
 }
 
 //triggered after the wit process is done
@@ -1011,10 +1022,13 @@ int MainWindow::SendWitCommand( QStringList args, int jobType )
 	if( !FindWit() )
 	    return 0;
 
-    ui->plainTextEdit->insertPlainText( "\n" + witPath + " " );
-
+    QString htmlString = "<p style=\"color:blue\">" + witPath;
     foreach( QString arg, args)
-	ui->plainTextEdit->insertPlainText( arg + " " );
+	htmlString += " " + arg;
+
+    htmlString += "</p>";
+
+    ui->plainTextEdit->appendHtml( htmlString );
 
     witJob = jobType;
     witProcess->start( witPath, args );
