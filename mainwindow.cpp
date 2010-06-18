@@ -154,6 +154,24 @@ void MainWindow::on_pushButton_2_clicked()
     ui->plainTextEdit->clear();
 }
 
+//insert text int the ui->plaintext
+//! s is the text
+//! c is a color
+void MainWindow::InsertText( QString s, QString c)
+{
+    //copy the string so we can alter it and leave the original alone
+    QString textCopy = s;
+
+    //replace all \r\n and \n with <br>
+    textCopy.replace( "\r\n", "\n" );
+    textCopy.replace( "\n", "<br>" );
+
+    QString htmlString = "<text style=\"color:" + c + "\">" + textCopy + "</text>";
+
+    ui->plainTextEdit->appendHtml( htmlString );
+
+}
+
 /**************************************************
 *
 *   get messages and data from threads & processes
@@ -259,14 +277,7 @@ void MainWindow::ReadyReadStdErrSlot()
     QString read = witProcess->readAllStandardError();
     witErrorStr += read;
 
-    read.replace( "\r\n", "\n" );
-    read.replace( "\n", "<br>" );
-
-    QString htmlString = "<text style=\"color:red\">" + read + "</text>";
-
-    ui->plainTextEdit->appendHtml( htmlString );
-
-    //ui->plainTextEdit->insertPlainText( read );
+    InsertText( read, "red" );
 }
 
 //triggered after the wit process is done
@@ -275,22 +286,25 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 //    qDebug( "process is done running\nExitCode: %d\nExitStatus: %d", i, s );
     if( !i && !s )
     {
-	ui->progressBar->setValue( 100 );
 	if( witJob != witGetVersion )
-	    ui->plainTextEdit->insertPlainText( tr( "Done!" ) );
+	{
+	    ui->progressBar->setValue( 100 );
+	    InsertText( tr( "Done!" ), "green" );
+	}
     }
     else
     {
 #ifdef Q_WS_WIN
         if( i == 128 )
-            ui->plainTextEdit->insertPlainText( tr( "Maybe cygwin1.dll is missing" ) + "\n" );
+	    InsertText( tr( "Maybe cygwin1.dll is missing" ), "red" );
 #endif
         if( s )
-            ui->plainTextEdit->insertPlainText( tr( "Wit appears to have crashed" ) + "\n" );
+	    InsertText( tr( "Wit appears to have crashed" ), "red" );
 
 	QString st;
         QTextStream( &st ) << tr( "Done, but with error" ) + " [ ExitCode: " << i << "  ErrorStatus: " << s << " ]";
-	ui->plainTextEdit->insertPlainText( st );
+	InsertText( st + "<br>", "red" );
+	//ui->plainTextEdit->insertPlainText( st );
 
 	if( !witErrorStr.isEmpty() )
 	    ErrorMessage( witErrorStr );
@@ -1022,13 +1036,12 @@ int MainWindow::SendWitCommand( QStringList args, int jobType )
 	if( !FindWit() )
 	    return 0;
 
-    QString htmlString = "<p style=\"color:blue\">" + witPath;
+    QString command = witPath;
+
     foreach( QString arg, args)
-	htmlString += " " + arg;
+	command += " " + arg;
 
-    htmlString += "</p>";
-
-    ui->plainTextEdit->appendHtml( htmlString );
+    InsertText( command, "blue" );
 
     witJob = jobType;
     witProcess->start( witPath, args );

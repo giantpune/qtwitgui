@@ -109,6 +109,8 @@ private:
     int SendWitCommand( QStringList args, int jobType );
     bool FindWit();
 
+    void InsertText( QString s, QString c);
+
 
 
 private slots:
