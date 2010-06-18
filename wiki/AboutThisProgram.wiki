@@ -90,13 +90,53 @@
 = Platform Specific Stuff =
 
 == linux ==
-  * Everything should just work.  I don't have a Linux box without the Qt SDK installed, so I can't say for sure if there are required dynamically linked libraries or anything.
+  * Results of "ldd ./QtWitGui" 
+{{{
+	linux-vdso.so.1 =>  (0x00007ffff57ff000)
+	libQtGui.so.4 => /usr/lib/libQtGui.so.4 (0x00007fc81b9c7000)
+	libQtNetwork.so.4 => /usr/lib/libQtNetwork.so.4 (0x00007fc81b6ac000)
+	libQtCore.so.4 => /usr/lib/libQtCore.so.4 (0x00007fc81b275000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x00007fc81b059000)
+	libstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007fc81ad49000)
+	libm.so.6 => /lib/libm.so.6 (0x00007fc81aac5000)
+	libgcc_s.so.1 => /lib/libgcc_s.so.1 (0x00007fc81a8ae000)
+	libc.so.6 => /lib/libc.so.6 (0x00007fc81a53f000)
+	libaudio.so.2 => /usr/lib/libaudio.so.2 (0x00007fc81a326000)
+	libpng12.so.0 => /usr/lib/libpng12.so.0 (0x00007fc81a100000)
+	libfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x00007fc819e7b000)
+	libgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x00007fc819c34000)
+	libSM.so.6 => /usr/lib/libSM.so.6 (0x00007fc819a2b000)
+	libICE.so.6 => /usr/lib/libICE.so.6 (0x00007fc819810000)
+	libz.so.1 => /lib/libz.so.1 (0x00007fc8195f9000)
+	libglib-2.0.so.0 => /lib/libglib-2.0.so.0 (0x00007fc819332000)
+	libXrender.so.1 => /usr/lib/libXrender.so.1 (0x00007fc819128000)
+	libfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x00007fc818ef6000)
+	libXext.so.6 => /usr/lib/libXext.so.6 (0x00007fc818ce4000)
+	libX11.so.6 => /usr/lib/libX11.so.6 (0x00007fc8189ae000)
+	libgthread-2.0.so.0 => /usr/lib/libgthread-2.0.so.0 (0x00007fc8187a9000)
+	librt.so.1 => /lib/librt.so.1 (0x00007fc8185a1000)
+	libdl.so.2 => /lib/libdl.so.2 (0x00007fc81839d000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007fc81c57b000)
+	libXt.so.6 => /usr/lib/libXt.so.6 (0x00007fc818137000)
+	libXau.so.6 => /usr/lib/libXau.so.6 (0x00007fc817f34000)
+	libpcre.so.3 => /lib/libpcre.so.3 (0x00007fc817d06000)
+	libuuid.so.1 => /lib/libuuid.so.1 (0x00007fc817b01000)
+	libexpat.so.1 => /lib/libexpat.so.1 (0x00007fc8178d8000)
+	libxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007fc8176bc000)
+	libXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007fc8174b7000)
+}}}
 ----
 
 
 
 == windows ==
-  * It is possible to run this exe without having the Qt SDK installed, but it requires at least 3 .dll files:  QtCore4.dll, QtGui4.dll, libgcc_s_dw2-1.dll.
+  * It is possible to run this exe without having the Qt SDK installed, but it requires at least 4 .dll files:
+<pre>
+	QtCore4.dll
+	QtGui4.dll
+	libgcc_s_dw2-1.dll
+	mingwm10.dll
+</pre>
 ----
 
 
