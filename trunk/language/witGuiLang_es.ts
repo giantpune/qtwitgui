@@ -503,5 +503,13 @@ Espera que termine el trabajo actual.</translation>
         <source>Error... Check the log</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Wit path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Where is wit?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
