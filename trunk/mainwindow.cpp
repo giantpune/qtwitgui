@@ -21,6 +21,7 @@
 *************************************************************************************/
 
 #include <QUrl>
+//#include <QStyleFactory>
 #include <QTreeWidget>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -304,7 +305,6 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	QString st;
         QTextStream( &st ) << tr( "Done, but with error" ) + " [ ExitCode: " << i << "  ErrorStatus: " << s << " ]";
 	InsertText( st + "<br>", "red" );
-	//ui->plainTextEdit->insertPlainText( st );
 
 	if( !witErrorStr.isEmpty() )
 	    ErrorMessage( witErrorStr );
@@ -321,9 +321,6 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     witErrorStr.clear();
 
     QStringList list;
-    QString idStr;
-    QString nameStr;
-    int regionInt = -1;
 
     //qDebug() << "witJob: " << witJob;
     switch ( witJob )
@@ -355,6 +352,10 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    if( filepaths.trimmed().isEmpty() )
 		break;
 
+	    QString idStr;
+	    QString nameStr;
+	    int regionInt = -1;
+
 	    //split the output from wit at "\n" and remove spaces and shit
 	    list = filepaths.split("\n", QString::SkipEmptyParts );
 	    foreach( QString str, list )
@@ -371,6 +372,8 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		{
 		    str.remove( 0, 10 );
 		    str = str.trimmed();
+		    if( str.isEmpty() )
+			str = "No Name";
 		    nameStr = str;
 		}
 		else if( str.contains( "Region setting:" ) )
@@ -389,7 +392,6 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 
 	    }
 	    if( !idStr.isEmpty()
-		&& !nameStr.isEmpty()
 		&& regionInt >= 0 )
 	    {
 		ui->lineEdit_3->setText( idStr );
@@ -956,7 +958,7 @@ void MainWindow::on_actionSave_As_triggered()
     //title
     if( ui->checkBox_6->isChecked() )
     {
-	args << "\'--name=" + ui->lineEdit_4->text() + "\'";
+	args << "--name=" + ui->lineEdit_4->text();
     }
 
     //modify
