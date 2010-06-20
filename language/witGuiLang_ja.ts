@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="ja_JP">
 <context>
     <name>MainWindow</name>
     <message>
@@ -435,99 +437,99 @@ GPLv3ライセンスで配布されています
     </message>
     <message>
         <source>What IOS should be used in the TMD?</source>
-        <translation type="unfinished"></translation>
+        <translation>TMDのどのIOSを使用しますか?</translation>
     </message>
     <message>
         <source>Don&apos;t write any changes to disc</source>
-        <translation type="unfinished"></translation>
+        <translation>ディスクに変更を書き込まない</translation>
     </message>
     <message>
         <source>Base path used when searching for files</source>
-        <translation type="unfinished"></translation>
+        <translation>ベースパスはファイルの参照の時使用されます</translation>
     </message>
     <message>
         <source>Where to start this program</source>
-        <translation type="unfinished"></translation>
+        <translation>どのタブでプログラムを始めますか</translation>
     </message>
     <message>
         <source>Always use the same region flag when saving a game</source>
-        <translation type="unfinished"></translation>
+        <translation>ゲームを保存するときいつも同じリージョンを使う</translation>
     </message>
     <message>
         <source>Partition Select:</source>
-        <translation type="unfinished"></translation>
+        <translation>領域を選択:</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>全て</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished"></translation>
+        <translation>データ</translation>
     </message>
     <message>
         <source>No-Data</source>
-        <translation type="unfinished"></translation>
+        <translation>データ無し</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>更新</translation>
     </message>
     <message>
         <source>No-Update</source>
-        <translation type="unfinished"></translation>
+        <translation>更新無し</translation>
     </message>
     <message>
         <source>Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <source>No-Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>キャンセル拒否</translation>
     </message>
     <message>
         <source>Whole</source>
-        <translation type="unfinished"></translation>
+        <translation>全て</translation>
     </message>
     <message>
         <source>Raw</source>
-        <translation type="unfinished"></translation>
+        <translation>無編集</translation>
     </message>
     <message>
         <source>Save an .ini with these settings</source>
-        <translation type="unfinished"></translation>
+        <translation>iniに設定を保存</translation>
     </message>
     <message>
         <source>Didn&apos;t get any files to display</source>
-        <translation type="unfinished"></translation>
+        <translation>表示するファイルがありません</translation>
     </message>
     <message>
         <source> is a cross-platform GUI for wit.&lt;br&gt;This software comes to you with a GPLv3 license&lt;br&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>はwit用の多プラットフォーム対応GUIです.&lt;br&gt;GPLv3ライセンスで配布されています&lt;br&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <source>Maybe cygwin1.dll is missing</source>
-        <translation type="unfinished"></translation>
+        <translation>cygwin1.dllがありません</translation>
     </message>
     <message>
         <source>Wit appears to have crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>witがクラッシュしました</translation>
     </message>
     <message>
         <source>Done, but with error</source>
-        <translation type="unfinished"></translation>
+        <translation>エラーがありましたが完了しました</translation>
     </message>
     <message>
         <source>Error... Check the log</source>
-        <translation type="unfinished"></translation>
+        <translation>エラー…記録をチェック中</translation>
     </message>
     <message>
         <source>Wit path:</source>
-        <translation type="unfinished"></translation>
+        <translation>witのパス:</translation>
     </message>
     <message>
         <source>Where is wit?</source>
-        <translation type="unfinished"></translation>
+        <translation>witの場所はどこですか?</translation>
     </message>
 </context>
 </TS>

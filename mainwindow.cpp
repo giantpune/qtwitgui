@@ -40,7 +40,7 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-#define MINIMUM_WIT_VERSION 1214
+#define MINIMUM_WIT_VERSION 1248
 
 #define PROGRAM_NAME "QtWitGui"
 #define PROGRAM_VERSION "0.0.3"
@@ -355,6 +355,8 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    QString idStr;
 	    QString nameStr;
 	    int regionInt = -1;
+	    bool isDataPartition = false;
+	    int foundIos = 0;
 
 	    //split the output from wit at "\n" and remove spaces and shit
 	    list = filepaths.split("\n", QString::SkipEmptyParts );
@@ -389,15 +391,42 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 			regionInt = v + 1;
 		    }
 		}
+		else if( str.contains( "Partition table #0, " ) && str.contains( "type 0 [DATA]:" ) )
+		{
+		    isDataPartition = true;
+		}
+		else if( str.contains( "Sytem version:" ) && isDataPartition )
+		{
+		    isDataPartition = false;
+		    str = str.simplified();
+		    str.remove( 0, 39 );
+		    str.resize( str.indexOf( " ", 0 ) );
+
+		    qDebug() << "ios:" << str;
+
+		    bool ok;
+		    int v = str.toInt( &ok, 10 );
+		    if( ok && v < 255 && v > 3 )
+		    {
+			foundIos = v;
+		    }
+		}
+
 
 	    }
+	    //we found all the different info we need about the game, so change to that game
 	    if( !idStr.isEmpty()
-		&& regionInt >= 0 )
+		&& regionInt >= 0
+		&& foundIos )
 	    {
 		ui->lineEdit_3->setText( idStr );
 		ui->lineEdit_4->setText( nameStr );
 		ui->comboBox_region->setCurrentIndex( regionInt );
 		gameRegion = regionInt -1;
+
+		gameIOS = foundIos;
+		ui->spinBox_gameIOS->setValue( gameIOS );
+
 	    }
 	    else
 	    {
@@ -876,6 +905,7 @@ void MainWindow::OpenGame()
     QStringList args;
     args << "DUMP";
     args << isoPath;
+    args << "--show=intro,tmd";
 
     ui->plainTextEdit->clear();
 
@@ -1085,6 +1115,7 @@ void MainWindow::on_actionAbout_Qt_triggered()
 void MainWindow::AbortLoadingGame( QString message )
 {
     ErrorMessage( message );
+    witJob = witNoJob;
 }
 
 //determine which region to use based on all the different checkboxes and options and crap
