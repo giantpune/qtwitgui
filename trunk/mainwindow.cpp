@@ -504,6 +504,11 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    break;
 	}
 
+	case witCopy:
+	{
+	    witJob = witNoJob;
+	    ui->statusBar->showMessage( tr( "Ready" ) );
+	}
 	default:
 	{
 	    witJob = witNoJob;
@@ -612,7 +617,7 @@ bool MainWindow::SaveSettings()
 	<< "\nlogging:"	    << ui->logging_combobox->currentIndex()
 	<< "\nios:"	    << ui->default_ios_spinbox->value()
 	<< "\npath:"	    << ui->lineEdit_default_path->text()
-	<< "\nregion:"	    << ui->comboBox_region->currentIndex()
+	//<< "\nregion:"	    << ui->comboBox_region->currentIndex()
 	<< "\nstarttab:"    << ui->startupTab_combobox->currentIndex()
 	<< "\nupdatetitle:" << ui->checkBox_6->checkState()
 	<< "\nupdateid:"    << ui->checkBox_7->checkState()
@@ -621,7 +626,7 @@ bool MainWindow::SaveSettings()
 	<< "\nparthdr:"	    << ui->checkBox_3->checkState()
 	<< "\nignoreidden:" << ui->checkBox_hiddenFiles->checkState()
 	<< "\ndefaultiosch:"<< ui->checkBox_defaultIos->checkState()
-	<< "\ndefaultios:"  << ui->spinBox_gameIOS->value()
+	//<< "\ndefaultios:"  << ui->spinBox_gameIOS->value()
 	<< "\ndefaultregch:"<< ui->checkBox_defaultRegion->checkState()
 	<< "\npselect:"	    << ui->comboBox_partition->currentIndex()
 	<< "\nwheight:"	    << this->height()
@@ -695,12 +700,12 @@ bool MainWindow::LoadSettings()
 	    if( ok )
 		ui->default_ios_spinbox->setValue( v );
 	}
-	else if( setting == "region" )
+	/*else if( setting == "region" )
 	{
 	    int v = value.toInt( &ok, 10 );
 	    if( ok )
 		ui->comboBox_region->setCurrentIndex( v );
-	}
+	}*/
 	else if( setting == "path" )
 	{
 	    ui->lineEdit_default_path->setText( value );
@@ -754,14 +759,14 @@ bool MainWindow::LoadSettings()
 	    int v = value.toInt( &ok, 10 );
 	    ui->checkBox_defaultRegion->setChecked( ok && v );
 	}
-	else if( setting == "defaultios" )
+	/*else if( setting == "defaultios" )
 	{
 	    int v = value.toInt( &ok, 10 );
 	    if( ok )
 	    {
 		ui->spinBox_gameIOS->setValue( v );
 	    }
-	}
+	}*/
 	else if( setting == "defaultreg" )
 	{
 	    int v = value.toInt( &ok, 10 );
@@ -1012,7 +1017,7 @@ void MainWindow::on_actionSave_As_triggered()
 	    mod += "BOOT";
 	    checked++;
 	}
-	if( ui->checkBox_4->isChecked() )
+	if( ui->checkBox_4->isChecked() && ui->checkBox_7->isChecked() )
 	{
 	    if( checked )mod += ",";
 	    mod += "TMD,TICKET";
@@ -1187,7 +1192,7 @@ void MainWindow::UpdateOptions()
     bool checked = ui->checkBox_6->isChecked() || ui->checkBox_7->isChecked();
     ui->checkBox_2->setEnabled( checked );
     ui->checkBox_3->setEnabled( checked );
-    ui->checkBox_4->setEnabled( checked );
+    ui->checkBox_4->setEnabled( ui->checkBox_7->isChecked() );
 
     //default IOS & region settings
     ui->default_ios_spinbox->setEnabled( ui->checkBox_defaultIos->isChecked() );
@@ -1197,70 +1202,6 @@ void MainWindow::UpdateOptions()
     ui->spinBox_gameIOS->setEnabled( !ui->checkBox_defaultIos->isChecked() );
     ui->comboBox_region->setEnabled( !ui->checkBox_defaultRegion->isChecked() );
 
-    //title & id
-/*    char path[ 256 ];
-    snprintf( path, sizeof( path ), "%s/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
-
-    qDebug() << path;
-    FILE *f = fopen( path, "rb" );
-    if( !f )
-    {
-
-	snprintf( path, sizeof( path ), "%s/DATA/sys/boot.bin", ui->lineEdit->text().toLatin1().data() );
-	qDebug() << path;
-	f = fopen( path, "rb" );
-    }
-    if( f )
-    {
-	fseek( f, 0, 0 );
-	fread( &id, 6, 1, f );
-	ui->lineEdit_3->setText( id );
-
-	fseek( f, 0x20, 0 );
-	fread( &name, 0x40, 1, f );
-	ui->lineEdit_4->setText( name );
-
-	fclose( f );
-    }
-
-    //IOS
-    snprintf( path, sizeof( path ), "%s/tmd.bin", ui->lineEdit->text().toLatin1().data() );
-    qDebug() << path;
-    f = fopen( path, "rb" );
-    if( !f )
-    {
-	snprintf( path, sizeof( path ), "%s/DATA/tmd.bin", ui->lineEdit->text().toLatin1().data() );
-	qDebug() << path;
-	f = fopen( path, "rb" );
-    }
-    if( f )
-    {
-	fseek( f, 0x18b, 0 );
-	fread( &tmdIOS, 1, 1, f );
-	fclose( f );
-
-	if( ui->default_ios_spinbox->value() < 3 )
-	{
-	    ui->spinBox->setValue( tmdIOS );
-	}
-	else
-	{
-	    ui->spinBox->setValue( ui->default_ios_spinbox->value() );
-	}
-
-	ui->spinBox->setDisabled( false );
-
-	QString m = "\"" + ui->lineEdit->text() + "\" loaded";
-	ui->statusBar->showMessage( m );
-    }
-    else
-    {
-	ui->spinBox->setDisabled( false );
-	tmdIOS = ui->spinBox->value();
-	QString m = "Unknown IOS for \"" + ui->lineEdit->text() + "\" - action not supported yet.";
-	ui->statusBar->showMessage( m );
-    }
-*/
 }
 
 void MainWindow::on_checkBox_6_clicked()
