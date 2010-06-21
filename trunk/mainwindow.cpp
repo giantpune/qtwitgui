@@ -113,6 +113,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 	//create the actions and stuff for the context menu
     extractAct = new QAction( tr( "Extract" ), this );
     replaceAct = new QAction( tr( "Replace" ), this );
+    extractAct->setEnabled( false );
+    replaceAct->setEnabled( false );
     ui->treeWidget->addAction( extractAct );
     ui->treeWidget->addAction( replaceAct );
     ui->treeWidget->setContextMenuPolicy( Qt::ActionsContextMenu );
