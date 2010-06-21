@@ -1079,6 +1079,8 @@ int MainWindow::SendWitCommand( QStringList args, int jobType )
 	command += " " + arg;
 
     InsertText( command, "blue" );
+    if( jobType == witCopy && ui->verbose_combobox->currentIndex() == 1 )
+	ui->plainTextEdit->insertPlainText( "\n" );
 
     witJob = jobType;
     witProcess->start( witPath, args );
