@@ -31,7 +31,7 @@
 
 
 
-== Tab 2 ( wit output ) ==
+== Tab 2 ( Wit Output ) ==
 
   * This tab is used to display output from wit.  There is no console class in Qt, so I have improvised this.  It will try to mimic the console, but it is not intended to be fully functional.  It is read-only.
 
@@ -43,7 +43,7 @@
 
 
 
-== Tab 3 ( general settings ) ==
+== Tab 3 ( General Settings ) ==
 
   * As the name suggests, this is a place to select some settings.
 
@@ -51,7 +51,7 @@
 
   * Any settings here will supersede one from another tab with the same function.  This is to say, the IOS & region settings here must be disabled to use the ones in the first tab.
 
-  * Clicking the "save settings" button writes a "QtWitGui.ini" file in the user's home directory.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
+  * Whenever the program closes ( without crashing ) it writes a "QtWitGui.ini" file in the user's home directory.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
 ----
 
 
