@@ -115,6 +115,7 @@ private:
 
 private slots:
 
+    void on_checkBox_sneek_clicked();
     void on_pushButton_wit_clicked();
     void on_checkBox_defaultRegion_clicked();
     void on_checkBox_defaultIos_clicked();
@@ -123,7 +124,6 @@ private slots:
     void on_actionSave_As_triggered();
     void on_actionOpen_triggered();
     void on_pushButton_settings_searchPath_clicked();
-    void on_save_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_checkBox_7_clicked();
     void on_checkBox_6_clicked();

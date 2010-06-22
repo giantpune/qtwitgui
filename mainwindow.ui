@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>769</width>
-    <height>537</height>
+    <width>762</width>
+    <height>577</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,7 +65,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -508,6 +508,26 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_sneek">
+              <property name="toolTip">
+               <string>When extracting games, only dump the data folder, and don't use the &quot;DATA&quot; sub-folder.</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/sneek.png</normaloff>:/sneek.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>128</width>
+                <height>36</height>
+               </size>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
@@ -812,39 +832,6 @@
             </item>
            </layout>
           </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QPushButton" name="save_pushButton">
-              <property name="minimumSize">
-               <size>
-                <width>115</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Save an .ini with these settings</string>
-              </property>
-              <property name="text">
-               <string>Save Settings</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
          </layout>
         </item>
         <item row="0" column="1">
@@ -884,7 +871,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>769</width>
+     <width>762</width>
      <height>25</height>
     </rect>
    </property>
@@ -937,6 +924,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

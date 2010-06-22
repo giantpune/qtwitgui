@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>MainWindow</name>
     <message>
@@ -219,7 +221,7 @@
     </message>
     <message>
         <source>Save Settings</source>
-        <translation>Guardar Configuración</translation>
+        <translation type="obsolete">Guardar Configuración</translation>
     </message>
     <message>
         <source>Start at:</source>
@@ -476,10 +478,6 @@ Espera que termine el trabajo actual.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save an .ini with these settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Didn&apos;t get any files to display</source>
         <translation type="unfinished"></translation>
     </message>
@@ -509,6 +507,14 @@ Espera que termine el trabajo actual.</translation>
     </message>
     <message>
         <source>Where is wit?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When extracting games, only dump the data folder, and don&apos;t use the &quot;DATA&quot; sub-folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use SNEEK folder system when extracting</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
