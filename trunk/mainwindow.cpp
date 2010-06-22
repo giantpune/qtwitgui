@@ -916,7 +916,7 @@ void MainWindow::on_actionSave_As_triggered()
 
     //open a dialog and browse for an output file
     QString outputPath;
-    QFileDialog dialog( this );
+    QFileDialog dialog( this, tr("Save As") );
 #ifdef Q_WS_MAC						    //the OS-x default dialog box doesn't let me select files & folders
     dialog.setOption( QFileDialog::DontUseNativeDialog );
 #endif
