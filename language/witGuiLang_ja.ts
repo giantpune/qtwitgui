@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="ja_JP">
 <context>
     <name>MainWindow</name>
     <message>
@@ -533,11 +533,11 @@ GPLv3ライセンスで配布されています
     </message>
     <message>
         <source>When extracting games, only dump the data folder, and don&apos;t use the &quot;DATA&quot; sub-folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>ゲームを抽出するときデータフォルダのみをダンプし、「DATA」サブフォルダを使用しません。</translation>
     </message>
     <message>
         <source>Use SNEEK folder system when extracting</source>
-        <translation type="unfinished"></translation>
+        <translation>抽出時にSNEEKフォルダシステムを使用する</translation>
     </message>
 </context>
 </TS>
