@@ -81,7 +81,7 @@
     </message>
     <message>
         <source>Overwrite Existing</source>
-        <translation>存在するものを上書き</translation>
+        <translation>存在するものを上書きする</translation>
     </message>
     <message>
         <source>Enter the path to the files to be used to make the disc image</source>
