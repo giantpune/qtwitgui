@@ -248,14 +248,10 @@ void MainWindow::ReadyReadStdOutSlot()
 			 numText += str.at( 0 );
 			 str.remove( 0, 1 );
 		     }
-			 //for( int i = 0; i < perChar; i++ ) //copy the number to another string
-			  //  numText += str.at( i );
-			    //numText += str.toLatin1().data()[ i ];
 
-			 num = numText.toInt();//convert to int
-			 if( num < 101 )
-			     ui->progressBar->setValue( num );
-			 //qDebug( "numText: %s\nnum: %d", numText.toLatin1().data(), num );
+		    num = numText.toInt();//convert to int
+		    if( num < 101 )
+			ui->progressBar->setValue( num );
 		 }
 	    }
 	    break;
@@ -636,6 +632,7 @@ bool MainWindow::SaveSettings()
 	<< "\nwposx:"	    << this->x()
 	<< "\nwposy:"	    << this->y()
 	<< "\nwitpath:"	    << witPath
+	<< "\nsneek:"	    << ui->checkBox_sneek->checkState()
 
 	;
 
@@ -677,7 +674,7 @@ bool MainWindow::LoadSettings()
 	if( setting == "test" )
 	{
 	    int v = value.toInt( &ok, 10 );			//for checkboxes, 0 is not checked / 2 is checked
-	    ui->checkBox->setChecked( ok && v );		//turn "ok" signals that the string was successfully turned into a int ( base 10 )
+	    ui->checkBox->setChecked( ok && v );		//"ok" signals that the string was successfully turned into a int ( base 10 )
 	}							//use ok & int as a bool value
 	else if( setting == "overwrite" )
 	{
@@ -702,12 +699,6 @@ bool MainWindow::LoadSettings()
 	    if( ok )
 		ui->default_ios_spinbox->setValue( v );
 	}
-	/*else if( setting == "region" )
-	{
-	    int v = value.toInt( &ok, 10 );
-	    if( ok )
-		ui->comboBox_region->setCurrentIndex( v );
-	}*/
 	else if( setting == "path" )
 	{
 	    ui->lineEdit_default_path->setText( value );
@@ -761,14 +752,6 @@ bool MainWindow::LoadSettings()
 	    int v = value.toInt( &ok, 10 );
 	    ui->checkBox_defaultRegion->setChecked( ok && v );
 	}
-	/*else if( setting == "defaultios" )
-	{
-	    int v = value.toInt( &ok, 10 );
-	    if( ok )
-	    {
-		ui->spinBox_gameIOS->setValue( v );
-	    }
-	}*/
 	else if( setting == "defaultreg" )
 	{
 	    int v = value.toInt( &ok, 10 );
@@ -812,6 +795,12 @@ bool MainWindow::LoadSettings()
 	    witPath = value;
 	    ui->lineEdit_wit->setText( value );
 	}
+	else if( setting == "sneek" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_sneek->setChecked( ok && v );
+	}
+
 
 
     }
@@ -825,14 +814,6 @@ bool MainWindow::LoadSettings()
     return true;
 }
 
-//save settings button clicked
-void MainWindow::on_save_pushButton_clicked()
-{
-    SaveSettings();
-    ui->statusBar->showMessage( tr( "Settings Saved" ), 5000 );
-    //qDebug() << "settings saved";
-}
-
 //get the size of text strings used in different parts of the GUI and resize gui elements based on that size
 void MainWindow::ResizeGuiToLanguage()
 {
@@ -841,7 +822,7 @@ void MainWindow::ResizeGuiToLanguage()
     QFontMetrics fm( fontMetrics() );
     ui->pushButton_2->setMinimumWidth( MAX( ui->pushButton_2->minimumWidth(), fm.width( ui->pushButton_2->text() ) + pad ) );
     ui->pushButton_3->setMinimumWidth( MAX( ui->pushButton_3->minimumWidth(), fm.width( ui->pushButton_3->text() ) + pad ) );
-    ui->save_pushButton->setMinimumWidth( MAX( ui->save_pushButton->minimumWidth(), fm.width( ui->save_pushButton->text() ) + pad ) );
+    //ui->save_pushButton->setMinimumWidth( MAX( ui->save_pushButton->minimumWidth(), fm.width( ui->save_pushButton->text() ) + pad ) );
     ui->checkBox_defaultIos->setMinimumWidth( MAX( ui->checkBox_defaultIos->minimumWidth(), fm.width( ui->checkBox_defaultIos->text() ) + pad ) );
     ui->checkBox_defaultRegion->setMinimumWidth( MAX( ui->checkBox_defaultRegion->minimumWidth(), fm.width( ui->checkBox_defaultRegion->text() ) + pad ) );
     ui->label->setMinimumWidth( MAX( ui->label->minimumWidth(), fm.width( ui->label->text() ) + pad ) );
@@ -947,6 +928,7 @@ void MainWindow::on_actionSave_As_triggered()
 
 
     ui->progressBar->setValue( 0 );
+    bool outputIsFst = false;
 
     outputPath = dialog.selectedFiles()[ 0 ];
 
@@ -965,6 +947,7 @@ void MainWindow::on_actionSave_As_triggered()
     {
 	qDebug() << "treating " << outputPath << "as fst";
 	args << "--fst";
+	outputIsFst = true;
     }
 
     //region
@@ -1028,8 +1011,14 @@ void MainWindow::on_actionSave_As_triggered()
 	args << mod;
     }
 
+    //sneek
+    if( ui->checkBox_sneek->isChecked() && outputIsFst )
+    {
+	args << "--sneek";
+    }
+
     //partition select
-    if( ui->comboBox_partition->currentIndex() )
+    else if( ui->comboBox_partition->currentIndex() )
     {
 	args << "--psel=" + ui->comboBox_partition->currentText();
 	args << "--pmode=name";
@@ -1206,6 +1195,9 @@ void MainWindow::UpdateOptions()
     ui->spinBox_gameIOS->setEnabled( !ui->checkBox_defaultIos->isChecked() );
     ui->comboBox_region->setEnabled( !ui->checkBox_defaultRegion->isChecked() );
 
+    //sneek checkbox
+    ui->comboBox_partition->setEnabled( !ui->checkBox_sneek->isChecked() );
+
 }
 
 void MainWindow::on_checkBox_6_clicked()
@@ -1228,6 +1220,10 @@ void MainWindow::on_checkBox_defaultRegion_clicked()
     this->UpdateOptions();
 }
 
+void MainWindow::on_checkBox_sneek_clicked()
+{
+    this->UpdateOptions();
+}
 /*******************************************
 *
 *   drag and drop stuff
@@ -1281,3 +1277,5 @@ void MainWindow::on_pushButton_wit_clicked()
 {
     FindWit();
 }
+
+

@@ -8,5 +8,6 @@
         <file>language/witGuiLang_it.qm</file>
         <file>language/witGuiLang_es.qm</file>
         <file>icon.ico</file>
+        <file>sneek.png</file>
     </qresource>
 </RCC>
