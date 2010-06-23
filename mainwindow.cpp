@@ -47,7 +47,7 @@
 
 
 
-#define SAFEDELETE( x ) if( x )delete( x )
+#define SAFEDELETE( x ) if( x ){delete( x ); x = 0; }
 #define MAX( x, y ) ( ( x ) > ( y ) ? ( x ) : ( y ) )
 #define MIN( x, y ) ( ( x ) < ( y ) ? ( x ) : ( y ) )
 
@@ -129,6 +129,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 MainWindow::~MainWindow()
 {
     SaveSettings();
+    foreach( QTreeWidgetItem *item, ui->treeWidget->invisibleRootItem()->takeChildren() )
+    {
+	delete item;
+	item = 0;
+    }
     delete ui;
     if( witJob != witNoJob )
     {
@@ -527,7 +532,12 @@ void MainWindow::DoIlist()
 
     //clear the last loaded ISO
     filepaths.clear();
-    while( ui->treeWidget->takeTopLevelItem( 0 ) );
+    foreach( QTreeWidgetItem *item, ui->treeWidget->invisibleRootItem()->takeChildren() )
+    {
+	//deleting the item already delets its children, so no need to recurse
+	delete item;
+	item = 0;
+    }
 
     QStringList args;
     args << "ILIST-L";
@@ -880,12 +890,6 @@ void MainWindow::on_actionOpen_triggered()
     if ( !dialog.exec() )
 	return;
 
-    if( dialog.selectedFiles().size() > 1 )
-    {
-	ErrorMessage( tr("Please select only 1 game!") );
-	return;
-    }
-
     isoPath = dialog.selectedFiles()[ 0 ];
 
     if( isoPath.isEmpty() )
@@ -959,7 +963,7 @@ void MainWindow::on_actionSave_As_triggered()
 
     //region
     int regInt = GetRegion();
-    qDebug() << "got reg: " << regInt;
+    //qDebug() << "got reg: " << regInt;
     if( regInt >= 0 )
     {
 	QString regString;
@@ -1136,7 +1140,7 @@ int MainWindow::GetRegion()
     {
 	ret = ui->comboBox_region->currentIndex() - 1;
     }
-    qDebug() << "GetRegion(): " << ret;
+    //qDebug() << "GetRegion(): " << ret;
     return ret;
 }
 
@@ -1284,5 +1288,4 @@ void MainWindow::on_pushButton_wit_clicked()
 {
     FindWit();
 }
-
 
