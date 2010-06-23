@@ -869,7 +869,7 @@ void MainWindow::on_pushButton_settings_searchPath_clicked()
 //file->open / ctrl+O
 void MainWindow::on_actionOpen_triggered()
 {
-    qDebug() << "open triggered";
+//    qDebug() << "open triggered";
     FileFolderDialog dialog(this);
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
 #ifdef Q_WS_MAC
@@ -879,6 +879,12 @@ void MainWindow::on_actionOpen_triggered()
 
     if ( !dialog.exec() )
 	return;
+
+    if( dialog.selectedFiles().size() > 1 )
+    {
+	ErrorMessage( tr("Please select only 1 game!") );
+	return;
+    }
 
     isoPath = dialog.selectedFiles()[ 0 ];
 
@@ -903,7 +909,7 @@ void MainWindow::OpenGame()
 //file->save as / ctrl+A
 void MainWindow::on_actionSave_As_triggered()
 {
-    qDebug() << "save as";
+//    qDebug() << "save as";
     if( !ui->actionSave_As->isEnabled() //should never happen
 	|| lastPathLoadedCorrectly.isEmpty() )
 	return;
@@ -916,12 +922,13 @@ void MainWindow::on_actionSave_As_triggered()
 
     //open a dialog and browse for an output file
     QString outputPath;
-    QFileDialog dialog( this, tr("Save As") );
+    FileFolderDialog dialog( this, tr("Save As") );
+    dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
 #ifdef Q_WS_MAC						    //the OS-x default dialog box doesn't let me select files & folders
     dialog.setOption( QFileDialog::DontUseNativeDialog );
 #endif
     dialog.setDirectory( ui->lineEdit_default_path->text() );
-    dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
+
 
     if ( !dialog.exec() || dialog.selectedFiles()[ 0 ].isEmpty() )
 	return;
