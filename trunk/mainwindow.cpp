@@ -134,6 +134,7 @@ MainWindow::~MainWindow()
 	delete item;
 	item = 0;
     }
+    SAFEDELETE( wiithread );
     delete ui;
     if( witJob != witNoJob )
     {
@@ -645,6 +646,7 @@ bool MainWindow::SaveSettings()
 	<< "\nsneek:"	    << ui->checkBox_sneek->checkState()
 
 	;
+    file.close();
 
     return true;
 
@@ -814,6 +816,7 @@ bool MainWindow::LoadSettings()
 
 
     }
+    file.close();
 
     if( newHeight > 0 && newWidth > 0 && newX > 0 && newY > 0 )
     {
@@ -821,6 +824,8 @@ bool MainWindow::LoadSettings()
 	this->move( newX, newY );
     }
     else qDebug() << "using default size & pos";
+
+
     return true;
 }
 
