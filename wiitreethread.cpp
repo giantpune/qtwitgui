@@ -206,20 +206,20 @@ QTreeWidgetItem *WiiTreeThread::childAt( QTreeWidgetItem *parent, int index )
 }
 
 //add a new item to the tree view as a chald of the given parent
-QTreeWidgetItem *WiiTreeThread::createItem(const QString &text, QTreeWidgetItem *parent, int index)
+QTreeWidgetItem *WiiTreeThread::createItem( const QString &text, QTreeWidgetItem *parent, int index )
 {
     //qDebug() << "adding " << text << " index " << index;
     QTreeWidgetItem *after = 0;
-    if (index != 0)
-	after = childAt(parent, index - 1);
+    if ( index != 0 )
+	after = childAt( parent, index - 1 );
 
     QTreeWidgetItem *item;
 //    if (parent)
-	item = new QTreeWidgetItem( parent , after);
+	item = new QTreeWidgetItem( parent , after );
 //    else
 //	item = new QTreeWidgetItem( ui->treeWidget , after);
 
-    item->setText(0, text);
+    item->setText( 0, text );
     //item->setFlags(item->flags() | Qt::ItemIsEditable);
     return item;
 }
