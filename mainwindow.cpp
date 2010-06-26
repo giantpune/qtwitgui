@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QWhatsThis>
 #include <QMessageBox>
 #include <QFontMetrics>
 #include <QStringList>
@@ -1294,3 +1295,8 @@ void MainWindow::on_pushButton_wit_clicked()
     FindWit();
 }
 
+//help->what's this
+void MainWindow::on_actionWhat_s_This_triggered()
+{
+    QWhatsThis::enterWhatsThisMode();
+}

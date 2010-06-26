@@ -85,6 +85,9 @@
             <property name="toolTip">
              <string>Apply the new TID to the TMD &amp; ticket</string>
             </property>
+            <property name="whatsThis">
+             <string>Check this box to apply changed of the ID to the TMD and ticket.</string>
+            </property>
             <property name="text">
              <string>Tmd / Ticket</string>
             </property>
@@ -97,6 +100,9 @@
            <widget class="QComboBox" name="comboBox_region">
             <property name="toolTip">
              <string>Set the region used for the output image.  This is independent of the TID.  If auto is selected, wit will try to guess the region based on the TID.</string>
+            </property>
+            <property name="whatsThis">
+             <string>This box displays the region flag of the game that is loaded in the GUI and also allows it to be changed when the game is saved.  This flag is independent of the &quot;region&quot; byte of the ID.</string>
             </property>
             <property name="currentIndex">
              <number>0</number>
@@ -136,6 +142,9 @@
             <property name="toolTip">
              <string>Apply title &amp; TID changes to the disc header</string>
             </property>
+            <property name="whatsThis">
+             <string>Check this box to apply changed of the name and ID to the disc header.</string>
+            </property>
             <property name="text">
              <string>Disc Hdr</string>
             </property>
@@ -151,6 +160,9 @@
             </property>
             <property name="toolTip">
              <string>Apply the title &amp; TID changes to the partition header</string>
+            </property>
+            <property name="whatsThis">
+             <string>Check this box to apply changed of the name and ID to the partition header.</string>
             </property>
             <property name="text">
              <string>Partition Hdr</string>
@@ -176,6 +188,14 @@
             </property>
             <property name="toolTip">
              <string>Enter a new game name</string>
+            </property>
+            <property name="whatsThis">
+             <string>This box contains the name of the game as read from 0x20 in the disc header.  This is the name displayed by most homebrew applications.
+
+To give a game a new name...
+(1) check the &quot;Update Title&quot; box
+(2) Type a name here ( max 63 characters )
+(3) check the &quot;Disc Hdr&quot; box to apply this name to the disc header and/or the &quot;Partition Hdr&quot; box to apply the name to the data patition header.</string>
             </property>
             <property name="text">
              <string>&lt;Game Name&gt;</string>
@@ -203,6 +223,18 @@
               </property>
               <property name="toolTip">
                <string>Enter a new TID ( 6 characters )</string>
+              </property>
+              <property name="whatsThis">
+               <string>This box is used for the game's ID.  The ID is used several places in a game for different reasons.  
+
+Homebrew programs usually use the ID in the disc header to identify a game.  Because of this, only one game should exist on a WBFS partition with a given ID in the disc header.  Games starting with a 0 for the ID in the disc header will be autobooted by the system menu.
+
+Most functions having to do with the NAND rely on the ID in the TMD and ticket.  This includes save data.  Therefore, changing the ID here will result in a game using different location on the NAND to store its data.
+
+To edit a game ID...
+(1) check the &quot;Update ID&quot; box
+(2) enter an ID in this box ( 6 characters )
+(3) check any combination of the &quot;Disc Hdr&quot;, &quot;Partition Hdr&quot;, and &quot; Tmd / Ticket&quot; boxes to decide where to apply the new ID in the game.</string>
               </property>
               <property name="text">
                <string>&lt;ID&gt;</string>
@@ -266,6 +298,9 @@
               <property name="toolTip">
                <string>What IOS should be used in the TMD?</string>
               </property>
+              <property name="whatsThis">
+               <string>This is the IOS used while the game is running.  Editing in this box is disabled when the &quot;Default IOS&quot; setting is enabled.</string>
+              </property>
               <property name="minimum">
                <number>3</number>
               </property>
@@ -281,6 +316,9 @@
             <property name="toolTip">
              <string>Do you want to change the TID of the game?</string>
             </property>
+            <property name="whatsThis">
+             <string>Check the &quot;Update ID&quot; box to allow editing of the game's ID.</string>
+            </property>
             <property name="text">
              <string>Update ID</string>
             </property>
@@ -290,6 +328,9 @@
            <widget class="QCheckBox" name="checkBox_6">
             <property name="toolTip">
              <string>Do you want to change the title of the game?</string>
+            </property>
+            <property name="whatsThis">
+             <string>Check this box to enable editing of a game's title.</string>
             </property>
             <property name="text">
              <string>Update Title</string>
@@ -310,6 +351,11 @@
           </property>
           <property name="toolTip">
            <string/>
+          </property>
+          <property name="whatsThis">
+           <string>This field is used to display the layout of a game in a collapsible tree.  Not all of the files shown are real files, but instead are an improvised way to deal with metadata present in games.  Likewise, not all of the folder names are real folders and are just made up to deal with metadata files.  Because of this, other tools may list the same files with different names, different paths, or just not even list the file at all.
+
+This basic nomenclature used was first used in SNEEK's DI and has been adapted to account for files and data not used by that program.</string>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
@@ -477,6 +523,9 @@
               <property name="toolTip">
                <string>Don't write any changes to disc</string>
               </property>
+              <property name="whatsThis">
+               <string>Select &quot;Test Mode&quot; to build a command and pretend to execute it.  Nothing will be written to the HDD with this box checked.  Use this if you are unsure of a command.</string>
+              </property>
               <property name="text">
                <string>Test Mode</string>
               </property>
@@ -486,6 +535,10 @@
              <widget class="QCheckBox" name="overwrite_checkbox">
               <property name="toolTip">
                <string>Tell wit to overwrite existing files</string>
+              </property>
+              <property name="whatsThis">
+               <string>Check the &quot;Overwrite Existing&quot; box to overwrite any conflicting files
+while saving.</string>
               </property>
               <property name="text">
                <string>Overwrite Existing</string>
@@ -500,6 +553,9 @@
               <property name="toolTip">
                <string>Skip &quot;.svn&quot; files in tree view to speed up parsing</string>
               </property>
+              <property name="whatsThis">
+               <string>Many times video game makers blindly run their tool to pack up all their files into a game without thinking about what all they are doing.  If the game has been developed using a svn, this can lead to hundreds of hidden files getting included in the final game that serve no purpose.  Check the &quot;Ignore svn Files in Filetree&quot; box to omit entries containing &quot;/.svn/&quot; in the layout view of the disc.</string>
+              </property>
               <property name="text">
                <string>Ignore svn Files in Filetree</string>
               </property>
@@ -512,6 +568,13 @@
              <widget class="QCheckBox" name="checkBox_sneek">
               <property name="toolTip">
                <string>When extracting games, only dump the data folder, and don't use the &quot;DATA&quot; sub-folder.</string>
+              </property>
+              <property name="whatsThis">
+               <string>When this box is checked and a game is saved as FST type, it is saved in the format used by the DI module from SNEEK.  This means...
+
+(1) only the data partition is extracted
+(2) the subfolder &quot;DATA&quot; is omitted
+(3) the &quot;disc&quot; folder and its contents are not extracted</string>
               </property>
               <property name="text">
                <string/>
@@ -543,6 +606,9 @@
             </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_2">
+              <property name="whatsThis">
+               <string>Select different ammounts of information outputted in the &quot;Output&quot; tab.</string>
+              </property>
               <property name="text">
                <string>Text output:</string>
               </property>
@@ -550,6 +616,9 @@
             </item>
             <item row="0" column="1">
              <widget class="QComboBox" name="verbose_combobox">
+              <property name="whatsThis">
+               <string>Select different ammounts of information outputted in the &quot;Output&quot; tab.</string>
+              </property>
               <property name="currentIndex">
                <number>5</number>
               </property>
@@ -590,6 +659,9 @@
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_3">
+              <property name="whatsThis">
+               <string>Use this option to view the disc and partition layout of the game in the &quot;Output&quot; tab.</string>
+              </property>
               <property name="text">
                <string>Logging :</string>
               </property>
@@ -597,6 +669,9 @@
             </item>
             <item row="1" column="1">
              <widget class="QComboBox" name="logging_combobox">
+              <property name="whatsThis">
+               <string>Use this option to view the disc and partition layout of the game in the &quot;Output&quot; tab.</string>
+              </property>
               <property name="currentIndex">
                <number>0</number>
               </property>
@@ -622,6 +697,11 @@
               <property name="toolTip">
                <string>Default IOS to use for booting</string>
               </property>
+              <property name="whatsThis">
+               <string>You can check the &quot;Default IOS&quot; checkbox and select a number here to define one IOS to always use when saving a game.  This is useful if you have only a couple IOSes that have the signing bug.
+
+When this box is checked, the IOS selector in the first tab is disabled.</string>
+              </property>
               <property name="text">
                <string>Default IOS:</string>
               </property>
@@ -634,6 +714,11 @@
               </property>
               <property name="toolTip">
                <string>Default IOS to use for booting</string>
+              </property>
+              <property name="whatsThis">
+               <string>You can check the &quot;Default IOS&quot; checkbox and select a number here to define one IOS to always use when saving a game.  This is useful if you have only a couple IOSes that have the signing bug.
+
+When this box is checked, the IOS selector in the first tab is disabled.</string>
               </property>
               <property name="minimum">
                <number>3</number>
@@ -673,6 +758,9 @@
               <property name="toolTip">
                <string notr="true">Base path used when searching for files</string>
               </property>
+              <property name="whatsThis">
+               <string>Enter a path in &quot;Search Path&quot; to define the starting location for the file browser.  This is used in such things on &quot;open&quot; and &quot;save as&quot;.</string>
+              </property>
               <property name="inputMask">
                <string notr="true"/>
               </property>
@@ -685,6 +773,9 @@
              <widget class="QLabel" name="label_7">
               <property name="toolTip">
                <string>Where to start this program</string>
+              </property>
+              <property name="whatsThis">
+               <string>Use the &quot;Start At&quot; setting to decide which tab should be displayed first next time this program runs.</string>
               </property>
               <property name="text">
                <string>Start at:</string>
@@ -701,6 +792,9 @@
               </property>
               <property name="toolTip">
                <string>Where to start this program</string>
+              </property>
+              <property name="whatsThis">
+               <string>Use the &quot;Start At&quot; setting to decide which tab should be displayed first next time this program runs.</string>
               </property>
               <item>
                <property name="text">
@@ -724,6 +818,11 @@
               <property name="toolTip">
                <string>Always use the same region flag when saving a game</string>
               </property>
+              <property name="whatsThis">
+               <string>If the &quot;Default Region&quot; box is checked, you can select a region that will be used every time a game is saved.  This does not affect the ID of the game, but only the region flag with in the ISO.
+
+When this box is checked, the region setting in the first tab is disabled.</string>
+              </property>
               <property name="text">
                <string>Default Region:</string>
               </property>
@@ -736,6 +835,11 @@
               </property>
               <property name="toolTip">
                <string>Always use the same region flag when saving a game</string>
+              </property>
+              <property name="whatsThis">
+               <string>If the &quot;Default Region&quot; box is checked, you can select a region that will be used every time a game is saved.  This does not affect the ID of the game, but only the region flag with in the ISO.
+
+When this box is checked, the region setting in the first tab is disabled.</string>
               </property>
               <item>
                <property name="text">
@@ -773,6 +877,9 @@
             </item>
             <item row="4" column="1">
              <widget class="QComboBox" name="comboBox_partition">
+              <property name="whatsThis">
+               <string>You can use the &quot;Partition Select&quot; option to define which partitions are both shown in the disc layout tree and saved.</string>
+              </property>
               <item>
                <property name="text">
                 <string>All</string>
@@ -828,7 +935,11 @@
              </widget>
             </item>
             <item row="6" column="1">
-             <widget class="QLineEdit" name="lineEdit_wit"/>
+             <widget class="QLineEdit" name="lineEdit_wit">
+              <property name="whatsThis">
+               <string>The &quot;Wit Path&quot; is the path to the wit executable.</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -888,6 +999,7 @@
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionAbout_Qt"/>
+    <addaction name="actionWhat_s_This"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
@@ -920,6 +1032,14 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt...</string>
+   </property>
+  </action>
+  <action name="actionWhat_s_This">
+   <property name="text">
+    <string>What's This...</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
  </widget>
