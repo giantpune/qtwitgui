@@ -115,6 +115,7 @@ private:
 
 private slots:
 
+    void on_actionWhat_s_This_triggered();
     void on_checkBox_sneek_clicked();
     void on_pushButton_wit_clicked();
     void on_checkBox_defaultRegion_clicked();
