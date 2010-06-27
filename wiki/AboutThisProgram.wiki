@@ -143,4 +143,12 @@
 
 
 == OS-X ==
-  * Everything should just work.  I don't have a Mac without the Qt SDK installed, so I can't say for sure, though.
+  * results of "otool -L ./QtWitGui"
+{{{
+/Users/noskill/c/qtWitGui/_69_/QtWitGui.app/Contents/MacOS/QtWitGui:
+	QtGui.framework/Versions/4/QtGui (compatibility version 4.7.0, current version 4.7.0)
+	QtCore.framework/Versions/4/QtCore (compatibility version 4.7.0, current version 4.7.0)
+	/usr/lib/libstdc++.6.dylib (compatibility version 7.0.0, current version 7.9.0)
+	/usr/lib/libgcc_s.1.dylib (compatibility version 1.0.0, current version 246.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 125.0.1)
+}}}
