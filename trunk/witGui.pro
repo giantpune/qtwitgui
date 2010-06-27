@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-06-06T01:56:30
 # -------------------------------------------------
-QT += network
+#QT += network
 TARGET = QtWitGui
 TEMPLATE = app
 SOURCES += main.cpp \
