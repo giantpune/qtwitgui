@@ -407,7 +407,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    str.remove( 0, 39 );
 		    str.resize( str.indexOf( " ", 0 ) );
 
-		    qDebug() << "ios:" << str;
+		    //qDebug() << "ios:" << str;
 
 		    bool ok;
 		    int v = str.toInt( &ok, 10 );
@@ -536,7 +536,7 @@ void MainWindow::DoIlist()
     filepaths.clear();
     foreach( QTreeWidgetItem *item, ui->treeWidget->invisibleRootItem()->takeChildren() )
     {
-	//deleting the item already delets its children, so no need to recurse
+	//deleting the item already deletes its children, so no need to recurse
 	delete item;
 	item = 0;
     }
@@ -909,7 +909,16 @@ void MainWindow::OpenGame()
     QStringList args;
     args << "DUMP";
     args << isoPath;
-    args << "--show=intro,tmd";
+
+    QString showString = "--show=intro,tmd";
+
+    if( ui->logging_combobox->currentIndex() == 1 )
+	showString += ",D-MAP";
+
+    else if( ui->logging_combobox->currentIndex() == 2 )
+	showString += ",P-INFO,P-MAP,D-MAP";
+
+    args << showString;
 
     ui->plainTextEdit->clear();
 
