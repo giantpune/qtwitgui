@@ -108,7 +108,6 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
 	//make sure the name column is wide enough
     ui->treeWidget->header()->resizeSection( 0, 300 );
     ui->treeWidget->header()->resizeSection( 1, 120 );
-    //ui->treeWidget->header()->resizeSection( 2, 150 );
 
 	//connect the wiitreethread to this main window so we can read the output
     connect( wiithread , SIGNAL( SendProgress( int ) ), this, SLOT( UpdateProgressFromThread( int ) ) );
@@ -631,7 +630,7 @@ void MainWindow::ReplaceSlot()
 void MainWindow::CopyTextSlot()
 {
     //qDebug() << "copyText";
-    int maxParents = 0;
+    int maxParents = 100;
     int maxNameLen = 0;
     int maxOffsetLen = 0;
     QList<int> parentCounts;
@@ -645,7 +644,7 @@ void MainWindow::CopyTextSlot()
 	int cnt = GetParentCount( item ) << 2;
 	parentCounts << cnt;
 
-	maxParents = MAX( maxParents, cnt );
+	maxParents = MIN( maxParents, cnt );
 	maxOffsetLen = MAX( maxOffsetLen, item->text( 1 ).length() + 4 );
 	maxNameLen = MAX( maxNameLen,  item->text( 0 ).length() + cnt );
     }
@@ -654,7 +653,7 @@ void MainWindow::CopyTextSlot()
     int i = 0;
     foreach( QTreeWidgetItem *item, sortedList )
     {
-	QString name = QString( parentCounts.at( i++ ), QChar(' ') ) + item->text( 0 );
+	QString name = QString( parentCounts.at( i++ ) - maxParents, QChar(' ') ) + item->text( 0 );
 	name = name.leftJustified( maxNameLen );
 
 	QString offsetText = QString( item->text( 1 ) + "  " ).rightJustified( maxOffsetLen, ' ' );
