@@ -630,7 +630,7 @@ void MainWindow::ReplaceSlot()
 void MainWindow::CopyTextSlot()
 {
     //qDebug() << "copyText";
-    int maxParents = 100;
+    int minParents = 100;
     int maxNameLen = 0;
     int maxOffsetLen = 0;
     QList<int> parentCounts;
@@ -644,7 +644,7 @@ void MainWindow::CopyTextSlot()
 	int cnt = GetParentCount( item ) << 2;
 	parentCounts << cnt;
 
-	maxParents = MIN( maxParents, cnt );
+	minParents = MIN( minParents, cnt );
 	maxOffsetLen = MAX( maxOffsetLen, item->text( 1 ).length() + 4 );
 	maxNameLen = MAX( maxNameLen,  item->text( 0 ).length() + cnt );
     }
@@ -653,15 +653,15 @@ void MainWindow::CopyTextSlot()
     int i = 0;
     foreach( QTreeWidgetItem *item, sortedList )
     {
-	QString name = QString( parentCounts.at( i++ ) - maxParents, QChar(' ') ) + item->text( 0 );
+	QString name = QString( parentCounts.at( i++ ) - minParents, QChar(' ') ) + item->text( 0 );
 	name = name.leftJustified( maxNameLen );
 
 	QString offsetText = QString( item->text( 1 ) + "  " ).rightJustified( maxOffsetLen, ' ' );
 	QTextStream( &tableText ) << name << offsetText << "  " << item->text( 2 )
 #ifdef Q_WS_WIN
-		<< "\r\n"
+		<< "\r\n";
 #else
-		<< "\n" ;
+		<< "\n";
 #endif
     }
 
