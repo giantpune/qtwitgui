@@ -21,8 +21,9 @@
 *************************************************************************************/
 
 #include <QUrl>
-//#include <QStyleFactory>
 #include <QTreeWidget>
+#include <QList>
+#include <QClipboard>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QDesktopServices>
@@ -116,13 +117,17 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     //create the actions and stuff for the context menu
     extractAct = new QAction( tr( "Extract" ), this );
     replaceAct = new QAction( tr( "Replace" ), this );
+    copyTextAct = new QAction( tr( "Copy Text" ), this );
+
     extractAct->setEnabled( false );
     replaceAct->setEnabled( false );
     ui->treeWidget->addAction( extractAct );
     ui->treeWidget->addAction( replaceAct );
+    ui->treeWidget->addAction( copyTextAct );
     ui->treeWidget->setContextMenuPolicy( Qt::ActionsContextMenu );
     connect( extractAct, SIGNAL( triggered() ), this, SLOT( ExtractSlot() ) );
     connect( replaceAct, SIGNAL( triggered() ), this, SLOT( ReplaceSlot() ) );
+    connect( copyTextAct, SIGNAL( triggered() ), this, SLOT( CopyTextSlot() ) );
 
     //make sure buttons are wide enough for text
     ResizeGuiToLanguage();
@@ -145,6 +150,8 @@ MainWindow::~MainWindow()
     }
     SAFEDELETE( extractAct  );
     SAFEDELETE( replaceAct );
+    SAFEDELETE( copyTextAct );
+
     SAFEDELETE( witProcess );
 }
 
@@ -426,7 +433,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    //split the string into parts at each space
 		    QStringList parts = str.split(" ", QString::SkipEmptyParts );
 
-		    partitionOffsets << "**0x" + parts.at( 5 ) +"**";
+		    partitionOffsets << "** 0x" + parts.at( 5 ) +" **";
 		}
 	    }
 	    //we found all the different info we need about the game, so change to that game
@@ -618,6 +625,50 @@ void MainWindow::ExtractSlot()
 void MainWindow::ReplaceSlot()
 {
     qDebug() << "replaceSlotTriggered";
+}
+
+//this is triggered on right-click -> copy text
+void MainWindow::CopyTextSlot()
+{
+    //qDebug() << "copyText";
+    int maxParents = 0;
+    int maxNameLen = 0;
+    int maxOffsetLen = 0;
+    QList<int> parentCounts;
+    QString tableText;
+
+    RecurseAddSelectedItems( ui->treeWidget->invisibleRootItem() );
+
+    //iterate through the list of selected items and get stats about them
+    foreach( QTreeWidgetItem *item, sortedList )
+    {
+	int cnt = GetParentCount( item ) << 2;
+	parentCounts << cnt;
+
+	maxParents = MAX( maxParents, cnt );
+	maxOffsetLen = MAX( maxOffsetLen, item->text( 1 ).length() + 4 );
+	maxNameLen = MAX( maxNameLen,  item->text( 0 ).length() + cnt );
+    }
+
+    //now that we have all the stats, go through the list again and add all text to a main string with some formatting string
+    int i = 0;
+    foreach( QTreeWidgetItem *item, sortedList )
+    {
+	QString name = QString( parentCounts.at( i++ ), QChar(' ') ) + item->text( 0 );
+	name = name.leftJustified( maxNameLen );
+
+	QString offsetText = QString( item->text( 1 ) + "  " ).rightJustified( maxOffsetLen, ' ' );
+	QTextStream( &tableText ) << name << offsetText << "  " << item->text( 2 )
+#ifdef Q_WS_WIN
+		<< "\r\n"
+#else
+		<< "\n" ;
+#endif
+    }
+
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText( tableText );
+    sortedList.clear();
 }
 
 /*******************************************
@@ -1197,18 +1248,6 @@ int MainWindow::GetIOS()
     return -1;
 }
 
-//returns the full path of a item in the tree view
-QString MainWindow::ItemToFullPath( QTreeWidgetItem * item )
-{
-    QString key = item->text(0);
-    QTreeWidgetItem *ancestor = item->parent();
-    while ( ancestor ) {
-	key.prepend(ancestor->text(0) + "/");
-	ancestor = ancestor->parent();
-    }
-    return key;
-}
-
 /*******************************************
 *
 *   prompts and message windows
@@ -1325,4 +1364,64 @@ void MainWindow::on_pushButton_wit_clicked()
 {
     FindWit();
 }
+/*************************************************************
+*
+*   functions for getting information about tree items
+*
+**************************************************************/
+//returns the full path of a item in the tree view
+QString MainWindow::ItemToFullPath( QTreeWidgetItem * item )
+{
+    QString key = item->text(0);
+    QTreeWidgetItem *ancestor = item->parent();
+    while ( ancestor ) {
+	key.prepend(ancestor->text(0) + "/");
+	ancestor = ancestor->parent();
+    }
+    return key;
+}
+
+//return the number of parents a given item has
+int MainWindow::GetParentCount( QTreeWidgetItem * item )
+{
+    int ret = 0;
+    QTreeWidgetItem *ancestor = item->parent();
+    while ( ancestor )
+    {
+	ret++;
+	ancestor = ancestor->parent();
+    }
+    //qDebug() << item->text(0) << "has" << ret << "parents";
+    return ret;
+
+}
+
+// check if a given item is selected in the tree view
+bool MainWindow::ItemIsSelected( QTreeWidgetItem *item )
+{
+    foreach( QTreeWidgetItem *i, ui->treeWidget->selectedItems() )
+    {
+	if( i == item )
+	{
+	    //qDebug() << i->text( 0 ) << "is selected";
+	    return true;
+	}
+    }
+    return false;
+}
+
+//given a item, check all its children and see if they are selected and add them to the list of selected items
+//need to do it this way since the given list it not sorted in any way and qsort sucks for the qtreewidgetitems
+void MainWindow::RecurseAddSelectedItems( QTreeWidgetItem *item )
+{
+    for( int i = 0; i < item->childCount(); i++ )
+    {
+	if( ItemIsSelected( item->child( i ) ) )
+	    sortedList << item->child( i );
+
+	RecurseAddSelectedItems( item->child( i ) );
+    }
+}
+
+
 
