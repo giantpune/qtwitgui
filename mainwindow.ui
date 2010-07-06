@@ -390,6 +390,9 @@ This basic nomenclature used was first used in SNEEK's DI and has been adapted t
           <property name="animated">
            <bool>true</bool>
           </property>
+          <property name="columnCount">
+           <number>3</number>
+          </property>
           <column>
            <property name="text">
             <string>Name</string>
@@ -882,47 +885,57 @@ When this box is checked, the region setting in the first tab is disabled.</stri
               </property>
               <item>
                <property name="text">
-                <string>All</string>
+                <string notr="true">All</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Data</string>
+                <string notr="true">Data</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>No-Data</string>
+                <string notr="true">No-Data</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Update</string>
+                <string notr="true">Update</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>No-Update</string>
+                <string notr="true">No-Update</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Channel</string>
+                <string notr="true">Channel</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>No-Channel</string>
+                <string notr="true">No-Channel</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Whole</string>
+                <string notr="true">PTab0</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Raw</string>
+                <string notr="true">No-ID</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string notr="true">Whole</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string notr="true">Raw</string>
                </property>
               </item>
              </widget>

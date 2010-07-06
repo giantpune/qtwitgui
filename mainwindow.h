@@ -87,6 +87,7 @@ private:
     QAction *replaceAct;
     QStringList extractPaths;
     QStringList replacePaths;
+    QStringList partitionOffsets;
     WiiTreeThread *wiithread;
 
 

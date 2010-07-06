@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <QProcess>
 #include <QtDebug>
+#include <QFont>
 
 #include "wiitreethread.h"
 
@@ -28,13 +29,14 @@ WiiTreeThread::~WiiTreeThread()
 //! b is weather or not to skip entries with "/.svn" in them
 //! ficon is the folder icon to use
 //! dicon is the icon to use for directories
-void WiiTreeThread::DoCommand( const QString s, bool b, QIcon ficon, QIcon dicon )
+void WiiTreeThread::DoCommand( const QString s, bool b, QIcon ficon, QIcon dicon, const QStringList list )
 {
     QMutexLocker locker(&mutex);
     inCommand = s;
     skipSvn = b;
     groupIcon = dicon;
     keyIcon = ficon;
+    encryptedOffsets = list;
     if ( !isRunning() )
     {
 	//even with a game using 13,000+ files, theres is less than a second difference in lowest and time-critical priority.
@@ -70,8 +72,6 @@ void WiiTreeThread::run()
 	    return;
 	}
 
-	//returnItem->setText( 0, "boobs" );
-	//returnItem->setText( 1, "1" );
 	//split the output from wit at "\n" and remove spaces and shit
 	QStringList list = inCommand.split("\n", QString::SkipEmptyParts );
 	mutex.unlock();
@@ -79,6 +79,7 @@ void WiiTreeThread::run()
 	//remove the non-file strings
 	for ( int i = 0; i < 3 ; i++ )
 	{
+	    //qDebug() << "removing:" << list.at( 0 );
 	    list.removeFirst();
 	}
 
@@ -115,8 +116,19 @@ void WiiTreeThread::run()
 void WiiTreeThread::AddItemToTree( const QString s )
 {
     QString path = s;
-    path = path.trimmed();
+    path = path.simplified();
     QString sizeText;
+    QString offsetText = "0x";
+    QFont monoFont( "Courier", 8, QFont::Bold );
+    bool isSysFolder = s.endsWith( "sys/" ) && s.count( "/" ) == 2;
+
+    //get the offset from the start of the string
+    while( !path.startsWith( " " ) )
+    {
+	offsetText += path.at( 0 );
+	path.remove( 0, 1 );
+    }
+    path.remove( 0, 1 );
 
     //get the size from the start of the string
     while( !path.startsWith( " " ) )
@@ -125,6 +137,12 @@ void WiiTreeThread::AddItemToTree( const QString s )
 	path.remove( 0, 1 );
     }
     path.remove( 0, 1 );
+
+    if( sizeText.startsWith( "N=" ) )
+    {
+	sizeText.remove( 0, 2 );
+	sizeText = tr( "%1 files" ).arg( sizeText );
+    }
 
     int index = 0;
 
@@ -165,9 +183,21 @@ void WiiTreeThread::AddItemToTree( const QString s )
 	else
 	{
 	    parent->setIcon( 0, keyIcon );
-	    parent->setText( 2, sizeText );
+	    parent->setText( 1, offsetText );
 	}
     }
+
+
+    parent->setText( 2, sizeText );
+    parent->setFont( 1, monoFont );
+    parent->setFont( 2, monoFont );
+    parent->setTextAlignment( 1, Qt::AlignRight | Qt::AlignVCenter );
+    if( isSysFolder )
+    {
+	parent->setText( 1, encryptedOffsets.at( 0 ) );
+	encryptedOffsets.removeAt( 0 );
+    }
+
 }
 
 //returns the index of the child named "s" of the given parent or -1 if the child is not found

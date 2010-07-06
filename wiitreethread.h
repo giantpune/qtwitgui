@@ -7,6 +7,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QTreeWidget>
+#include <QStringList>
 
 
 class WiiTreeThread : public QThread
@@ -17,7 +18,7 @@ class WiiTreeThread : public QThread
      WiiTreeThread( QObject *parent = 0 );
      ~WiiTreeThread();
 
-     void DoCommand( const QString s, bool b, QIcon ficon, QIcon dicon );
+     void DoCommand( const QString s, bool b, QIcon ficon, QIcon dicon, const QStringList list );
 
  protected:
      void run();
@@ -37,6 +38,7 @@ class WiiTreeThread : public QThread
      QTreeWidgetItem *returnItem;
      QIcon groupIcon;
      QIcon keyIcon;
+     QStringList encryptedOffsets;
      bool abort;
      bool skipSvn;
      int findItem(  const QString s, QTreeWidgetItem *parent, int startIndex );
