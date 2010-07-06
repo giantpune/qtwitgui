@@ -41,10 +41,10 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-#define MINIMUM_WIT_VERSION 1248
+#define MINIMUM_WIT_VERSION 1339
 
 #define PROGRAM_NAME "QtWitGui"
-#define PROGRAM_VERSION "0.0.3"
+#define PROGRAM_VERSION "0.0.4"
 
 
 
@@ -54,7 +54,7 @@
 
 
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::MainWindow )
+MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::MainWindow )
 {
     ui->setupUi( this );
     setAcceptDrops( true );
@@ -106,12 +106,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow( parent ), ui( new Ui::Mai
 
 	//make sure the name column is wide enough
     ui->treeWidget->header()->resizeSection( 0, 300 );
+    ui->treeWidget->header()->resizeSection( 1, 120 );
+    //ui->treeWidget->header()->resizeSection( 2, 150 );
 
 	//connect the wiitreethread to this main window so we can read the output
     connect( wiithread , SIGNAL( SendProgress( int ) ), this, SLOT( UpdateProgressFromThread( int ) ) );
     connect( wiithread , SIGNAL( SendDone( QTreeWidgetItem * ) ), this, SLOT( ThreadIsDoneRunning( QTreeWidgetItem * ) ) );
 
-	//create the actions and stuff for the context menu
+    //create the actions and stuff for the context menu
     extractAct = new QAction( tr( "Extract" ), this );
     replaceAct = new QAction( tr( "Replace" ), this );
     extractAct->setEnabled( false );
@@ -348,7 +350,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    ui->statusBar->showMessage( tr( "Got FST list from wit, parsing it into a pretty file tree..." ) );
 
 	    //start the thread and give it all the filenames from the game and the icons for files & folders
-	    wiithread->DoCommand( filepaths, ui->checkBox_hiddenFiles->isChecked(), keyIcon, groupIcon );
+	    wiithread->DoCommand( filepaths, ui->checkBox_hiddenFiles->isChecked(), keyIcon, groupIcon, partitionOffsets );
 	    break;
 	}
 
@@ -416,8 +418,16 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 			foundIos = v;
 		    }
 		}
+		else if( str.startsWith( "Data:" ) )
+		{
+		    //not really needed, but just to be safe, simplify all the whitespace in the string
+		    str = str.simplified();
 
+		    //split the string into parts at each space
+		    QStringList parts = str.split(" ", QString::SkipEmptyParts );
 
+		    partitionOffsets << "**0x" + parts.at( 5 ) +"**";
+		}
 	    }
 	    //we found all the different info we need about the game, so change to that game
 	    if( !idStr.isEmpty()
@@ -492,6 +502,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 
 		    setWindowTitle( title );
 		}
+
 	    }
 
 	    ui->statusBar->showMessage( tr( "Ready" ) );
@@ -553,6 +564,7 @@ void MainWindow::DoIlist()
     }
 
     args << "--sort=none";
+    args << "--show=offset,dec";
 
     SendWitCommand( args, witIlist );
 }
@@ -904,27 +916,6 @@ void MainWindow::on_actionOpen_triggered()
     OpenGame();
 }
 
-void MainWindow::OpenGame()
-{
-    QStringList args;
-    args << "DUMP";
-    args << isoPath;
-
-    QString showString = "--show=intro,tmd";
-
-    if( ui->logging_combobox->currentIndex() == 1 )
-	showString += ",D-MAP";
-
-    else if( ui->logging_combobox->currentIndex() == 2 )
-	showString += ",P-INFO,P-MAP,D-MAP";
-
-    args << showString;
-
-    ui->plainTextEdit->clear();
-
-    SendWitCommand( args, witDump );
-}
-
 //file->save as / ctrl+A
 void MainWindow::on_actionSave_As_triggered()
 {
@@ -1083,6 +1074,36 @@ void MainWindow::on_actionSave_As_triggered()
     SendWitCommand( args, witCopy );
 }
 
+//help->what's this
+void MainWindow::on_actionWhat_s_This_triggered()
+{
+    QWhatsThis::enterWhatsThisMode();
+}
+
+//about this program
+void MainWindow::on_actionAbout_triggered()
+{
+    QString link = "<a href=\"http://code.google.com/p/qtwitgui/\">http://code.google.com/p/qtwitgui/</a><br>";
+    QString aboutText;
+
+    QTextStream( &aboutText ) << PROGRAM_NAME << tr( " is a cross-platform GUI for wit.<br>"\
+						     "This software comes to you with a GPLv3 license<br><br>")
+
+						<< tr( "Version: " ) << PROGRAM_VERSION << "<br>"
+						<< tr( "Revision: " ) << SVN_REV_STR << "<br>";
+						aboutText += tr( "Website: " ) + link;
+						aboutText += "2010 Giantpune<br><br>";
+						aboutText +=  witVersionString + "<br>";
+
+    QMessageBox::about( this, tr( "About " ) + PROGRAM_NAME, aboutText );
+}
+
+//about Qt
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QApplication::aboutQt();
+}
+
 //actually start the process with the given list of args and set the jobtype flag for the functions getting output from the process
 int MainWindow::SendWitCommand( QStringList args, int jobType )
 {
@@ -1111,28 +1132,29 @@ int MainWindow::SendWitCommand( QStringList args, int jobType )
     return 1;
 }
 
-//about this program
-void MainWindow::on_actionAbout_triggered()
+void MainWindow::OpenGame()
 {
-    QString link = "<a href=\"http://code.google.com/p/qtwitgui/\">http://code.google.com/p/qtwitgui/</a><br>";
-    QString aboutText;
 
-    QTextStream( &aboutText ) << PROGRAM_NAME << tr( " is a cross-platform GUI for wit.<br>"\
-						     "This software comes to you with a GPLv3 license<br><br>")
+    //clear the old list of partition offsets
+    partitionOffsets.clear();
 
-						<< tr( "Version: " ) << PROGRAM_VERSION << "<br>"
-						<< tr( "Revision: " ) << SVN_REV_STR << "<br>";
-						aboutText += tr( "Website: " ) + link;
-						aboutText += "2010 Giantpune<br><br>";
-						aboutText +=  witVersionString + "<br>";
+    QStringList args;
+    args << "DUMP";
+    args << isoPath;
 
-    QMessageBox::about( this, tr( "About " ) + PROGRAM_NAME, aboutText );
-}
+    QString showString = "--show=intro,tmd,P-Map";
 
-//about Qt
-void MainWindow::on_actionAbout_Qt_triggered()
-{
-    QApplication::aboutQt();
+    if( ui->logging_combobox->currentIndex() == 1 )
+	showString += ",D-Map";
+
+    else if( ui->logging_combobox->currentIndex() == 2 )
+	showString += ",P-Info,D-Map";
+
+    args << showString;
+
+    ui->plainTextEdit->clear();
+
+    SendWitCommand( args, witDump );
 }
 
 //for aborting loading a game...  doesn't really do anything yet
@@ -1304,8 +1326,3 @@ void MainWindow::on_pushButton_wit_clicked()
     FindWit();
 }
 
-//help->what's this
-void MainWindow::on_actionWhat_s_This_triggered()
-{
-    QWhatsThis::enterWhatsThisMode();
-}
