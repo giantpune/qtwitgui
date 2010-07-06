@@ -18,5 +18,5 @@ Not supported by wit yet...
   * extract/replace/add/delete single files to/from a game
   * <s>get the IOS from the game as it is loaded into the gui</s>
   * save changes to the same file that is used for input.  ie... open a game, change something, save the game without having to create a complete duplicate of the game
-  * get the offset from files along with the size & name in the tree view
-  * VC partitions.  DUMP shows them, but not ILIST.  they are also missing from --psel
+  * <s>get the offset from files along with the size & name in the tree view</s>
+  * <s>VC partitions.  DUMP shows them, but not ILIST.  they are also missing from --psel</s>
