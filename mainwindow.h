@@ -85,6 +85,8 @@ private:
     QString witErrorStr;
     QAction *extractAct;
     QAction *replaceAct;
+    QAction *copyTextAct;
+    QList<QTreeWidgetItem *> sortedList;
     QStringList extractPaths;
     QStringList replacePaths;
     QStringList partitionOffsets;
@@ -99,6 +101,9 @@ private:
 
     void DoIlist();
     QString ItemToFullPath( QTreeWidgetItem * item );
+    int GetParentCount( QTreeWidgetItem * item );
+    bool ItemIsSelected( QTreeWidgetItem *item );
+    void RecurseAddSelectedItems( QTreeWidgetItem *item );
     bool SaveSettings();
     bool LoadSettings();
     void ResizeGuiToLanguage();
@@ -136,6 +141,7 @@ private slots:
     void ProcessFinishedSlot( int, QProcess::ExitStatus );
     void ExtractSlot();
     void ReplaceSlot();
+    void CopyTextSlot();
 
     // get output from a thread used to make a filetree
     void UpdateProgressFromThread( int );
