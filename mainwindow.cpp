@@ -570,9 +570,9 @@ void MainWindow::DoIlist()
     if( ui->comboBox_partition->currentIndex() )
     {
 	args << "--psel=" + ui->comboBox_partition->currentText();
-	args << "--pmode=name";
     }
 
+    args << "--pmode=name";
     args << "--sort=none";
     args << "--show=offset,dec";
 
