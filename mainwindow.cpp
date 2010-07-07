@@ -563,7 +563,7 @@ void MainWindow::DoIlist()
     }
 
     QStringList args;
-    args << "ILIST-L";
+    args << "ILIST";
     args << isoPath;
 
     //partition select
@@ -574,7 +574,7 @@ void MainWindow::DoIlist()
 
     args << "--pmode=name";
     args << "--sort=none";
-    args << "--show=offset,dec";
+    args << "--show=offset,hex";
 
     SendWitCommand( args, witIlist );
 }
@@ -1380,6 +1380,14 @@ QString MainWindow::ItemToFullPath( QTreeWidgetItem * item )
 	key.prepend(ancestor->text(0) + "/");
 	ancestor = ancestor->parent();
     }
+
+    //turn the VC paths back into the syntax that wit expects
+    if( key.startsWith( "[ VC ] ") )
+    {
+	key.remove( 0, 7 );
+	key.prepend( "P-" );
+    }
+
     return key;
 }
 

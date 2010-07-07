@@ -143,6 +143,14 @@ void WiiTreeThread::AddItemToTree( const QString s )
 	sizeText.remove( 0, 2 );
 	sizeText = tr( "%1 files" ).arg( sizeText );
     }
+    else sizeText.prepend( "0x" );
+
+    //change text for VC partitions
+    if( path.startsWith( "P-" ) )
+    {
+	path.remove( 0, 2 );
+	path.prepend( "[ VC ] " );
+    }
 
     int index = 0;
 
