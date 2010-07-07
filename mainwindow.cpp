@@ -181,7 +181,9 @@ void MainWindow::InsertText( QString s, QString c)
     QString textCopy = s;
 
     //replace all \r\n and \n with <br>
-    textCopy.replace( "\r\n", "\n" );
+#ifdef Q_WS_WIN
+    textCopy.replace( "\r\n", "<br>" );
+#endif
     textCopy.replace( "\n", "<br>" );
 
     QString htmlString = "<text style=\"color:" + c + "\">" + textCopy + "</text>";
@@ -211,8 +213,10 @@ void MainWindow::ReadyReadStdOutSlot()
     QString read = witProcess->readAllStandardOutput();
 
     //qDebug() << "gotmessage" << read;
+#ifdef Q_WS_WIN
     //get rid of stupid windows new lines
     read.replace( "\r\n", "\n" );
+#endif
 
     //delete the last text appended to the console if the last message was flagged to be deleted
     if( undoLastTextOperation )
@@ -900,7 +904,6 @@ void MainWindow::ResizeGuiToLanguage()
     QFontMetrics fm( fontMetrics() );
     ui->pushButton_2->setMinimumWidth( MAX( ui->pushButton_2->minimumWidth(), fm.width( ui->pushButton_2->text() ) + pad ) );
     ui->pushButton_3->setMinimumWidth( MAX( ui->pushButton_3->minimumWidth(), fm.width( ui->pushButton_3->text() ) + pad ) );
-    //ui->save_pushButton->setMinimumWidth( MAX( ui->save_pushButton->minimumWidth(), fm.width( ui->save_pushButton->text() ) + pad ) );
     ui->checkBox_defaultIos->setMinimumWidth( MAX( ui->checkBox_defaultIos->minimumWidth(), fm.width( ui->checkBox_defaultIos->text() ) + pad ) );
     ui->checkBox_defaultRegion->setMinimumWidth( MAX( ui->checkBox_defaultRegion->minimumWidth(), fm.width( ui->checkBox_defaultRegion->text() ) + pad ) );
     ui->label->setMinimumWidth( MAX( ui->label->minimumWidth(), fm.width( ui->label->text() ) + pad ) );
