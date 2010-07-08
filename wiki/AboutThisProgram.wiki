@@ -75,6 +75,8 @@
   * open the .ts file from this svn in Qt Linguist.  Select your country and language.  Select a string and enter new text for your language.  Then do "translation -> Done and Next" (ctrl+Enter).  It will give a green check mark and move on to the next string. Once you are done, do file->release and save a .qm file. 
         <a target='_blank' href='http://img808.imageshack.us/img808/9990/qtlinguist.png'><img src='http://img808.imageshack.us/img808/9990/qtlinguist.th.png' border='0'/></a>
 
+  * Strings may contain arguments, which begin with a %, and are numbered.  The string "My name is Sally and I like pizza on Tuesdays." may look like "My name is %1 and I like %2 on %3."  So, it may be translated and the arguments are not required to be in the same order as in the original sentence. 
+
   * Since I am using USA/english (en_US )  on my PC, the program will first try to load "witGuiLang_en_US.qm".  Failing that, it will try "witGuiLang_en.qm".  If there still is no language file found, it will fall back to the version compiled within the program itself.  This makes it possible for the program to have a French translation embedded within itself and the user is still able to load their own translation if they disagree with the translation.
 
   * The qm files embedded in this program are given generic names ( language only, no country specification ).  The same French will be used for French-Canada and French-France.
