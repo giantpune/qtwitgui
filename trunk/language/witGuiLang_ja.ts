@@ -461,39 +461,39 @@ GPLv3ライセンスで配布されています
     </message>
     <message>
         <source>All</source>
-        <translation>全て</translation>
+        <translation type="obsolete">全て</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation>データ</translation>
+        <translation type="obsolete">データ</translation>
     </message>
     <message>
         <source>No-Data</source>
-        <translation>データ無し</translation>
+        <translation type="obsolete">データ無し</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>更新</translation>
+        <translation type="obsolete">更新</translation>
     </message>
     <message>
         <source>No-Update</source>
-        <translation>更新無し</translation>
+        <translation type="obsolete">更新無し</translation>
     </message>
     <message>
         <source>Channel</source>
-        <translation>キャンセル</translation>
+        <translation type="obsolete">キャンセル</translation>
     </message>
     <message>
         <source>No-Channel</source>
-        <translation>キャンセル拒否</translation>
+        <translation type="obsolete">キャンセル拒否</translation>
     </message>
     <message>
         <source>Whole</source>
-        <translation>全て</translation>
+        <translation type="obsolete">全て</translation>
     </message>
     <message>
         <source>Raw</source>
-        <translation>無編集</translation>
+        <translation type="obsolete">無編集</translation>
     </message>
     <message>
         <source>Save an .ini with these settings</source>
@@ -679,6 +679,21 @@ When this box is checked, the region setting in the first tab is disabled.</sour
     <message>
         <source>F1</source>
         <translation>F1</translation>
+    </message>
+    <message>
+        <source>Select different amounts of information outputted in the &quot;Output&quot; tab.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WiiTreeThread</name>
+    <message>
+        <source>%1 files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

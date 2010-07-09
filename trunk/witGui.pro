@@ -21,10 +21,12 @@ TRANSLATIONS = language/witGuiLang_empty.ts \
     language/witGuiLang_es.ts
 #create new svnrev.h
 unix {
-    system(chmod 755 ./makesvnrev.sh)
-    system(./makesvnrev.sh)
+    system( chmod 755 ./makesvnrev.sh )
+    system( ./makesvnrev.sh )
     macx{
+#MAC icon & universal binary
 	RC_FILE = icon.icns
+	CONFIG += x86 ppc
     }
 }
 win32 {
