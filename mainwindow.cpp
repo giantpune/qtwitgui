@@ -950,6 +950,11 @@ void MainWindow::on_pushButton_settings_searchPath_clicked()
 //file->open / ctrl+O
 void MainWindow::on_actionOpen_triggered()
 {
+    if( witJob != witNoJob )
+    {
+	QMessageBox::warning(this, tr( "Slow your roll!" ),tr( "Wit is still running.\nWait for the current job to finish." ), tr( "Ok" ) );
+	return;
+    }
 //    qDebug() << "open triggered";
     FileFolderDialog dialog(this);
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
@@ -1326,6 +1331,11 @@ void MainWindow::dropEvent( QDropEvent *event )
     QFile file( path );
     if( file.exists() )
     {
+	if( witJob != witNoJob )
+	{
+	    QMessageBox::warning(this, tr( "Slow your roll!" ),tr( "Wit is still running.\nWait for the current job to finish." ), tr( "Ok" ) );
+	    return;
+	}
 	isoPath = path;
 	OpenGame();
     }

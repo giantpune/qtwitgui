@@ -438,42 +438,6 @@ Aspetta che finisca il lavoro corrente.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No-Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No-Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Channel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No-Channel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Whole</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Raw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Didn&apos;t get any files to display</source>
         <translation type="unfinished"></translation>
     </message>
@@ -628,6 +592,21 @@ When this box is checked, the region setting in the first tab is disabled.</sour
     </message>
     <message>
         <source>F1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select different amounts of information outputted in the &quot;Output&quot; tab.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WiiTreeThread</name>
+    <message>
+        <source>%1 files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
