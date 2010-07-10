@@ -19,7 +19,7 @@ TRANSLATIONS = language/witGuiLang_empty.ts \
     language/witGuiLang_da.ts \
     language/witGuiLang_it.ts \
     language/witGuiLang_es.ts \
-    language/witGuiLang_es.ts
+    language/witGuiLang_de.ts
 #create new svnrev.h
 unix {
     system( chmod 755 ./makesvnrev.sh )
