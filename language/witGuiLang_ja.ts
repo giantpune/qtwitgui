@@ -682,18 +682,18 @@ When this box is checked, the region setting in the first tab is disabled.</sour
     </message>
     <message>
         <source>Select different amounts of information outputted in the &quot;Output&quot; tab.</source>
-        <translation type="unfinished"></translation>
+        <translation>出力タブで出力された異なる情報を選択してください。</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>テキストをコピー</translation>
     </message>
 </context>
 <context>
     <name>WiiTreeThread</name>
     <message>
         <source>%1 files</source>
-        <translation type="unfinished"></translation>
+        <translation>%1個のファイル</translation>
     </message>
 </context>
 </TS>
