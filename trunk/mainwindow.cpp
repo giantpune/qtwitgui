@@ -20,22 +20,22 @@
 *
 *************************************************************************************/
 
-#include <QUrl>
-#include <QTreeWidget>
-#include <QList>
 #include <QClipboard>
-#include <QFileInfo>
-#include <QMessageBox>
 #include <QDesktopServices>
-#include <QWhatsThis>
-#include <QMessageBox>
+#include <qfiledialog.h>
+#include <QFileInfo>
 #include <QFontMetrics>
+#include <QList>
+#include <QMessageBox>
 #include <QStringList>
 #include <qtextstream.h>
-#include <qfiledialog.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <QTreeWidget>
+#include <QUrl>
+#include <QWhatsThis>
+
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <unistd.h>
 
 #include "svnrev.h"
 #include "mainwindow.h"
@@ -61,6 +61,9 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     setAcceptDrops( true );
 
     undoLastTextOperation = false;
+
+    //set a font for the output window.
+    ui->plainTextEdit->setFont( QFont( "Courier New", QApplication::font().pointSize() - 1 ) );
 
     //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
     ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
@@ -186,7 +189,7 @@ void MainWindow::InsertText( QString s, QString c)
 #endif
     textCopy.replace( "\n", "<br>" );
 
-    QString htmlString = "<text style=\"color:" + c + "\">" + textCopy + "</text>";
+    QString htmlString = "<b><text style=\"color:" + c + "\">" + textCopy + "</text></b>";
 
     ui->plainTextEdit->appendHtml( htmlString );
 
@@ -360,7 +363,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    ui->statusBar->showMessage( tr( "Got FST list from wit, parsing it into a pretty file tree..." ) );
 
 	    //start the thread and give it all the filenames from the game and the icons for files & folders
-	    wiithread->DoCommand( filepaths, ui->checkBox_hiddenFiles->isChecked(), keyIcon, groupIcon, partitionOffsets );
+            wiithread->DoCommand( filepaths, ui->checkBox_hiddenFiles->isChecked(), keyIcon, groupIcon, partitionOffsets );
 	    break;
 	}
 
@@ -700,7 +703,7 @@ bool MainWindow::SaveSettings()
 	<< "\ndischdr:"	    << ui->checkBox_2->checkState()
 	<< "\ntmdticket:"   << ui->checkBox_4->checkState()
 	<< "\nparthdr:"	    << ui->checkBox_3->checkState()
-	<< "\nignoreidden:" << ui->checkBox_hiddenFiles->checkState()
+        << "\nignoreidden:" << ui->checkBox_hiddenFiles->checkState()
 	<< "\ndefaultiosch:"<< ui->checkBox_defaultIos->checkState()
 	//<< "\ndefaultios:"  << ui->spinBox_gameIOS->value()
 	<< "\ndefaultregch:"<< ui->checkBox_defaultRegion->checkState()
@@ -710,7 +713,7 @@ bool MainWindow::SaveSettings()
 	<< "\nwposx:"	    << this->x()
 	<< "\nwposy:"	    << this->y()
 	<< "\nwitpath:"	    << witPath
-	<< "\nsneek:"	    << ui->checkBox_sneek->checkState()
+        << "\nsneek:"	    << ui->checkBox_sneek->checkState()
 
 	;
     file.close();
@@ -816,7 +819,7 @@ bool MainWindow::LoadSettings()
 	    int v = value.toInt( &ok, 10 );
 	    ui->checkBox_3->setChecked( ok && v );
 	}
-	else if( setting == "ignoreidden" )
+        else if( setting == "ignoreidden" )
 	{
 	    int v = value.toInt( &ok, 10 );
 	    ui->checkBox_hiddenFiles->setChecked( ok && v );
@@ -874,11 +877,11 @@ bool MainWindow::LoadSettings()
 	    witPath = value;
 	    ui->lineEdit_wit->setText( value );
 	}
-	else if( setting == "sneek" )
-	{
-	    int v = value.toInt( &ok, 10 );
-	    ui->checkBox_sneek->setChecked( ok && v );
-	}
+        else if( setting == "sneek" )
+        {
+            int v = value.toInt( &ok, 10 );
+            ui->checkBox_sneek->setChecked( ok && v );
+        }
 
 
 

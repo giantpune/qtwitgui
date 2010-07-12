@@ -1,3 +1,5 @@
+#include <QApplication>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <QProcess>
@@ -112,6 +114,8 @@ void WiiTreeThread::run()
 
 }
 
+
+
 //adds an item to the tree view given a full path
 void WiiTreeThread::AddItemToTree( const QString s )
 {
@@ -119,7 +123,9 @@ void WiiTreeThread::AddItemToTree( const QString s )
     path = path.simplified();
     QString sizeText;
     QString offsetText = "0x";
-    QFont monoFont( "Courier", 8, QFont::Bold );
+    QFont monoFont( "Courier New", QApplication::font().pointSize() - 1, QFont::Bold );
+    QFont nameFont( QApplication::font() );
+    nameFont.setPointSize( nameFont.pointSize() - 1 );
     bool isSysFolder = s.endsWith( "sys/" ) && s.count( "/" ) == 2;
 
     //get the offset from the start of the string
@@ -197,6 +203,7 @@ void WiiTreeThread::AddItemToTree( const QString s )
 
 
     parent->setText( 2, sizeText );
+    parent->setFont( 0, nameFont );
     parent->setFont( 1, monoFont );
     parent->setFont( 2, monoFont );
     parent->setTextAlignment( 1, Qt::AlignRight | Qt::AlignVCenter );

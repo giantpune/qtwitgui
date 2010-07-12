@@ -613,6 +613,14 @@ When this box is checked, the region setting in the first tab is disabled.</sour
         <source>Copy Text</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Courier 8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monospace Font</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WiiTreeThread</name>
