@@ -127,6 +127,15 @@
 	libxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007fc8176bc000)
 	libXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007fc8174b7000)
 }}}
+
+  * apparently all these libs ( except the Qt ones ) can be found in these packages for ubuntu 10.0.4 AMD64.
+{{{
+	ia32-libs
+	lib32z1
+	libc6
+	libstdc++6
+	libgcc1
+}}}
 ----
 
 
