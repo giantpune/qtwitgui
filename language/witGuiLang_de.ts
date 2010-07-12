@@ -551,6 +551,14 @@ Wenn diese Box aktiv ist, wird die Region Einstellung in der ersten Tab deaktivi
         <source>Copy Text</source>
         <translation>Text Kopieren</translation>
     </message>
+    <message>
+        <source>Courier 8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monospace Font</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WiiTreeThread</name>
