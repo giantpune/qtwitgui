@@ -63,7 +63,13 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     undoLastTextOperation = false;
 
     //set a font for the output window.
-    ui->plainTextEdit->setFont( QFont( "Courier New", QApplication::font().pointSize() - 1 ) );
+    ui->plainTextEdit->setFont( QFont( "Courier New", QApplication::font().pointSize() - 1, 55 ) );
+
+    //make sure the output is white BG with black base text.  otherwise a desktop theme can end up making the blue/red text look like ass
+    QPalette p = ui->plainTextEdit->palette();
+    p.setColor( QPalette::Text, QColor( "black" ) );
+    p.setColor( QPalette::Base, QColor( "white" ) );
+    ui->plainTextEdit->setPalette( p );
 
     //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
     ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
