@@ -123,9 +123,19 @@ void WiiTreeThread::AddItemToTree( const QString s )
     path = path.simplified();
     QString sizeText;
     QString offsetText = "0x";
-    QFont monoFont( "Courier New", QApplication::font().pointSize() - 1, QFont::Bold );
+
     QFont nameFont( QApplication::font() );
+#ifdef Q_WS_WIN
+    QFont monoFont( "Courier New", QApplication::font().pointSize() );
+#else
+    #ifdef Q_WS_MAC
+        QFont monoFont( "Courier New", QApplication::font().pointSize() - 1 );
+    #else
+        QFont monoFont( "Courier New", QApplication::font().pointSize() - 1, QFont::Bold );
+    #endif
     nameFont.setPointSize( nameFont.pointSize() - 1 );
+#endif
+
     bool isSysFolder = s.endsWith( "sys/" ) && s.count( "/" ) == 2;
 
     //get the offset from the start of the string
