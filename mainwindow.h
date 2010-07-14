@@ -80,6 +80,9 @@ private:
     QString filepaths;
     QString isoPath;
     QString witPath;
+    QString color1;
+    QString color2;
+    QString color3;
     QString lastPathLoadedCorrectly;
     QString witVersionString;
     QString witErrorStr;

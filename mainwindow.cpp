@@ -53,6 +53,36 @@
 #define MAX( x, y ) ( ( x ) > ( y ) ? ( x ) : ( y ) )
 #define MIN( x, y ) ( ( x ) < ( y ) ? ( x ) : ( y ) )
 
+QVector<QColor> highlight(const QColor &bg, const
+                          QColor &fg, int noColors)
+{
+    QVector<QColor> colors;
+    const int HUE_BASE = (bg.hue() == -1) ? 90 : bg.hue();
+
+    int h, s, v;
+    for (int i = 0; i < noColors; i++) {
+        h = int(HUE_BASE + (360.0 / noColors * i)) % 360;
+        s = 240;
+        v = int(qMax(bg.value(), fg.value()) * 0.85);
+
+        const int M = 35;
+        if ((h < bg.hue() + M && h > bg.hue() - M)
+            || (h < fg.hue() + M && h > fg.hue() - M))
+        {
+          h = ((bg.hue() + fg.hue()) / (i+1)) % 360;
+          s = ((bg.saturation() + fg.saturation() + 2*i)
+              / 2) % 256;
+          v = ((bg.value() + fg.value() + 2*i) / 2)
+              % 256;
+        }
+
+  colors.append(QColor::fromHsv(h, s, v));
+  }
+
+  return colors;
+}
+
+
 
 
 MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::MainWindow )
@@ -63,13 +93,45 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     undoLastTextOperation = false;
 
     //set a font for the output window.
-    ui->plainTextEdit->setFont( QFont( "Courier New", QApplication::font().pointSize() - 1, 55 ) );
+#ifdef Q_WS_WIN
+    QFont monoFont = QFont( "Courier New", QApplication::font().pointSize(), 55 );
+#else
+    QFont monoFont = QFont( "Courier New", QApplication::font().pointSize() - 1, 55 );
+#endif
+    ui->plainTextEdit->setFont( monoFont );
 
-    //make sure the output is white BG with black base text.  otherwise a desktop theme can end up making the blue/red text look like ass
+    //do some color calculating magic to determine colors for additional text in the output tab
     QPalette p = ui->plainTextEdit->palette();
-    p.setColor( QPalette::Text, QColor( "black" ) );
-    p.setColor( QPalette::Base, QColor( "white" ) );
-    ui->plainTextEdit->setPalette( p );
+
+    //use the colors from the user's desktop theme as a base
+    QColor bg = p.color( QPalette::Base );
+    QColor fg = p.color( QPalette::Text );
+
+    QVector<QColor> colors;
+    const int HUE_BASE = (bg.hue() == -1) ? 90 : bg.hue();
+    int noColors = 3;
+
+    int h, s, v;
+    for( int i = 0; i < noColors; i++ )
+    {
+        h = int ( HUE_BASE + ( 360.0 / noColors * i ) ) % 360;
+        s = 240;
+        v = int( qMax( bg.value(), fg.value()) * 0.85 );
+
+        const int M = 35;
+        if( ( h < bg.hue() + M && h > bg.hue() - M ) || ( h < fg.hue() + M && h > fg.hue() - M ) )
+        {
+            h = ( ( bg.hue() + fg.hue()) / ( i + 1 ) ) % 360;
+            s = ( ( bg.saturation() + fg.saturation() + 2 * i ) / 2) % 256;
+            v = ( ( bg.value() + fg.value() + 2 * i ) / 2 ) % 256;
+        }
+
+    colors.append(QColor::fromHsv(h, s, v));
+    }
+
+    color1 = colors.at( 0 ).name();
+    color2 = colors.at( 1 ).name();
+    color3 = colors.at( 2 ).name();
 
     //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
     ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
@@ -116,7 +178,7 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
 
 	//make sure the name column is wide enough
     ui->treeWidget->header()->resizeSection( 0, 300 );
-    ui->treeWidget->header()->resizeSection( 1, 120 );
+    ui->treeWidget->header()->resizeSection( 1, QFontMetrics( monoFont ).width( "** 0xf820000 **" ) + 10 );
 
 	//connect the wiitreethread to this main window so we can read the output
     connect( wiithread , SIGNAL( SendProgress( int ) ), this, SLOT( UpdateProgressFromThread( int ) ) );
@@ -139,6 +201,9 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
 
     //make sure buttons are wide enough for text
     ResizeGuiToLanguage();
+
+
+
 }
 
 //destructor
@@ -304,7 +369,8 @@ void MainWindow::ReadyReadStdErrSlot()
     QString read = witProcess->readAllStandardError();
     witErrorStr += read;
 
-    InsertText( read, "red" );
+    //InsertText( read, "red" );
+    InsertText( read, color3 );
 }
 
 //triggered after the wit process is done
@@ -315,22 +381,26 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     {
 	if( witJob != witGetVersion )
 	{
-	    ui->progressBar->setValue( 100 );
-	    InsertText( tr( "Done!" ), "green" );
+            ui->progressBar->setValue( 100 );
+            InsertText( tr( "Done!" ), color2 );
+            //InsertText( tr( "Done!" ), "green" );
 	}
     }
     else
     {
 #ifdef Q_WS_WIN
         if( i == 128 )
-	    InsertText( tr( "Maybe cygwin1.dll is missing" ), "red" );
+            InsertText( tr( "Maybe cygwin1.dll is missing" ), color3 );
+            //InsertText( tr( "Maybe cygwin1.dll is missing" ), "red" );
 #endif
         if( s )
-	    InsertText( tr( "Wit appears to have crashed" ), "red" );
+            InsertText( tr( "Wit appears to have crashed" ), color3 );
+            //InsertText( tr( "Wit appears to have crashed" ), "red" );
 
 	QString st;
         QTextStream( &st ) << tr( "Done, but with error" ) + " [ ExitCode: " << i << "  ErrorStatus: " << s << " ]";
-	InsertText( st + "<br>", "red" );
+        InsertText( st + "<br>", color3 );
+        //InsertText( st + "<br>", "red" );
 
 	if( !witErrorStr.isEmpty() )
 	    ErrorMessage( witErrorStr );
@@ -1183,7 +1253,8 @@ int MainWindow::SendWitCommand( QStringList args, int jobType )
     foreach( QString arg, args)
 	command += " " + arg;
 
-    InsertText( command, "blue" );
+    InsertText( command, color1 );
+    //InsertText( command, "blue" );
     if( jobType == witCopy && ui->verbose_combobox->currentIndex() == 1 )
 	ui->plainTextEdit->insertPlainText( "\n" );
 
