@@ -1003,12 +1003,13 @@ void MainWindow::on_actionOpen_triggered()
 	return;
     }
 //    qDebug() << "open triggered";
-    FileFolderDialog dialog(this);
+    FileFolderDialog dialog( this );
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
+
 #ifdef Q_WS_MAC
     dialog.setOption( QFileDialog::DontUseNativeDialog );
 #endif
-    dialog.setDirectory( ui->lineEdit_default_path->text() );
+    //dialog.setDirectory( ui->lineEdit_default_path->text() );
 
     if ( !dialog.exec() )
 	return;
@@ -1042,7 +1043,7 @@ void MainWindow::on_actionSave_As_triggered()
 #ifdef Q_WS_MAC						    //the OS-x default dialog box doesn't let me select files & folders
     dialog.setOption( QFileDialog::DontUseNativeDialog );
 #endif
-    dialog.setDirectory( ui->lineEdit_default_path->text() );
+    //dialog.setDirectory( ui->lineEdit_default_path->text() );
 
 
     if ( !dialog.exec() || dialog.selectedFiles()[ 0 ].isEmpty() )
