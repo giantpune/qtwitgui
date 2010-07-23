@@ -133,7 +133,6 @@ private slots:
     void on_actionAbout_triggered();
     void on_actionSave_As_triggered();
     void on_actionOpen_triggered();
-    void on_pushButton_settings_searchPath_clicked();
     void on_pushButton_2_clicked();
     void on_checkBox_7_clicked();
     void on_checkBox_6_clicked();
