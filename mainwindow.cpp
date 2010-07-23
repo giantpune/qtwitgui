@@ -42,10 +42,10 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-#define MINIMUM_WIT_VERSION 1339
+#define MINIMUM_WIT_VERSION 1414
 
 #define PROGRAM_NAME "QtWitGui"
-#define PROGRAM_VERSION "0.0.4"
+#define PROGRAM_VERSION "0.1.0"
 
 
 
@@ -102,7 +102,7 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     color3 = colors.at( 2 ).name();
 
     //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
-    ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
+    //ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
 
     //load settings
     LoadSettings();
@@ -547,6 +547,8 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 			ErrorMessage( tr( "The version of wit cannot be determined." ) + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
 		    else if( witSVNr < MINIMUM_WIT_VERSION )
 			ErrorMessage( tr( "The version of wit is too low.  Upgrade it!" ) + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
+		    else if( witSVNr != MINIMUM_WIT_VERSION )
+			ErrorMessage( tr( "This program is written to use wit r%1.  You may experience strange behavior using any other version." ).arg( MINIMUM_WIT_VERSION ) + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
 		}
 		else if( str.contains( "system" ) )
 		{
@@ -739,7 +741,7 @@ bool MainWindow::SaveSettings()
 	<< "\ntext:"	    << ui->verbose_combobox->currentIndex()
 	<< "\nlogging:"	    << ui->logging_combobox->currentIndex()
 	<< "\nios:"	    << ui->default_ios_spinbox->value()
-	<< "\npath:"	    << ui->lineEdit_default_path->text()
+        //<< "\npath:"	    << ui->lineEdit_default_path->text()
 	//<< "\nregion:"	    << ui->comboBox_region->currentIndex()
 	<< "\nstarttab:"    << ui->startupTab_combobox->currentIndex()
 	<< "\nupdatetitle:" << ui->checkBox_6->checkState()
@@ -756,8 +758,9 @@ bool MainWindow::SaveSettings()
 	<< "\nwwidth:"	    << this->width()
 	<< "\nwposx:"	    << this->x()
 	<< "\nwposy:"	    << this->y()
-	<< "\nwitpath:"	    << witPath
+        << "\nwitpath:"	    << witPath
         << "\nsneek:"	    << ui->checkBox_sneek->checkState()
+        << "\ntruncate:"    << ui->checkBox_trunc->checkState()
 
 	;
     file.close();
@@ -825,11 +828,7 @@ bool MainWindow::LoadSettings()
 	    if( ok )
 		ui->default_ios_spinbox->setValue( v );
 	}
-	else if( setting == "path" )
-	{
-	    ui->lineEdit_default_path->setText( value );
-	}
-	else if( setting == "starttab" )
+        else if( setting == "starttab" )
 	{
 	    int v = value.toInt( &ok, 10 );
 	    if( ok )
@@ -926,6 +925,12 @@ bool MainWindow::LoadSettings()
             int v = value.toInt( &ok, 10 );
             ui->checkBox_sneek->setChecked( ok && v );
         }
+        else if( setting == "truncate" )
+        {
+            int v = value.toInt( &ok, 10 );
+            ui->checkBox_trunc->setChecked( ok && v );
+        }
+
 
 
 
@@ -958,8 +963,9 @@ void MainWindow::ResizeGuiToLanguage()
     ui->label_3->setMinimumWidth( MAX( ui->label_3->minimumWidth(), fm.width( ui->label_3->text() ) + pad ) );
     ui->label_7->setMinimumWidth( MAX( ui->label_7->minimumWidth(), fm.width( ui->label_7->text() ) + pad ) );
     ui->label_partition->setMinimumWidth( MAX( ui->label_partition->minimumWidth(), fm.width( ui->label_partition->text() ) + pad ) );
-    ui->pushButton_settings_searchPath->setMinimumWidth( MAX( ui->pushButton_settings_searchPath->minimumWidth(), fm.width( ui->pushButton_settings_searchPath->text() ) + pad ) );
-    ui->pushButton_wit->setMinimumWidth( ui->pushButton_settings_searchPath->minimumWidth() );
+    //ui->pushButton_settings_searchPath->setMinimumWidth( MAX( ui->pushButton_settings_searchPath->minimumWidth(), fm.width( ui->pushButton_settings_searchPath->text() ) + pad ) );
+    ui->pushButton_wit->setMinimumWidth( MAX( ui->pushButton_wit->minimumWidth(), fm.width( ui->pushButton_wit->text() ) + pad ) );
+
 
 
 
@@ -980,13 +986,6 @@ void MainWindow::ResizeGuiToLanguage()
 
 }
 
-//browse for a "default search path" folder
-void MainWindow::on_pushButton_settings_searchPath_clicked()
-{
-    QString dir = QFileDialog::getExistingDirectory( this, tr("Open Directory"), ui->lineEdit_default_path->text(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks );
-    if( !dir.isEmpty() )
-	ui->lineEdit_default_path->setText( dir );
-}
 
 /*******************************************
 *
@@ -1006,7 +1005,7 @@ void MainWindow::on_actionOpen_triggered()
     FileFolderDialog dialog( this );
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
 
-#ifdef Q_WS_MAC
+#if defined (Q_WS_MAC) || defined (Q_WS_WIN)
     dialog.setOption( QFileDialog::DontUseNativeDialog );
 #endif
     //dialog.setDirectory( ui->lineEdit_default_path->text() );
@@ -1040,7 +1039,7 @@ void MainWindow::on_actionSave_As_triggered()
     QString outputPath;
     FileFolderDialog dialog( this, tr("Save As") );
     dialog.setNameFilter( "*.iso *.wbfs *.ciso *.wdf" );
-#ifdef Q_WS_MAC						    //the OS-x default dialog box doesn't let me select files & folders
+#if defined (Q_WS_MAC) || defined (Q_WS_WIN)
     dialog.setOption( QFileDialog::DontUseNativeDialog );
 #endif
     //dialog.setDirectory( ui->lineEdit_default_path->text() );
@@ -1063,10 +1062,10 @@ void MainWindow::on_actionSave_As_triggered()
     //add a --fst arg if needed, since wit will asume we want a .wdf file usually
     QFileInfo fi( outputPath );
     if( fi.isDir() ||
-	(  !outputPath.endsWith( ".wbfs", Qt::CaseInsensitive)
-	&& !outputPath.endsWith( ".wdf", Qt::CaseInsensitive)
-	&& !outputPath.endsWith( ".iso", Qt::CaseInsensitive)
-	&& !outputPath.endsWith( ".ciso", Qt::CaseInsensitive) ) )
+        (  !outputPath.endsWith( ".wbfs", Qt::CaseInsensitive )
+        && !outputPath.endsWith( ".wdf", Qt::CaseInsensitive )
+        && !outputPath.endsWith( ".iso", Qt::CaseInsensitive )
+        && !outputPath.endsWith( ".ciso", Qt::CaseInsensitive ) ) )
     {
 	qDebug() << "treating " << outputPath << "as fst";
 	args << "--fst";
@@ -1145,6 +1144,11 @@ void MainWindow::on_actionSave_As_triggered()
     {
 	args << "--psel=" + ui->comboBox_partition->currentText();
 	args << "--pmode=name";
+    }
+
+    if( outputPath.endsWith( ".iso", Qt::CaseInsensitive ) && ui->checkBox_trunc->isChecked() )
+    {
+        args << "--trunc";
     }
 
     //verbose

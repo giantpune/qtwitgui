@@ -235,11 +235,11 @@ Warte bis die Aktion beendet ist.</translation>
     </message>
     <message>
         <source>Search Path...</source>
-        <translation>Pfad wird gesucht...</translation>
+        <translation type="obsolete">Pfad wird gesucht...</translation>
     </message>
     <message>
         <source>Open Directory</source>
-        <translation>Öffne Pfad</translation>
+        <translation type="obsolete">Öffne Pfad</translation>
     </message>
     <message>
         <source>Game</source>
@@ -347,7 +347,7 @@ Warte bis die Aktion beendet ist.</translation>
     </message>
     <message>
         <source>Base path used when searching for files</source>
-        <translation>Standart Pfad beim Suchen nach Dateien</translation>
+        <translation type="obsolete">Standart Pfad beim Suchen nach Dateien</translation>
     </message>
     <message>
         <source>Where to start this program</source>
@@ -513,7 +513,7 @@ Wenn diese Box aktiviert ist, wird die IOS Wahlt im ersten Tab deaktiviert.</tra
     </message>
     <message>
         <source>Enter a path in &quot;Search Path&quot; to define the starting location for the file browser.  This is used in such things on &quot;open&quot; and &quot;save as&quot;.</source>
-        <translation>Gib einen Pfad in &quot;Pfadsuche&quot; ein, um den Ausgangspunkt des Browsers festzulegen.  Diese wird beim &quot;Öffnen&quot; und &quot;Speichern untern&quot; genutzt.</translation>
+        <translation type="obsolete">Gib einen Pfad in &quot;Pfadsuche&quot; ein, um den Ausgangspunkt des Browsers festzulegen.  Diese wird beim &quot;Öffnen&quot; und &quot;Speichern untern&quot; genutzt.</translation>
     </message>
     <message>
         <source>Use the &quot;Start At&quot; setting to decide which tab should be displayed first next time this program runs.</source>
@@ -550,6 +550,14 @@ Wenn diese Box aktiv ist, wird die Region Einstellung in der ersten Tab deaktivi
     <message>
         <source>Copy Text</source>
         <translation>Text Kopieren</translation>
+    </message>
+    <message>
+        <source>Truncate output Iso</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This program is written to use wit r%1.  You may experience strange behavior using any other version.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

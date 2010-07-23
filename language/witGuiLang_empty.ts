@@ -233,14 +233,6 @@ Wait for the current job to finish.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search Path...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open Directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Game</source>
         <translation type="unfinished"></translation>
     </message>
@@ -342,10 +334,6 @@ Wait for the current job to finish.</source>
     </message>
     <message>
         <source>Don&apos;t write any changes to disc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Base path used when searching for files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -488,10 +476,6 @@ When this box is checked, the IOS selector in the first tab is disabled.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enter a path in &quot;Search Path&quot; to define the starting location for the file browser.  This is used in such things on &quot;open&quot; and &quot;save as&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use the &quot;Start At&quot; setting to decide which tab should be displayed first next time this program runs.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -523,6 +507,14 @@ When this box is checked, the region setting in the first tab is disabled.</sour
     </message>
     <message>
         <source>Copy Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Truncate output Iso</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This program is written to use wit r%1.  You may experience strange behavior using any other version.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
