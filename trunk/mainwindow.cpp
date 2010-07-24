@@ -42,7 +42,7 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-#define MINIMUM_WIT_VERSION 1414
+#define MINIMUM_WIT_VERSION 1428
 
 #define PROGRAM_NAME "QtWitGui"
 #define PROGRAM_VERSION "0.1.0"
@@ -59,6 +59,7 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     setAcceptDrops( true );
 
     undoLastTextOperation = false;
+    lockTextOutput = false;
 
     //set a font for the output window.
 #ifdef Q_WS_WIN
@@ -219,6 +220,11 @@ void MainWindow::on_pushButton_2_clicked()
 //! c is a color
 void MainWindow::InsertText( QString s, QString c)
 {
+    //ghetto mutex
+    while( lockTextOutput ) ;
+
+    lockTextOutput = true;
+
     //copy the string so we can alter it and leave the original alone
     QString textCopy = s;
 
@@ -231,6 +237,8 @@ void MainWindow::InsertText( QString s, QString c)
     QString htmlString = "<b><text style=\"color:" + c + "\">" + textCopy + "</text></b>";
 
     ui->plainTextEdit->appendHtml( htmlString );
+
+    lockTextOutput = false;
 
 }
 
@@ -248,6 +256,10 @@ void MainWindow::ShowMessage( const QString &s )
 //get messages from the procces running wit and convert the messages to stuff to use in the GUI
 void MainWindow::ReadyReadStdOutSlot()
 {
+    //ghetto mutex
+    while( lockTextOutput ) ;
+    lockTextOutput = true;
+
     //since we are getting more stdout, assume that existing errors are not fatal and clear them from the error cache
     witErrorStr.clear();
 
@@ -292,9 +304,12 @@ void MainWindow::ReadyReadStdOutSlot()
     else
 	ui->plainTextEdit->insertPlainText( read );
 
+    lockTextOutput = false;
+
     switch ( witJob )
     {
 	case witCopy:
+	case witEdit:
 	    //turn the % message into a int and pass it to the progress bar
 	    if( read.contains( "%" ) )
 	    {
@@ -401,6 +416,10 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 
 		//tell the user that we are ready to do something else
 		ui->statusBar->showMessage( tr( "Didn't get any files to display" ) );
+
+		//enable "save" now that there has been a game successfully loaded
+		ui->actionSave_As->setEnabled( true );
+		ui->actionSave->setEnabled( isoPath.endsWith( ".iso", Qt::CaseInsensitive ) );
 		break;
 	    }
 
@@ -433,6 +452,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    str = str.trimmed();
 		    str.resize( 6 );
 		    idStr = str;
+		    //qDebug() << "id: " << idStr;
 		}
 		else if( str.contains( "Disc name:" ) )
 		{
@@ -450,10 +470,11 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    //qDebug() << "region: " << str;
 		    bool ok;
 		    int v = str.toInt( &ok, 10 );
-		    if( ok && v < 4 )
+		    if( ok && v < 5 )
 		    {
 			regionInt = v + 1;
 		    }
+		    //qDebug() << "region: " << regionInt;
 		}
 		else if( str.contains( "Partition table #0, " ) && str.contains( "type 0 [DATA]:" ) )
 		{
@@ -466,14 +487,13 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    str.remove( 0, 39 );
 		    str.resize( str.indexOf( " ", 0 ) );
 
-		    //qDebug() << "ios:" << str;
-
 		    bool ok;
 		    int v = str.toInt( &ok, 10 );
 		    if( ok && v < 255 && v > 3 )
 		    {
 			foundIos = v;
 		    }
+		    //qDebug() << "ios:" << foundIos;
 		}
 		else if( str.startsWith( "Data:" ) )
 		{
@@ -580,6 +600,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	}
 
 	case witCopy:
+	case witEdit:
 	{
 	    witJob = witNoJob;
 	    ui->statusBar->showMessage( tr( "Ready" ) );
@@ -651,6 +672,7 @@ void MainWindow::ThreadIsDoneRunning( QTreeWidgetItem *i )
 
     //enable "save" now that there has been a game successfully loaded
     ui->actionSave_As->setEnabled( true );
+    ui->actionSave->setEnabled( isoPath.endsWith( ".iso", Qt::CaseInsensitive ) );
 
     //tell the user that we are ready to do something else
     ui->statusBar->showMessage( tr( "Ready" ) );
@@ -1184,6 +1206,121 @@ void MainWindow::on_actionSave_As_triggered()
     SendWitCommand( args, witCopy );
 }
 
+//file->save / ctrl+S
+void MainWindow::on_actionSave_triggered()
+{
+    if( lastPathLoadedCorrectly.isEmpty() ) //wtf?
+	return;
+
+    if( witJob != witNoJob )
+    {
+	QMessageBox::warning(this, tr( "Slow your roll!" ),tr( "Wit is still running.\nWait for the current job to finish." ), tr( "Ok" ) );
+	return;
+    }
+
+    ui->progressBar->setValue( 0 );
+
+    QStringList args;
+    args << "EDIT";				// edit command
+    args << lastPathLoadedCorrectly;		//source path
+
+    //region
+    int regInt = GetRegion();
+    if( regInt >= 0 )
+    {
+	QString regString;
+	QTextStream( &regString ) << "--region=" << regInt;
+	args << regString;
+	qDebug() << "region:" << regString;
+    }
+
+    //ios
+    int iosInt = GetIOS();
+    if( iosInt >= 0 )
+    {
+	QString ios;
+	QTextStream( &ios ) << "--ios=" << iosInt;
+	args << ios;
+    }
+
+    //id
+    if( ui->checkBox_7->isChecked() )
+    {
+	args << "--id=" + ui->lineEdit_3->text();
+    }
+
+    //title
+    if( ui->checkBox_6->isChecked() )
+    {
+	args << "--name=" + ui->lineEdit_4->text();
+    }
+
+    //modify
+    if( ( ui->checkBox_2->isChecked() ||
+	ui->checkBox_3->isChecked() ||
+	ui->checkBox_4->isChecked() )
+	&& ( ui->checkBox_6->isChecked() ||
+	ui->checkBox_7->isChecked() ) )
+    {
+	QString mod = "--modify=";
+	u8 checked = 0;
+
+	if( ui->checkBox_2->isChecked() )
+	{
+	    checked++;
+	    mod += "DISC";
+	}
+	if( ui->checkBox_3->isChecked() )
+	{
+	    if( checked )mod += ",";
+	    mod += "BOOT";
+	    checked++;
+	}
+	if( ui->checkBox_4->isChecked() && ui->checkBox_7->isChecked() )
+	{
+	    if( checked )mod += ",";
+	    mod += "TMD,TICKET";
+	}
+
+	args << mod;
+    }
+
+    //partition select
+    else if( ui->comboBox_partition->currentIndex() )
+    {
+	args << "--psel=" + ui->comboBox_partition->currentText();
+	args << "--pmode=name";
+    }
+
+    //verbose
+    if( ui->verbose_combobox->currentIndex() )
+    {
+	if( ui->verbose_combobox->currentIndex() == 1)
+	    args << "--quiet";
+	else
+	{
+	    for( int i = 1; i < ui->verbose_combobox->currentIndex(); i++ )
+	    args << "-v";
+	}
+    }
+
+    //logging
+    for( int i = 0; i < ui->logging_combobox->currentIndex(); i++ )
+	args << "-L";
+
+    //test mode
+    if( ui->checkBox->isChecked() )
+	args << "--test";
+
+    //make sure we get the progress output
+    args << "--progress";
+
+    //clear the current text window
+    ui->plainTextEdit->clear();
+
+    SendWitCommand( args, witEdit );
+}
+
 //help->what's this
 void MainWindow::on_actionWhat_s_This_triggered()
 {
@@ -1289,6 +1426,9 @@ int MainWindow::GetRegion()
 	ret = ui->comboBox_region->currentIndex() - 1;
     }
     //qDebug() << "GetRegion(): " << ret;
+
+    //korean region is 4 not 3
+    if( ret == 3 ) ret = 4;
     return ret;
 }
 
@@ -1495,6 +1635,5 @@ void MainWindow::RecurseAddSelectedItems( QTreeWidgetItem *item )
 	RecurseAddSelectedItems( item->child( i ) );
     }
 }
-
 
 

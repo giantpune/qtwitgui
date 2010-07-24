@@ -54,7 +54,8 @@ enum
     witGetVersion,
     witCopy,
     witIlist,
-    witDump
+    witDump,
+    witEdit
 };
 
 class MainWindow : public QMainWindow
@@ -74,6 +75,8 @@ private:
     //mutable QMutex mutex;
     Ui::MainWindow *ui;
     QProcess *witProcess;
+
+    bool lockTextOutput; //attempt to control overzealous stdout/stderr
 
     QIcon groupIcon;
     QIcon keyIcon;
@@ -124,6 +127,7 @@ private:
 
 private slots:
 
+    void on_actionSave_triggered();
     void on_actionWhat_s_This_triggered();
     void on_checkBox_sneek_clicked();
     void on_pushButton_wit_clicked();
