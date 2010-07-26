@@ -101,7 +101,6 @@ private:
 
     u8 gameIOS;
     u8 gameRegion;
-    bool undoLastTextOperation;
     u8 witJob;
 
 
