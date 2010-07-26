@@ -42,7 +42,7 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-#define MINIMUM_WIT_VERSION 1428
+#define MINIMUM_WIT_VERSION 1431
 
 #define PROGRAM_NAME "QtWitGui"
 #define PROGRAM_VERSION "0.1.0"
@@ -58,7 +58,6 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     ui->setupUi( this );
     setAcceptDrops( true );
 
-    undoLastTextOperation = false;
     lockTextOutput = false;
 
     //set a font for the output window.
@@ -101,9 +100,6 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     color1 = colors.at( 0 ).name();
     color2 = colors.at( 1 ).name();
     color3 = colors.at( 2 ).name();
-
-    //default the search to the user's home directory ( will be overwritten by loading settings if they exist )
-    //ui->lineEdit_default_path->setText( QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) );
 
     //load settings
     LoadSettings();
@@ -272,36 +268,7 @@ void MainWindow::ReadyReadStdOutSlot()
     read.replace( "\r\n", "\n" );
 #endif
 
-    //delete the last text appended to the console if the last message was flagged to be deleted
-    if( undoLastTextOperation )
-    {
-	ui->plainTextEdit->undo();
-	undoLastTextOperation = false;
-    }
-
-    if( read.contains( "\r" ) )
-    {
-	//add the current text 1 line at a time so it can be undone if needed
-	QString insertText;
-	QString readCopy = read;
-	while( readCopy.contains( "\n") )
-	{
-	    while( !readCopy.startsWith( "\n" ) && !readCopy.isEmpty() )
-	    {
-		   insertText += readCopy.at( 0 );
-		   readCopy.remove( 0, 1 );
-	    }
-	    insertText += "\n";
-	    readCopy.remove( 0, 1 );
-	    ui->plainTextEdit->insertPlainText( insertText );
-	}
-	ui->plainTextEdit->insertPlainText( readCopy );
-
-	//does the current message need to be flagged to be deleted next time this function is called?
-	undoLastTextOperation = true;
-    }
-
-    else
+    if( !read.contains( "\r" ) )
 	ui->plainTextEdit->insertPlainText( read );
 
     lockTextOutput = false;
@@ -328,6 +295,13 @@ void MainWindow::ReadyReadStdOutSlot()
 		    num = numText.toInt();//convert to int
 		    if( num < 101 )
 			ui->progressBar->setValue( num );
+		 }
+
+		 num = str.indexOf( "ETA", 0 );
+		 if( num > 1 )
+		 {
+		     str.remove( 0, num );
+		     ui->statusBar->showMessage( tr( "Wit is running..." ) + " " + str );
 		 }
 	    }
 	    break;
@@ -365,25 +339,27 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	if( witJob != witGetVersion )
 	{
             ui->progressBar->setValue( 100 );
-            InsertText( tr( "Done!" ), color2 );
-            //InsertText( tr( "Done!" ), "green" );
+	    InsertText( tr( "Done!" ), color2 );
 	}
     }
     else
     {
 #ifdef Q_WS_WIN
         if( i == 128 )
-            InsertText( tr( "Maybe cygwin1.dll is missing" ), color3 );
-            //InsertText( tr( "Maybe cygwin1.dll is missing" ), "red" );
+	    InsertText( tr( "Maybe cygwin1.dll is missing" ), color3 );
 #endif
+	if( i == 20 )
+	{
+	    ui->progressBar->setValue( 100 );
+	    InsertText( tr( "Not all the files could be extracted" ), color2 );
+	}
+
         if( s )
-            InsertText( tr( "Wit appears to have crashed" ), color3 );
-            //InsertText( tr( "Wit appears to have crashed" ), "red" );
+	    InsertText( tr( "Wit appears to have crashed" ), color3 );
 
 	QString st;
         QTextStream( &st ) << tr( "Done, but with error" ) + " [ ExitCode: " << i << "  ErrorStatus: " << s << " ]";
-        InsertText( st + "<br>", color3 );
-        //InsertText( st + "<br>", "red" );
+	InsertText( st + "<br>", color3 );
 
 	if( !witErrorStr.isEmpty() )
 	    ErrorMessage( witErrorStr );
@@ -585,7 +561,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    }
 
 	    ui->statusBar->showMessage( tr( "Ready" ) );
-            ui->plainTextEdit->clear();
+	    ui->plainTextEdit->clear();
 	    witJob = witNoJob;
 
 	    //if this program was started with an arg ( "QtWitGui someGame.iso" ) try to load it.
