@@ -42,7 +42,7 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-#define MINIMUM_WIT_VERSION 1431
+#define MINIMUM_WIT_VERSION 1451
 
 #define PROGRAM_NAME "QtWitGui"
 #define PROGRAM_VERSION "0.1.0"
