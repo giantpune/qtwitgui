@@ -690,11 +690,11 @@ When this box is checked, the region setting in the first tab is disabled.</sour
     </message>
     <message>
         <source>Truncate output Iso</source>
-        <translation type="unfinished"></translation>
+        <translation>ISO出力を切り捨て</translation>
     </message>
     <message>
         <source>This program is written to use wit r%1.  You may experience strange behavior using any other version.</source>
-        <translation type="unfinished"></translation>
+        <translation>このプログラムはwit r%1を使って書き込みます。他のバージョンでは不具合が発生する可能性があります。</translation>
     </message>
 </context>
 <context>
