@@ -77,6 +77,7 @@ private:
     QProcess *witProcess;
 
     bool lockTextOutput; //attempt to control overzealous stdout/stderr
+    bool settingsAreFromThisVersion;
 
     QIcon groupIcon;
     QIcon keyIcon;
@@ -86,6 +87,7 @@ private:
     QString color1;
     QString color2;
     QString color3;
+    QString colorPlainText;
     QString lastPathLoadedCorrectly;
     QString witVersionString;
     QString witErrorStr;

@@ -559,6 +559,18 @@ Wenn diese Box aktiv ist, wird die Region Einstellung in der ersten Tab deaktivi
         <source>This program is written to use wit r%1.  You may experience strange behavior using any other version.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not all the files could be extracted</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WiiTreeThread</name>
