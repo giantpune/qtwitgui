@@ -42,10 +42,10 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-#define MINIMUM_WIT_VERSION 1451
+#define MINIMUM_WIT_VERSION 1468
 
 #define PROGRAM_NAME "QtWitGui"
-#define PROGRAM_VERSION "0.1.0"
+#define PROGRAM_VERSION "0.2.0"
 
 
 
@@ -59,6 +59,11 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     setAcceptDrops( true );
 
     lockTextOutput = false;
+    settingsAreFromThisVersion = false;
+
+    //prevent the idiot user from selecting this program as the witPath and causing a never-ending chain reaction of stupidity
+    if( witPath == QCoreApplication::instance()->arguments().at( 0 ) )
+    	witPath.clear();
 
     //set a font for the output window.
 #ifdef Q_WS_WIN
@@ -100,6 +105,8 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
     color1 = colors.at( 0 ).name();
     color2 = colors.at( 1 ).name();
     color3 = colors.at( 2 ).name();
+    colorPlainText = fg.name();
+    qDebug() << colorPlainText;
 
     //load settings
     LoadSettings();
@@ -211,7 +218,7 @@ void MainWindow::on_pushButton_2_clicked()
     ui->plainTextEdit->clear();
 }
 
-//insert text int the ui->plaintext
+//insert text into the ui->plaintext
 //! s is the text
 //! c is a color
 void MainWindow::InsertText( QString s, QString c)
@@ -230,7 +237,7 @@ void MainWindow::InsertText( QString s, QString c)
 #endif
     textCopy.replace( "\n", "<br>" );
 
-    QString htmlString = "<b><text style=\"color:" + c + "\">" + textCopy + "</text></b>";
+    QString htmlString = "<pre><b><text style=\"color:" + c + "\">" + textCopy + "</text></b></pre>";
 
     ui->plainTextEdit->appendHtml( htmlString );
 
@@ -246,16 +253,13 @@ void MainWindow::InsertText( QString s, QString c)
 //get message from the workthread
 void MainWindow::ShowMessage( const QString &s )
 {
-    ui->plainTextEdit->insertPlainText( s );
+    InsertText( s, colorPlainText );
+    //ui->plainTextEdit->insertPlainText( s );
 }
 
 //get messages from the procces running wit and convert the messages to stuff to use in the GUI
 void MainWindow::ReadyReadStdOutSlot()
 {
-    //ghetto mutex
-    while( lockTextOutput ) ;
-    lockTextOutput = true;
-
     //since we are getting more stdout, assume that existing errors are not fatal and clear them from the error cache
     witErrorStr.clear();
 
@@ -269,9 +273,7 @@ void MainWindow::ReadyReadStdOutSlot()
 #endif
 
     if( !read.contains( "\r" ) )
-	ui->plainTextEdit->insertPlainText( read );
-
-    lockTextOutput = false;
+	InsertText( read, colorPlainText );
 
     switch ( witJob )
     {
@@ -490,7 +492,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		ui->lineEdit_3->setText( idStr );
 		ui->lineEdit_4->setText( nameStr );
 		ui->comboBox_region->setCurrentIndex( regionInt );
-		gameRegion = regionInt -1;
+		gameRegion = regionInt - 1;
 
 		gameIOS = foundIos;
 		ui->spinBox_gameIOS->setValue( gameIOS );
@@ -541,9 +543,9 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		    int witSVNr = str.toInt( &ok );
 		    if( !ok )
 			ErrorMessage( tr( "The version of wit cannot be determined." ) + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
-		    else if( witSVNr < MINIMUM_WIT_VERSION )
+		    else if( witSVNr < MINIMUM_WIT_VERSION && !settingsAreFromThisVersion )
 			ErrorMessage( tr( "The version of wit is too low.  Upgrade it!" ) + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
-		    else if( witSVNr != MINIMUM_WIT_VERSION )
+		    else if( witSVNr != MINIMUM_WIT_VERSION && !settingsAreFromThisVersion )
 			ErrorMessage( tr( "This program is written to use wit r%1.  You may experience strange behavior using any other version." ).arg( MINIMUM_WIT_VERSION ) + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
 		}
 		else if( str.contains( "system" ) )
@@ -759,6 +761,7 @@ bool MainWindow::SaveSettings()
         << "\nwitpath:"	    << witPath
         << "\nsneek:"	    << ui->checkBox_sneek->checkState()
         << "\ntruncate:"    << ui->checkBox_trunc->checkState()
+	<< "\nwitversion:"  << MINIMUM_WIT_VERSION
 
 	;
     file.close();
@@ -923,11 +926,16 @@ bool MainWindow::LoadSettings()
             int v = value.toInt( &ok, 10 );
             ui->checkBox_sneek->setChecked( ok && v );
         }
-        else if( setting == "truncate" )
-        {
-            int v = value.toInt( &ok, 10 );
-            ui->checkBox_trunc->setChecked( ok && v );
-        }
+	else if( setting == "truncate" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    ui->checkBox_trunc->setChecked( ok && v );
+	}
+	else if( setting == "witversion" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    settingsAreFromThisVersion = ( ok && v == MINIMUM_WIT_VERSION );
+	}
 
 
 
@@ -1340,9 +1348,9 @@ int MainWindow::SendWitCommand( QStringList args, int jobType )
 	command += " " + arg;
 
     InsertText( command, color1 );
-    //InsertText( command, "blue" );
     if( jobType == witCopy && ui->verbose_combobox->currentIndex() == 1 )
-	ui->plainTextEdit->insertPlainText( "\n" );
+	//ui->plainTextEdit->insertPlainText( "\n" );
+	InsertText( "\n", colorPlainText );
 
     witJob = jobType;
     witProcess->start( witPath, args );
@@ -1401,10 +1409,13 @@ int MainWindow::GetRegion()
     {
 	ret = ui->comboBox_region->currentIndex() - 1;
     }
-    //qDebug() << "GetRegion(): " << ret;
+    //qDebug() << "GetRegion(): " << ret << "gameRegion:" << gameRegion;
 
     //korean region is 4 not 3
     if( ret == 3 ) ret = 4;
+
+    if( ret == gameRegion )return -1;
+
     return ret;
 }
 
@@ -1531,11 +1542,18 @@ void MainWindow::dragEnterEvent( QDragEnterEvent *event )
 //open a dialog to find the wit binary
 bool MainWindow::FindWit()
 {
-    witPath = QFileDialog::getOpenFileName(this, tr("Where is wit?") );
+    QString witPathNew = QFileDialog::getOpenFileName( this, tr("Where is wit?") );
 
-    if( witPath.isEmpty() )
+    if( witPathNew.isEmpty() )
 	return false;
 
+    if( witPathNew == QCoreApplication::instance()->arguments().at( 0 ) )
+    {
+	ErrorMessage( tr( "Select the wit binary, not the QtWitGui binary!" ) );
+	return false;
+    }
+
+    witPath = witPathNew;
     ui->lineEdit_wit->setText( witPath );
     return true;
 }
