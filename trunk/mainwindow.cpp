@@ -1395,7 +1395,7 @@ void MainWindow::OpenGame()
     args << "DUMP";
     args << isoPath;
 
-    QString showString = "--show=files,intro,tmd,P-Map";
+    QString showString = "--show=intro,tmd,P-Map";
 
     if( ui->logging_combobox->currentIndex() == 1 )
 	showString += ",D-Map";
