@@ -457,12 +457,13 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 		{
 		    isDataPartition = true;
 		}
-		else if( str.contains( "Sytem version:" ) && isDataPartition )
+		else if( str.contains( "System version:" ) && isDataPartition )
 		{
+
 		    isDataPartition = false;
 		    str = str.simplified();
-		    str.remove( 0, 39 );
-		    str.resize( str.indexOf( " ", 0 ) );
+		    str.remove( 0, 47 );
+		    str.remove( 0, str.indexOf( " ", 0 ) );
 
 		    bool ok;
 		    int v = str.toInt( &ok, 10 );
@@ -499,6 +500,7 @@ void MainWindow::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	    }
 	    else
 	    {
+		qDebug() << "idstr: " << idStr << "\nregionInt: " << regionInt << "\nfoundIos: " << foundIos;
 		AbortLoadingGame( tr( "Error parsing data from wit.  The game cannot be loaded.") );
 		break;
 	    }
@@ -1393,7 +1395,7 @@ void MainWindow::OpenGame()
     args << "DUMP";
     args << isoPath;
 
-    QString showString = "--show=intro,tmd,P-Map";
+    QString showString = "--show=files,intro,tmd,P-Map";
 
     if( ui->logging_combobox->currentIndex() == 1 )
 	showString += ",D-Map";
