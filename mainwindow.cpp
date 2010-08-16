@@ -42,7 +42,7 @@
 #include "ui_mainwindow.h"
 #include "filefolderdialog.h"
 
-#define MINIMUM_WIT_VERSION 1468
+#define MINIMUM_WIT_VERSION 1554
 
 #define PROGRAM_NAME "QtWitGui"
 #define PROGRAM_VERSION "0.2.0"
@@ -328,7 +328,6 @@ void MainWindow::ReadyReadStdErrSlot()
     QString read = witProcess->readAllStandardError();
     witErrorStr += read;
 
-    //InsertText( read, "red" );
     InsertText( read, color3 );
 }
 
@@ -741,8 +740,6 @@ bool MainWindow::SaveSettings()
 	<< "\ntext:"	    << ui->verbose_combobox->currentIndex()
 	<< "\nlogging:"	    << ui->logging_combobox->currentIndex()
 	<< "\nios:"	    << ui->default_ios_spinbox->value()
-        //<< "\npath:"	    << ui->lineEdit_default_path->text()
-	//<< "\nregion:"	    << ui->comboBox_region->currentIndex()
 	<< "\nstarttab:"    << ui->startupTab_combobox->currentIndex()
 	<< "\nupdatetitle:" << ui->checkBox_6->checkState()
 	<< "\nupdateid:"    << ui->checkBox_7->checkState()
@@ -751,7 +748,6 @@ bool MainWindow::SaveSettings()
 	<< "\nparthdr:"	    << ui->checkBox_3->checkState()
         << "\nignoreidden:" << ui->checkBox_hiddenFiles->checkState()
 	<< "\ndefaultiosch:"<< ui->checkBox_defaultIos->checkState()
-	//<< "\ndefaultios:"  << ui->spinBox_gameIOS->value()
 	<< "\ndefaultregch:"<< ui->checkBox_defaultRegion->checkState()
 	<< "\npselect:"	    << ui->comboBox_partition->currentIndex()
 	<< "\nwheight:"	    << this->height()
@@ -762,6 +758,7 @@ bool MainWindow::SaveSettings()
         << "\nsneek:"	    << ui->checkBox_sneek->checkState()
         << "\ntruncate:"    << ui->checkBox_trunc->checkState()
 	<< "\nwitversion:"  << MINIMUM_WIT_VERSION
+	<< "\nkeyindex:"    << ui->comboBox_key->currentIndex()
 
 	;
     file.close();
@@ -936,6 +933,13 @@ bool MainWindow::LoadSettings()
 	    int v = value.toInt( &ok, 10 );
 	    settingsAreFromThisVersion = ( ok && v == MINIMUM_WIT_VERSION );
 	}
+	else if( setting == "keyindex" )
+	{
+	    int v = value.toInt( &ok, 10 );
+	    if( ok )
+		ui->comboBox_key->setCurrentIndex( v );
+	}
+
 
 
 
@@ -969,8 +973,8 @@ void MainWindow::ResizeGuiToLanguage()
     ui->label_3->setMinimumWidth( MAX( ui->label_3->minimumWidth(), fm.width( ui->label_3->text() ) + pad ) );
     ui->label_7->setMinimumWidth( MAX( ui->label_7->minimumWidth(), fm.width( ui->label_7->text() ) + pad ) );
     ui->label_partition->setMinimumWidth( MAX( ui->label_partition->minimumWidth(), fm.width( ui->label_partition->text() ) + pad ) );
-    //ui->pushButton_settings_searchPath->setMinimumWidth( MAX( ui->pushButton_settings_searchPath->minimumWidth(), fm.width( ui->pushButton_settings_searchPath->text() ) + pad ) );
     ui->pushButton_wit->setMinimumWidth( MAX( ui->pushButton_wit->minimumWidth(), fm.width( ui->pushButton_wit->text() ) + pad ) );
+    ui->label_key->setMinimumWidth( MAX( ui->label_key->minimumWidth(), fm.width( ui->label_key->text() ) + pad ) );
 
 
 
@@ -1152,11 +1156,19 @@ void MainWindow::on_actionSave_As_triggered()
 	args << "--pmode=name";
     }
 
+    //truncate iso
     if( outputPath.endsWith( ".iso", Qt::CaseInsensitive ) && ui->checkBox_trunc->isChecked() )
     {
         args << "--trunc";
     }
 
+    //key
+    if( ui->comboBox_key->currentIndex() < 2 )
+    {
+	QString st;
+	QTextStream( &st ) << "--common-key=" << ui->comboBox_key->currentIndex();
+	args << st;
+    }
     //verbose
     if( ui->verbose_combobox->currentIndex() )
     {
@@ -1274,6 +1286,13 @@ void MainWindow::on_actionSave_triggered()
     {
 	args << "--psel=" + ui->comboBox_partition->currentText();
 	args << "--pmode=name";
+    }
+    //key
+    if( ui->comboBox_key->currentIndex() < 2 )
+    {
+	QString st;
+	QTextStream( &st ) << "--common-key=" << ui->comboBox_key->currentIndex();
+	args << st;
     }
 
     //verbose

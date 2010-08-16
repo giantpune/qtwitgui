@@ -65,7 +65,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -596,6 +596,9 @@ while saving.</string>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_trunc">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Truncate output Iso</string>
               </property>
@@ -670,7 +673,7 @@ while saving.</string>
               </item>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="2" column="0">
              <widget class="QLabel" name="label_3">
               <property name="whatsThis">
                <string>Use this option to view the disc and partition layout of the game in the &quot;Output&quot; tab.</string>
@@ -680,7 +683,7 @@ while saving.</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
+            <item row="2" column="1">
              <widget class="QComboBox" name="logging_combobox">
               <property name="whatsThis">
                <string>Use this option to view the disc and partition layout of the game in the &quot;Output&quot; tab.</string>
@@ -705,7 +708,7 @@ while saving.</string>
               </item>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="3" column="0">
              <widget class="QCheckBox" name="checkBox_defaultIos">
               <property name="toolTip">
                <string>Default IOS to use for booting</string>
@@ -720,7 +723,7 @@ When this box is checked, the IOS selector in the first tab is disabled.</string
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="3" column="1">
              <widget class="QSpinBox" name="default_ios_spinbox">
               <property name="enabled">
                <bool>false</bool>
@@ -744,7 +747,7 @@ When this box is checked, the IOS selector in the first tab is disabled.</string
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
+            <item row="4" column="0">
              <widget class="QCheckBox" name="checkBox_defaultRegion">
               <property name="toolTip">
                <string>Always use the same region flag when saving a game</string>
@@ -759,7 +762,7 @@ When this box is checked, the region setting in the first tab is disabled.</stri
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
+            <item row="4" column="1">
              <widget class="QComboBox" name="comboBox_defaultRegion">
               <property name="enabled">
                <bool>false</bool>
@@ -799,14 +802,14 @@ When this box is checked, the region setting in the first tab is disabled.</stri
               </item>
              </widget>
             </item>
-            <item row="4" column="0">
+            <item row="5" column="0">
              <widget class="QLabel" name="label_partition">
               <property name="text">
                <string>Partition Select:</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="1">
+            <item row="5" column="1">
              <widget class="QComboBox" name="comboBox_partition">
               <property name="whatsThis">
                <string>You can use the &quot;Partition Select&quot; option to define which partitions are both shown in the disc layout tree and saved.</string>
@@ -868,21 +871,21 @@ When this box is checked, the region setting in the first tab is disabled.</stri
               </item>
              </widget>
             </item>
-            <item row="5" column="0">
+            <item row="6" column="0">
              <widget class="QPushButton" name="pushButton_wit">
               <property name="text">
                <string>Wit path:</string>
               </property>
              </widget>
             </item>
-            <item row="5" column="1">
+            <item row="6" column="1">
              <widget class="QLineEdit" name="lineEdit_wit">
               <property name="whatsThis">
                <string>The &quot;Wit Path&quot; is the path to the wit executable.</string>
               </property>
              </widget>
             </item>
-            <item row="6" column="0">
+            <item row="7" column="0">
              <widget class="QLabel" name="label_7">
               <property name="toolTip">
                <string>Where to start this program</string>
@@ -895,7 +898,7 @@ When this box is checked, the region setting in the first tab is disabled.</stri
               </property>
              </widget>
             </item>
-            <item row="6" column="1">
+            <item row="7" column="1">
              <widget class="QComboBox" name="startupTab_combobox">
               <property name="minimumSize">
                <size>
@@ -922,6 +925,38 @@ When this box is checked, the region setting in the first tab is disabled.</stri
               <item>
                <property name="text">
                 <string>Settings</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_key">
+              <property name="text">
+               <string>Re-encryption key:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="comboBox_key">
+              <property name="toolTip">
+               <string>Select key used to re-encrypt partitions when saving.</string>
+              </property>
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Common key</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Korean key</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>&lt; Auto &gt;</string>
                </property>
               </item>
              </widget>
