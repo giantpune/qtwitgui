@@ -1,0 +1,79 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/balanceboard.png</file>
+        <file>images/balanceboardR.png</file>
+        <file>images/cero_a.png</file>
+        <file>images/cero_b.png</file>
+        <file>images/cero_c.png</file>
+        <file>images/cero_d.png</file>
+        <file>images/cero_z.png</file>
+        <file>images/classiccontroller.png</file>
+        <file>images/classiccontrollerR.png</file>
+        <file>images/dancepad.png</file>
+        <file>images/dancepadR.png</file>
+        <file>images/drums.png</file>
+        <file>images/drumsR.png</file>
+        <file>images/esrb_ao.png</file>
+        <file>images/esrb_e.png</file>
+        <file>images/esrb_ec.png</file>
+        <file alias="/images/esrb_e10+.png">images/esrb_eten.png</file>
+        <file>images/esrb_m.png</file>
+        <file>images/esrb_t.png</file>
+        <file alias="images/gamecube.png">images/gcncontroller.png</file>
+        <file alias="images/gamecubeR.png">images/gcncontrollerR.png</file>
+        <file>images/guitar.png</file>
+        <file>images/guitarR.png</file>
+        <file>images/microphone.png</file>
+        <file>images/microphoneR.png</file>
+        <file>images/motionplus.png</file>
+        <file>images/motionplusR.png</file>
+        <file>images/nintendods.png</file>
+        <file>images/nintendodsR.png</file>
+        <file>images/norating.png</file>
+        <file>images/nunchuk.png</file>
+        <file>images/nunchukR.png</file>
+        <file>images/pegi_3.png</file>
+        <file>images/pegi_7.png</file>
+        <file>images/pegi_12.png</file>
+        <file>images/pegi_16.png</file>
+        <file>images/pegi_18.png</file>
+        <file>images/wheel.png</file>
+        <file>images/wheelR.png</file>
+        <file>images/wifi1.png</file>
+        <file>images/wifi2.png</file>
+        <file>images/wifi3.png</file>
+        <file>images/wifi4.png</file>
+        <file>images/wifi8.png</file>
+        <file>images/wifi12.png</file>
+        <file>images/wifi16.png</file>
+        <file>images/wifi32.png</file>
+        <file>images/Wiimote1.png</file>
+        <file>images/Wiimote2.png</file>
+        <file>images/Wiimote3.png</file>
+        <file>images/Wiimote4.png</file>
+        <file>images/wiispeak.png</file>
+        <file>images/wiispeakR.png</file>
+        <file>images/zapper.png</file>
+        <file>images/zapperR.png</file>
+        <file>images/nocover.png</file>
+        <file>images/settings/coverflow.png</file>
+        <file>images/settings/game window.png</file>
+        <file>images/settings/partition.png</file>
+        <file>images/settings/paths.png</file>
+        <file>images/settings/root.png</file>
+        <file>images/settings/wiitdb.png</file>
+        <file>images/icon.ico</file>
+        <file>images/sneek.png</file>
+        <file>images/no_trucha.png</file>
+        <file>images/trucha.png</file>
+        <file>images/bongos.png</file>
+        <file>images/bongosR.png</file>
+        <file>images/gba.png</file>
+        <file>images/gbaR.png</file>
+        <file>images/gc1.png</file>
+        <file>images/gc2.png</file>
+        <file>images/gc3.png</file>
+        <file>images/gc4.png</file>
+        <file>wiitdb.zip</file>
+    </qresource>
+</RCC>
