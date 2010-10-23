@@ -131,7 +131,7 @@ void SettingsDialog::on_pushButton_wiitdbPath_clicked()
     QString p = QFileDialog::getOpenFileName( this, tr( "Where is wiitdb.zip / .xml?" ) );
     if( p.isEmpty() )
     {
-	wiiTDB->LoadFile( ":/wiitdb.xml" );
+	wiiTDB->LoadFile( ":/wiitdb.zip" );
 	return;
     }
     ui->lineEdit_wiitdbPath->setText( p );
@@ -139,6 +139,6 @@ void SettingsDialog::on_pushButton_wiitdbPath_clicked()
     if( !wiiTDB->LoadFile( p ) )//try to load theirs.  if not, fall back to the one we have compiled in the program
     {
 	ui->lineEdit_wiitdbPath->clear();
-	wiiTDB->LoadFile( ":/wiitdb.xml" );
+	wiiTDB->LoadFile( ":/wiitdb.zip" );
     }
 }
