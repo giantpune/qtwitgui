@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>646</width>
+    <height>496</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>496</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>500</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" rowspan="2">
+    <widget class="QListWidget" name="listWidget">
+     <property name="minimumSize">
+      <size>
+       <width>185</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>185</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="layoutMode">
+      <enum>QListView::SinglePass</enum>
+     </property>
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <property name="viewMode">
+      <enum>QListView::ListMode</enum>
+     </property>
+     <property name="uniformItemSizes">
+      <bool>true</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>Paths</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/settings/paths.png</normaloff>:/images/settings/paths.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Root</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/settings/root.png</normaloff>:/images/settings/root.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Wit/Wwt</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Partition Window</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/settings/partition.png</normaloff>:/images/settings/partition.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Game Window</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/settings/game window.png</normaloff>:/images/settings/game window.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>WiiTDB</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/settings/wiitdb.png</normaloff>:/images/settings/wiitdb.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CoverFlow</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/settings/coverflow.png</normaloff>:/images/settings/coverflow.png</iconset>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="0" column="1" rowspan="2" colspan="2">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="minimumSize">
+      <size>
+       <width>437</width>
+       <height>402</height>
+      </size>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>409</width>
+         <height>194</height>
+        </rect>
+       </property>
+       <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton_wit">
+          <property name="text">
+           <string>wit</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineEdit_wit"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="pushButton_wwt">
+          <property name="text">
+           <string>wwt</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineEdit_wwt"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="pushButton_coverPath">
+          <property name="text">
+           <string>Covers</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="lineEdit_coverPath"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="pushButton_wiitdbPath">
+          <property name="text">
+           <string>WiiTDB.xml</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="lineEdit_wiitdbPath">
+          <property name="minimumSize">
+           <size>
+            <width>310</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="pushButton_titlesPath">
+          <property name="text">
+           <string>titles.txt</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="lineEdit_titlesTxt"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QPushButton" name="pushButton_mountFilePath">
+          <property name="text">
+           <string>Mounts</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="lineEdit_MntPath">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>10</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Root Settings</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_runasRoot">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>40</y>
+         <width>191</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Run processes as root</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_rootMessages">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>70</y>
+         <width>421</width>
+         <height>123</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Sudo Messages</string>
+       </property>
+       <layout class="QFormLayout" name="formLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>PW request :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineEdit_rootReqStr">
+          <property name="text">
+           <string>[sudo] password for</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Incorrect PW :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineEdit_rootWrongStr">
+          <property name="text">
+           <string>Sorry, try again.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>PW failure :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="lineEdit_rootFail">
+          <property name="text">
+           <string>sudo: 3 incorrect password attempts</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_7">
+      <widget class="QLabel" name="label_9">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>9</y>
+         <width>122</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>converting settngs</string>
+       </property>
+      </widget>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>32</y>
+         <width>420</width>
+         <height>411</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>420</width>
+         <height>411</height>
+        </size>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>416</width>
+          <height>407</height>
+         </rect>
+        </property>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>40</y>
+           <width>240</width>
+           <height>252</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QFormLayout" name="formLayout_3">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+            </property>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_key">
+              <property name="text">
+               <string>Re-Encryptoin Key</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="comboBox_key">
+              <item>
+               <property name="text">
+                <string>&lt;Auto&gt;</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Common</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Korean</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="spinBox_wiimms_recurse">
+              <property name="value">
+               <number>2</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_recurse">
+              <property name="text">
+               <string>Recurse subfolders</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_3">
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>70</y>
+         <width>171</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>partition page</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_4">
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>100</y>
+         <width>231</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>game window page</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_5">
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>90</y>
+         <width>251</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>wiitdb page</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_6">
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>160</y>
+         <width>161</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>coverflow page</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="pushButton_ok">
+     <property name="maximumSize">
+      <size>
+       <width>119</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Ok</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>listWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>stackedWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>240</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>445</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_runasRoot</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>groupBox_rootMessages</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>305</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>425</x>
+     <y>161</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

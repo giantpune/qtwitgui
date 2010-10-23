@@ -1,0 +1,144 @@
+#ifndef GC_SHRINKTHREAD_H
+#define GC_SHRINKTHREAD_H
+
+#include "includes.h"
+#define GC_FATAL 5555
+
+typedef struct bannerText
+{
+    char  shTitle[ 0x20 ];
+    char  shMaker[ 0x20 ];
+    char  title  [ 0x40 ];
+    char  maker  [ 0x40 ];
+    char  comment[ 0x80 ];
+} bannerText;
+
+typedef struct GCBanner
+{
+    qint32 type;
+    quint8  padding    [ 0x1c ];
+    quint8  image      [ 0x1800 ];
+    bannerText text[ 6 ];
+} GCBanner;
+
+struct FEntry
+{
+	union
+	{
+		struct
+		{
+			unsigned int Type		:8;
+			unsigned int NameOffset	:24;
+		};
+		unsigned int TypeName;
+	};
+	union
+	{
+		struct		// File Entry
+		{
+			unsigned int FileOffset;
+			unsigned int FileLength;
+		};
+		struct		// Dir Entry
+		{
+			unsigned int ParentOffset;
+			unsigned int NextOffset;
+		};
+		unsigned int entry[2];
+	};
+};
+
+
+class GC_Game
+{
+
+public:
+    GC_Game( const QString path = QString() );
+    ~GC_Game();
+
+	//get the text from the banner.  pal banners can have different languages
+	QString GetSHTitle ( int lang ){ return QString( opening_bnr.text[ lang ].shTitle ); }
+	QString GetTitle   ( int lang ){ return QString( opening_bnr.text[ lang ].title ); }
+	QString GetSHMaker ( int lang ){ return QString( opening_bnr.text[ lang ].shMaker ); }
+	QString GetMaker   ( int lang ){ return QString( opening_bnr.text[ lang ].maker ); }
+	QString GetComment ( int lang ){ return QString( opening_bnr.text[ lang ].comment ); }
+	QString GetName() { return QString( hdrname ); }
+	QString GetID(){ return QString( id ); }
+	QPixmap BannerImage( int height );
+
+
+	int   GetLangCnt()      { return langCnt; }
+	//bool HasStreamingAudio(){ return stream; }
+	//void Shrink( QString outPath );
+	bool fileOk;
+
+/*private slots:
+	void GetFatalErrorFromShrinker( QString );
+	void ShrinkerIsDone();
+	void GetShrinkProgress( int );*/
+
+//private:
+protected:
+    GCBanner opening_bnr;
+    QString pathstr;
+    QFile file;
+
+    QByteArray fst_bin;
+    quint32 fstSize;
+    quint32 fstOffset;
+    quint32 dolOffset;
+    quint32 dolSize;
+    quint32 apploaderSize;
+    quint32 dolReused; //aquaman & some other games mix the main.dol in with the fst files
+    QByteArray newBootBin;
+
+    int langCnt;
+    QString id;
+    QString hdrname;
+
+    quint32 ReadU32();
+
+    void FatalError( QString str );//not used in this class
+
+    //GC_ShrinkThread shrinker;
+
+};
+
+class GC_ShrinkThread : public QThread , public GC_Game
+ {
+    Q_OBJECT
+
+ public:
+     GC_ShrinkThread( QObject *parent = 0, const QString path = QString() );
+     ~GC_ShrinkThread();
+
+     void ShrinkTo( const QString destPath, bool over );
+
+ protected:
+     void run();
+
+ signals:
+     void SendText( const QString & ); // not used here, but left in for copy/paste thread creating later
+     void SendProgress( int );
+     void SendDone();
+     void SendFatalError( QString, int );
+
+
+ private:
+     QString newPath;
+     bool overwrite;
+     QMutex mutex;
+     QWaitCondition condition;
+
+     bool abort;
+
+     void FatalError( QString str );
+
+ };
+
+
+
+void hexdump( void *d, int len );
+
+
+#endif // GC_SHRINKTHREAD_H
