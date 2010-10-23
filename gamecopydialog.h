@@ -1,0 +1,51 @@
+#ifndef GAMECOPYDIALOG_H
+#define GAMECOPYDIALOG_H
+
+#include "includes.h"
+
+namespace Ui {
+    class GameCopyDialog;
+}
+
+class GameCopyDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit GameCopyDialog(QWidget *parent = 0, QList<QTreeWidgetItem *> partitions = QList<QTreeWidgetItem *>(), QStringList games = QStringList(), QString current = QString(), QStringList patchArgs = QStringList() );
+    ~GameCopyDialog();
+
+    static QStringList WitCopyCommand( QString currentPartition, QList<QTreeWidgetItem *> partitions, QStringList games, QStringList patchArgs );
+private:
+    Ui::GameCopyDialog *ui;
+    QList<QTreeWidgetItem *> partList;
+    QStringList gameList;
+    QStringList ret;
+    QString currentPart;
+    QStringList patchArgList;
+
+    bool singleGame;
+    bool currentPathIswbfs;
+
+    void UpdateGuiWithCurrentSettings( bool skipPartitionFlags = false );
+    void SaveSettings();
+    void LoadSettings();
+
+private slots:
+    void on_checkBox_file_clicked(bool checked);
+    void on_checkBox_fst_sneek_toggled(bool checked);
+    void on_comboBox_wia_method_currentIndexChanged(int index);
+    void on_groupBox_wia_advanced_toggled(bool );
+    void on_groupBox_wia_presets_toggled(bool checked);
+    void on_comboBox_container_currentIndexChanged(int index);
+    void on_lineEdit_destOther_textChanged(QString );
+    void on_pushButton_destOther_clicked();
+    //void on_comboBox_container_currentIndexChanged(QString );
+    void on_groupBox_partition_clicked(bool );
+    void on_buttonBox_accepted();
+    void on_comboBox_esc_currentIndexChanged(QString );
+    void on_checkBox_partitionisWBFS_clicked(bool checked);
+    void on_comboBox_dest_currentIndexChanged(QString );
+};
+
+#endif // GAMECOPYDIALOG_H
