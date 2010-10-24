@@ -11,6 +11,10 @@
 #include "gamewindow.h"
 #include "aboutdialog.h"
 
+#ifdef Q_WS_WIN
+#include "windowsfsstuff.h"
+#endif
+
 #include "tools.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -26,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->actionCovers->setEnabled( false );
     LoadSettings();
     CheckWit();
+
 
 
     ui->actionWiiTDB->setChecked( wiiTDBisOpen );
@@ -157,17 +162,29 @@ void MainWindow::CheckWit()
 {
     setAcceptDrops( false );
     setWindowTitle( PROGRAM_NAME );
-    bool witOk = false;// && WitHandler::VersionIsOk() && WitHandler::ReadAttributes();
+    bool witOk = false;
     if( WitHandler::ReadVersion() )
     {
 	if( WitHandler::VersionIsOk() )
 	{
 	    if( WitHandler::ReadAttributes() )
 	    {
-		witOk = true;
-		setWindowTitle( QString( PROGRAM_NAME ) + "  :  " + WitHandler::GetVersionString() );
-		ui->statusBar->showMessage( tr( "Ready" ) );
-		setAcceptDrops( true );
+#ifdef Q_WS_WIN
+                if( !WindowsFsStuff::Check() )
+                {
+                    setAcceptDrops( false );
+                    ui->statusBar->showMessage( tr( "Error while checking wmic & cygpath" ) );
+                }
+                else
+                {
+#endif
+                    witOk = true;
+                    setWindowTitle( QString( PROGRAM_NAME ) + "  :  " + WitHandler::GetVersionString() );
+                    ui->statusBar->showMessage( tr( "Ready" ) );
+                    setAcceptDrops( true );
+#ifdef Q_WS_WIN
+                }
+#endif
 	    }
 	    else
 	    {
@@ -741,7 +758,7 @@ void MainWindow::dropEvent( QDropEvent *event )
     QStringList types = WitHandler::FileType( urls );
     if( types.size() != urls.size() )
     {
-	qDebug() << "MainWindow::dropEvent: wrong size";
+        qDebug() << "MainWindow::dropEvent: wrong size" << types.size() << urls.size();
 	event->ignore();
 	return;
     }
@@ -917,3 +934,7 @@ void MainWindow::on_actionRefresh_Current_Window_triggered()
 	break;
     }
 }
+
+
+
+

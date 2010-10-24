@@ -7,6 +7,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef Q_WS_WIN
+extern "C" void * _aligned_malloc( size_t size, size_t alignment );
+#endif
+
 GC_ShrinkThread::GC_ShrinkThread( QObject *parent, const QString path ) : QThread( parent ), GC_Game( path )
 {
     abort = false;
@@ -276,7 +280,11 @@ int TPL_ConvertRGB5A3ToBitMap(quint8* tplbuf, quint8** bitmapdata, qint32 width,
 	qint32 x1, y1;
 	qint32 iv;
 	//tplpoint -= width;
+#ifdef Q_WS_WIN
+        *bitmapdata = (quint8*)_aligned_malloc( width * height * 4, 32 );
+#else
 	*bitmapdata = (quint8*)memalign( 32, width * height * 4 );
+#endif
 	if(*bitmapdata == NULL)
 		return -1;
 	quint32 outsz = width * height * 4;

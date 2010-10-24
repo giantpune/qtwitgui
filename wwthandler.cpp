@@ -341,6 +341,9 @@ bool WwtHandler::ReadVersion()
     }
 
     QString output = p.readAll();
+#ifdef Q_WS_WIN
+    output.remove( "\r" );
+#endif
     QStringList list = output.split( "\n", QString::SkipEmptyParts );
     if( list.isEmpty() )
     {
