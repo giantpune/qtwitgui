@@ -25,7 +25,9 @@
 
 #include "wwthandler.h"
 #include "withandler.h"
-#include "unixfschecker.h"
+#ifndef Q_WS_WIN
+    #include "unixfschecker.h"
+#endif
 #include "includes.h"
 
 namespace Ui {
@@ -48,7 +50,9 @@ private:
 
     WitHandler wit;
     WwtHandler wwt;
+#ifndef Q_WS_WIN
     UnixFsChecker unixFs;
+#endif
     bool oktoRequestNextLIST_LLL;
 
     bool alreadyAskingForPassword;
@@ -64,14 +68,18 @@ public slots:
     void HandleWiimmsErrors( QString err, int id );
     void GetWBFSPartitionList( QStringList list );
     void GetPartitionInfo( QList<QTreeWidgetItem *> games, QString MibUsed );
+#ifndef Q_WS_WIN
     void NeedToAskForPassword();
+#endif
     void GetFsTypes( QStringList list );
 
 signals:
     void SendHDDList( QList<QTreeWidgetItem *> );//send all hdds
     void SendSelectedPartition( QList<QTreeWidgetItem *> );//send selected hdds
     void SendGamelistFor_1_Partition( QString, QList<QTreeWidgetItem *> );
+#ifndef Q_WS_WIN
     void UserEnteredPassword();
+#endif
 
 private slots:
     void on_pushButton_reScan_clicked();

@@ -76,6 +76,7 @@ private:
     void DisableEnablePartitionWindows();
     void CheckWit();
 
+
 private slots:
     void on_actionRefresh_Current_Window_triggered();
     void on_actionSave_As_triggered();

@@ -4,6 +4,10 @@
 #include "wiitdb.h"
 #include "tools.h"
 
+#ifdef Q_WS_WIN
+#include "windowsfsstuff.h"
+#endif
+
 //store the sudo strings here so we dont have to look at the settings file every time we need to check them
 QString rootAskStr;
 QString rootWrongStr;
@@ -630,6 +634,9 @@ bool WitHandler::ReadAttributes()
     }
 
     QString output = p.readAll();
+#ifdef Q_WS_WIN
+    output.remove( "\r" );
+#endif
     QStringList list = output.split( "\n", QString::SkipEmptyParts );
     if( list.isEmpty() )
     {
@@ -768,6 +775,9 @@ bool WitHandler::ReadVersion()
     }
 
     QString output = p.readAll();
+#ifdef Q_WS_WIN
+    output.remove( "\r" );
+#endif
     QStringList list = output.split( "\n", QString::SkipEmptyParts );
     if( list.isEmpty() )
     {
@@ -785,7 +795,7 @@ bool WitHandler::ReadVersion()
 	{
 	    if( !str.endsWith( "=wit" ) )
 	    {
-		qDebug() << "wrong program" << __FUNCTION__;
+                qDebug() << "wrong program" << __FUNCTION__ << str;
 		return false;
 	    }
 	}
@@ -863,6 +873,9 @@ QStringList WitHandler::FileType( QStringList files )
     }
 
     QString output = p.readAll();
+#ifdef Q_WS_WIN
+    output.remove( "\r" );
+#endif
     QStringList list = output.split( "\n", QString::SkipEmptyParts );
     if( list.size() != files.size() )
     {
@@ -872,7 +885,13 @@ QStringList WitHandler::FileType( QStringList files )
     QStringList ret;
     for( int i = 0; i < files.size(); i++ )
     {
+#ifdef Q_WS_WIN
+        bool ok = false;
+        QString cygPath = WindowsFsStuff::ToCygPath( files.at( i ), &ok );
+        if( !ok || !list.at( i ).endsWith( cygPath ) )
+#else
 	if( !list.at( i ).endsWith( files.at( i ) ) )
+#endif
 	{
 	    qDebug() << "( FileType ) mismatch"  <<  list.at( i ) << files.at( i );
 	    return QStringList();

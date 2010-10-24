@@ -25,14 +25,14 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     setWindowTitle( tr( "Partition Selection" ) );
 
     connect( ui->treeWidget, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( CustomTreeWidgetContentmenu( const QPoint& ) ) );
-
+#ifndef Q_WS_WIN
     QSettings s( settingsPath, QSettings::IniFormat );
     bool root = s.value( "root/enabled" ).toBool();
     wit.SetRunAsRoot( root );
     wwt.SetRunAsRoot( root );
     unixFs.SetRunAsRoot( root );
     wit.SetNamesFromWiiTDB();
-
+#endif
     //dummy items for testing
     /*for( int p = 0; p < 100; p++ )
     {
@@ -40,7 +40,7 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
 	ui->treeWidget->addTopLevelItem( item );
     }*/
 
-
+#ifndef Q_WS_WIN
     connect( &wwt, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wwt, SLOT( PasswordIsEntered() ) );
 
@@ -52,8 +52,10 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
 
 
     connect( &unixFs, SIGNAL( SendPartitionList( QStringList ) ), this, SLOT( GetFsTypes( QStringList ) ) );
-    connect( &wwt, SIGNAL( SendPartitionList( QStringList ) ), this, SLOT( GetWBFSPartitionList( QStringList ) ) );
     connect( &unixFs, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
+#endif
+
+    connect( &wwt, SIGNAL( SendPartitionList( QStringList ) ), this, SLOT( GetWBFSPartitionList( QStringList ) ) );
     connect( &wwt, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
     connect( &wit, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
     connect( &wit, SIGNAL( SendListLLL( QList<QTreeWidgetItem *>, QString ) ), this, SLOT( GetPartitionInfo( QList<QTreeWidgetItem *>, QString ) ) );
@@ -69,8 +71,10 @@ void HDDSelectDialog::DestroyProcessesAndWait()
     setCursor( Qt::BusyCursor );
     wit.Kill();
     wwt.Kill();
+#ifndef Q_WS_WIN
     unixFs.Kill();
     unixFs.Wait();
+#endif
     wit.Wait();
     wwt.Wait();
     unsetCursor();
@@ -124,6 +128,7 @@ void HDDSelectDialog::reject()
     QDialog::reject();
 }
 
+#ifndef Q_WS_WIN
 //wit/wwt has asked for a password
 void HDDSelectDialog::NeedToAskForPassword()
 {
@@ -136,7 +141,7 @@ void HDDSelectDialog::NeedToAskForPassword()
     alreadyAskingForPassword = false;
     emit UserEnteredPassword();
 }
-
+#endif
 //manually add partition / folder
 void HDDSelectDialog::on_pushButton_manualADD_clicked()
 {
@@ -308,7 +313,9 @@ void HDDSelectDialog::RequestNextLIST_LLLL()
     // all HDDs have been, or are being scanned
     //ui->buttonBox->setEnabled( true );
     //unsetCursor();
+#ifndef Q_WS_WIN
     RequestFsTypes();
+#endif
 }
 
 //clear the gamecounts & Mib used and rescan them
@@ -403,8 +410,9 @@ void HDDSelectDialog::RequestFsTypes()
     QStringList list;
     for( int i = 0; i < size; i++ )
 	list << ui->treeWidget->topLevelItem( i )->text( 0 );
-
+#ifndef Q_WS_WIN
     unixFs.GetFsTypes( list );
+#endif
     //qDebug() << "unixFs.GetFsTypes" << list;
 }
 
