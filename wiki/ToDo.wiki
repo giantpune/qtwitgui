@@ -26,13 +26,13 @@ Not supported by wit yet...
 
 implement settings for "recurse" used in "wit LIST"
 
-add static poling functions to WwtHandler like the ones in WitHandler to get the version and other such things.
+<s>add static poling functions to WwtHandler like the ones in WitHandler to get the version and other such things.</s>
 
 lots of testing.  current logic for the convert/copy dialog is largely untested.  the gamecube shrinking code worked in testing on its own - tested on 200+ games, all working with WODE ( which is picky about shrunken games ), but putting that code into this project required minor changes, and it has not undergone any testing aside from 1 or 2 games.
 
-re-implement language & svn version support in the gui
+re-implement language <s>& svn version</s> support in the gui
 
-the "about" dialogs need to come back, and could use some work.
+<s>the "about" dialogs need to come back, and could use some work.</s>
 
 coverflow is working perfectly, but disabled until the download logic is worked out.
 
