@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     unzip/unzip.cpp \
     savedialog.cpp \
     covermanagerwindow.cpp \
-    coverloaderthread.cpp
+    coverloaderthread.cpp \
+    aboutdialog.cpp
 
 HEADERS  += mainwindow.h \
     pictureflow.h \
@@ -62,7 +63,8 @@ HEADERS  += mainwindow.h \
     unzip/zconf.h \
     savedialog.h \
     covermanagerwindow.h \
-    coverloaderthread.h
+    coverloaderthread.h \
+    aboutdialog.h
 
 FORMS    += mainwindow.ui \
     hddselectdialog.ui \
@@ -73,10 +75,26 @@ FORMS    += mainwindow.ui \
     gamecopydialog.ui \
     gamewindow.ui \
     savedialog.ui \
-    covermanagerwindow.ui
+    covermanagerwindow.ui \
+    aboutdialog.ui
 
 RESOURCES += \
     resources.qrc
 
 MOC_DIR = obj
 OBJECTS_DIR = obj
+
+#create new svnrev.h
+unix {
+    system( chmod 755 ./makesvnrev.sh )
+    system( ./makesvnrev.sh )
+    macx{
+    #MAC icon & universal binary
+	RC_FILE = icon.icns
+	CONFIG += x86 ppc
+    }
+}
+win32 {
+    system(SubWCRev.exe "." "./svnrev_template.h" "./svnrev.h")
+    RC_FILE = rcfile.rc
+}

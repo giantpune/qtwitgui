@@ -318,7 +318,7 @@ GC_Game::GC_Game( const QString path )
     pathstr = path;
     dolReused = 0;
 
-    if( !pathstr.contains( ".iso", Qt::CaseInsensitive ) && !pathstr.contains( ".iso", Qt::CaseInsensitive ) )
+    if( !pathstr.contains( ".iso", Qt::CaseInsensitive ) && !pathstr.contains( ".gcm", Qt::CaseInsensitive ) )
     {
 	FatalError( "Invalid filename" );
 	return;

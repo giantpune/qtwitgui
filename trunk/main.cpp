@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     wiiTDB = new WiiTDB;
-    qDebug() << PROGRAM_NAME;
+    //qDebug() << PROGRAM_NAME;
 
     QApplication::setWindowIcon( QIcon( ":images/icon.ico" ) );
     settingsPath = QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) + "/QtWitGui.ini";
