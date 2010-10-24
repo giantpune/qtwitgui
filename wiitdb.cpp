@@ -40,7 +40,7 @@ WiiTDB::~WiiTDB()
 //load the wiitdb.xml file
 bool WiiTDB::LoadFile( QString name )
 {
-    qDebug() << "WiiTDB::LoadFile" << name;
+    //qDebug() << "WiiTDB::LoadFile" << name;
     if( file.isOpen() )
 	file.close();
 

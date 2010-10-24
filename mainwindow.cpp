@@ -1,9 +1,6 @@
-#include <QTransform>
-#include <QGraphicsPixmapItem>
-#include <QRect>
-#include <pictureflow.h>
-#include <QMdiSubWindow>
+#include "includes.h"
 
+#include "svnrev.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "hddselectdialog.h"
@@ -12,6 +9,7 @@
 #include "passworddialog.h"
 #include "filefolderdialog.h"
 #include "gamewindow.h"
+#include "aboutdialog.h"
 
 #include "tools.h"
 
@@ -125,10 +123,33 @@ void MainWindow::CreatePFlowSubWindow()
 //help->about
 void MainWindow::on_actionAbout_triggered()
 {
-    QString str;
+    /*
+, const QString &qtwitguiVersion = QString(), const QString &witVersion = QString()\
+			, const QString &wwtVersion = QString(), const QString &wiitdbVersion = QString(), const QString &wiitdbGames*/
+    QString thisProgVersion = "r" + QString( SVN_REV_STR ) + "  :  " + tr( "Built %1").arg( __DATE__ );
+    QString witVers = WitHandler::GetVersionString();
+    if( witVers.isEmpty() )
+	witVers = tr( "Missing" );
+    else if( !WitHandler::VersionIsOk() )
+	witVers += "   " + tr( "Unsupported" );
+
+    QString wwtVers = WwtHandler::GetVersionString();
+    if( wwtVers.isEmpty() )
+	wwtVers = tr( "Missing" );
+    else if( !WwtHandler::VersionIsOk() )
+	wwtVers += "   " + tr( "Unsupported" );
+
+    QString wiitdbVers = wiiTDBwindow->GetVersion();
+    if( wiitdbVers.length() < 10 )
+	wiitdbVers = tr( "Not Loaded" );
+
+    QString wiitdbGames = QString( "%1" ).arg( wiiTDBwindow->GameCount() );
+    AboutDialog dialog( this, thisProgVersion, witVers, wwtVers,wiitdbVers, wiitdbGames );
+    dialog.exec();
+    /*QString str;
     QTextStream( &str ) << "WiiTDB version: " << wiiTDBwindow->GetVersion() << "<br>"\
 		  << "Database has " << wiiTDBwindow->GameCount() << " games.";
-    QMessageBox::about( this, tr( "About" ) + PROGRAM_NAME, str );
+    QMessageBox::about( this, tr( "About" ) + PROGRAM_NAME, str );*/
 }
 
 //check that the wit path in the settings leads to a supported version of the program
@@ -162,6 +183,9 @@ void MainWindow::CheckWit()
     {
 	ui->statusBar->showMessage( tr( "Error getting wit version" ) );
     }
+
+    WwtHandler::ReadVersion();//dont bother checking return value here, as wwt is not necessary for most of what this program does.
+
     ui->actionOpenGame->setEnabled( witOk );
     ui->actionOpen_Partition->setEnabled( witOk );
 
@@ -327,7 +351,7 @@ void MainWindow::on_actionOpen_Partition_triggered()
 {
     //QList<QTreeWidgetItem *> pList;
 
-    HDDSelectDialog dialog;
+    HDDSelectDialog dialog( this );
     dialog.AddPartitionsToList( partList );
 
     connect( &dialog, SIGNAL( SendGamelistFor_1_Partition( QString, QList<QTreeWidgetItem *> ) ), this, SLOT( ReceiveListFor_1_Partition( QString, QList<QTreeWidgetItem *> ) ) );
@@ -339,7 +363,7 @@ void MainWindow::on_actionOpen_Partition_triggered()
 //view -> settings
 void MainWindow::on_actionSettings_triggered()
 {
-    SettingsDialog dialog;
+    SettingsDialog dialog( this );
     if( dialog.exec() )
     {
 	//qDebug() << "mainwindow: settings changed";

@@ -7,6 +7,9 @@ extern QString rootAskStr;
 extern QString rootWrongStr;
 extern QString rootFailStr;
 
+static int wwtVersion = 0;
+static QString wwtVersionString;
+
 WwtHandler::WwtHandler( QObject *parent, bool root ) :QObject( parent )
 {
     runAsRoot = root;
@@ -306,4 +309,99 @@ bool WwtHandler::Wait( int msecs )
 void WwtHandler::Kill()
 {
     emit KillProcess();
+}
+
+
+
+//static public functions
+bool WwtHandler::ReadVersion()
+{
+    wwtVersion = 0;
+    wwtVersionString.clear();
+    WwtHandler w;
+    QString wwtPath = w.GetWwtPath();
+    if( wwtPath.isEmpty() )
+    {
+	qDebug() << "path is empty" << __FUNCTION__;
+	return false;
+    }
+
+    QProcess p;
+    p.start( wwtPath, QStringList() << "VERSION" << "--sections" );
+    if( !p.waitForStarted() )
+    {
+	qDebug() << "failed to start wwt" << __FUNCTION__;
+	return false;
+    }
+
+    if( !p.waitForFinished() )
+    {
+	qDebug() << "!p.waitForFinished()" << __FUNCTION__;
+	return false;
+    }
+
+    QString output = p.readAll();
+    QStringList list = output.split( "\n", QString::SkipEmptyParts );
+    if( list.isEmpty() )
+    {
+	qDebug() << "list.isEmpty()" << __FUNCTION__;
+	return false;
+    }
+
+    QString name;
+    QString version;
+    QString rev;
+    QString sys;
+    foreach( QString str, list )
+    {
+	if( str.startsWith( "prog=") )
+	{
+	    if( !str.endsWith( "=wwt" ) )
+	    {
+		qDebug() << "wrong program" << __FUNCTION__;
+		return false;
+	    }
+	}
+	else if( str.startsWith( "name=") )
+	{
+	    name = str;
+	    name.remove( 0, 5 );
+	    name.remove( "\"" );
+	}
+	else if( str.startsWith( "version=") )
+	{
+	    version = str;
+	    version.remove( 0, 8 );
+	}
+	else if( str.startsWith( "revision=") )
+	{
+	    rev = str;
+	    rev.remove( 0, 9 );
+	}
+	else if( str.startsWith( "system=") )
+	{
+	    sys = str;
+	    sys.remove( 0, 7 );
+	}
+	if( !name.isEmpty() && !version.isEmpty() && !rev.isEmpty() && !sys.isEmpty() )
+	{
+	    bool ok;
+	    wwtVersion = rev.toInt( &ok );
+	    if( !ok )
+		return false;
+
+	    wwtVersionString = name + " " + version + " r" + rev + " " + sys;
+	    return true;
+	}
+    }
+    qDebug() << "wtf" << __FUNCTION__;
+    return false;
+}
+bool WwtHandler::VersionIsOk()
+{
+    return wwtVersion >= WWT_MINIMUM_VERSION;
+}
+QString WwtHandler::GetVersionString()
+{
+    return wwtVersionString;
 }

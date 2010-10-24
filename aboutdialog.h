@@ -20,32 +20,26 @@
 *
 *************************************************************************************/
 
-#ifndef SETTINGSDIALOG_H
-#define SETTINGSDIALOG_H
+#ifndef ABOUTDIALOG_H
+#define ABOUTDIALOG_H
 
 #include <QDialog>
 
 namespace Ui {
-    class SettingsDialog;
+    class AboutDialog;
 }
 
-class SettingsDialog : public QDialog
+class AboutDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SettingsDialog(QWidget *parent = 0);
-    ~SettingsDialog();
+    explicit AboutDialog( QWidget *parent = 0, const QString &qtwitguiVersion = QString(), const QString &witVersion = QString()\
+			, const QString &wwtVersion = QString(), const QString &wiitdbVersion = QString(), const QString &wiitdbGames = QString());
+    ~AboutDialog();
 
 private:
-    Ui::SettingsDialog *ui;
-
-private slots:
-    void on_pushButton_wiitdbPath_clicked();
-    void on_pushButton_mountFilePath_clicked();
-    void on_pushButton_wwt_clicked();
-    void on_pushButton_wit_clicked();
-    void on_pushButton_ok_clicked();
+    Ui::AboutDialog *ui;
 };
 
-#endif // SETTINGSDIALOG_H
+#endif // ABOUTDIALOG_H
