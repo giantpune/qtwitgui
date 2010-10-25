@@ -26,13 +26,16 @@ SOURCES += main.cpp \
     filefolderdialog.cpp \
     gamewindow.cpp \
     wiitreethread.cpp \
-    unzip/unzip.cpp \
     savedialog.cpp \
     covermanagerwindow.cpp \
     coverloaderthread.cpp \
-    aboutdialog.cpp
-unix {    SOURCES += unixfschecker.cpp   }
-win32 {    SOURCES += windowsfsstuff.cpp }
+    aboutdialog.cpp \
+    unixfschecker.cpp \
+    osxfs.cpp \
+    windowsfsstuff.cpp
+!macx{
+    SOURCES += unzip/unzip.cpp
+}
 HEADERS += mainwindow.h \
     pictureflow.h \
     wiitdb.h \
@@ -51,18 +54,21 @@ HEADERS += mainwindow.h \
     filefolderdialog.h \
     gamewindow.h \
     wiitreethread.h \
-    unzip/zip_p.h \
+    savedialog.h \
+    covermanagerwindow.h \
+    coverloaderthread.h \
+    aboutdialog.h \
+    unixfschecker.h \
+    osxfs.h \
+    windowsfsstuff.h
+!macx{
+    HEADERS += unzip/zip_p.h \
     unzip/zipentry_p.h \
     unzip/unzip_p.h \
     unzip/unzip.h \
     unzip/zlib.h \
-    unzip/zconf.h \
-    savedialog.h \
-    covermanagerwindow.h \
-    coverloaderthread.h \
-    aboutdialog.h
-unix {    HEADERS += unixfschecker.h }
-win32 {     HEADERS += windowsfsstuff.h   }
+    unzip/zconf.h
+}
 FORMS += mainwindow.ui \
     hddselectdialog.ui \
     settingsdialog.ui \
@@ -79,18 +85,18 @@ MOC_DIR = obj
 OBJECTS_DIR = obj
 
 # create new svnrev.h
-unix { 
+unix {
     system( chmod 755 ./makesvnrev.sh )
     system( ./makesvnrev.sh )
-    macx { 
+    macx {
         # MAC icon & universal binary
-        RC_FILE = icon.icns
-        CONFIG += x86 \
-            ppc
+        RC_FILE = images/icon.icns
+#        CONFIG += x86 ppc      #TODO: something is fucked up with my version of Qt, and this doesnt work out too well
     }
 }
-win32 { 
+win32 {
     system(SubWCRev.exe "." "./svnrev_template.h" "./svnrev.h")
     RC_FILE = rcfile.rc
 }
 OTHER_FILES += darkTheme.qss
+

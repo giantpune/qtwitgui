@@ -252,7 +252,7 @@ void MainWindow::LoadSettings()
     //just fall back to the built-in one if not successful
     QString path = settings.value( "paths/wiitdb", "" ).toString();
     if( path.isEmpty() || !wiiTDB->LoadFile( path ) )
-	wiiTDB->LoadFile( ":/wiitdb.zip" );
+        wiiTDB->LoadFile( ":/wiitdb.xml" );
 }
 
 void MainWindow::SaveSettings()

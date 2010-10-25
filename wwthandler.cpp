@@ -203,6 +203,16 @@ void WwtHandler::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	case wwtFind:
 	{
 	    QStringList parts = stdStr.split( "\n", QString::SkipEmptyParts );
+#ifdef Q_WS_MAC//mac version prints out more than just the list we want, so remove all entries that dont start with "/dev/"
+            int s = parts.size();
+            QStringList filtered;
+            for( int i = 0; i < s; i++ )
+            {
+                if( parts.at( i ).startsWith( "/dev/") )
+                    filtered << parts.at( i );
+            }
+            parts = filtered;
+#endif
 	    emit SendPartitionList( parts );
 	}
 	case wwtAdd:

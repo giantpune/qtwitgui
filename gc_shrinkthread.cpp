@@ -3,13 +3,33 @@
 #include "tools.h"
 
 
-#include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef Q_WS_MAC
+#include <malloc.h>
+#else//osx doesnt have memalign
+void *memalign( size_t size, int align )
+{
+    void *mem = malloc( size + (align-1) + sizeof(void*) );
 
+    char *amem = ((char*)mem) + sizeof(void*);
+    amem += align - ((quint64)amem & (align - 1));
+
+    ((void**)amem)[-1] = mem;
+    return amem;
+}
+
+void aligned_free( void *mem )
+{
+    free( ((void**)mem)[-1] );
+}
+#endif
 #ifdef Q_WS_WIN
 extern "C" void * _aligned_malloc( size_t size, size_t alignment );
 #endif
+
+
+
 
 GC_ShrinkThread::GC_ShrinkThread( QObject *parent, const QString path ) : QThread( parent ), GC_Game( path )
 {
@@ -461,9 +481,13 @@ QPixmap GC_Game::BannerImage( int height )
     }
     QImage im = QImage( (const uchar*) bitmapdata, 96, 32, QImage::Format_ARGB32 );
     QImage im2 = im.scaledToHeight( height, Qt::SmoothTransformation );
+#ifndef Q_WS_MAC
     free( bitmapdata );
+#else
+    aligned_free( bitmapdata );
+#endif
     QPixmap pm;
-    if( !pm.convertFromImage( im2 ) )
+    if( !pm.fromImage( im2 ) )
 	return QPixmap();
 
     return pm;
