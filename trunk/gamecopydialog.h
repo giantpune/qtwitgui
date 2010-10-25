@@ -37,7 +37,7 @@ public:
     explicit GameCopyDialog(QWidget *parent = 0, QList<QTreeWidgetItem *> partitions = QList<QTreeWidgetItem *>(), QStringList games = QStringList(), QString current = QString(), QStringList patchArgs = QStringList() );
     ~GameCopyDialog();
 
-    static QStringList WitCopyCommand( QString currentPartition, QList<QTreeWidgetItem *> partitions, QStringList games, QStringList patchArgs );
+    static QStringList WitCopyCommand( QWidget *parent, QString currentPartition, QList<QTreeWidgetItem *> partitions, QStringList games, QStringList patchArgs );
 private:
     Ui::GameCopyDialog *ui;
     QList<QTreeWidgetItem *> partList;

@@ -23,7 +23,17 @@ extern QString rootFailStr;
 
 SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new Ui::SettingsDialog )
 {
-    ui->setupUi(this);
+    ui->setupUi( this );
+    setWindowTitle( tr( "Settings" ) );
+#ifdef Q_WS_WIN//remove root settings for windows
+    QWidget *p = ui->page_2;
+    ui->stackedWidget->removeWidget( p );
+    delete( p );
+
+    QListWidgetItem *q = ui->listWidget->takeItem( 1 );
+    delete( q );
+#endif
+    ResizeButtons();
 
     QSettings s( settingsPath, QSettings::IniFormat );
     s.beginGroup( "paths" );
@@ -31,9 +41,11 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     ui->lineEdit_wwt->setText( s.value( "wwt" ).toString() );
     ui->lineEdit_coverPath->setText( s.value( "covers" ).toString() );
     ui->lineEdit_wiitdbPath->setText( s.value( "wiitdb" ).toString() );
+#ifndef Q_WS_WIN
     ui->lineEdit_MntPath->setText( s.value( "mountfile", "/etc/mtab" ).toString() );
+#endif
     s.endGroup();
-
+#ifndef Q_WS_WIN
     s.beginGroup( "root" );
     ui->checkBox_runasRoot->setChecked( s.value( "enabled" ).toBool() );
     ui->groupBox_rootMessages->setEnabled( ui->checkBox_runasRoot->isChecked() );
@@ -41,7 +53,7 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     ui->lineEdit_rootWrongStr->setText( s.value( "wrongPwString", "Sorry, try again." ).toString() );
     ui->lineEdit_rootFail->setText( s.value( "failString", "sudo: 3 incorrect password attempts" ).toString() );
     s.endGroup();
-
+#endif
     s.beginGroup( "wit_wwt" );
     //ui->checkBox_testMode->setChecked( s.value( "testMode" ).toBool() );
     //ui->checkBox_overWrite->setChecked( s.value( "overWriteFiles" ).toBool() );
@@ -74,9 +86,11 @@ void SettingsDialog::on_pushButton_ok_clicked()
 	s.setValue( "wwt", ui->lineEdit_wwt->text() );
     s.setValue( "covers", ui->lineEdit_coverPath->text() );
     s.setValue( "wiitdb", ui->lineEdit_wiitdbPath->text() );
+#ifndef Q_WS_WIN
     s.setValue( "mountfile", ui->lineEdit_MntPath->text() );
+#endif
     s.endGroup();
-
+#ifndef Q_WS_WIN
     s.beginGroup( "root" );
     s.setValue( "enabled", ui->checkBox_runasRoot->isChecked() );
     s.setValue( "requestString", ui->lineEdit_rootReqStr->text() );
@@ -86,7 +100,7 @@ void SettingsDialog::on_pushButton_ok_clicked()
     rootWrongStr = ui->lineEdit_rootWrongStr->text();
     rootFailStr = ui->lineEdit_rootFail->text();
     s.endGroup();
-
+#endif
     s.beginGroup( "wit_wwt" );
     //s.setValue( "testMode", ui->checkBox_testMode->isChecked() );
     //s.setValue( "overWriteFiles", ui->checkBox_overWrite->isChecked() );
@@ -118,14 +132,14 @@ void SettingsDialog::on_pushButton_wwt_clicked()
 	return;
     ui->lineEdit_wwt->setText( wwt );
 }
-
+#ifndef Q_WS_WIN
 void SettingsDialog::on_pushButton_mountFilePath_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Select Mounts File"), "/" );
     if( !fileName.isEmpty() )
 	ui->lineEdit_MntPath->setText( fileName );
 }
-
+#endif
 void SettingsDialog::on_pushButton_wiitdbPath_clicked()
 {
     QString p = QFileDialog::getOpenFileName( this, tr( "Where is wiitdb.zip / .xml?" ) );
@@ -141,4 +155,25 @@ void SettingsDialog::on_pushButton_wiitdbPath_clicked()
 	ui->lineEdit_wiitdbPath->clear();
 	wiiTDB->LoadFile( ":/wiitdb.zip" );
     }
+}
+
+//get the width of teh widest text in the "paths" buttons and resize all buttons to match that one
+void SettingsDialog::ResizeButtons()
+{
+    QFontMetrics fm( fontMetrics() );
+    int max = fm.width( ui->pushButton_coverPath->text() );
+    max = MAX( max, fm.width( ui->pushButton_mountFilePath->text() ) );
+    max = MAX( max, fm.width( ui->pushButton_titlesPath->text() ) );
+    max = MAX( max, fm.width( ui->pushButton_wiitdbPath->text() ) );
+    max = MAX( max, fm.width( ui->pushButton_wit->text() ) );
+    max = MAX( max, fm.width( ui->pushButton_wwt->text() ) );
+
+    max += 30;
+    ui->pushButton_coverPath->setMinimumWidth( max );
+    ui->pushButton_mountFilePath->setMinimumWidth( max );
+    ui->pushButton_titlesPath->setMinimumWidth( max );
+    ui->pushButton_wiitdbPath->setMinimumWidth( max );
+    ui->pushButton_wit->setMinimumWidth( max );
+    ui->pushButton_wwt->setMinimumWidth( max );
+
 }
