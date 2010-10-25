@@ -1,5 +1,7 @@
 #include "wiitdb.h"
+#ifndef Q_WS_MAC
 #include "unzip/unzip.h"
+#endif
 #include "includes.h"
 
 #include <QIODevice>
@@ -70,6 +72,10 @@ bool WiiTDB::LoadFile( QString name )
     }
     else if( name.endsWith( ".zip", Qt::CaseInsensitive ) )
     {
+#ifdef Q_WS_MAC
+        emit SendError( tr("WiiTDB Error"), tr("Zip files are not supported in the OSx version of this program yet") );
+        return false;
+#else
 	if( !QFile::exists( name ) )
 	{
 		emit SendError( tr("WiiTDB Error"), tr("Cannot find %1.").arg( name ) );
@@ -119,6 +125,7 @@ bool WiiTDB::LoadFile( QString name )
 	    emit SendError( tr("WiiTDB Error"), tr("Parse error at line %1, column %2:\n%3").arg( errorLine ).arg( errorColumn ).arg( errorStr ) );
 	    return false;
 	}
+#endif
     }
     else
     {

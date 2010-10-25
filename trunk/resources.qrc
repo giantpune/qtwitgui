@@ -74,7 +74,6 @@
         <file>images/gc2.png</file>
         <file>images/gc3.png</file>
         <file>images/gc4.png</file>
-        <file>wiitdb.zip</file>
         <file>darkTheme.qss</file>
         <file>images/style/arrow-down.png</file>
         <file>images/style/button-active.png</file>
@@ -101,5 +100,6 @@
         <file>images/style/trough-progressbar-horiz.png</file>
         <file>images/style/trough-scrollbar-horiz.png</file>
         <file>images/style/trough-scrollbar-vert.png</file>
+        <file>wiitdb.xml</file>
     </qresource>
 </RCC>

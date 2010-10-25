@@ -40,6 +40,9 @@ public:
 
 private:
     Ui::AboutDialog *ui;
+
+private slots:
+    void on_pushButton_clicked();
 };
 
 #endif // ABOUTDIALOG_H

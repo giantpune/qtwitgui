@@ -4,6 +4,7 @@
 
 #include "includes.h"
 #include "tools.h"
+#include "osxfs.h"
 #ifdef Q_WS_WIN
     #include "windowsfsstuff.h"
 #endif
@@ -162,12 +163,16 @@ void HDDSelectDialog::on_pushButton_find_clicked()
     QFileInfoList list = QDir::drives();
 
 #else
+#ifdef Q_WS_MAC
+    QDir dir( "/Volumes" );
+#else
     QDir dir( "/media" );
+#endif
 
     dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::NoSymLinks );
     QFileInfoList list = dir.entryInfoList();
 
-#endif
+#endif//#ifdef Q_WS_WIN
     for( int i = 0; i < list.size(); ++i )
     {
         QFileInfo fileInfo = list.at( i );
@@ -284,8 +289,13 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     QTextStream( &count ) << games.size();
     item->setText( 1, count );
     item->setText( 2, SizeTextGiB( MibUsed ) );
+#if defined Q_WS_WIN || defined Q_WS_MAC
 #ifdef Q_WS_WIN
     QString fs = WindowsFsStuff::GetFilesystem( item->text( 0 ) );//this lookup is blocking, so it will freeze the gui while it quieries the drive.
+#else
+    QString fs = OSxFs::GetFilesystem( item->text( 0 ) );
+    //qDebug() << fs;
+#endif
     if( !fs.isEmpty() )
     {
         if( fs.contains( "FAT", Qt::CaseInsensitive ) )
@@ -294,19 +304,19 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
             {
                 item->setText( 5, "SNEEK" );
             }
-            else					//no "games" folder, set the flag to split large files
+            else if( item->text( 4 ) != "wwt" )//no "games" folder, set the flag to split large files, on OSx, it spits out an actual filesystem even for WBFS partitions
             {
                 item->setText( 5, fs );
                 item->setText( 3, tr( "Yes" ) );
             }
         }
     }
-#endif
+#endif// defined Q_WS_WIN || define Q_WS_MAC
 
     if( item == ui->treeWidget->topLevelItem( ui->treeWidget->topLevelItemCount() - 1 ) )
     {
 	ui->pushButton_reScan->setEnabled( true );
-#ifdef Q_WS_WIN
+#if defined Q_WS_WIN || defined Q_WS_MAC
         ui->buttonBox->setEnabled( true );
         unsetCursor();
 #endif
@@ -340,7 +350,7 @@ void HDDSelectDialog::RequestNextLIST_LLLL()
     // all HDDs have been, or are being scanned
     //ui->buttonBox->setEnabled( true );
     //unsetCursor();
-#ifndef Q_WS_WIN
+#if !defined Q_WS_WIN && !defined Q_WS_MAC
     RequestFsTypes();
 #endif
 }
@@ -437,7 +447,7 @@ void HDDSelectDialog::RequestFsTypes()
     QStringList list;
     for( int i = 0; i < size; i++ )
 	list << ui->treeWidget->topLevelItem( i )->text( 0 );
-#ifndef Q_WS_WIN
+#if !defined Q_WS_WIN && !defined Q_WS_MAC
     unixFs.GetFsTypes( list );
 #endif
     //qDebug() << "unixFs.GetFsTypes" << list;

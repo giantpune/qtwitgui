@@ -33,6 +33,10 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     QListWidgetItem *q = ui->listWidget->takeItem( 1 );
     delete( q );
 #endif
+#if defined Q_WS_WIN || defined Q_WS_MAC
+    ui->lineEdit_MntPath->setVisible( false );
+    ui->pushButton_mountFilePath->setVisible( false );
+#endif
     ResizeButtons();
 
     QSettings s( settingsPath, QSettings::IniFormat );
@@ -41,7 +45,7 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     ui->lineEdit_wwt->setText( s.value( "wwt" ).toString() );
     ui->lineEdit_coverPath->setText( s.value( "covers" ).toString() );
     ui->lineEdit_wiitdbPath->setText( s.value( "wiitdb" ).toString() );
-#ifndef Q_WS_WIN
+#if !defined Q_WS_WIN && !defined Q_WS_MAC
     ui->lineEdit_MntPath->setText( s.value( "mountfile", "/etc/mtab" ).toString() );
 #endif
     s.endGroup();
@@ -49,7 +53,14 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     s.beginGroup( "root" );
     ui->checkBox_runasRoot->setChecked( s.value( "enabled" ).toBool() );
     ui->groupBox_rootMessages->setEnabled( ui->checkBox_runasRoot->isChecked() );
-    ui->lineEdit_rootReqStr->setText( s.value( "requestString", "[sudo] password for" ).toString() );
+    ui->lineEdit_rootReqStr->setText( s.value( "requestString",
+#ifdef Q_WS_MAC
+                                               "Password:"
+#else
+                                               "[sudo] password for"
+#endif
+
+                                               ).toString() );
     ui->lineEdit_rootWrongStr->setText( s.value( "wrongPwString", "Sorry, try again." ).toString() );
     ui->lineEdit_rootFail->setText( s.value( "failString", "sudo: 3 incorrect password attempts" ).toString() );
     s.endGroup();
@@ -86,7 +97,7 @@ void SettingsDialog::on_pushButton_ok_clicked()
 	s.setValue( "wwt", ui->lineEdit_wwt->text() );
     s.setValue( "covers", ui->lineEdit_coverPath->text() );
     s.setValue( "wiitdb", ui->lineEdit_wiitdbPath->text() );
-#ifndef Q_WS_WIN
+#if !defined Q_WS_WIN && !defined Q_WS_MAC
     s.setValue( "mountfile", ui->lineEdit_MntPath->text() );
 #endif
     s.endGroup();
@@ -145,7 +156,7 @@ void SettingsDialog::on_pushButton_wiitdbPath_clicked()
     QString p = QFileDialog::getOpenFileName( this, tr( "Where is wiitdb.zip / .xml?" ) );
     if( p.isEmpty() )
     {
-	wiiTDB->LoadFile( ":/wiitdb.zip" );
+        wiiTDB->LoadFile( ":/wiitdb.xml" );
 	return;
     }
     ui->lineEdit_wiitdbPath->setText( p );
@@ -153,7 +164,7 @@ void SettingsDialog::on_pushButton_wiitdbPath_clicked()
     if( !wiiTDB->LoadFile( p ) )//try to load theirs.  if not, fall back to the one we have compiled in the program
     {
 	ui->lineEdit_wiitdbPath->clear();
-	wiiTDB->LoadFile( ":/wiitdb.zip" );
+        wiiTDB->LoadFile( ":/wiitdb.xml" );
     }
 }
 
