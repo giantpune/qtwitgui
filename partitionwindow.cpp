@@ -309,7 +309,7 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 	    foreach( QTreeWidgetItem* item, ui->treeWidget->selectedItems() )
 		games << item->text( 6 );
 
-	    QStringList args = GameCopyDialog::WitCopyCommand( partition->text( 0 ), partList, games, QStringList() );
+            QStringList args = GameCopyDialog::WitCopyCommand( this, partition->text( 0 ), partList, games, QStringList() );
 	    //qDebug() << args;
 	    if( args.size() < 2 )//brief sanity check
 		return;

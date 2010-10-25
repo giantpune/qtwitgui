@@ -63,7 +63,7 @@
        <string>Paths</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
+       <iconset>
         <normaloff>:/images/settings/paths.png</normaloff>:/images/settings/paths.png</iconset>
       </property>
      </item>
@@ -72,7 +72,7 @@
        <string>Root</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
+       <iconset>
         <normaloff>:/images/settings/root.png</normaloff>:/images/settings/root.png</iconset>
       </property>
      </item>
@@ -86,7 +86,7 @@
        <string>Partition Window</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
+       <iconset>
         <normaloff>:/images/settings/partition.png</normaloff>:/images/settings/partition.png</iconset>
       </property>
      </item>
@@ -95,7 +95,7 @@
        <string>Game Window</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
+       <iconset>
         <normaloff>:/images/settings/game window.png</normaloff>:/images/settings/game window.png</iconset>
       </property>
      </item>
@@ -104,7 +104,7 @@
        <string>WiiTDB</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
+       <iconset>
         <normaloff>:/images/settings/wiitdb.png</normaloff>:/images/settings/wiitdb.png</iconset>
       </property>
      </item>
@@ -113,7 +113,7 @@
        <string>CoverFlow</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
+       <iconset>
         <normaloff>:/images/settings/coverflow.png</normaloff>:/images/settings/coverflow.png</iconset>
       </property>
      </item>
@@ -128,7 +128,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <widget class="QWidget" name="layoutWidget">
@@ -350,8 +350,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>416</width>
-          <height>407</height>
+          <width>418</width>
+          <height>409</height>
          </rect>
         </property>
         <widget class="QWidget" name="layoutWidget">
@@ -493,9 +493,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>listWidget</sender>

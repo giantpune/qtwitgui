@@ -8,6 +8,7 @@ GameCopyDialog::GameCopyDialog( QWidget *parent, QList<QTreeWidgetItem *> partit
 {
     //qDebug() << "GameCopyDialog" << games;
     ui->setupUi(this);
+    setWindowTitle( tr( "Copy & Convert Parameters" ) );
     currentPart = current;
     gameList = games;
     singleGame = games.size() == 1;
@@ -48,9 +49,9 @@ GameCopyDialog::~GameCopyDialog()
     delete ui;
 }
 
-QStringList GameCopyDialog::WitCopyCommand( QString currentPartition, QList<QTreeWidgetItem *> partitions, QStringList games, QStringList patchArgs )
+QStringList GameCopyDialog::WitCopyCommand( QWidget *parent, QString currentPartition, QList<QTreeWidgetItem *> partitions, QStringList games, QStringList patchArgs )
 {
-    GameCopyDialog d( 0, partitions, games, currentPartition, patchArgs );
+    GameCopyDialog d( parent, partitions, games, currentPartition, patchArgs );
     if( d.exec() )
 	return d.ret;
 

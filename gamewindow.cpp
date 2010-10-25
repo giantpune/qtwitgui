@@ -337,7 +337,7 @@ void GameWindow::on_actionSave_As_triggered()
 	if( lastPathLoadedCorrectly.startsWith( partList.at( i )->text( 0 ) ) )
 	    currentPart = partList.at( i )->text( 0 );
     }
-    QStringList args = GameCopyDialog::WitCopyCommand( currentPart, partList, QStringList() << lastPathLoadedCorrectly, patches );
+    QStringList args = GameCopyDialog::WitCopyCommand( this, currentPart, partList, QStringList() << lastPathLoadedCorrectly, patches );
     //qDebug() << args.size() << args;
     if( args.size() < 2 )
 	return;

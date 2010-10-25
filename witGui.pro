@@ -21,7 +21,6 @@ SOURCES += main.cpp \
     wiitdbwindow.cpp \
     custommdiitem.cpp \
     gamecopydialog.cpp \
-    unixfschecker.cpp \
     tools.cpp \
     gc_shrinkthread.cpp \
     filefolderdialog.cpp \
@@ -31,8 +30,9 @@ SOURCES += main.cpp \
     savedialog.cpp \
     covermanagerwindow.cpp \
     coverloaderthread.cpp \
-    aboutdialog.cpp \
-    windowsfsstuff.cpp
+    aboutdialog.cpp
+unix {    SOURCES += unixfschecker.cpp   }
+win32 {    SOURCES += windowsfsstuff.cpp }
 HEADERS += mainwindow.h \
     pictureflow.h \
     wiitdb.h \
@@ -46,7 +46,6 @@ HEADERS += mainwindow.h \
     custommdiitem.h \
     includes.h \
     gamecopydialog.h \
-    unixfschecker.h \
     tools.h \
     gc_shrinkthread.h \
     filefolderdialog.h \
@@ -61,8 +60,9 @@ HEADERS += mainwindow.h \
     savedialog.h \
     covermanagerwindow.h \
     coverloaderthread.h \
-    aboutdialog.h \
-    windowsfsstuff.h
+    aboutdialog.h
+unix {    HEADERS += unixfschecker.h }
+win32 {     HEADERS += windowsfsstuff.h   }
 FORMS += mainwindow.ui \
     hddselectdialog.ui \
     settingsdialog.ui \
