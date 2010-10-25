@@ -99,7 +99,7 @@ QString WindowsFsStuff::ToWinPath( QString cygPath, bool *ok )
     QString output = p.readAll();
     output.remove( "\r" );
     output.remove( "\n" );
-    qDebug() << "WindowsFsStuff::ToWinPath:" << cygPath << output;
+    //qDebug() << "WindowsFsStuff::ToWinPath:" << cygPath << output;
     *ok = true;
     return output;
 }
@@ -133,7 +133,59 @@ QString WindowsFsStuff::ToCygPath( QString winPath, bool *ok )
     QString output = p.readAll();
     output.remove( "\r" );
     output.remove( "\n" );
-    qDebug() << "WindowsFsStuff::ToCygPath:" << winPath << output;
+    //qDebug() << "WindowsFsStuff::ToCygPath:" << winPath << output;
     *ok = true;
     return output;
+}
+
+QString WindowsFsStuff::GetFilesystem( QString path )
+{
+#ifndef Q_WS_WIN
+    qDebug() << "WindowsFsStuff::GetFilesystem() called in non-windows platform";
+    return QString();
+#endif
+    QProcess p;
+
+    bool ok = false;
+    QString drive = ToWinPath( path, &ok );
+    int colon = drive.indexOf( ":" );
+    if( colon != 1 || !ok )
+    {
+        qDebug() << "WindowsFsStuff::GetFilesystem() colon != 1" << colon << ok;
+        return QString();
+    }
+    drive.resize( 1 );
+
+    //check that we have the program to convert windows paths to proper cygwin paths
+    p.start( "wmic", QStringList() << "/output:stdout" << "/interactive:off" << "/locale:ms_409" <<\
+             "logicaldisk" << "where" << "DeviceID=\'" + drive + ":\'" << "get" << "filesystem" );
+    if( !p.waitForStarted() )
+    {
+        qDebug() << "failed to start wmic ( getfs )";
+        return QString();
+    }
+    p.closeWriteChannel();
+
+    if( !p.waitForFinished() )
+    {
+        qDebug() << "!p.waitForFinished() ( getfs )";
+        return QString();
+    }
+    if( p.exitCode() != QProcess::NormalExit )
+    {
+        qDebug() << "exit status ( getfs )" << p.exitCode() << QProcess::NormalExit;
+        return QString();
+    }
+
+    QString output = p.readAll();
+    output.remove( "\r" );
+    QStringList list = output.split( "\n", QString::SkipEmptyParts );
+    if( !list.contains( "FileSystem  " ) || list.size() != 2 )
+    {
+        qDebug() << "wrong output ( getfs )" << list;
+        return QString();
+    }
+    QString fs = list.at( 1 );
+    fs = fs.simplified();
+    return fs;
 }

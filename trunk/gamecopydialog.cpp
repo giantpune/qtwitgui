@@ -252,6 +252,10 @@ void GameCopyDialog::on_buttonBox_accepted()
 {
     //qDebug() << "GameCopyDialog::on_buttonBox_accepted()";
     SaveSettings();
+    if( ui->comboBox_dest->currentText() == tr( "/<Enter a Directory>" ) &&
+        ( ui->groupBox_partition->isChecked() || !singleGame ) )//they didnt enter a destination, and it is left at the default one
+        return;
+
     bool wbfs = ui->checkBox_partitionisWBFS->isChecked();
     if( wbfs )//writing to a WBFS partition
     {

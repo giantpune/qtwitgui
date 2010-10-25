@@ -10,6 +10,7 @@ public:
     static bool Check();
     static QString ToWinPath( QString cygPath, bool *ok );
     static QString ToCygPath( QString winPath, bool *ok );
+    static QString GetFilesystem( QString path );
 
 signals:
 
