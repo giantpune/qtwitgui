@@ -93,3 +93,4 @@ win32 {
     system(SubWCRev.exe "." "./svnrev_template.h" "./svnrev.h")
     RC_FILE = rcfile.rc
 }
+OTHER_FILES += darkTheme.qss

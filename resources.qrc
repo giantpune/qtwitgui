@@ -75,5 +75,31 @@
         <file>images/gc3.png</file>
         <file>images/gc4.png</file>
         <file>wiitdb.zip</file>
+        <file>darkTheme.qss</file>
+        <file>images/style/arrow-down.png</file>
+        <file>images/style/button-active.png</file>
+        <file>images/style/button-active-prelight.png</file>
+        <file>images/style/button-inactive.png</file>
+        <file>images/style/button-normal.png</file>
+        <file>images/style/button-prelight.png</file>
+        <file>images/style/grip-horiz.png</file>
+        <file>images/style/grip-vert.png</file>
+        <file>images/style/list-header.png</file>
+        <file>images/style/progressbar-horiz.png</file>
+        <file>images/style/slider-horiz.png</file>
+        <file>images/style/slider-vert.png</file>
+        <file>images/style/stepper-down.png</file>
+        <file>images/style/stepper-down-prelight.png</file>
+        <file>images/style/stepper-left.png</file>
+        <file>images/style/stepper-left-prelight.png</file>
+        <file>images/style/stepper-right.png</file>
+        <file>images/style/stepper-right-prelight.png</file>
+        <file>images/style/stepper-up.png</file>
+        <file>images/style/stepper-up-prelight.png</file>
+        <file>images/style/tab-top.png</file>
+        <file>images/style/tab-top-active.png</file>
+        <file>images/style/trough-progressbar-horiz.png</file>
+        <file>images/style/trough-scrollbar-horiz.png</file>
+        <file>images/style/trough-scrollbar-vert.png</file>
     </qresource>
 </RCC>

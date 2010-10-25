@@ -37,8 +37,13 @@ int main(int argc, char *argv[])
 
     QApplication::setWindowIcon( QIcon( ":images/icon.ico" ) );
 
+    QFile file( ":/darkTheme.qss" );
+    file.open( QFile::ReadOnly );
+    QString styleSheet = QLatin1String( file.readAll() );
+    //setStyleSheet( styleSheet );
+
     //QPalette p = QApplication::palette();
-    QBrush c1( QColor( "#242424" ) );//dark
+    /*QBrush c1( QColor( "#242424" ) );//dark
     QBrush c3( QColor( "#3d3d3d" ) );
     QBrush c4( QColor( "#474747" ) );
     QBrush c2( QColor( "#d7d7d7" ) );//light
@@ -46,9 +51,10 @@ int main(int argc, char *argv[])
     //TODO: palette still nowhere complete
     QPalette newPalette( c2, c4, c4, c1, c3, c2, c4, c4, c4  );
 
-    QApplication::setPalette( newPalette );
+    QApplication::setPalette( newPalette );*/
     settingsPath = QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) + "/QtWitGui.ini";
     MainWindow w;
+    w.setStyleSheet( styleSheet );
     //w.setWindowIcon( QIcon( ":images/icon.ico" ) );
     w.show();
 
