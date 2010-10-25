@@ -4,7 +4,9 @@
 
 #include "includes.h"
 #include "tools.h"
-
+#ifdef Q_WS_WIN
+    #include "windowsfsstuff.h"
+#endif
 //static QList<QTreeWidgetItem *> pList;//remember the items between multiple instances
 
 HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new Ui::HDDSelectDialog )
@@ -32,15 +34,8 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     wwt.SetRunAsRoot( root );
     unixFs.SetRunAsRoot( root );
     wit.SetNamesFromWiiTDB();
-#endif
-    //dummy items for testing
-    /*for( int p = 0; p < 100; p++ )
-    {
-	QTreeWidgetItem * item = new QTreeWidgetItem( QStringList() << QString( "blabla %1" ).arg( p ) );
-	ui->treeWidget->addTopLevelItem( item );
-    }*/
 
-#ifndef Q_WS_WIN
+
     connect( &wwt, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wwt, SLOT( PasswordIsEntered() ) );
 
@@ -163,15 +158,21 @@ void HDDSelectDialog::on_pushButton_find_clicked()
 	QTreeWidgetItem *it = lst.at( j );
 	delete it;
     }
+#ifdef Q_WS_WIN
+    QFileInfoList list = QDir::drives();
 
+#else
     QDir dir( "/media" );
 
     dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::NoSymLinks );
     QFileInfoList list = dir.entryInfoList();
+
+#endif
     for( int i = 0; i < list.size(); ++i )
     {
-	QFileInfo fileInfo = list.at( i );
-	QDir subDir( dir.absoluteFilePath( fileInfo.fileName() ) );
+        QFileInfo fileInfo = list.at( i );
+        QDir subDir( fileInfo.absoluteFilePath() );
+        //QDir subDir( dir.absoluteFilePath( fileInfo.fileName() ) );
 
 	if( subDir.exists( "wbfs" ) )
 	    AddNewPartitionToList( subDir.absoluteFilePath( "wbfs" ), tr( "Auto" ) );
@@ -249,6 +250,8 @@ void HDDSelectDialog::AddNewPartitionToList( QString path, QString source )
 
     QTreeWidgetItem * item = new QTreeWidgetItem( QStringList() << path );
     item->setText( 4, source );
+    if( source == "wwt" )
+        item->setText( 5, "WBFS" );
     ui->treeWidget->addTopLevelItem( item );
 
     //read partition settings
@@ -281,9 +284,33 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     QTextStream( &count ) << games.size();
     item->setText( 1, count );
     item->setText( 2, SizeTextGiB( MibUsed ) );
+#ifdef Q_WS_WIN
+    QString fs = WindowsFsStuff::GetFilesystem( item->text( 0 ) );//this lookup is blocking, so it will freeze the gui while it quieries the drive.
+    if( !fs.isEmpty() )
+    {
+        if( fs.contains( "FAT", Qt::CaseInsensitive ) )
+        {
+            if( item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
+            {
+                item->setText( 5, "SNEEK" );
+            }
+            else					//no "games" folder, set the flag to split large files
+            {
+                item->setText( 5, fs );
+                item->setText( 3, tr( "Yes" ) );
+            }
+        }
+    }
+#endif
 
     if( item == ui->treeWidget->topLevelItem( ui->treeWidget->topLevelItemCount() - 1 ) )
+    {
 	ui->pushButton_reScan->setEnabled( true );
+#ifdef Q_WS_WIN
+        ui->buttonBox->setEnabled( true );
+        unsetCursor();
+#endif
+    }
 
     emit SendGamelistFor_1_Partition( item->text( 0 ), games );
 }

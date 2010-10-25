@@ -494,6 +494,14 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( QStringList list, boo
 			qDebug() << "count" << p;
 			goto abort;
 		    }
+                    if( !gameCnt )//just a HDD with no games
+                    {
+                        QTreeWidgetItem *size = new QTreeWidgetItem();//just tack the size onto the end of the list for now
+                        size->setText( 0, "0" );
+                        games << size;
+                        *okRet = true;
+                        return games;
+                    }
 		    continue;
 		}
 		if( p.startsWith( "total-size=" ) )//total size
@@ -597,7 +605,7 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( QStringList list, boo
 	    break;
 	}
     }
-qDebug() << "list-lll wtf";//composing GC games is not supported in wit, so it will reach here
+    qDebug() << "list-lll wtf";
 abort:
     while( !games.isEmpty() )
     {
