@@ -486,11 +486,8 @@ QPixmap GC_Game::BannerImage( int height )
 #else
     aligned_free( bitmapdata );
 #endif
-    QPixmap pm;
-    if( !pm.fromImage( im2 ) )
-	return QPixmap();
 
-    return pm;
+    return QPixmap::fromImage( im2 );
 }
 
 char ascii( char s ) {
