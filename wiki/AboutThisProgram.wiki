@@ -88,7 +88,6 @@
   * wwt - path to the wwt binary ( necessary )
   * covers - basepath for covers ( optional - unused )
   * titles.txt - even though there is wiitdb support in this program, wit does not support it.  instead it uses titles.txt ( optional - unused )
-  * mounts - location of the file used to resolve mountpoints in FS detection ( linux only, without this file, FS detection support wont work )
 
 === Root settings ===
   * linux and OSx only
@@ -134,7 +133,6 @@
 = Platform Specific Stuff =
 
 == linux ==
-  * it is recommended to enter a file in the settings to resolve mountpoints ( ie, /media/wii = /dev/sdc2, which is then used to determine the filesystem for that drive )
   * right out of the box, there is no access to WBFS partitions.  Either run this program as root ( NOT RECOMMENDED ), make use of the sudo stuff in the settings, or add an exception rule in the sudoers file for wit & wwt
   * Results of "ldd ./QtWitGui" ( from r112 )
 {{{
