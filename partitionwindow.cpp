@@ -114,7 +114,10 @@ void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, QList<QTre
     {
 	//we werent given a gamelist, but only a partition.  ask wit for the games
 	setCursor( Qt::BusyCursor );
-	wit.ListLLL_HDD( partition->text( 0 ) );
+	QSettings s( settingsPath, QSettings::IniFormat );
+	int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
+	wit.ListLLL_HDD( partition->text( 0 ), rDepth );
+	//wit.ListLLL_HDD( partition->text( 0 ) );
     }
 
     //ui->treeWidget->addTopLevelItems( gameList );
@@ -210,7 +213,10 @@ void PartitionWindow::on_actionRefresh_List_triggered()
 	return;
 
     setCursor( Qt::BusyCursor );
-    wit.ListLLL_HDD( partition->text( 0 ) );
+    QSettings s( settingsPath, QSettings::IniFormat );
+    int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
+    wit.ListLLL_HDD( partition->text( 0 ), rDepth );
+    //wit.ListLLL_HDD( partition->text( 0 ) );
 }
 
 //respond to message that the user has edited the settings
@@ -396,9 +402,14 @@ void PartitionWindow::HideProgressBar( int job )
 	ui->statusbar->showMessage( tr( "Done adding games to WBFS partition" ) );
 	break;
     case wwtRemove://refresh the game list
-	ui->statusbar->showMessage( tr( "Games successfully deleted from WBFS partition" ) );
-	setCursor( Qt::BusyCursor );
-	wit.ListLLL_HDD( partition->text( 0 ) );
+	{
+	    ui->statusbar->showMessage( tr( "Games successfully deleted from WBFS partition" ) );
+	    setCursor( Qt::BusyCursor );
+	    QSettings s( settingsPath, QSettings::IniFormat );
+	    int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
+	    wit.ListLLL_HDD( partition->text( 0 ), rDepth );
+	    //wit.ListLLL_HDD( partition->text( 0 ) );
+	}
 	break;
     case witCopy:
 	ui->statusbar->showMessage( tr( "Done copying & converting games" ) );
