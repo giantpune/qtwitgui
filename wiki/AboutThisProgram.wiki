@@ -1,58 +1,93 @@
 #summary About this program
 
-<wiki:toc max_depth="2"/>
+<wiki:toc max_depth="3"/>
 
 = Usage =
 
 == General ==
-  * The first time the program is run, or any other time there is nothing in the "wit path" variable and it tries to look for wit, you should be presented a window to select the wit executable.
+  * This program works by getting input from the user, then building a list of commands and runs several different programs as a process and passes it those commands.  Then it parses the text output and turns the text output into elements in the GUI. Due to this, changes in the formatting of the output text from from these programs, as well as different formatting from different versions and locales can break this program easily.  Wherever possible, I try to compensate for this.  In some cases, I have added settings for the user to enter specific strings to match ( ie, the messages sudo outputs ).
 
-  * This program is designed to deal with 1 game at a time, not with folders containing multiple games.
+  * Why not just incorporate code from wit/wwt into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
 
-  * This program works by getting input from the user, then building a list of commands and runs wit as a process and passes it those commands.
+  * This program uses a multiple document interface.  Each of the game and partition windows has its own set of processes.  This means that each window can perform a different operation at the same time.  In most cases, this should pose no problem, except to use more resources.  However, I don't think 2 processes writing to the same WBFS partition at the same time is a good idea.  I have taken measures to prevent his from happening in this program.  In the even that I made an error, and you do find a loophole that allows this, I strongly suggest you don't try to do it.
 
-  * Then when wit sends output through stdout or stderr ( the stuff you usually see in the console ) this program reads it and interprets it into data to use in the GUI.  Due to this, changes in the formatting of the output text from wit can break this program easily.
+  * The term "partition" is not used in the common sense in QtWitGui.  I handle common folders used for wii games as a separate partition.  Such folders are "wbfs", "games", and "iso".  So, It is possible to have 1 partition in the normal sense of the word with 3 partitions as i treat them.  The logic here is that people tend to keep different types of games in the different folders.  Treating the "games" folder differently than the "wbfs" folder allows to save settings for each folder differently ( ie, default to extracting games in sneek's format for the "games" folder ). 
 
-  * Why not just incorporate code from wit into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
+  * The basic logic behind the program is that each window keeps a copy of the known partitions and games.  The Main window keeps a "master list".  Each time A subwindow gets information about the available games/partitions, it sends this information to the main window, who then sends updated lists to the subwindows.
 
-== Tab 1 ( Game )==
-  * Load a game by using file-> open ( ctrl+O ), dragging a game onto the window, or argv[ 1 ] ( open with... ).  You can use a file or a folder containing an extracted game filesystem.  The program will run a couple processes of wit to gather information about the selected game, and then display the information in the GUI.
+  * Most of the operations in this program are performed asynchronously through signals and slots.  When an action need to happen, the window sends a request for that action to some thread and sets a "busy" cursor.  Once the performed action is done, the object that was doing the work sends a message to the window that asked for the action.
 
-  * Once a game has been loaded, you can select file->save as ( ctrl+ A ) to open a dialog box and save the game.
+== Usage ==
+  * When the program is started, it checks for the external processes it uses.  If it cannot find them, menus and actions will be disabled.  You will need to go to the settings and enter the necessary paths before it will allow all the features to be used.
 
-  * You can browse the filesystem of the game, or select different parameters such as the name, ID, and IOS.  Changing these values has no effect on the game that you have loaded, these changes are only used when you save a game.
+  * Opening partitions and games can be done several different ways.  Drag & drop, argv[], the "File" menu, and through right-click menus.
 
-  * For certain fields, editing is disabled.  You must enable these...  To edit the title, you must check the "update title" box.
+===  Partition Select Dialog ===
+  * To get here, press File->Open Partition ( ctrl + P ).
+  * The easiest thing to do here is to just press the upper left button and let the program search for partitions.  The program will check the common locations for wii games and try to add those folders to the partition list.  The common locations are...
+   * Windows - DriveLetter:\games, wbfs, iso
+   * OSx - /Volumes/.../games, wbfs, iso
+   * Linux - /media/.../games, wbfs, iso
+  * After these common locations, wwt is asked for to check for WBFS formatted drives.  Then wit is asked to check and partition for games.
 
-  * For IOS and region, there is a global setting.  If these settings are enabled, every time you save a game, it will use the values from the "settings" tab.  If these settings are not used, you can use the drop boxes in the "game" tab to change the IOS and region on a game by game basis.
+  * Each partition has a set of flags.  These include the number of games, amount of space used, whether it is busy or not, the filesystem, whether or not to split large files when writing to, etc.  
 
-  *  This tab has a couple things set up that are not functional yet, as there is no direct support for it in wit...  Detecting the game IOS, extracting files, replacing files
-----
+  * The "rescan" button doesnt look for and drives that are not already known.  It just clears some of the known flags from partitions already on the list, and rechecks them.
 
+  * The "manual" button lets you select some path that is not included in the common locations.
 
+  * Logic for the automatic partition flags:
+   * If the partition came from wwt, it has a WBFS partition
+   * If the partition has a FAT FS and ends with "/games" flag it as "SNEEK".  Otherwise, set the "split games" flag.
 
-== Tab 2 ( Wit Output ) ==
+  * While the automatic flags should be correct, it is possible that you may want to change them.  Just right-click a partition, or select multiple items and right click one to edit flags for more than 1 at a time.  
 
-  * This tab is used to display output from wit.  There is no console class in Qt, so I have improvised this.  It will try to mimic the console, but it is not intended to be fully functional.  It is read-only.
-
-  * The text is cleared automatically between jobs.
-
-  * There is a copy button which selects all the text and copies it to the clipboard.  Also supported are direct mouse highlighting, ctrl+c, and right click-copy.
-----
+  * Changing partition flags has no affect on the partition itself.  They are only used as guides before writing.  ( changing a partition's filesystem flag does not reformat it )
 
 
+=== Partition Window ===
+  * Shows information about all the games in a folder -  ID, title, size, container, partitions, path...
+  * From this window you can select 1 or more games and copy & convert them to some other partition or format.
+
+=== Game Window ===
+  * Shows detailed information about 1 game...  IOS, file layout, signature status...
+  * You can select certain parts of a game and patch them - make a game use a different location on the wii's nand to save its data, change a game's name...
+  * For most containers, you can simply patch a game ( File->save ).  This will present a window where you can view changes that will be applied to the game.  Saving here will overwrite the curent file.
+  * Selecting "File->save as..." will bring up a copy/convert dialog.
+
+=== Copy & Convert Dialog ===
+  * This dialog is the ticket to converting games from one container/partition to another.
+  * Whatever partitions are known to the main window when this dalog is called will be added to the list of choices.  And whatever flags these partitions have will affect what the dialog does when you select this partition from the list.  ( ie, If a partition is flagged as "SNEEK", the ui will fill in the necessary choices to copy a game to the SNEEK format whenever you select this partition in the list )
+  * The main idea here is that you can select a set of rules that will be applied to all games when converting.  There is example text at the bottom of the screen to show what the output games will be. 
+  * If there is only 1 game selected when this dialog is called, there will be a choice to offer a specific filename.
+  * For more information about the different containers/formats, check Wiimms' site or google
+  * This dialog has a memory.  It will do its best to load up the last accepted settings.
+
+== WiiTDB ==
+  * You can choose "view->wiitdb" and get a window that shows information about your games.  This window should sync automagically with any open partitions.
+  * The window is created with "stay on top" flags.  Usually right-clicking the window titlebar will allow to turn off this setting.
+  * There is a copy of wiitdb.xml built into the program.  You can also specify a different copy in the settings.  Due to incompatibilities in the zip libraries, wiitdb must be unzipped on OSx.
 
 
-== Tab 3 ( General Settings ) ==
+== Settings ==
+  * As the name says, this is the place to adjust parameters that affect the way the program behaves.
+  * This is still a work in progress, so theres not much to look at, as some of what is there is not actually functional.
 
-  * As the name suggests, this is a place to select some settings.
+=== Paths ===
+  * Some of there are necessary for the program to work and some are optional
+  * wit - path to the wit binary ( necessary )
+  * wwt - path to the wwt binary ( necessary )
+  * covers - basepath for covers ( optional - unused )
+  * titles.txt - even though there is wiitdb support in this program, wit does not support it.  instead it uses titles.txt ( optional - unused )
+  * mounts - location of the file used to resolve mountpoints in FS detection ( linux only, without this file, FS detection support wont work )
 
-  * For descriptions for settings, hover the mouse over them.  Most should have tooltips.
-
-  * Any settings here will supersede one from another tab with the same function.  This is to say, the IOS & region settings here must be disabled to use the ones in the first tab.
-
-  * Whenever the program closes ( without crashing ) it writes a "QtWitGui.ini" file in the user's home directory.  The ini will be read each time the program starts up.  You can open it in a text viewer to see what other stuff is in it or delete it to revert this program back to default.  There is no other setting file hidden anywhere.
-----
+=== Root settings ===
+  * linux and OSx only
+  * allows running wit, wwt, and file with sudo for more access
+  * The fields here are the the expected output from sudo as it asks the password and delivers failure messages.  This text must be exact or else the program will hang as sudo has asked a question and since the text doesnt match so, it doesn't know to respond.  If you are unsure of the proper text, just try "sudo ls" in a terminal and enter the wrong password a few times.
+  * Using sudo with an empty password in not supported.  It should be at least 1 character.
+  * For security reasons, the password is not stored in any file.  A dialog is presented to you and you must enter it.  The password will be stored in ram while the program is running, and reused each time it is needed.
+   
 
 
 
@@ -60,9 +95,7 @@
 
 == Compiling ==
 
-  * Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  At the very least, you need the libraries and the files in /bin/.  Qmake is used to generate makefiles.  Once you have a makefile, good ole, everyday make is used to build the project.
-
-  * I suggest getting the full SDK since its free anyways.  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
+  * Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
 ----
 
 
@@ -92,7 +125,9 @@
 = Platform Specific Stuff =
 
 == linux ==
-  * Results of "ldd ./QtWitGui" 
+  * it is recommended to enter a file in the settings to resolve mountpoints ( ie, /media/wii = /dev/sdc2, which is then used to determine the filesystem for that drive )
+  * right out of the box, there is no access to WBFS partitions.  Either run this program as root ( NOT RECOMMENDED ), make use of the sudo stuff in the settings, or add an exception rule in the sudoers file for wit & wwt
+  * Results of "ldd ./QtWitGui" ( from r112 )
 {{{
 	linux-vdso.so.1 =>  (0x00007ffff57ff000)
 	libQtGui.so.4 => /usr/lib/libQtGui.so.4 (0x00007fc81b9c7000)
@@ -148,13 +183,16 @@
 	libgcc_s_dw2-1.dll
 	mingwm10.dll
 </pre>
+  * Since Wiimm's tools rely on cygwin, this program uses cygpath.exe to convert windows paths to cygwin paths and back again.  And cygpath.exe relies on the cygwin1.dll.  So, required files include the above dlls, wit, wit's dependencies, and cygpath.exe ( which shares a dependency on cygwin1.dll with wit.  both programs must have access to it ) 
 ----
 
 
 
 
 == OS-X ==
-  * results of "otool -L ./QtWitGui"
+  * no .zip support for wiitdb
+  * Root support doesnt appear to be needed for WBFS access, but it was already there for linux, so i left it in for OSx.
+  * results of "otool -L ./QtWitGui" ( from r112 )
 {{{
 /Users/noskill/c/qtWitGui/_69_/QtWitGui.app/Contents/MacOS/QtWitGui:
 	QtGui.framework/Versions/4/QtGui (compatibility version 4.7.0, current version 4.7.0)
