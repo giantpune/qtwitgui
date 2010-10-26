@@ -51,6 +51,7 @@ public:
     ~WitHandler();
 
     void SetRunAsRoot( bool root = true );
+    void SetTitlesTxtPath( const QString &path );
     void ListLLL_HDD( QString path );
 
     void SetNamesFromWiiTDB( bool wiitdb = true );
@@ -72,6 +73,7 @@ public:
     static bool VersionIsOk();
     static QString GetVersionString();
     static QStringList FileType( QStringList files );
+    static QString GetTitlesTxtPath();
     //static bool OptionSupports( QString option, QString attr );
 
 private:

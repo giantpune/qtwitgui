@@ -166,6 +166,10 @@ void GameWindow::LoadGame( QString path )
     args << "DUMP";
     args << path;
 
+    QString titlesTxtPath = wit.GetTitlesTxtPath();
+    if( !titlesTxtPath.isEmpty() )
+	args << "--titles=" + titlesTxtPath;
+
     QString showString = "--show=intro,tmd,P-Map,P-Info,D-Map,files,offset,hex,size";
 
     args << showString;
@@ -502,6 +506,10 @@ QStringList GameWindow::GetPatchArgs()
 	needToModify = true;
 	mod2 = "--name=" + ui->lineEdit_name->text();
     }
+
+    QString titlesTxtPath = wit.GetTitlesTxtPath();
+    if( !titlesTxtPath.isEmpty() )
+	args << "--titles=" + titlesTxtPath;
 
     bool modify = ( ui->checkBox_id->isChecked() || ui->checkBox_title->isChecked() ) && needToModify;
     if( modify )

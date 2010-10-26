@@ -42,6 +42,7 @@ private:
     void ResizeButtons();
 
 private slots:
+    void on_pushButton_titlesPath_clicked();
     void on_pushButton_wiitdbPath_clicked();
     void on_pushButton_wwt_clicked();
     void on_pushButton_wit_clicked();

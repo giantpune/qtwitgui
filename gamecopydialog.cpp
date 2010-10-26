@@ -3,6 +3,7 @@
 #include "includes.h"
 #include "filefolderdialog.h"
 #include "tools.h"
+#include "withandler.h"
 
 GameCopyDialog::GameCopyDialog( QWidget *parent, QList<QTreeWidgetItem *> partitions, QStringList games, QString current, QStringList patchArgs ) : QDialog(parent), ui(new Ui::GameCopyDialog)
 {
@@ -478,6 +479,10 @@ void GameCopyDialog::on_buttonBox_accepted()
     }
 
     args << "--progress";
+
+    QString titlesTxtPath = WitHandler::GetTitlesTxtPath();
+    if( !titlesTxtPath.isEmpty() )
+	args << "--titles=" + titlesTxtPath;
 
     foreach( QString pArg, patchArgList )
 	args << pArg;
