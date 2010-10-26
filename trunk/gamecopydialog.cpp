@@ -244,7 +244,7 @@ void GameCopyDialog::on_checkBox_partitionisWBFS_clicked( bool )
 
 void GameCopyDialog::on_comboBox_esc_currentIndexChanged( QString )
 {
-    UpdateGuiWithCurrentSettings();
+    UpdateGuiWithCurrentSettings( true );
 }
 
 //ok button clicked

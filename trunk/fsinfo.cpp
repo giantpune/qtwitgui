@@ -163,7 +163,7 @@ QString FsInfo::GetFilesystem( QString path )
 
     p.start( "wmic", QStringList() << "/output:stdout" << "/interactive:off" << "/locale:ms_409" <<\
 	     "logicaldisk" << "where" << "DeviceID=\'" + drive + ":\'" << "get" << "filesystem" );
-#elif Q_WS_MAC
+#elif defined Q_WS_MAC
     QString command = "diskutil info " + path;
     //qDebug() << command;
     p.start( command );
@@ -225,7 +225,7 @@ QString FsInfo::GetFilesystem( QString path )
     QString fs = list.at( 1 );
     fs = fs.simplified();
     return fs;
-#elif Q_WS_MAC
+#elif defined Q_WS_MAC
     int size = list.size();
     for( int i = 0; i < size; i++ )
     {

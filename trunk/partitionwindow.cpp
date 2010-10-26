@@ -14,7 +14,7 @@ PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui(
     ui->menubar->hide();
 
     QFontMetrics fm( fontMetrics() );
-    ui->treeWidget->header()->resizeSection( GAME_ID_COLUMN, fm.width( "WWWWWWW" ) );//id
+    ui->treeWidget->header()->resizeSection( GAME_ID_COLUMN, fm.width( "WWWWWWWWW" ) );//id
     ui->treeWidget->header()->resizeSection( GAME_NAME_COLUMN, fm.width( QString( 22, 'W' ) ) );//name
     ui->treeWidget->header()->resizeSection( GAME_SIZE_COLUMN, fm.width( "WWWWW" ) );//size
     ui->treeWidget->header()->resizeSection( GAME_REGION_COLUMN, fm.width( "WWWWW" ) );//region
@@ -309,7 +309,7 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 	    foreach( QTreeWidgetItem* item, ui->treeWidget->selectedItems() )
 		games << item->text( 6 );
 
-            QStringList args = GameCopyDialog::WitCopyCommand( this, partition->text( 0 ), partList, games, QStringList() );
+	    QStringList args = GameCopyDialog::WitCopyCommand( this, partition->text( 0 ), partList, games, QStringList() );
 	    //qDebug() << args;
 	    if( args.size() < 2 )//brief sanity check
 		return;

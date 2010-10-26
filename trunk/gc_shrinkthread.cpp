@@ -302,7 +302,7 @@ int TPL_ConvertRGB5A3ToBitMap(quint8* tplbuf, quint8** bitmapdata, qint32 width,
 	qint32 iv;
 	//tplpoint -= width;
 #ifdef Q_WS_WIN
-        *bitmapdata = (quint8*)_aligned_malloc( width * height * 4, 32 );
+	*bitmapdata = (quint8*)_aligned_malloc( width * height * 4, 32 );
 #else
 	*bitmapdata = (quint8*)memalign( 32, width * height * 4 );
 #endif
@@ -485,7 +485,7 @@ QPixmap GC_Game::BannerImage( int height )
 #ifdef Q_WS_LINUX
     //qDebug() << "deleting buffer with free()";
     free( bitmapdata );
-#elif Q_WS_MAC
+#elif defined Q_WS_MAC
     qDebug() << "deleting buffer with aligned_free()";
     aligned_free( bitmapdata );
 #else//not linux or mac.  must be windows
