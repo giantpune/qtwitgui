@@ -10,6 +10,8 @@
   * Why not just incorporate code from wit/wwt into this program and forget the external process?  As it is right now, wit is still a work in progress.  Bugs are getting fixed and features are being added.  It would be pointless to borrow code from that project now only to have the borrowed code be improved and obsoleted in a week.
 
   * This program uses a multiple document interface.  Each of the game and partition windows has its own set of processes.  This means that each window can perform a different operation at the same time.  In most cases, this should pose no problem, except to use more resources.  However, I don't think 2 processes writing to the same WBFS partition at the same time is a good idea.  I have taken measures to prevent his from happening in this program.  In the even that I made an error, and you do find a loophole that allows this, I strongly suggest you don't try to do it.
+<a target='_blank' href='http://img266.imageshack.us/img266/1405/multipledocument.png'><img src='http://img266.imageshack.us/img266/1405/multipledocument.th.png' border='0'/></a>
+
 
   * The term "partition" is not used in the common sense in QtWitGui.  I handle common folders used for wii games as a separate partition.  Such folders are "wbfs", "games", and "iso".  So, It is possible to have 1 partition in the normal sense of the word with 3 partitions as i treat them.  The logic here is that people tend to keep different types of games in the different folders.  Treating the "games" folder differently than the "wbfs" folder allows to save settings for each folder differently ( ie, default to extracting games in sneek's format for the "games" folder ). 
 
@@ -23,6 +25,7 @@
   * Opening partitions and games can be done several different ways.  Drag & drop, argv[], the "File" menu, and through right-click menus.
 
 ===  Partition Select Dialog ===
+<a target='_blank' href='http://img5.imageshack.us/img5/6967/partitionselect.png'><img src='http://img5.imageshack.us/img5/6967/partitionselect.th.png' border='0'/></a>
   * To get here, press File->Open Partition ( ctrl + P ).
   * The easiest thing to do here is to just press the upper left button and let the program search for partitions.  The program will check the common locations for wii games and try to add those folders to the partition list.  The common locations are...
    * Windows - DriveLetter:\games, wbfs, iso
@@ -46,16 +49,21 @@
 
 
 === Partition Window ===
+<a target='_blank' href='http://img253.imageshack.us/img253/8485/partitionwindow.png'><img src='http://img253.imageshack.us/img253/8485/partitionwindow.th.png' border='0'/></a>
   * Shows information about all the games in a folder -  ID, title, size, container, partitions, path...
   * From this window you can select 1 or more games and copy & convert them to some other partition or format.
 
 === Game Window ===
+<a target='_blank' href='http://img841.imageshack.us/img841/2513/gamewindow.png'><img src='http://img841.imageshack.us/img841/2513/gamewindow.th.png' border='0'/></a>
   * Shows detailed information about 1 game...  IOS, file layout, signature status...
   * You can select certain parts of a game and patch them - make a game use a different location on the wii's nand to save its data, change a game's name...
   * For most containers, you can simply patch a game ( File->save ).  This will present a window where you can view changes that will be applied to the game.  Saving here will overwrite the curent file.
+<a target='_blank' href='http://img545.imageshack.us/img545/2581/gamesavedetails.png'><img src='http://img545.imageshack.us/img545/2581/gamesavedetails.th.png' border='0'/></a>
   * Selecting "File->save as..." will bring up a copy/convert dialog.
 
+
 === Copy & Convert Dialog ===
+<a target='_blank' href='http://img5.imageshack.us/img5/9923/copyconvertdialog.png'><img src='http://img5.imageshack.us/img5/9923/copyconvertdialog.th.png' border='0'/></a>
   * This dialog is the ticket to converting games from one container/partition to another.
   * Whatever partitions are known to the main window when this dalog is called will be added to the list of choices.  And whatever flags these partitions have will affect what the dialog does when you select this partition from the list.  ( ie, If a partition is flagged as "SNEEK", the ui will fill in the necessary choices to copy a game to the SNEEK format whenever you select this partition in the list )
   * The main idea here is that you can select a set of rules that will be applied to all games when converting.  There is example text at the bottom of the screen to show what the output games will be. 
@@ -64,6 +72,7 @@
   * This dialog has a memory.  It will do its best to load up the last accepted settings.
 
 == WiiTDB ==
+<a target='_blank' href='http://img835.imageshack.us/img835/9105/wiitdbwindow.png'><img src='http://img835.imageshack.us/img835/9105/wiitdbwindow.th.png' border='0'/></a>
   * You can choose "view->wiitdb" and get a window that shows information about your games.  This window should sync automagically with any open partitions.
   * The window is created with "stay on top" flags.  Usually right-clicking the window titlebar will allow to turn off this setting.
   * There is a copy of wiitdb.xml built into the program.  You can also specify a different copy in the settings.  Due to incompatibilities in the zip libraries, wiitdb must be unzipped on OSx.
