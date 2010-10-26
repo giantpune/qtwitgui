@@ -33,10 +33,6 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     QListWidgetItem *q = ui->listWidget->takeItem( 1 );
     delete( q );
 #endif
-#if defined Q_WS_WIN || defined Q_WS_MAC
-    ui->lineEdit_MntPath->setVisible( false );
-    ui->pushButton_mountFilePath->setVisible( false );
-#endif
     ResizeButtons();
 
     QSettings s( settingsPath, QSettings::IniFormat );
@@ -45,9 +41,6 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     ui->lineEdit_wwt->setText( s.value( "wwt" ).toString() );
     ui->lineEdit_coverPath->setText( s.value( "covers" ).toString() );
     ui->lineEdit_wiitdbPath->setText( s.value( "wiitdb" ).toString() );
-#if !defined Q_WS_WIN && !defined Q_WS_MAC
-    ui->lineEdit_MntPath->setText( s.value( "mountfile", "/etc/mtab" ).toString() );
-#endif
     s.endGroup();
 #ifndef Q_WS_WIN
     s.beginGroup( "root" );
@@ -97,9 +90,6 @@ void SettingsDialog::on_pushButton_ok_clicked()
 	s.setValue( "wwt", ui->lineEdit_wwt->text() );
     s.setValue( "covers", ui->lineEdit_coverPath->text() );
     s.setValue( "wiitdb", ui->lineEdit_wiitdbPath->text() );
-#if !defined Q_WS_WIN && !defined Q_WS_MAC
-    s.setValue( "mountfile", ui->lineEdit_MntPath->text() );
-#endif
     s.endGroup();
 #ifndef Q_WS_WIN
     s.beginGroup( "root" );
@@ -143,14 +133,6 @@ void SettingsDialog::on_pushButton_wwt_clicked()
 	return;
     ui->lineEdit_wwt->setText( wwt );
 }
-#ifndef Q_WS_WIN
-void SettingsDialog::on_pushButton_mountFilePath_clicked()
-{
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select Mounts File"), "/" );
-    if( !fileName.isEmpty() )
-	ui->lineEdit_MntPath->setText( fileName );
-}
-#endif
 void SettingsDialog::on_pushButton_wiitdbPath_clicked()
 {
     QString p = QFileDialog::getOpenFileName( this, tr( "Where is wiitdb.zip / .xml?" ) );
@@ -173,7 +155,6 @@ void SettingsDialog::ResizeButtons()
 {
     QFontMetrics fm( fontMetrics() );
     int max = fm.width( ui->pushButton_coverPath->text() );
-    max = MAX( max, fm.width( ui->pushButton_mountFilePath->text() ) );
     max = MAX( max, fm.width( ui->pushButton_titlesPath->text() ) );
     max = MAX( max, fm.width( ui->pushButton_wiitdbPath->text() ) );
     max = MAX( max, fm.width( ui->pushButton_wit->text() ) );
@@ -181,7 +162,6 @@ void SettingsDialog::ResizeButtons()
 
     max += 30;
     ui->pushButton_coverPath->setMinimumWidth( max );
-    ui->pushButton_mountFilePath->setMinimumWidth( max );
     ui->pushButton_titlesPath->setMinimumWidth( max );
     ui->pushButton_wiitdbPath->setMinimumWidth( max );
     ui->pushButton_wit->setMinimumWidth( max );

@@ -25,9 +25,6 @@
 
 #include "wwthandler.h"
 #include "withandler.h"
-#ifndef Q_WS_WIN
-    #include "unixfschecker.h"
-#endif
 #include "includes.h"
 
 namespace Ui {
@@ -50,9 +47,6 @@ private:
 
     WitHandler wit;
     WwtHandler wwt;
-#ifndef Q_WS_WIN
-    UnixFsChecker unixFs;
-#endif
     bool oktoRequestNextLIST_LLL;
 
     bool alreadyAskingForPassword;
@@ -71,7 +65,6 @@ public slots:
 #ifndef Q_WS_WIN
     void NeedToAskForPassword();
 #endif
-    void GetFsTypes( QStringList list );
 
 signals:
     void SendHDDList( QList<QTreeWidgetItem *> );//send all hdds
