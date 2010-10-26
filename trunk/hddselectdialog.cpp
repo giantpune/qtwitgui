@@ -29,7 +29,8 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     bool root = s.value( "root/enabled" ).toBool();
     wit.SetRunAsRoot( root );
     wwt.SetRunAsRoot( root );
-    wit.SetNamesFromWiiTDB();
+    wit.SetNamesFromWiiTDB( false );//dont replace games name on our own.  just accept teh names that wit gives
+    wit.SetTitlesTxtPath( s.value( "paths/titlesTxt", "" ).toString() );
 
 
     connect( &wwt, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );

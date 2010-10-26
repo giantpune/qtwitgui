@@ -26,12 +26,14 @@ static QList<WitOptionAttr> optionAttributes;
 static int witVersion = 0;
 static QString witVersionString;
 
+//if there is a setting for titles.txt, remember it here, so we dont always have to look it up
+static QString titlesTxtPath;
+
 WitHandler::WitHandler( QObject *parent, bool root ) :QObject( parent )
 {
     runAsRoot = root;
-    namesFromWiiTDB = true;
-    //requestedPassword = false;
     witJob = witNoJob;
+    namesFromWiiTDB = false;
     //create the pointer to the process used to run wit
     process = new QProcess( this );
 
@@ -61,9 +63,20 @@ WitHandler::~WitHandler()
     process = 0;
 }
 
+//replace names from wit with ones from WiiTDB
 void WitHandler::SetNamesFromWiiTDB( bool wiitdb )
 {
     namesFromWiiTDB = wiitdb;
+}
+
+void WitHandler::SetTitlesTxtPath( const QString &path )
+{
+    titlesTxtPath = path;
+}
+
+QString WitHandler::GetTitlesTxtPath()
+{
+    return titlesTxtPath;
 }
 
 void WitHandler::SetRunAsRoot( bool root )
@@ -438,6 +451,9 @@ QString WitHandler::GetWitPath()
 void WitHandler::ListLLL_HDD( QString path )
 {
     QStringList args = QStringList() << "LIST-LLL" << "--source" << path << "--sections";
+    if( !titlesTxtPath.isEmpty() )
+	args << "--titles=" + titlesTxtPath;
+    //qDebug() << args;
     RunJob( args, witListLLLHDD );
 }
 

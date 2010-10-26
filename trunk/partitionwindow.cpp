@@ -26,6 +26,7 @@ PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui(
     bool root = s.value( "root/enabled" ).toBool();
     wit.SetRunAsRoot( root );
     wwt.SetRunAsRoot( root );
+    wit.SetTitlesTxtPath( s.value( "paths/titlesTxt", "" ).toString() );
 
     connect( ui->treeWidget, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( CustomTreeWidgetContentmenu( const QPoint& ) ) );
 
@@ -220,6 +221,7 @@ void PartitionWindow::SettingsHaveChanged()
     bool root = s.value( "root/enabled" ).toBool();
     wit.SetRunAsRoot( root );
     wwt.SetRunAsRoot( root );
+    wit.SetTitlesTxtPath( s.value( "paths/titlesTxt", "" ).toString() );
 }
 
 //get a copy of the partition list from the main window

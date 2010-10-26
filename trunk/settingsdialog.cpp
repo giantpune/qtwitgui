@@ -37,14 +37,15 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
 
     QSettings s( settingsPath, QSettings::IniFormat );
     s.beginGroup( "paths" );
-    ui->lineEdit_wit->setText( s.value( "wit" ).toString() );
-    ui->lineEdit_wwt->setText( s.value( "wwt" ).toString() );
-    ui->lineEdit_coverPath->setText( s.value( "covers" ).toString() );
-    ui->lineEdit_wiitdbPath->setText( s.value( "wiitdb" ).toString() );
+    ui->lineEdit_wit->setText( s.value( "wit" ,"" ).toString() );
+    ui->lineEdit_wwt->setText( s.value( "wwt" ,"" ).toString() );
+    ui->lineEdit_coverPath->setText( s.value( "covers" ,"" ).toString() );
+    ui->lineEdit_wiitdbPath->setText( s.value( "wiitdb" ,"" ).toString() );
+    ui->lineEdit_titlesTxt->setText( s.value( "titlesTxt" ,"" ).toString() );
     s.endGroup();
 #ifndef Q_WS_WIN
     s.beginGroup( "root" );
-    ui->checkBox_runasRoot->setChecked( s.value( "enabled" ).toBool() );
+    ui->checkBox_runasRoot->setChecked( s.value( "enabled", false ).toBool() );
     ui->groupBox_rootMessages->setEnabled( ui->checkBox_runasRoot->isChecked() );
     ui->lineEdit_rootReqStr->setText( s.value( "requestString",
 #ifdef Q_WS_MAC
@@ -90,6 +91,7 @@ void SettingsDialog::on_pushButton_ok_clicked()
 	s.setValue( "wwt", ui->lineEdit_wwt->text() );
     s.setValue( "covers", ui->lineEdit_coverPath->text() );
     s.setValue( "wiitdb", ui->lineEdit_wiitdbPath->text() );
+    s.setValue( "titlesTxt", ui->lineEdit_titlesTxt->text() );
     s.endGroup();
 #ifndef Q_WS_WIN
     s.beginGroup( "root" );
@@ -167,4 +169,10 @@ void SettingsDialog::ResizeButtons()
     ui->pushButton_wit->setMinimumWidth( max );
     ui->pushButton_wwt->setMinimumWidth( max );
 
+}
+
+void SettingsDialog::on_pushButton_titlesPath_clicked()
+{
+    QString p = QFileDialog::getOpenFileName( this, tr( "Where is titles.txt?" ) );
+    ui->lineEdit_titlesTxt->setText( p );
 }
