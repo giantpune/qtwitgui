@@ -195,7 +195,7 @@ QString FsInfo::GetFilesystem( QString path )
     //qDebug() << command;
     p.start( command );
 #endif
-    if( !p.waitForStarted() )
+    if( !p.waitForStarted( 5000 ) )
     {
 	qDebug() << "FsInfo::GetFilesystem failed to start";
 	return QString();

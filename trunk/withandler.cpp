@@ -3,10 +3,7 @@
 #include "includes.h"
 #include "wiitdb.h"
 #include "tools.h"
-
-#ifdef Q_WS_WIN
-#include "windowsfsstuff.h"
-#endif
+#include "fsinfo.h"
 
 //store the sudo strings here so we dont have to look at the settings file every time we need to check them
 QString rootAskStr;
@@ -895,7 +892,7 @@ QStringList WitHandler::FileType( QStringList files )
     {
 #ifdef Q_WS_WIN
         bool ok = false;
-        QString cygPath = WindowsFsStuff::ToCygPath( files.at( i ), &ok );
+        QString cygPath = FsInfo::ToCygPath( files.at( i ), &ok );
         if( !ok || !list.at( i ).endsWith( cygPath ) )
 #else
 	if( !list.at( i ).endsWith( files.at( i ) ) )
