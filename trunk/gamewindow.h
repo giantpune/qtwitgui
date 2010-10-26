@@ -81,6 +81,7 @@ private:
     void SetPartitionEnabled( QString part, bool enabled );
 
     void ClearTreeView();
+    void InsertText( QString s, QString c);
 
 
 private slots:

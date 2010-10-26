@@ -122,6 +122,12 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
     //make sure buttons are wide enough for text
     ResizeGuiToLanguage();*/
 
+    connect( &wit, SIGNAL( SendStdOut( QString ) ), ui->textEdit, SLOT( insertPlainText( QString ) ) );
+    //TODO: maybe make this a bright color so it is easy to find.
+    //but fatar errors ore shown in a dialog box, so it really isnt necessary
+    connect( &wit, SIGNAL( SendStdErr( QString ) ), ui->textEdit, SLOT( insertPlainText( QString ) ) );
+
+
     connect( &wit, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wit, SLOT( PasswordIsEntered() ) );
     connect( &wit, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleThreadErrors( QString, int ) ) );
@@ -158,6 +164,7 @@ void GameWindow::LoadGame( QString path )
 	return;
 
     tmpPath = path;
+    ui->textEdit->clear();
 
     //clear the old list of partition offsets
     partitionOffsets.clear();
@@ -663,4 +670,24 @@ void GameWindow::ClearTreeView()
 	QTreeWidgetItem* i = oldItems.takeFirst();
 	delete i;
     }
+}
+
+//insert text int the ui->plaintext
+//! s is the text
+//! c is a color
+void GameWindow::InsertText( QString s, QString c)
+{
+    //copy the string so we can alter it and leave the original alone
+    QString textCopy = s;
+
+    //replace all \r\n and \n with <br>
+#ifdef Q_WS_WIN
+    textCopy.replace( "\r\n", "<br>" );
+#endif
+    textCopy.replace( "\n", "<br>" );
+
+    QString htmlString = "<b><text style=\"color:" + c + "\">" + textCopy + "</text></b>";
+
+    ui->textEdit->insertPlainText( htmlString );
+
 }
