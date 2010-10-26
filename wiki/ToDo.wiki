@@ -24,7 +24,7 @@ Not supported by wit yet...
   * <s>VC partitions.  DUMP shows them, but not ILIST.  they are also missing from --psel</s>
   * the fakesign detection in wit is not 100%. ( fails on games made with TheGhost ) 
 
-implement settings for "recurse" used in "wit LIST"
+<s>implement settings for "recurse" used in "wit LIST"</s>
 
 <s>add static poling functions to WwtHandler like the ones in WitHandler to get the version and other such things.</s>
 
