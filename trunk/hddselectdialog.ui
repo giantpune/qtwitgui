@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>672</width>
-    <height>448</height>
+    <width>792</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -103,7 +103,7 @@
       <bool>false</bool>
      </property>
      <property name="headerHidden">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="expandsOnDoubleClick">
       <bool>false</bool>

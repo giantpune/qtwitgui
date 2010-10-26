@@ -64,7 +64,8 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     //ui->checkBox_overWrite->setChecked( s.value( "overWriteFiles" ).toBool() );
     //ui->checkBox_ignoreSvn->setChecked( s.value( "ignoreSvn" ).toBool() );
     //ui->checkBox_Sneek->setChecked( s.value( "sneek" ).toBool() );
-    ui->comboBox_key->setCurrentIndex( s.value( "encKey" ).toInt() );
+    ui->comboBox_key->setCurrentIndex( s.value( "encKey", 0 ).toInt() );
+    ui->spinBox_wiimms_recurse->setValue( s.value( "rdepth", 10 ).toInt() );
     //ui->spinBox_defaultIos->setValue( s.value( "defaultIos" ).toInt() );
     //ui->comboBox_defaultRegion->setCurrentIndex( s.value( "defaultRegion" ).toInt() );
 
@@ -110,6 +111,7 @@ void SettingsDialog::on_pushButton_ok_clicked()
     //s.setValue( "ignoreSvn", ui->checkBox_ignoreSvn->isChecked() );
     //s.setValue( "sneek", ui->checkBox_Sneek->isChecked() );
     s.setValue( "encKey", ui->comboBox_key->currentIndex() );
+    s.setValue( "rdepth", ui->spinBox_wiimms_recurse->value() );
     //s.setValue( "defaultIos", ui->spinBox_defaultIos->value() );
     //s.setValue( "defaultRegion", ui->comboBox_defaultRegion->currentIndex() );
     //s.setValue( "partitionSelect", ui->comboBox_partitionSelect->currentText() );

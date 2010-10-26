@@ -128,7 +128,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page">
       <widget class="QWidget" name="layoutWidget">
@@ -383,8 +383,11 @@
             </item>
             <item row="2" column="1">
              <widget class="QSpinBox" name="spinBox_wiimms_recurse">
+              <property name="minimum">
+               <number>1</number>
+              </property>
               <property name="value">
-               <number>2</number>
+               <number>10</number>
               </property>
              </widget>
             </item>

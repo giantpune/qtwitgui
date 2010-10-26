@@ -324,7 +324,9 @@ void HDDSelectDialog::RequestNextLIST_LLLL()
 	    item->setText( 1, tr( "Reading" ) );
 	    oktoRequestNextLIST_LLL = false;
 	    setCursor( Qt::BusyCursor );
-	    wit.ListLLL_HDD( item->text( 0 ) );
+	    QSettings s( settingsPath, QSettings::IniFormat );
+	    int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
+	    wit.ListLLL_HDD( item->text( 0 ), rDepth );
 	    return;
 	}
     }
