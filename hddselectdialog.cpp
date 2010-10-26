@@ -280,17 +280,16 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     {
 	QString fs = FsInfo::GetFilesystem( item->text( 0 ) );
 	if( fs.isEmpty() )
-	    fs = tr( "Unknown" );
+            fs = tr( "Unknown" );
 
 	if( fs.contains( "FAT", Qt::CaseInsensitive ) )
 	{
-	    if( item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
+            if( item->text( 0 ).endsWith( "\\games" ) || item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
 	    {
-		item->setText( 5, "SNEEK" );
+                fs = "SNEEK";
 	    }
 	    else//no "games" folder, set the flag to split large files
-	    {
-		item->setText( 5, fs );
+            {
 		item->setText( 3, tr( "Yes" ) );
 	    }
 	}
@@ -403,7 +402,7 @@ void HDDSelectDialog::CustomTreeWidgetContentmenu( const QPoint& pos )
 	    }
 	}
 	else if( selectedAct == &wbfsFsAct || selectedAct == &fatFsAct || selectedAct == &ntfsFsAct //change FS type
-		 || selectedAct == &extFsAct || selectedAct == &hpfsFsAct )
+                 || selectedAct == &extFsAct || selectedAct == &hpfsFsAct || selectedAct == &sneekFsAct )
 	{
 	    foreach( QTreeWidgetItem *item, ui->treeWidget->selectedItems() )
 	    {

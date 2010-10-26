@@ -10,11 +10,7 @@
 #include "filefolderdialog.h"
 #include "gamewindow.h"
 #include "aboutdialog.h"
-
-#ifdef Q_WS_WIN
-#include "windowsfsstuff.h"
-#endif
-
+#include "fsinfo.h"
 #include "tools.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -170,7 +166,7 @@ void MainWindow::CheckWit()
 	    if( WitHandler::ReadAttributes() )
 	    {
 #ifdef Q_WS_WIN
-                if( !WindowsFsStuff::Check() )
+                if( !FsInfo::Check() )
                 {
                     setAcceptDrops( false );
                     ui->statusBar->showMessage( tr( "Error while checking wmic & cygpath" ) );
