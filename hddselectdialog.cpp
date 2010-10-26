@@ -4,7 +4,6 @@
 
 #include "includes.h"
 #include "tools.h"
-#include "osxfs.h"
 #include "fsinfo.h"
 
 HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new Ui::HDDSelectDialog )
@@ -14,7 +13,7 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     ui->treeWidget->setHeaderHidden( false );
 
     QFontMetrics fm( fontMetrics() );
-    ui->treeWidget->header()->resizeSection( 0, fm.width( QString( 17, 'W' ) ) );//path
+    ui->treeWidget->header()->resizeSection( 0, fm.width( QString( 24, 'W' ) ) );//path
     ui->treeWidget->header()->resizeSection( 1, fm.width( "WWWWW" ) );//#games
     ui->treeWidget->header()->resizeSection( 2, fm.width( "WWWWWWW" ) );//size
     ui->treeWidget->header()->resizeSection( 3, fm.width( "WWWWWWW" ) );//split
@@ -118,7 +117,7 @@ void HDDSelectDialog::NeedToAskForPassword()
 	return;
 
     alreadyAskingForPassword = true;
-    PasswordDialog dialog;
+    PasswordDialog dialog( this );
     dialog.exec();
     alreadyAskingForPassword = false;
     emit UserEnteredPassword();
@@ -161,9 +160,9 @@ void HDDSelectDialog::on_pushButton_find_clicked()
 #endif//#ifdef Q_WS_WIN
     for( int i = 0; i < list.size(); ++i )
     {
-        QFileInfo fileInfo = list.at( i );
-        QDir subDir( fileInfo.absoluteFilePath() );
-        //QDir subDir( dir.absoluteFilePath( fileInfo.fileName() ) );
+	QFileInfo fileInfo = list.at( i );
+	QDir subDir( fileInfo.absoluteFilePath() );
+	//QDir subDir( dir.absoluteFilePath( fileInfo.fileName() ) );
 
 	if( subDir.exists( "wbfs" ) )
 	    AddNewPartitionToList( subDir.absoluteFilePath( "wbfs" ), tr( "Auto" ) );
@@ -242,7 +241,7 @@ void HDDSelectDialog::AddNewPartitionToList( QString path, QString source )
     QTreeWidgetItem * item = new QTreeWidgetItem( QStringList() << path );
     item->setText( 4, source );
     if( source == "wwt" )
-        item->setText( 5, "WBFS" );
+	item->setText( 5, "WBFS" );
     ui->treeWidget->addTopLevelItem( item );
 
     //read partition settings
@@ -280,16 +279,16 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     {
 	QString fs = FsInfo::GetFilesystem( item->text( 0 ) );
 	if( fs.isEmpty() )
-            fs = tr( "Unknown" );
+	    fs = tr( "Unknown" );
 
 	if( fs.contains( "FAT", Qt::CaseInsensitive ) )
 	{
-            if( item->text( 0 ).endsWith( "\\games" ) || item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
+	    if( item->text( 0 ).endsWith( "\\games" ) || item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
 	    {
-                fs = "SNEEK";
+		fs = "SNEEK";
 	    }
 	    else//no "games" folder, set the flag to split large files
-            {
+	    {
 		item->setText( 3, tr( "Yes" ) );
 	    }
 	}
@@ -299,7 +298,7 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     if( item == ui->treeWidget->topLevelItem( ui->treeWidget->topLevelItemCount() - 1 ) )
     {
 	ui->pushButton_reScan->setEnabled( true );
-        ui->buttonBox->setEnabled( true );
+	ui->buttonBox->setEnabled( true );
 	unsetCursor();
     }
 
@@ -402,7 +401,7 @@ void HDDSelectDialog::CustomTreeWidgetContentmenu( const QPoint& pos )
 	    }
 	}
 	else if( selectedAct == &wbfsFsAct || selectedAct == &fatFsAct || selectedAct == &ntfsFsAct //change FS type
-                 || selectedAct == &extFsAct || selectedAct == &hpfsFsAct || selectedAct == &sneekFsAct )
+		 || selectedAct == &extFsAct || selectedAct == &hpfsFsAct || selectedAct == &sneekFsAct )
 	{
 	    foreach( QTreeWidgetItem *item, ui->treeWidget->selectedItems() )
 	    {
