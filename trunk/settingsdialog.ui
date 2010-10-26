@@ -63,7 +63,7 @@
        <string>Paths</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="resources.qrc">
         <normaloff>:/images/settings/paths.png</normaloff>:/images/settings/paths.png</iconset>
       </property>
      </item>
@@ -72,7 +72,7 @@
        <string>Root</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="resources.qrc">
         <normaloff>:/images/settings/root.png</normaloff>:/images/settings/root.png</iconset>
       </property>
      </item>
@@ -86,7 +86,7 @@
        <string>Partition Window</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="resources.qrc">
         <normaloff>:/images/settings/partition.png</normaloff>:/images/settings/partition.png</iconset>
       </property>
      </item>
@@ -95,7 +95,7 @@
        <string>Game Window</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="resources.qrc">
         <normaloff>:/images/settings/game window.png</normaloff>:/images/settings/game window.png</iconset>
       </property>
      </item>
@@ -104,7 +104,7 @@
        <string>WiiTDB</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="resources.qrc">
         <normaloff>:/images/settings/wiitdb.png</normaloff>:/images/settings/wiitdb.png</iconset>
       </property>
      </item>
@@ -113,7 +113,7 @@
        <string>CoverFlow</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="resources.qrc">
         <normaloff>:/images/settings/coverflow.png</normaloff>:/images/settings/coverflow.png</iconset>
       </property>
      </item>
@@ -128,7 +128,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <widget class="QWidget" name="layoutWidget">
@@ -200,20 +200,6 @@
         </item>
         <item row="4" column="1">
          <widget class="QLineEdit" name="lineEdit_titlesTxt"/>
-        </item>
-        <item row="5" column="0">
-         <widget class="QPushButton" name="pushButton_mountFilePath">
-          <property name="text">
-           <string>Mounts</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QLineEdit" name="lineEdit_MntPath">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -350,8 +336,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>418</width>
-          <height>409</height>
+          <width>416</width>
+          <height>407</height>
          </rect>
         </property>
         <widget class="QWidget" name="layoutWidget">
@@ -493,7 +479,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>listWidget</sender>

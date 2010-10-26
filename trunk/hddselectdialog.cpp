@@ -5,10 +5,7 @@
 #include "includes.h"
 #include "tools.h"
 #include "osxfs.h"
-#ifdef Q_WS_WIN
-    #include "windowsfsstuff.h"
-#endif
-//static QList<QTreeWidgetItem *> pList;//remember the items between multiple instances
+#include "fsinfo.h"
 
 HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new Ui::HDDSelectDialog )
 {
@@ -33,7 +30,6 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     bool root = s.value( "root/enabled" ).toBool();
     wit.SetRunAsRoot( root );
     wwt.SetRunAsRoot( root );
-    unixFs.SetRunAsRoot( root );
     wit.SetNamesFromWiiTDB();
 
 
@@ -43,12 +39,6 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     connect( &wit, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wit, SLOT( PasswordIsEntered() ) );
 
-    connect( &unixFs, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
-    connect( this, SIGNAL( UserEnteredPassword() ), &unixFs, SLOT( PasswordIsEntered() ) );
-
-
-    connect( &unixFs, SIGNAL( SendPartitionList( QStringList ) ), this, SLOT( GetFsTypes( QStringList ) ) );
-    connect( &unixFs, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
 #endif
 
     connect( &wwt, SIGNAL( SendPartitionList( QStringList ) ), this, SLOT( GetWBFSPartitionList( QStringList ) ) );
@@ -67,10 +57,6 @@ void HDDSelectDialog::DestroyProcessesAndWait()
     setCursor( Qt::BusyCursor );
     wit.Kill();
     wwt.Kill();
-#ifndef Q_WS_WIN
-    unixFs.Kill();
-    unixFs.Wait();
-#endif
     wit.Wait();
     wwt.Wait();
     unsetCursor();
@@ -289,37 +275,33 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     QTextStream( &count ) << games.size();
     item->setText( 1, count );
     item->setText( 2, SizeTextGiB( MibUsed ) );
-#if defined Q_WS_WIN || defined Q_WS_MAC
-#ifdef Q_WS_WIN
-    QString fs = WindowsFsStuff::GetFilesystem( item->text( 0 ) );//this lookup is blocking, so it will freeze the gui while it quieries the drive.
-#else
-    QString fs = OSxFs::GetFilesystem( item->text( 0 ) );
-    //qDebug() << fs;
-#endif
-    if( !fs.isEmpty() )
+
+    if( item->text( 4 ) != "wwt" )//if the partition came from wwt, assume it is WBFS.  otherwise, get the filesystem and set some flags
     {
-        if( fs.contains( "FAT", Qt::CaseInsensitive ) )
-        {
-            if( item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
-            {
-                item->setText( 5, "SNEEK" );
-            }
-            else if( item->text( 4 ) != "wwt" )//no "games" folder, set the flag to split large files, on OSx, it spits out an actual filesystem even for WBFS partitions
-            {
-                item->setText( 5, fs );
-                item->setText( 3, tr( "Yes" ) );
-            }
-        }
+	QString fs = FsInfo::GetFilesystem( item->text( 0 ) );
+	if( fs.isEmpty() )
+	    fs = tr( "Unknown" );
+
+	if( fs.contains( "FAT", Qt::CaseInsensitive ) )
+	{
+	    if( item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
+	    {
+		item->setText( 5, "SNEEK" );
+	    }
+	    else//no "games" folder, set the flag to split large files
+	    {
+		item->setText( 5, fs );
+		item->setText( 3, tr( "Yes" ) );
+	    }
+	}
+	item->setText( 5, fs );
     }
-#endif// defined Q_WS_WIN || define Q_WS_MAC
 
     if( item == ui->treeWidget->topLevelItem( ui->treeWidget->topLevelItemCount() - 1 ) )
     {
 	ui->pushButton_reScan->setEnabled( true );
-#if defined Q_WS_WIN || defined Q_WS_MAC
         ui->buttonBox->setEnabled( true );
-        unsetCursor();
-#endif
+	unsetCursor();
     }
 
     emit SendGamelistFor_1_Partition( item->text( 0 ), games );
@@ -331,7 +313,7 @@ void HDDSelectDialog::RequestNextLIST_LLLL()
     ui->pushButton_reScan->setEnabled( false );
     if( !oktoRequestNextLIST_LLL )//only list-lll 1 hdd at a time
     {
-	qDebug() << "!oktoRequestNextLIST_LLL";
+	//qDebug() << "!oktoRequestNextLIST_LLL";
 	return;
     }
 
@@ -347,12 +329,7 @@ void HDDSelectDialog::RequestNextLIST_LLLL()
 	    return;
 	}
     }
-    // all HDDs have been, or are being scanned
-    //ui->buttonBox->setEnabled( true );
-    //unsetCursor();
-#if !defined Q_WS_WIN && !defined Q_WS_MAC
-    RequestFsTypes();
-#endif
+    // all HDDs have been scanned at this point
 }
 
 //clear the gamecounts & Mib used and rescan them
@@ -440,53 +417,5 @@ void HDDSelectDialog::CustomTreeWidgetContentmenu( const QPoint& pos )
     }
 }
 
-//run a process with "file..." to get the different filesystems
-void HDDSelectDialog::RequestFsTypes()
-{
-    int size = ui->treeWidget->topLevelItemCount();
-    QStringList list;
-    for( int i = 0; i < size; i++ )
-	list << ui->treeWidget->topLevelItem( i )->text( 0 );
-#if !defined Q_WS_WIN && !defined Q_WS_MAC
-    unixFs.GetFsTypes( list );
-#endif
-    //qDebug() << "unixFs.GetFsTypes" << list;
-}
 
-//receive the list of filetypes from "file"
-void HDDSelectDialog::GetFsTypes( QStringList list )
-{
-    //qDebug() << "HDDSelectDialog::GetFsTypes";
-    //qDebug() << list;
-    int size = list.size();
-    if( size % 2 )
-    {
-	qDebug() << "HDDSelectDialog::GetFsTypes invlid list size";
-	ui->buttonBox->setEnabled( true );
-	unsetCursor();
-	return;
-    }
-    int size2 = ui->treeWidget->topLevelItemCount();
-    for( int i = 0; i < size; i += 2 )
-    {
-	for( int j = 0; j < size2; j++ )
-	{
-	    QTreeWidgetItem *item = ui->treeWidget->topLevelItem( j );
-	    if( item->text( 0 ) == list.at( i ) )
-	    {
-		item->setText( 5, list.at( i + 1 ) == "RAW" ? "WBFS" : list.at( i + 1 ) );
-		if( list.at( i + 1 ).contains( "FAT" ) )
-		{
-		    if( item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
-			item->setText( 5, "SNEEK" );
-		    else					//no "games" folder, set the flag to split large files
-			item->setText( 3, tr( "Yes" ) );
-		}
-		break;
-	    }
-	}
-    }
-    ui->buttonBox->setEnabled( true );
-    unsetCursor();
-}
 

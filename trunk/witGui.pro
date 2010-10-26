@@ -8,6 +8,7 @@ QT += core \
 TARGET = QtWitGui
 TEMPLATE = app
 DEFINES += PROGRAM_NAME='\\"${TARGET}\\"'
+!win32:!macx: DEFINES += Q_WS_LINUX
 SOURCES += main.cpp \
     mainwindow.cpp \
     pictureflow.cpp \
@@ -30,9 +31,10 @@ SOURCES += main.cpp \
     covermanagerwindow.cpp \
     coverloaderthread.cpp \
     aboutdialog.cpp \
-    unixfschecker.cpp \
-    osxfs.cpp \
-    windowsfsstuff.cpp
+ #   unixfschecker.cpp \
+ #   osxfs.cpp \
+ #   windowsfsstuff.cpp \
+    fsinfo.cpp
 !macx{
     SOURCES += unzip/unzip.cpp
 }
@@ -58,9 +60,10 @@ HEADERS += mainwindow.h \
     covermanagerwindow.h \
     coverloaderthread.h \
     aboutdialog.h \
-    unixfschecker.h \
-    osxfs.h \
-    windowsfsstuff.h
+ #   unixfschecker.h \
+ #   osxfs.h \
+ #   windowsfsstuff.h \
+    fsinfo.h
 !macx{
     HEADERS += unzip/zip_p.h \
     unzip/zipentry_p.h \
@@ -99,4 +102,3 @@ win32 {
     RC_FILE = rcfile.rc
 }
 OTHER_FILES += darkTheme.qss
-

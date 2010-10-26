@@ -43,9 +43,6 @@ private:
 
 private slots:
     void on_pushButton_wiitdbPath_clicked();
-#ifndef Q_WS_WIN
-    void on_pushButton_mountFilePath_clicked();
-#endif
     void on_pushButton_wwt_clicked();
     void on_pushButton_wit_clicked();
     void on_pushButton_ok_clicked();
