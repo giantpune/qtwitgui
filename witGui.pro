@@ -112,5 +112,5 @@ TRANSLATIONS = language/witGuiLang_empty.ts \
     language/witGuiLang_es.ts \
     language/witGuiLang_de.ts
 
-system( lupdate ./witGui.pro )
-system( lrelease ./witGui.pro )
+#system( lupdate ./witGui.pro )
+#system( lrelease ./witGui.pro )

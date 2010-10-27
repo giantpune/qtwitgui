@@ -25,6 +25,20 @@
 
 #include "includes.h"
 
+enum
+{
+    coverType2d = 777,
+    coverType3d,	//not supported in the coverflow crap, but used only to get the list of missing covers
+    coverTypeFull,
+    coverTypeFullHQ,
+    coverTypeDisc
+};
+enum
+{
+    mode_check,
+    mode_load
+};
+
 class CoverLoaderThread : public QThread
 {
     Q_OBJECT
@@ -33,7 +47,7 @@ class CoverLoaderThread : public QThread
      CoverLoaderThread( QObject *parent = 0 );
      ~CoverLoaderThread();
 
-     void CheckCovers( const QStringList s, QString baseFolder, QStringList paths, int t, bool l );
+     void CheckCovers( const QStringList s, QString baseFolder, QString path2, QString path3, QString pathF, QString pathH, QString pathD, int m );
      void ForceQuit();
 
  protected:
@@ -52,17 +66,22 @@ class CoverLoaderThread : public QThread
      QWaitCondition condition;
      QStringList ids;
      QString basePath;
-     QStringList subDirs;
+     QString path2D;
+     QString path3D;
+     QString pathFull;
+     QString pathHQ;
+     QString pathDisc;
+     int mode;
+     //QStringList subDirs;
 
      QImage Get( QString id );
-     bool Have( QString id );
+     void Check( QString id );
 
      QImage To160x224( QImage i );
 
      int type;
 
      bool abort;
-     bool load;
  };
 
 Q_DECLARE_METATYPE(QList<QImage>)
