@@ -10,6 +10,12 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
+    QTranslator translator;
+    if( !translator.load( QString( "language/witGuiLang_" ) + QLocale::system().name() ) )
+	translator.load( QString( ":/language/witGuiLang_" ) + QLocale::system().name() );
+
+    a.installTranslator( &translator );
+
     wiiTDB = new WiiTDB;
     //qDebug() << PROGRAM_NAME;
 

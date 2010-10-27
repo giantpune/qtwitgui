@@ -102,3 +102,15 @@ win32 {
     RC_FILE = rcfile.rc
 }
 OTHER_FILES += darkTheme.qss
+
+TRANSLATIONS = language/witGuiLang_empty.ts \
+    language/witGuiLang_nl.ts \
+    language/witGuiLang_fr.ts \
+    language/witGuiLang_ja.ts \
+    language/witGuiLang_da.ts \
+    language/witGuiLang_it.ts \
+    language/witGuiLang_es.ts \
+    language/witGuiLang_de.ts
+
+system( lupdate ./witGui.pro )
+system( lrelease ./witGui.pro )
