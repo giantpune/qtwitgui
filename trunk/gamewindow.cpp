@@ -389,6 +389,20 @@ void GameWindow::HideProgressBar( int job )
 	ui->statusbar->showMessage( tr( "Done copying & converting game" ) );
 	break;
     case witEdit:
+	oldName = ui->lineEdit_name->text();
+	oldId = ui->lineEdit_id->text();
+	gameIos = ui->spinBox_ios->value();
+	switch( ui->comboBox_region->currentIndex() )
+	{
+	case 4:
+	    gameRegion = 4;
+	    break;
+	case 0:
+	    break;
+	default:
+	    gameRegion = ui->comboBox_region->currentIndex() - 1;
+	    break;
+	}
 	ui->statusbar->showMessage( tr( "Game patched OK" ) );
 	break;
     default:
