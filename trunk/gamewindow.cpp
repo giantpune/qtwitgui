@@ -20,6 +20,7 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
     bool root = set.value( "root/enabled" ).toBool();
     wit.SetRunAsRoot( root );
     wwt.SetRunAsRoot( root );
+    wit.SetTitlesTxtPath( set.value( "paths/titlesTxt", "" ).toString() );
 
     //lockTextOutput = false;
 
@@ -64,32 +65,8 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
     color2 = colors.at( 1 ).name();
     color3 = colors.at( 2 ).name();
 
-
-#ifdef Q_WS_WIN
-    // Add an environment variable to shut up the cygwin warning in windows
-    //QStringList env = QProcess::systemEnvironment();
-    //env << "CYGWIN=nodosfilewarning";
-    //witProcess->setEnvironment( env );
-#endif
-
-    //connect output and input signals between the process and the main window so we can get information from it
-    //and also send a "kill" message if the main window is closed while the process is running
-    //connect( witProcess, SIGNAL( readyReadStandardOutput() ), this, SLOT( ReadyReadStdOutSlot() ) );
-    //connect( witProcess, SIGNAL( readyReadStandardError() ), this, SLOT( ReadyReadStdErrSlot() ) );
-    //connect( witProcess, SIGNAL( finished( int, QProcess::ExitStatus ) ), this, SLOT( ProcessFinishedSlot(  int, QProcess::ExitStatus ) ) );
-    //connect( this, SIGNAL( KillProcess() ), witProcess, SLOT( kill() ) );
     wiithread = new WiiTreeThread;
 
-    //get the version of wit and append it to the titlebar
-    //witVersionString = "wit: " + tr( "Unknown" );
-
-/*    QStringList arg;
-    arg << "version";
-    arg << "--sections";
-    if( !SendWitCommand( arg, witGetVersion ) )
-	ErrorMessage( tr( "The version of wit cannot be determined." )
-		      + "<br><br><br><a href=\"http://wit.wiimm.de/download.html\">http://wit.wiimm.de/download.html</a>" );
-*/
     //create stuff for the tree window
 	//icons
     groupIcon.addPixmap( style()->standardPixmap( QStyle::SP_DirClosedIcon ), QIcon::Normal, QIcon::Off );
@@ -104,27 +81,9 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
     connect( wiithread , SIGNAL( SendProgress( int ) ), ui->progressBar, SLOT( setValue( int ) ) );
     connect( wiithread , SIGNAL( SendDone( QTreeWidgetItem * ) ), this, SLOT( ThreadIsDoneRunning( QTreeWidgetItem * ) ) );
 
-    //create the actions and stuff for the context menu
-    //extractAct = new QAction( tr( "Extract" ), this );
-    //replaceAct = new QAction( tr( "Replace" ), this );
-    //copyTextAct = new QAction( tr( "Copy Text" ), this );
-
-    /*extractAct->setEnabled( false );
-    replaceAct->setEnabled( false );
-    ui->treeWidget->addAction( extractAct );
-    ui->treeWidget->addAction( replaceAct );
-    ui->treeWidget->addAction( copyTextAct );
-    ui->treeWidget->setContextMenuPolicy( Qt::ActionsContextMenu );
-    connect( extractAct, SIGNAL( triggered() ), this, SLOT( ExtractSlot() ) );
-    connect( replaceAct, SIGNAL( triggered() ), this, SLOT( ReplaceSlot() ) );
-    connect( copyTextAct, SIGNAL( triggered() ), this, SLOT( CopyTextSlot() ) );
-
-    //make sure buttons are wide enough for text
-    ResizeGuiToLanguage();*/
-
     connect( &wit, SIGNAL( SendStdOut( QString ) ), ui->textEdit, SLOT( insertPlainText( QString ) ) );
     //TODO: maybe make this a bright color so it is easy to find.
-    //but fatar errors ore shown in a dialog box, so it really isnt necessary
+    //but fatal errors ore shown in a dialog box, so it really isnt necessary
     connect( &wit, SIGNAL( SendStdErr( QString ) ), ui->textEdit, SLOT( insertPlainText( QString ) ) );
 
 
@@ -464,6 +423,7 @@ void GameWindow::SettingsHaveChanged()
     QSettings s( settingsPath, QSettings::IniFormat );
     bool root = s.value( "root/enabled" ).toBool();
     wit.SetRunAsRoot( root );
+    wit.SetTitlesTxtPath( s.value( "paths/titlesTxt", "" ).toString() );
 }
 
 //get a copy of the partition list from the main window
