@@ -21,13 +21,16 @@ CoverLoaderThread::~CoverLoaderThread()
     mutex.unlock();
     wait();
 }
-void CoverLoaderThread::CheckCovers( const QStringList s, QString baseFolder, QStringList paths, int t, bool l )
+void CoverLoaderThread::CheckCovers( const QStringList s, QString baseFolder, QString path2, QString path3, QString pathF, QString pathH, QString pathD, int m )
 {
     basePath = baseFolder;
-    subDirs = paths;
-    type = t;
-    load = l;
     ids = s;
+    path2D = path2;
+    path3D = path3;
+    pathFull = pathF;
+    pathDisc = pathD;
+    pathHQ = pathH;
+    mode = m;
 
     if ( !isRunning() )
     {
@@ -66,17 +69,30 @@ void CoverLoaderThread::run()
 	for( int i = 0; i < size; i++ )
 	{
 	    //qDebug() << "id:" << ids.at( i );
-	    returns << Get( ids.at( i ) );
-	    emit SendProgress( (int)( ( (float)( i + 1 ) / (float)size ) * (float)100 ) );
+	    if( mode == mode_load )
+	    {
+		returns << Get( ids.at( i ) );
+		emit SendProgress( (int)( ( (float)( i + 1 ) / (float)size ) * (float)100 ) );
+	    }
+	    else if( mode == mode_check )
+	    {
+		Check( ids.at( i ) );
+	    }
+	    else
+	    {
+		qDebug() << "coverthread: unknown mode" << mode;
+		break;
+	    }
 
 	}
-
-	//qDebug() << "thread is done";
-	emit SendProgress( 100 );
-	emit SendDone( returns, type );
+	if( mode == mode_load )
+	{
+	    emit SendProgress( 100 );
+	    emit SendDone( returns, type );
+	}
 
 }
-
+//only supports 2d and Full covers for now
 QImage CoverLoaderThread::Get( QString id )
 {
     QImage ret;
@@ -86,24 +102,29 @@ QImage CoverLoaderThread::Get( QString id )
 	qDebug() << dir << "doesnt exist";
 	return ret;
     }
-    int s = subDirs.size();
-    if( !s )
+    QDir subDir;
+    subDir.setPath( dir.filePath( path2D ) );
+    if( ret.load( subDir.absolutePath() + "/" + id + ".png" ) )
     {
-	qDebug() << "no subdirectories to try";
-	return ret;
-    }
-    for( int i = 0; i < s; i++ )
-    {
-	QDir subDir( dir.filePath( subDirs.at( i ) ) );
-	if( !ret.load( subDir.absolutePath() + "/" + id + ".png" ) )
-	    continue;
-
 	ret = To160x224( ret );
 	if( ret != QImage() )
 	    return ret;
     }
-
-    emit CoverIsMissing( id, type );//cover isnt found, tell whoever is listening so it can be downloaded or added to some list
+    subDir.setPath( dir.filePath( pathFull ) );
+    if( ret.load( subDir.absolutePath() + "/" + id + ".png" ) )
+    {
+	ret = To160x224( ret );
+	if( ret != QImage() )
+	    return ret;
+    }
+    subDir.setPath( dir.filePath( pathHQ ) );
+    if( ret.load( subDir.absolutePath() + "/" + id + ".png" ) )
+    {
+	ret = To160x224( ret );
+	if( ret != QImage() )
+	    return ret;
+    }
+    //qDebug() << "couldnt load" << subDir.absolutePath() + "/" + id + ".png";
     if( ret.load( dir.absolutePath() + "/nocover.png" ) )//user defined no-cover
     {
 	return To160x224( ret );
@@ -113,9 +134,35 @@ QImage CoverLoaderThread::Get( QString id )
 
 }
 
-bool CoverLoaderThread::Have( QString id )
+void CoverLoaderThread::Check( QString id )
 {
-    return true;
+    QDir dir( basePath );
+    if( !dir.exists() )
+    {
+	qDebug() << dir << "doesnt exist";
+	return;
+    }
+    QDir subDir;
+    subDir.setPath( dir.filePath( path2D ) );
+    if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
+	emit CoverIsMissing( id, coverType2d );
+
+    subDir.setPath( dir.filePath( pathFull ) );
+    if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
+	emit CoverIsMissing( id, coverTypeFull );
+
+    subDir.setPath( dir.filePath( pathHQ ) );
+    if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
+	emit CoverIsMissing( id, coverTypeFullHQ );
+
+    subDir.setPath( dir.filePath( path3D ) );
+    if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
+	emit CoverIsMissing( id, coverType3d );
+
+    subDir.setPath( dir.filePath( pathDisc ) );
+    if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
+	emit CoverIsMissing( id, coverTypeDisc );
+
 }
 
 QImage CoverLoaderThread::To160x224( QImage i )
@@ -123,7 +170,14 @@ QImage CoverLoaderThread::To160x224( QImage i )
     if( i.size() == QSize( 160, 224 ) )//flat 2d image
 	return i;
 
-    if( i.size() == QSize( 1024, 680 ) )//full cover ( wiiflow style )
+    if( i.size() == QSize( 512, 340 ) )//full cover
+    {
+	int fStart = 271;
+	QImage front = i.copy( fStart, 0, 512 - fStart, 340 );
+	return front.scaledToHeight( 224 );
+    }
+
+    if( i.size() == QSize( 1024, 680 ) )//full cover HQ ( wiiflow style )
     {
 	int fStart = 535;
 	QImage front = i.copy( fStart, 0, 1024 - fStart, 680 );

@@ -27,14 +27,6 @@
 #include "pictureflow.h"
 #include "coverloaderthread.h"
 
-enum
-{
-    coverType2d = 777,
-    coverType3d,	//not supported in the coverflow crap, but used only to get the list of missing covers
-    coverTypeFull,
-    coverTypeDisc
-};
-
 namespace Ui {
     class CoverManagerWindow;
 }
@@ -55,6 +47,8 @@ public:
 
 signals:
     void finished();
+    void SendProgress( int );
+    void SendText( QString );
 
 private slots:
     void startNextDownload();
@@ -71,9 +65,12 @@ private:
 
     int downloadedCount;
     int totalCount;
+    bool notFound;//flag for "current download is not found / wiitdb game a 404"
 
     QString baseCoverPath;
     QString locale;
+
+    QString currentJobText;
 };
 
 class CoverManagerWindow : public QWidget
@@ -91,13 +88,16 @@ public:
 private:
     Ui::CoverManagerWindow *ui;
     QMap< QString, QStringList > gameLists;//each entry holds the name of a partition and a list of all it's games in ID6
-    QDir coverDir;
+
+    bool pathOK;
+    bool reloadCoversAfterDownload;
+    QString coverDir;
+    QString currentPartition;//used for reloading/refreshing
 
     CoverLoaderThread loader;
 
     QStringList loadedList;
     QMap< int, QStringList > missingCovers;//int is the cover type, the lists are the IDs
-    bool canCheckMoreCovers;
 
     DownloadManager manager;
 
@@ -120,6 +120,10 @@ private slots:
     void ReceiveCovers( QList< QImage >, int t );
     void CoverHasBeenSelected( int );
     void ReceiveMissingCover( QString id, int type );
+
+    //slots to get stuff from the download manager
+    void GetText( QString text );
+    void DoneDownloading();
 };
 
 

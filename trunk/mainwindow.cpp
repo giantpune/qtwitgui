@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     setWindowTitle( PROGRAM_NAME );
 
-    ui->actionCovers->setEnabled( false );
+    //ui->actionCovers->setEnabled( false );
     LoadSettings();
     CheckWit();
 
@@ -33,9 +33,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     if( wiiTDBisOpen )
 	CreateWiiTDBSubWindow();
 
-    //ui->actionCovers->setChecked( pFlowIsOpen );
-    //if( pFlowIsOpen )
-	//CreatePFlowSubWindow();
+    ui->actionCovers->setChecked( pFlowIsOpen );
+    if( pFlowIsOpen )
+	CreatePFlowSubWindow();
 }
 
 MainWindow::~MainWindow()
@@ -53,7 +53,6 @@ void MainWindow::closeEvent( QCloseEvent * closeEvent )
 void MainWindow::CreateWiiTDBSubWindow()
 {
     wiiTDBwindow = new WiiTDBWindow();
-    //wiiTDBwindow->SetFile( ":/wiitdb.xml" );
 
     subWiiTDB = new CustomMdiItem( ui->mdiArea );
     subWiiTDB->type = mdiWiiTDB;
@@ -94,6 +93,7 @@ void MainWindow::CreateWiiTDBSubWindow()
 void MainWindow::CreatePFlowSubWindow()
 {
     pFlow = new CoverManagerWindow;
+    pFlow->SetGameLists( gameMap );
     PictureFlow *pf = pFlow->PFlowObject();
     pf->setSlideSize( QSize( 3 * 40, 5 * 40 ) );
     pf->setFixedHeight( 270 );
@@ -124,9 +124,6 @@ void MainWindow::CreatePFlowSubWindow()
 //help->about
 void MainWindow::on_actionAbout_triggered()
 {
-    /*
-, const QString &qtwitguiVersion = QString(), const QString &witVersion = QString()\
-			, const QString &wwtVersion = QString(), const QString &wiitdbVersion = QString(), const QString &wiitdbGames*/
     QString thisProgVersion = "r" + QString( SVN_REV_STR ) + "  :  " + tr( "Built %1").arg( __DATE__ );
     QString witVers = WitHandler::GetVersionString();
     if( witVers.isEmpty() )
@@ -147,10 +144,6 @@ void MainWindow::on_actionAbout_triggered()
     QString wiitdbGames = QString( "%1" ).arg( wiiTDBwindow->GameCount() );
     AboutDialog dialog( this, thisProgVersion, witVers, wwtVers,wiitdbVers, wiitdbGames );
     dialog.exec();
-    /*QString str;
-    QTextStream( &str ) << "WiiTDB version: " << wiiTDBwindow->GetVersion() << "<br>"\
-		  << "Database has " << wiiTDBwindow->GameCount() << " games.";
-    QMessageBox::about( this, tr( "About" ) + PROGRAM_NAME, str );*/
 }
 
 //check that the wit path in the settings leads to a supported version of the program
@@ -399,7 +392,6 @@ void MainWindow::on_actionWiiTDB_triggered( bool checked )
 //view->covers toggled
 void MainWindow::on_actionCovers_triggered( bool checked )
 {
-    return;
     pFlowIsOpen = checked;
     if( !checked )
     {
