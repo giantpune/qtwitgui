@@ -92,6 +92,7 @@ private:
 
     bool pathOK;
     bool reloadCoversAfterDownload;
+    bool downloading; // used to decide if the progress bar can be hidden
     QString coverDir;
     QString currentPartition;//used for reloading/refreshing
 

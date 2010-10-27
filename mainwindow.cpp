@@ -29,13 +29,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
 
-    ui->actionWiiTDB->setChecked( wiiTDBisOpen );
+    /*ui->actionWiiTDB->setChecked( wiiTDBisOpen );
     if( wiiTDBisOpen )
 	CreateWiiTDBSubWindow();
 
     ui->actionCovers->setChecked( pFlowIsOpen );
     if( pFlowIsOpen )
-	CreatePFlowSubWindow();
+	CreatePFlowSubWindow();*/
 }
 
 MainWindow::~MainWindow()
@@ -69,8 +69,8 @@ void MainWindow::CreateWiiTDBSubWindow()
 
     connect( subWiiTDB, SIGNAL( AboutToClose( QString, QPoint, QSize, int ) ), this, SLOT( MdiItemDestroyed( QString, QPoint, QSize, int ) ) );
 
-    //if( pFlowIsOpen )
-	//connect( pFlow, SIGNAL( NewIDInFocus( QString ) ), wiiTDBwindow, SLOT( LoadGameFromID( QString ) ) );
+    if( pFlowIsOpen )
+	connect( pFlow, SIGNAL( NewIDInFocus( QString ) ), wiiTDBwindow, SLOT( LoadGameFromID( QString ) ) );
 
     //connect the window to any open partitions
     foreach( QMdiSubWindow *window, ui->mdiArea->subWindowList() )
@@ -219,7 +219,15 @@ void MainWindow::LoadSettings()
     settings.endGroup();
 
     wiiTDBisOpen = settings.value( "wiitdb/visible", false ).toBool();
+    ui->actionWiiTDB->setChecked( wiiTDBisOpen );
+    if( wiiTDBisOpen )
+	CreateWiiTDBSubWindow();
+
     pFlowIsOpen = settings.value( "pflow/visible", false ).toBool();
+    ui->actionCovers->setChecked( pFlowIsOpen );
+    if( pFlowIsOpen )
+	CreatePFlowSubWindow();
+
 
     //read partition list and settings
 
