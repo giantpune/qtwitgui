@@ -47,7 +47,7 @@ class CoverLoaderThread : public QThread
      CoverLoaderThread( QObject *parent = 0 );
      ~CoverLoaderThread();
 
-     void CheckCovers( const QStringList s, QString baseFolder, QString path2, QString path3, QString pathF, QString pathH, QString pathD, int m );
+     void CheckCovers( const QStringList s, QString baseFolder, QString path2, QString path3, QString pathF, QString pathH, QString pathD, int m, bool r );
      void ForceQuit();
 
  protected:
@@ -55,7 +55,7 @@ class CoverLoaderThread : public QThread
 
  signals:
      void SendProgress( int );
-     void SendDone( QList< QImage >, int t );
+     void SendDone( QList< QImage >, bool reload );
      void CoverIsMissing( QString id, int t );
 
 
@@ -72,6 +72,7 @@ class CoverLoaderThread : public QThread
      QString pathHQ;
      QString pathDisc;
      int mode;
+     bool reload;
      //QStringList subDirs;
 
      QImage Get( QString id );
