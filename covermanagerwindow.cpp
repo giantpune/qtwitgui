@@ -46,7 +46,7 @@ CoverManagerWindow::CoverManagerWindow(QWidget *parent) : QWidget(parent), ui(ne
     connect( &manager, SIGNAL( finished() ), this, SLOT( DoneDownloading() ) );
 
     connect( &loader, SIGNAL( SendProgress( int ) ), ui->progressBar_loading, SLOT( setValue( int ) ) );
-    connect( &loader, SIGNAL( SendDone( QList< QImage >, int ) ), this, SLOT( ReceiveCovers( QList< QImage >, int ) ) );
+    connect( &loader, SIGNAL( SendDone( QList< QImage >, bool ) ), this, SLOT( ReceiveCovers( QList< QImage >, bool ) ) );
     connect( &loader, SIGNAL( CoverIsMissing( QString, int ) ), this, SLOT( ReceiveMissingCover( QString, int ) ) );
 
     connect( ui->pictureFlow, SIGNAL( centerIndexChanged( int ) ), this, SLOT( CoverHasBeenSelected( int ) ) );
@@ -249,7 +249,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 	    manager.append( i.value(), coverTypeFullHQ );
 	}
 	//download mising 3D covers
-	else if( selectedItem == &cvrFlat )
+	else if( selectedItem == &cvr3d )
 	{
 	    QMap<int, QStringList >::iterator i = missingCovers.find( coverType3d );
 	    if( i == missingCovers.end() )
@@ -324,16 +324,16 @@ void CoverManagerWindow::LoadCoversForPartition( QString part )
     missingCovers.clear();
     if( missingCovers.size() )
 	qDebug() << "missingCovers.size()";
-    loader.CheckCovers( loadedList, coverDir, PATH2D, PATH3D, PATHFULL, PATHFULL_HQ, PATHDISC, mode_load );
+    loader.CheckCovers( loadedList, coverDir, PATH2D, PATH3D, PATHFULL, PATHFULL_HQ, PATHDISC, mode_load, true );
 }
 
-void CoverManagerWindow::ReceiveCovers( QList< QImage > covers, int t )
+void CoverManagerWindow::ReceiveCovers( QList< QImage > covers, bool reload )
 {
-    Q_UNUSED( t );
     //qDebug() << "CoverManagerWindow::ReceiveCovers";
     ui->progressBar_loading->setVisible( false );
     resize( width(), 302 );
-    if( reloadCoversAfterDownload )
+
+    if( reload )//dont reload the coverflow if we just get a list of disc images
     {
 	ui->pictureFlow->clear();
 
@@ -344,11 +344,10 @@ void CoverManagerWindow::ReceiveCovers( QList< QImage > covers, int t )
 	}
 	ui->pictureFlow->setCenterIndex( 0 );
     }
-    reloadCoversAfterDownload = false;
 
     //go ahead and request a list of all missing covers for this partition - this is a fast operation.  it should not be noticed
     if( !loadedList.isEmpty() )
-	loader.CheckCovers( loadedList, coverDir, PATH2D, PATH3D, PATHFULL, PATHFULL_HQ, PATHDISC, mode_check );
+	loader.CheckCovers( loadedList, coverDir, PATH2D, PATH3D, PATHFULL, PATHFULL_HQ, PATHDISC, mode_check, false );
 
 }
 
@@ -386,7 +385,14 @@ void CoverManagerWindow::DoneDownloading()
     //ui->progressBar_loading->setVisible( false );
     ui->label_info->setVisible( false );
     resize( width(), minimumSizeHint().height() );
-    LoadCoversForPartition( currentPartition );
+
+    if( reloadCoversAfterDownload )
+	LoadCoversForPartition( currentPartition );
+    else
+    {
+	ui->progressBar_loading->setVisible( false );
+    }
+    reloadCoversAfterDownload = false;
 }
 
 
@@ -394,6 +400,14 @@ void CoverManagerWindow::DoneDownloading()
 DownloadManager::DownloadManager( QObject *parent, const QString &base, const QString &loc)
     : QObject(parent), downloadedCount(0), totalCount(0), baseCoverPath( base ), locale( loc )
 {
+}
+DownloadManager::~DownloadManager()
+{
+    if( output.isOpen() )
+    {
+	output.close();
+	output.remove();
+    }
 }
 
 void DownloadManager::SetLocale( const QString &loc )
@@ -417,7 +431,11 @@ void DownloadManager::append( const QStringList &idList, int t )
 	append( id, t );
 
     if (downloadQueue.isEmpty())
+    {
+	downloadedCount = 0;
+	totalCount = 0;
 	QTimer::singleShot(0, this, SIGNAL(finished()));
+    }
 }
 
 void DownloadManager::append( const QString &url, int t )
@@ -486,6 +504,8 @@ void DownloadManager::startNextDownload()
     if( downloadQueue.isEmpty() )
     {
 	//qDebug() <<  downloadedCount << "of" << totalCount << "files downloaded successfully";
+	downloadedCount = 0;
+	totalCount = 0;
 	emit finished();
 	return;
     }
@@ -584,6 +604,7 @@ void DownloadManager::downloadProgress( qint64 bytesReceived, qint64 bytesTotal 
 
 void DownloadManager::downloadFinished()
 {
+    output.flush();
     output.close();
 
     if( currentDownload->error() || notFound )

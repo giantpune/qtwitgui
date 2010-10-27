@@ -21,7 +21,7 @@ CoverLoaderThread::~CoverLoaderThread()
     mutex.unlock();
     wait();
 }
-void CoverLoaderThread::CheckCovers( const QStringList s, QString baseFolder, QString path2, QString path3, QString pathF, QString pathH, QString pathD, int m )
+void CoverLoaderThread::CheckCovers( const QStringList s, QString baseFolder, QString path2, QString path3, QString pathF, QString pathH, QString pathD, int m, bool r )
 {
     basePath = baseFolder;
     ids = s;
@@ -31,6 +31,7 @@ void CoverLoaderThread::CheckCovers( const QStringList s, QString baseFolder, QS
     pathDisc = pathD;
     pathHQ = pathH;
     mode = m;
+    reload = r;
 
     if ( !isRunning() )
     {
@@ -88,7 +89,7 @@ void CoverLoaderThread::run()
 	if( mode == mode_load )
 	{
 	    emit SendProgress( 100 );
-	    emit SendDone( returns, type );
+	    emit SendDone( returns, reload );
 	}
 
 }

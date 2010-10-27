@@ -37,6 +37,7 @@ class DownloadManager: public QObject
     Q_OBJECT
 public:
     DownloadManager( QObject *parent = 0, const QString &base = QString(), const QString &loc = QString() );
+    ~DownloadManager();
 
     void append( const QString &id, int t );
     void append( const QStringList &idList, int t  );
@@ -117,7 +118,7 @@ private slots:
 
 private slots:
     void on_frame_customContextMenuRequested(QPoint pos);
-    void ReceiveCovers( QList< QImage >, int t );
+    void ReceiveCovers( QList< QImage >, bool reload );
     void CoverHasBeenSelected( int );
     void ReceiveMissingCover( QString id, int type );
 
