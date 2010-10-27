@@ -15,6 +15,7 @@ CoverManagerWindow::CoverManagerWindow(QWidget *parent) : QWidget(parent), ui(ne
 {
     ui->setupUi(this);
     reloadCoversAfterDownload = false;
+    downloading = false;
     ShowTextAndProgress( true );
 
     ui->progressBar_loading->setVisible( false );
@@ -215,6 +216,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 		qDebug() << "i == missingCovers.end()";
 		return;
 	    }
+	    downloading = true;
 	    reloadCoversAfterDownload = true;
 	    ui->progressBar_loading->setVisible( true );
 	    ui->label_info->setVisible( true );
@@ -230,6 +232,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 		return;
 	    }
 	    reloadCoversAfterDownload = true;
+	    downloading = true;
 	    ui->progressBar_loading->setVisible( true );
 	    ui->label_info->setVisible( true );
 	    manager.append( i.value(), coverTypeFull );
@@ -244,6 +247,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 		return;
 	    }
 	    reloadCoversAfterDownload = true;
+	    downloading = true;
 	    ui->progressBar_loading->setVisible( true );
 	    ui->label_info->setVisible( true );
 	    manager.append( i.value(), coverTypeFullHQ );
@@ -257,6 +261,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 		qDebug() << "i == missingCovers.end()";
 		return;
 	    }
+	    downloading = true;
 	    ui->progressBar_loading->setVisible( true );
 	    ui->label_info->setVisible( true );
 	    manager.append( i.value(), coverType3d );
@@ -270,6 +275,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 		qDebug() << "i == missingCovers.end()";
 		return;
 	    }
+	    downloading = true;
 	    ui->progressBar_loading->setVisible( true );
 	    ui->label_info->setVisible( true );
 	    manager.append( i.value(), coverTypeDisc );
@@ -330,8 +336,11 @@ void CoverManagerWindow::LoadCoversForPartition( QString part )
 void CoverManagerWindow::ReceiveCovers( QList< QImage > covers, bool reload )
 {
     //qDebug() << "CoverManagerWindow::ReceiveCovers";
-    ui->progressBar_loading->setVisible( false );
-    resize( width(), 302 );
+    if( !downloading )
+    {
+	ui->progressBar_loading->setVisible( false );
+	resize( width(), 302 );
+    }
 
     if( reload )//dont reload the coverflow if we just get a list of disc images
     {
@@ -342,7 +351,8 @@ void CoverManagerWindow::ReceiveCovers( QList< QImage > covers, bool reload )
 	{
 	    ui->pictureFlow->addSlide( covers.at( i ) );
 	}
-	ui->pictureFlow->setCenterIndex( 0 );
+	if( ui->pictureFlow->centerIndex() >= size )
+	    ui->pictureFlow->setCenterIndex( 0 );
     }
 
     //go ahead and request a list of all missing covers for this partition - this is a fast operation.  it should not be noticed
@@ -393,6 +403,7 @@ void CoverManagerWindow::DoneDownloading()
 	ui->progressBar_loading->setVisible( false );
     }
     reloadCoversAfterDownload = false;
+    downloading = false;
 }
 
 
