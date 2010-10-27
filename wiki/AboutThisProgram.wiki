@@ -183,14 +183,20 @@
 
 
 == windows ==
-  * It is possible to run this exe without having the Qt SDK installed, but it requires at least 4 .dll files:
+  * It is possible to run this exe without having the Qt SDK installed, but it requires at least 6 .dll files:
 <pre>
 	QtCore4.dll
 	QtGui4.dll
+	QtNetwork4.dll
+	QtXml.dll
 	libgcc_s_dw2-1.dll
 	mingwm10.dll
 </pre>
   * Since Wiimm's tools rely on cygwin, this program uses cygpath.exe to convert windows paths to cygwin paths and back again.  And cygpath.exe relies on the cygwin1.dll.  So, required files include the above dlls, wit, wit's dependencies, and cygpath.exe ( which shares a dependency on cygwin1.dll with wit.  both programs must have access to it ) 
+
+  * wmic is required.  This SHOULD be already present on your system.  If you get errors about not being able to start wmic, open a cmd windows and run "wmic /output:stdout /interactive:off /locale:ms_409 OS GET caption".  This will tell you if you have the program or not.  And if you don't, check google for how to get it back from wherever it went.
+
+  * There is no support for the UAC in this program.  If you want wit/wwt to be able to access WBFS partitions on windows version that have the UAC, run this program as administrator and the external processes will inherit the privileges.
 ----
 
 
