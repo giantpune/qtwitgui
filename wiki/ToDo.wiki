@@ -30,7 +30,7 @@ Not supported by wit yet...
 
 lots of testing.  current logic for the convert/copy dialog is largely untested.  the gamecube shrinking code worked in testing on its own - tested on 200+ games, all working with WODE ( which is picky about shrunken games ), but putting that code into this project required minor changes, and it has not undergone any testing aside from 1 or 2 games.
 
-re-implement language <s>& svn version</s> support in the gui
+<s>re-implement language & svn version support in the gui</s>
 
 <s>the "about" dialogs need to come back, and could use some work.</s>
 
