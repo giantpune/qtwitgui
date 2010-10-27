@@ -110,7 +110,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="PictureFlow" name="pictureFlow">
+       <widget class="PictureFlow" name="pictureFlow" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -126,7 +126,7 @@
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
         </property>
-        <property name="backgroundColor">
+        <property name="backgroundColor" stdset="0">
          <color>
           <red>0</red>
           <green>0</green>
@@ -137,6 +137,43 @@
       </item>
       <item row="1" column="0" colspan="2">
        <widget class="QLabel" name="label_info">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>200</red>
+              <green>200</green>
+              <blue>200</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>200</red>
+              <green>200</green>
+              <blue>200</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>118</red>
+              <green>116</green>
+              <blue>108</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
         <property name="text">
          <string/>
         </property>

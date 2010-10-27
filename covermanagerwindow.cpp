@@ -3,7 +3,7 @@
 #include "tools.h"
 
 //todo, allow adjustable paths
-#define COVERPATH   "./covers"
+#define COVERPATH   "covers"
 #define PATHDISC    "disc"
 #define PATH2D	    "2d"
 #define PATH3D	    "3d"
@@ -26,15 +26,16 @@ CoverManagerWindow::CoverManagerWindow(QWidget *parent) : QWidget(parent), ui(ne
 
     pathOK = true;
     coverDir = COVERPATH;
-    if( !QFile::exists( coverDir ) )
+    QDir cur = QDir::current();
+    if( !cur.exists( coverDir ) )
     {
-	QDir dir = QDir::current();
-	if( dir.mkdir( coverDir ) )
+        if( !cur.mkdir( coverDir ) )
 	{
 	    qDebug() << "cant create the cover folder";
 	    pathOK = false;
 	}
     }
+    coverDir = cur.absoluteFilePath( coverDir );
 
     QString localeStr = QLocale::system().name();
     localeStr.resize( 2 );
