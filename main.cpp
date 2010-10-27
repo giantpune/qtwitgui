@@ -17,10 +17,15 @@ int main(int argc, char *argv[])
 
     settingsPath = QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) + "/QtWitGui.ini";
     MainWindow w;
-    /*QFile file( ":/darkTheme.qss" );
-    file.open( QFile::ReadOnly );
-    QString styleSheet = QLatin1String( file.readAll() );
-    w.setStyleSheet( styleSheet );*/
+
+    QStringList args = QApplication::arguments();
+    if( args.contains( "--greyness") )
+    {
+	QFile file( ":/darkTheme.qss" );
+	file.open( QFile::ReadOnly );
+	QString styleSheet = QLatin1String( file.readAll() );
+	w.setStyleSheet( styleSheet );
+    }
     w.show();
 
     int ret = a.exec();
