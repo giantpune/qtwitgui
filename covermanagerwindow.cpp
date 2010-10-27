@@ -95,7 +95,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
     //qDebug() << "CoverManagerWindow::on_frame_customContextMenuRequested" << pos;
     QPoint globalPos = ui->frame->mapToGlobal( pos );
     //create the context menu based on the games selected
-    QMenu myMenu;
+    QMenu myMenu( this );
 
     //submenu for download options
     QMenu dlM( tr( "Download Missing Images" ), &myMenu );

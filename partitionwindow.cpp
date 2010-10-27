@@ -280,7 +280,7 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 	qDebug() << "WTF";
 
     //create the context menu based on the games selected
-    QMenu myMenu;
+    QMenu myMenu( this );
     QAction infoA( tr( "%1 %2").arg( selectedCount ).arg( selectedCount > 1 ? tr( "Games Selected" ) : tr( "Game Selected" ) ), &myMenu );
     infoA.setEnabled( false );
     QAction cpA( tr( "Copy / Convert" ), &myMenu );

@@ -164,9 +164,7 @@ QString FsInfo::GetFilesystem( QString path )
     p.start( "wmic", QStringList() << "/output:stdout" << "/interactive:off" << "/locale:ms_409" <<\
 	     "logicaldisk" << "where" << "DeviceID=\'" + drive + ":\'" << "get" << "filesystem" );
 #elif defined Q_WS_MAC
-    QString command = "diskutil info " + path;
-    //qDebug() << command;
-    p.start( command );
+    p.start( "diskutil", QStringList() << "info" << path );
 #else
     //try statfs first as it is the fastest.  but its descriptors are less than descriptive for ext variants
     struct statfs fInfo;
@@ -191,9 +189,7 @@ QString FsInfo::GetFilesystem( QString path )
 	    break;
 	}
     }
-    QString command = "df -T " + path;
-    //qDebug() << command;
-    p.start( command );
+    p.start( "df", QStringList() << "-T" << path );
 #endif
     if( !p.waitForStarted( 5000 ) )
     {

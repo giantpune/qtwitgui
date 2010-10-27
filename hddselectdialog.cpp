@@ -368,7 +368,7 @@ void HDDSelectDialog::CustomTreeWidgetContentmenu( const QPoint& pos )
     //bool checked = ui->treeWidget->selectedItems().at( 0 )->text( 3 ) == tr( "Yes" );
     bool checked = selected->text( 3 ) == tr( "Yes" );
 
-    QMenu myMenu;
+    QMenu myMenu( this );
 
     QAction changeSplitAct( tr( "Split Games When Writing to This Partition"), &myMenu );
     changeSplitAct.setCheckable( true );
