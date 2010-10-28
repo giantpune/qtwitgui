@@ -95,6 +95,29 @@
   * The fields here are the the expected output from sudo as it asks the password and delivers failure messages.  This text must be exact or else the program will hang as sudo has asked a question and since the text doesnt match so, it doesn't know to respond.  If you are unsure of the proper text, just try "sudo ls" in a terminal and enter the wrong password a few times.
   * Using sudo with an empty password in not supported.  It should be at least 1 character.
   * For security reasons, the password is not stored in any file.  A dialog is presented to you and you must enter it.  The password will be stored in ram while the program is running, and reused each time it is needed.
+
+
+== Cover Window ==
+<a target='_blank' http://img168.imageshack.us/img168/6786/coversk.png'><img src='http://img168.imageshack.us/img168/6786/coversk.th.png' border='0'/></a>
+  * To get this window, set a cover path in the settings screen.  Then Click view -> covers.
+
+  * The logic behind the window is pretty straight forward...
+
+  * The window gets a copy of all the known partitions and gamelists from the main window.
+
+  * The window deals with covers for 1 partition at a time.  To change partitions, right-click -> "sync with partition" -> select a partition from the list.
+
+  * If you dont see a partition available, then it has not been scanned since the program was started.  Either use the partition selector window or a partition browser window to scan the partition.  Its game list will be sent to the main window, and then to the cover window.
+
+  * There are different subdirectories used inside the cover path set in the settings.  Flat & Front 160x224 = "2d"; Fake 3D 176x248 = "3d"; Full 512X340 = "full"; Full HQ 1024x680 = "full_HiRes"; disc 160x160 = "disc"
+
+  * The cover window takes the list of games for a given partition, adds unique IDs to a list, and tries to find a cover from the above mentioned paths.  It checks the 2d, then full, then full HQ in that order.    It will only use the front part of whatever cover it finds, and it will be scaled down.  So, for this program, a 2d cover is just as good as a HQ one.
+
+  * To download covers from wiitdb, right-click -> "download missing covers" -> and select the type you want to get.  There is a number out to the right of how many covers there are missing of the given type from the current partition.
+
+  * If you choose to download either of the full covers and there is not one available, it will check if you have the 2d version already, and if not, it will try to download that one instead.
+
+  * This window uses a modified version of http://code.google.com/p/pictureflow/ to display and animate the covers.  Most of the credit goes to its creator(s), and a big thanks for sharing their work.
    
 
 
@@ -197,6 +220,8 @@
   * wmic is required.  This SHOULD be already present on your system.  If you get errors about not being able to start wmic, open a cmd windows and run "wmic /output:stdout /interactive:off /locale:ms_409 OS GET caption".  This will tell you if you have the program or not.  And if you don't, check google for how to get it back from wherever it went.
 
   * There is no support for the UAC in this program.  If you want wit/wwt to be able to access WBFS partitions on windows version that have the UAC, run this program as administrator and the external processes will inherit the privileges.
+  
+  * Im not sure if it is just my PC, or what, but this program runs pretty terribly in windows7.  I have tested it in virtual machines running XP, and a high-end real PC running win7.  The VM-XP runs perfectly, while the PC-win7 was littered with graphical artifacts.  I don't know who to blame it on, or if this only happens for my setup.  In any case, there is not much I can think of to fix it.  This is just how win7's window manager handles stuff, and how Qt talks to the window manager.
 ----
 
 
