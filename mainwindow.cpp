@@ -23,19 +23,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     setWindowTitle( PROGRAM_NAME );
 
-    //ui->actionCovers->setEnabled( false );
     LoadSettings();
     CheckWit();
-
-
-
-    /*ui->actionWiiTDB->setChecked( wiiTDBisOpen );
-    if( wiiTDBisOpen )
-	CreateWiiTDBSubWindow();
-
-    ui->actionCovers->setChecked( pFlowIsOpen );
-    if( pFlowIsOpen )
-	CreatePFlowSubWindow();*/
 }
 
 MainWindow::~MainWindow()

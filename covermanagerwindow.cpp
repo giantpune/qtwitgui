@@ -526,14 +526,14 @@ void DownloadManager::startNextDownload()
     QMap< QString, int >::iterator dl = p.begin();
 
     //qDebug() << dl;
-    int type = dl.value();
-    QString id = dl.key();
+    currentType = dl.value();
+    currentId = dl.key();
     QString dlUrl;
-    QString filename = saveFileName( id, type );
+    QString filename = saveFileName( currentId, currentType );
     //qDebug() << id << type;
     if( filename.isEmpty() )
     {
-	qDebug() << "empty filename" << id << type;
+	qDebug() << "empty filename" << currentId << currentType;
 	startNextDownload();
 	return;
     }
@@ -544,7 +544,7 @@ void DownloadManager::startNextDownload()
 	startNextDownload();
 	return;
     }
-    switch( type )
+    switch( currentType )
 	{
 	case coverType2d:
 	    dlUrl = "http://wiitdb.com/wiitdb/artwork/cover/";
@@ -565,7 +565,7 @@ void DownloadManager::startNextDownload()
 	    startNextDownload();
 	    break;
 	}
-    QChar regCode = id.at( 3 );
+    QChar regCode = currentId.at( 3 );
     if( regCode == 'E' )
 	dlUrl += "US/";
     else if( regCode == 'J' )
@@ -577,7 +577,7 @@ void DownloadManager::startNextDownload()
     else
 	dlUrl += locale + "/";
 
-    dlUrl += id + ".png";
+    dlUrl += currentId + ".png";
     //qDebug() << "trying to DL" << dlUrl;
     currentJobText = dlUrl;
 
@@ -622,6 +622,14 @@ void DownloadManager::downloadFinished()
     if( currentDownload->error() || notFound )
     {
 	output.remove();
+	if( currentType == coverTypeFullHQ || currentType == coverTypeFull )//can't get the full cover, try to get a front cover only
+	{
+	    //qDebug() << "cant get a full cover for" << currentId << ". trying to get a front";
+	    if( !QFile::exists( baseCoverPath + "/" + PATH2D + "/" + currentId + ".png" ) )
+		append( currentId, coverType2d );
+	    //else
+		//qDebug() << "front cover already exists";
+	}
 	//qDebug() << "currentDownload->error()";
     }
     else

@@ -72,6 +72,8 @@ private:
     QString locale;
 
     QString currentJobText;
+    QString currentId;
+    int currentType;
 };
 
 class CoverManagerWindow : public QWidget
