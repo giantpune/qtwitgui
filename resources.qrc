@@ -104,5 +104,8 @@
         <file>images/wifi6.png</file>
         <file>images/forceFeedback.png</file>
         <file>images/forceFeedbackR.png</file>
+        <file>images/keyboard.png</file>
+        <file>images/keyboardR.png</file>
+        <file>images/pegi_15.png</file>
     </qresource>
 </RCC>

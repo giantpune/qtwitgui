@@ -16,6 +16,7 @@ CoverManagerWindow::CoverManagerWindow(QWidget *parent) : QWidget(parent), ui(ne
     ui->setupUi(this);
     reloadCoversAfterDownload = false;
     downloading = false;
+    threadRunning = false;
     ShowTextAndProgress( true );
 
     ui->progressBar_loading->setVisible( false );
@@ -323,9 +324,9 @@ void CoverManagerWindow::ReloadSettings()
 
 void CoverManagerWindow::LoadCoversForPartition( QString part )
 {
-    if( !pathOK )
+    if( !pathOK || threadRunning )
     {
-	qDebug() << "!pathOK";
+	qDebug() << "!pathOK || threadRunning" << threadRunning;
 	return;
     }
     QMap<QString, QStringList >::iterator p = gameLists.find( part );
@@ -351,6 +352,7 @@ void CoverManagerWindow::LoadCoversForPartition( QString part )
 	    loadedList << p.value().at( j );
     }
 
+    threadRunning = true;
     ui->progressBar_loading->setValue( 0 );
     ui->progressBar_loading->setVisible( true );
 
@@ -363,6 +365,7 @@ void CoverManagerWindow::LoadCoversForPartition( QString part )
 
 void CoverManagerWindow::ReceiveCovers( QList< QImage > covers, bool reload )
 {
+    threadRunning = false;
     //qDebug() << "CoverManagerWindow::ReceiveCovers";
     if( !downloading )
     {
@@ -387,6 +390,11 @@ void CoverManagerWindow::ReceiveCovers( QList< QImage > covers, bool reload )
     if( !loadedList.isEmpty() )
 	loader.CheckCovers( loadedList, coverDir, PATH2D, PATH3D, PATHFULL, PATHFULL_HQ, PATHDISC, mode_check, false );
 
+}
+
+void CoverManagerWindow::Refresh()
+{
+    LoadCoversForPartition( currentPartition );
 }
 
 //convert a number emited from the pictureflow widget to an ID for the WiiTDB widget

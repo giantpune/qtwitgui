@@ -163,6 +163,10 @@ void WiiTDBWindow::LoadGameFromID( QString id )
 	 {
 	     AddImage( i.value() ? ":/images/drumsR.png" : ":/images/drums.png" );
 	 }
+	 else if( str == "keyboard" )//same image for rockband3 keyboard and USB one for monsterhunter
+	 {
+	     AddImage( i.value() ? ":/images/keyboardR.png" : ":/images/keyboard.png" );
+	 }
 	 else if( str == "dancepad" )
 	 {
 	     AddImage( i.value() ? ":/images/dancepadR.png" : ":/images/dancepad.png" );
