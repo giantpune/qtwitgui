@@ -178,3 +178,9 @@ void SettingsDialog::on_pushButton_titlesPath_clicked()
     QString p = QFileDialog::getOpenFileName( this, tr( "Where is titles.txt?" ) );
     ui->lineEdit_titlesTxt->setText( p );
 }
+
+void SettingsDialog::on_pushButton_coverPath_clicked()
+{
+    QString p = QFileDialog::getExistingDirectory( this, tr( "Select a Base Path for Covers" ) );
+    ui->lineEdit_coverPath->setText( p );
+}

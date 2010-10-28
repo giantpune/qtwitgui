@@ -114,6 +114,7 @@ signals:
 public slots:
     void SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > gameMap );
     void LoadCoversForPartition( QString part );
+    void ReloadSettings();
     //void SettingsHaveChanged();
     //void ListMissingCovers( int type );
 
