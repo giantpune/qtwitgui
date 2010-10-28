@@ -842,6 +842,7 @@ void MainWindow::on_menuView_aboutToShow()
     {
     case mdiGame:
     case mdiPartition:
+    case mdiCovers:
 	{
 	    canRefresh = true;
 	}
@@ -914,6 +915,12 @@ void MainWindow::on_actionRefresh_Current_Window_triggered()
 	{
 	    GameWindow *w = qobject_cast<GameWindow *>( subW->widget() );
 	    QTimer::singleShot( 0, w, SLOT( ReloadGame() ) );
+	}
+	break;
+    case mdiCovers:
+	{
+	    CoverManagerWindow *w = qobject_cast<CoverManagerWindow *>( subW->widget() );
+	    QTimer::singleShot( 0, w, SLOT( Refresh() ) );
 	}
 	break;
     default://other window types not supported by "refresh"

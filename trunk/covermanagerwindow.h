@@ -95,6 +95,7 @@ private:
     bool pathOK;
     bool reloadCoversAfterDownload;
     bool downloading; // used to decide if the progress bar can be hidden
+    bool threadRunning;
     QString coverDir;
     QString currentPartition;//used for reloading/refreshing
 
@@ -115,6 +116,7 @@ public slots:
     void SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > gameMap );
     void LoadCoversForPartition( QString part );
     void ReloadSettings();
+    void Refresh();
     //void SettingsHaveChanged();
     //void ListMissingCovers( int type );
 
