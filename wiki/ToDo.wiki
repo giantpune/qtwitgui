@@ -34,7 +34,7 @@ lots of testing.  current logic for the convert/copy dialog is largely untested.
 
 <s>the "about" dialogs need to come back, and could use some work.</s>
 
-coverflow is working perfectly, but disabled until the download logic is worked out.
+<s>coverflow is working perfectly, but disabled until the download logic is worked out.</s>
 
 <s>windows version needs everything about "root" and "sudo" removed.  instead use "wmic" to gather FS information.</s>
 
@@ -43,3 +43,5 @@ coverflow is working perfectly, but disabled until the download logic is worked 
 again, I need images.  this time, theres lots more.  currently there are just random placeholder icons from free online archives.
 
 possibly correct for errors in WiiTDB.
+
+Maybe add some option to disable the mdi or switch to a tabbed view.  The way windows7 handles this, it looks terrible.
