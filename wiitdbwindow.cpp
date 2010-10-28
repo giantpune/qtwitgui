@@ -131,7 +131,11 @@ void WiiTDBWindow::LoadGameFromID( QString id )
 	 {
 	     AddImage( i.value() ? ":/images/classiccontrollerR.png" : ":/images/classiccontroller.png" );
 	 }
-	 else if( str == "wheel" || str == "logitech force feedback" )
+	 else if( str == "logitech force feedback" )
+	 {
+	     AddImage( i.value() ? ":/images/forceFeedbackR.png" : ":/images/forceFeedback.png" );
+	 }
+	 else if( str == "wheel" )
 	 {
 	     AddImage( i.value() ? ":/images/wheelR.png" : ":/images/wheel.png" );
 	 }

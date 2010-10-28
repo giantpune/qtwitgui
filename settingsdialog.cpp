@@ -170,7 +170,6 @@ void SettingsDialog::ResizeButtons()
     ui->pushButton_wiitdbPath->setMinimumWidth( max );
     ui->pushButton_wit->setMinimumWidth( max );
     ui->pushButton_wwt->setMinimumWidth( max );
-
 }
 
 void SettingsDialog::on_pushButton_titlesPath_clicked()

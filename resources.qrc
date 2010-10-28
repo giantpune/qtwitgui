@@ -101,5 +101,8 @@
         <file>images/style/trough-scrollbar-horiz.png</file>
         <file>images/style/trough-scrollbar-vert.png</file>
         <file>wiitdb.xml</file>
+        <file>images/wifi6.png</file>
+        <file>images/forceFeedback.png</file>
+        <file>images/forceFeedbackR.png</file>
     </qresource>
 </RCC>
