@@ -3,7 +3,7 @@
 #include "tools.h"
 
 //todo, allow adjustable paths
-#define COVERPATH   "covers"
+//#define COVERPATH   "covers"
 #define PATHDISC    "disc"
 #define PATH2D	    "2d"
 #define PATH3D	    "3d"
@@ -23,8 +23,9 @@ CoverManagerWindow::CoverManagerWindow(QWidget *parent) : QWidget(parent), ui(ne
 
     //hide the disc images for now
     ui->groupBox_sideBox->setVisible( false );
+    ReloadSettings();
 
-    pathOK = true;
+    /*pathOK = true;
     coverDir = COVERPATH;
     QDir cur = QDir::current();
     if( !cur.exists( coverDir ) )
@@ -35,13 +36,13 @@ CoverManagerWindow::CoverManagerWindow(QWidget *parent) : QWidget(parent), ui(ne
 	    pathOK = false;
 	}
     }
-    coverDir = cur.absoluteFilePath( coverDir );
+    coverDir = cur.absoluteFilePath( coverDir );*/
 
     QString localeStr = QLocale::system().name();
     localeStr.resize( 2 );
     localeStr = localeStr.toUpper();
     manager.SetLocale( localeStr );
-    manager.SetBasePath( coverDir );
+    //manager.SetBasePath( coverDir );
 
     connect( &manager, SIGNAL( SendProgress( int ) ), ui->progressBar_loading, SLOT( setValue( int ) ) );
     connect( &manager, SIGNAL( SendText( QString ) ), this, SLOT( GetText( QString ) ) );
@@ -292,6 +293,32 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 	    break;
 	}
     }
+}
+
+void CoverManagerWindow::ReloadSettings()
+{
+    qDebug() << "CoverManagerWindow::ReloadSettings()";
+    QSettings s( settingsPath, QSettings::IniFormat );
+    coverDir = s.value( "paths/covers", "" ).toString();
+    pathOK = false;
+    if( coverDir.isEmpty() )
+    {
+	qDebug() << "no path set for covers";
+	return;
+    }
+
+    QDir cur = QDir::current();
+    if( !cur.exists( coverDir ) )
+    {
+	if( !cur.mkdir( coverDir ) )
+	{
+	    qDebug() << "cant create the cover folder";
+	    return;
+	}
+    }
+    pathOK = true;
+    manager.SetBasePath( coverDir );
+    coverDir = cur.absoluteFilePath( coverDir );
 }
 
 void CoverManagerWindow::LoadCoversForPartition( QString part )

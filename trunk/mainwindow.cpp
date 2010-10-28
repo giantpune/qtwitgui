@@ -108,6 +108,7 @@ void MainWindow::CreatePFlowSubWindow()
 	connect( pFlow, SIGNAL( NewIDInFocus( QString ) ), wiiTDBwindow, SLOT( LoadGameFromID( QString ) ) );
 
     connect( subPFlow, SIGNAL( AboutToClose( QString, QPoint, QSize, int ) ), this, SLOT( MdiItemDestroyed( QString, QPoint, QSize, int ) ) );
+    connect( this, SIGNAL( TellOpenWindowsThatTheSettingsAreChanged() ), pFlow, SLOT( ReloadSettings() ) );
 }
 
 //help->about
