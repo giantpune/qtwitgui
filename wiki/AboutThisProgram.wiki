@@ -98,7 +98,7 @@
 
 
 == Cover Window ==
-<a target='_blank' http://img168.imageshack.us/img168/6786/coversk.png'><img src='http://img168.imageshack.us/img168/6786/coversk.th.png' border='0'/></a>
+<a target='_blank' href='http://img168.imageshack.us/img168/6786/coversk.png'><img src='http://img168.imageshack.us/img168/6786/coversk.th.png' border='0'/></a>
   * To get this window, set a cover path in the settings screen.  Then Click view -> covers.
 
   * The logic behind the window is pretty straight forward...
