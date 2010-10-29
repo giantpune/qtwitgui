@@ -3,6 +3,7 @@
 #include "ui_partitionwindow.h"
 #include "tools.h"
 #include "filefolderdialog.h"
+#include "fsinfo.h"
 
 PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::PartitionWindow )
 {
@@ -260,16 +261,21 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
     int selectedCount = ui->treeWidget->selectedItems().count();
     bool allSelectedGamesAreWii = true;
     bool allSelectedGamesAreGC = true;
+    bool allGamesAreGcIso = true;
     foreach( QTreeWidgetItem* item, ui->treeWidget->selectedItems() )
     {
 	QString typeStr = item->text( 4 );
 	if( typeStr.contains( "GC" ) ) // all GC types contain this and none of the wii ones do
 	{
+            if( typeStr != "ISO/GC" )
+                allGamesAreGcIso = false;
+
 	    allSelectedGamesAreWii = false;
-	}
+        }
 	else
 	{
 	    allSelectedGamesAreGC = false;
+            allGamesAreGcIso = false;
 	}
     }
     if( allSelectedGamesAreWii )
@@ -295,7 +301,7 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
     myMenu.addAction( &cpA );
     if( partition->text( 5 ) == "WBFS" )
 	myMenu.addAction( &rmA );
-    if( allSelectedGamesAreGC )
+    if( allGamesAreGcIso )
 	myMenu.addAction( &gcAlA );
 
     if( selectedCount == 1 )
@@ -379,7 +385,18 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 	    gcTotalgames = selectedCount;
 	    foreach( QTreeWidgetItem* item, ui->treeWidget->selectedItems() )
 	    {
-		gcGameList << item->text( 6 );
+#ifdef Q_WS_WIN
+                bool ok = false;
+                QString path = FsInfo::ToWinPath( item->text( 6 ), &ok );
+                if( !ok )
+                {
+                    qDebug() << "error converting path to windows path" << item->text( 6 );
+                    continue;
+                }
+                gcGameList << path;
+#else
+                gcGameList << item->text( 6 );
+#endif
 	    }
 	    qDebug() << gcDestination;
 	    QTimer::singleShot( 500, this, SLOT( ShrinkNextGame() ) );
@@ -476,11 +493,12 @@ void PartitionWindow::ShrinkNextGame()
     if( gcDestination.isEmpty() )
     {
 	qDebug() << "PartitionWindow::ShrinkNextGame error" << gcDestination << gcGameList.size();
+        QMessageBox::critical( this, tr( "Error In GameCube Destination" ), tr( "Destination filename is empty" ) );
 	ui->progressBar->setVisible( false );
 	unsetCursor();
 	return;
     }
-    QFileInfo fi( gcDestination );
+    //QFileInfo fi( gcDestination );
 
     QString dest;
     QString source = gcGameList.takeFirst();
@@ -491,6 +509,7 @@ void PartitionWindow::ShrinkNextGame()
 	if( gcGameList.size() > 1 )
 	{
 	    qDebug() << "PartitionWindow::ShrinkNextGame error: !dir";
+            QMessageBox::critical( this, tr( "Error shrinking game" ), tr( "Unable to parse the game correctly.") );
 	    ui->progressBar->setVisible( false );
 	    unsetCursor();
 	    return;
@@ -502,7 +521,7 @@ void PartitionWindow::ShrinkNextGame()
 	QFileInfo fi2( source );
 	dest = gcDestination + "/" + fi2.fileName();
     }
-    qDebug() << dest << source;
+    //qDebug() << dest << source;
 
     gcGame = new GC_ShrinkThread( this, source );
     if( !gcGame->fileOk )

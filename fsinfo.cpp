@@ -265,3 +265,7 @@ QString FsInfo::GetFilesystem( QString path )
 #endif
 }
 
+
+/*
+"wmic /output:stdout /interactive:off /locale:ms_409 OS GET caption
+             */
