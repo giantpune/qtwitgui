@@ -45,7 +45,10 @@ void WiiTDBWindow::AddImage( QPixmap pm )
 void WiiTDBWindow::AddImage( QString str )
 {
     if( !QFile::exists( str ) )
+    {
 	qDebug() << "bad filename:" << ui->label_id->text() << str;
+        return;
+    }
     QGraphicsPixmapItem *pmi = new QGraphicsPixmapItem( QPixmap( str ) );
     gv.addItem( pmi );
 }
