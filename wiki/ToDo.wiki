@@ -45,3 +45,5 @@ again, I need images.  this time, theres lots more.  currently there are just ra
 possibly correct for errors in WiiTDB.
 
 Maybe add some option to disable the mdi or switch to a tabbed view.  The way windows7 handles this, it looks terrible.
+
+figure out a way to ignore certain folders or let the user decide folders to ignore.  probably add option to disable composing while listing HDDs...  windows version is INSANELY SLOW when listing partitions for sneek and a a ext3 partitions with 500 games.
