@@ -183,8 +183,14 @@ void WitHandler::ReadyReadStdErrSlot()
     else if( errStr.startsWith( rootAskStr ) )
     {
 	errStr.clear();
-	//requestedPassword = true;
-	emit RequestPassword();
+	if( !rootPass.isEmpty() )
+	{
+	    process->write( QByteArray( rootPass.toLatin1() ) );
+	}
+	else
+	{
+	    emit RequestPassword();
+	}
 	return;
     }
     else if( errStr == rootFailStr )

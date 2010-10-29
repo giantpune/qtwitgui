@@ -619,6 +619,8 @@ void DownloadManager::startNextDownload()
     QUrl url( dlUrl );
 
     QNetworkRequest request( url );
+    request.setRawHeader("User-Agent", PROGRAM_NAME );
+
     currentDownload = manager.get( request );
     connect( currentDownload, SIGNAL( downloadProgress( qint64, qint64 ) ), this, SLOT( downloadProgress( qint64, qint64 ) ) );
     connect( currentDownload, SIGNAL( finished() ), this, SLOT( downloadFinished() ) );

@@ -665,11 +665,9 @@ void GameCopyDialog::LoadSettings()
 
     ui->comboBox_container->setCurrentIndex( s.value( "container", 0 ).toInt() );
 
-    qDebug() << "size:" << gameList.size();
     if( gameList.size() == 1 )
     {
 	bool f = s.value( "exactFilename", false ).toBool();
-	qDebug() << "checked:" << f;
 	ui->checkBox_file->setChecked( f );
 	ui->groupBox_partition->setChecked( !f );
     }
