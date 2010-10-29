@@ -92,13 +92,17 @@ void FormatWindow::AddItemToTree( const QString &part )
 	return;
     }
     QString path = sections.at( 4 );
-    if( !path.startsWith( "/dev/s" ) )
+    QString sizeStr = sections.at( 3 );
+    if( ( !path.startsWith( "/dev/s" )
+#ifdef Q_WS_MAC
+	&& !path.startsWith( "/dev/rdisk" )
+#endif
+	) || sizeStr == "0" )
     {
-	qDebug() << "skipping" << path;
+	qDebug() << "skipping" << path << sizeStr;
 	return;
     }
     QString location;
-    QString sizeStr = sections.at( 3 );
 
     QTreeWidgetItem* parent = ui->treeWidget->invisibleRootItem();
     int size = ui->treeWidget->topLevelItemCount();
@@ -109,11 +113,9 @@ void FormatWindow::AddItemToTree( const QString &part )
 	{
 	    parent = ui->treeWidget->topLevelItem( i );
 	    location = tr( "Partition %1" ).arg( ui->treeWidget->topLevelItem( i )->childCount() + 1 );
-
-	    if( sizeStr != "0" )
-		ui->pushButton_format->setEnabled( true );
 	}
     }
+    ui->pushButton_format->setEnabled( true );
 
     QTreeWidgetItem* item = new QTreeWidgetItem( parent );
 
@@ -190,7 +192,7 @@ void FormatWindow::on_pushButton_format_clicked()
 		tr( "You have chosen to format %1.  This is a physical device, not a partition.  If you aren\'t sure what you are doing, you probably want to format a partition.  "  \
 		    "If you continue, all data on this device will be destroyed, possibly irreparably.%2" ).arg( item->text( 3 ) )\
 		.arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
-                QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
+		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
     }
     else if( !item->parent()->parent() )//second level item, must be a partition
     {
