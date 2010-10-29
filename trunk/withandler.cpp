@@ -917,14 +917,18 @@ QStringList WitHandler::FileType( QStringList files )
 #ifdef Q_WS_WIN
         bool ok = false;
         QString cygPath = FsInfo::ToCygPath( files.at( i ), &ok );
-        if( !ok || !list.at( i ).endsWith( cygPath ) )
+        if( !ok || !list.at( i ).contains( cygPath ) )
+        {
+            qDebug() << "( FileType ) mismatch"  <<  list.at( i ) << cygPath;
+            return QStringList();
+        }
 #else
-	if( !list.at( i ).endsWith( files.at( i ) ) )
+        if( !list.at( i ).endsWith( files.at( i ) ) )
+        {
+            qDebug() << "( FileType ) mismatch"  <<  list.at( i ) << files.at( i );
+            return QStringList();
+        }
 #endif
-	{
-	    qDebug() << "( FileType ) mismatch"  <<  list.at( i ) << files.at( i );
-	    return QStringList();
-	}
 	QString s = list.at( i );
 	s.resize( s.indexOf( " " ) );
 	ret << s;
