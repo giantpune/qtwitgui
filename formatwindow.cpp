@@ -186,13 +186,11 @@ void FormatWindow::on_pushButton_format_clicked()
     bool recover = ui->checkBox_recover->isChecked();
     if( !item->parent() )//top level item, must be a physical drive
     {
-	qDebug() << "if";
 	button = QMessageBox::question( this, tr( "Are you sure?" ), \
 		tr( "You have chosen to format %1.  This is a physical device, not a partition.  If you aren\'t sure what you are doing, you probably want to format a partition.  "  \
 		    "If you continue, all data on this device will be destroyed, possibly irreparably.%2" ).arg( item->text( 3 ) )\
 		.arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
-		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
-	qDebug() << "messagebox";
+                QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
     }
     else if( !item->parent()->parent() )//second level item, must be a partition
     {

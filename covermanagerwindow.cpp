@@ -298,7 +298,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 
 void CoverManagerWindow::ReloadSettings()
 {
-    qDebug() << "CoverManagerWindow::ReloadSettings()";
+    //qDebug() << "CoverManagerWindow::ReloadSettings()";
     QSettings s( settingsPath, QSettings::IniFormat );
     coverDir = s.value( "paths/covers", "" ).toString();
     pathOK = false;
