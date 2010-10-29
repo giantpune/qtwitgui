@@ -131,7 +131,14 @@ void WwtHandler::ReadyReadStdErrSlot()
     if( errStr.startsWith( rootAskStr ) )
     {
 	errStr.clear();
-	emit RequestPassword();
+	if( !rootPass.isEmpty() )
+	{
+	    process->write( QByteArray( rootPass.toLatin1() ) );
+	}
+	else
+	{
+	    emit RequestPassword();
+	}
 	return;
     }
     if( errStr == rootFailStr )
