@@ -85,7 +85,7 @@ void CoverManagerWindow::ShowTextAndProgress( bool show )
 
 void CoverManagerWindow::SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > gameMap )
 {
-//    qDebug() << "CoverManagerWindow::SetGameLists";
+    qDebug() << "CoverManagerWindow::SetGameLists";
     gameLists.clear();
     QMap<QString, QList<QTreeWidgetItem *> >::iterator i = gameMap.begin();
     while( i != gameMap.constEnd() )
@@ -130,6 +130,7 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
 
     //submenu for download options
     bool haveMissingCovers = false;
+    bool needMenu = false;
     QMenu dlM( tr( "Download Missing Images" ), &myMenu );
     QAction cvrFlat( &dlM );
     QAction cvrFull( &dlM );
@@ -174,7 +175,10 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
     }
 
     if( haveMissingCovers )
+    {
+	needMenu = true;
 	myMenu.addMenu( &dlM );
+    }
 
     QMenu partMenu( tr( "Sync With Partition" ), &myMenu );
     QList<QAction*> partActions;
@@ -194,22 +198,16 @@ void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
     {
 	partMenu.addActions( partActions );
 	myMenu.addMenu( &partMenu );
+	needMenu = true;
     }
-    //myMenu.addAction( &cvrCheck );
 
-    myMenu.addSeparator();
-
+    if( !needMenu )//there are no items in the menu, just return
+	return;
     //execute the menu
     QAction* selectedItem = myMenu.exec( globalPos );
     //respond to what was selected
     if( selectedItem )
     {
-	// check for all missing images for this partition
-	/*if( selectedItem == &cvrCheck )
-	{
-	    loader.CheckCovers( loadedList, coverDir, PATH2D, PATH3D, PATHFULL, PATHFULL_HQ, PATHDISC, mode_check );
-	    return;
-	}*/
 	//download mising flat covers
 	if( selectedItem == &cvrFlat )
 	{
