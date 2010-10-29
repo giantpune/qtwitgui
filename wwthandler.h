@@ -30,8 +30,10 @@ enum
     wwtNoJob = 2000,
     wwtGetVersion,
     wwtFind,
+    wwtFind_long,
     wwtAdd,
-    wwtRemove
+    wwtRemove,
+    wwtFormat
 };
 
 class WwtHandler : public QObject
@@ -43,7 +45,7 @@ public:
     ~WwtHandler();
 
     void SetRunAsRoot( bool root = true );
-    void GetPartitions();
+    void GetPartitions( bool verbose = false );
 
     //block the current thread and wait for wit to finish
     bool Wait( int msecs = 30000 );
@@ -74,7 +76,7 @@ signals:
     void KillProcess();
     void SendFatalErr( QString, int );
     //void SendStdErr( QString );
-    //void SendStdOut( QString );
+    void SendStdOut( QString );
     void SendProgress( int );
     void SendMessageForStatusBar( QString );
     void SendPartitionList( QStringList );

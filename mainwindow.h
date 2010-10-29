@@ -78,6 +78,7 @@ private:
 
 
 private slots:
+    void on_actionFormat_WBFS_triggered();
     void on_actionRefresh_Current_Window_triggered();
     void on_actionSave_As_triggered();
     void on_actionSave_triggered();

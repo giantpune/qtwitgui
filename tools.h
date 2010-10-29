@@ -68,4 +68,6 @@ void SetGameRegion( QTreeWidgetItem* item, QString s );
 void SetGameType( QTreeWidgetItem* item, QString s );
 void SetGamePartitions( QTreeWidgetItem* item, QString s );
 void SetGamePath( QTreeWidgetItem* item, QString s );
+
+void hexdump( void *d, int len );
 #endif // TOOLS_H

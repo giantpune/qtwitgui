@@ -34,7 +34,8 @@ SOURCES += main.cpp \
  #   unixfschecker.cpp \
  #   osxfs.cpp \
  #   windowsfsstuff.cpp \
-    fsinfo.cpp
+    fsinfo.cpp \
+    formatwindow.cpp
 !macx{
     SOURCES += unzip/unzip.cpp
 }
@@ -63,7 +64,8 @@ HEADERS += mainwindow.h \
  #   unixfschecker.h \
  #   osxfs.h \
  #   windowsfsstuff.h \
-    fsinfo.h
+    fsinfo.h \
+    formatwindow.h
 !macx{
     HEADERS += unzip/zip_p.h \
     unzip/zipentry_p.h \
@@ -82,7 +84,8 @@ FORMS += mainwindow.ui \
     gamewindow.ui \
     savedialog.ui \
     covermanagerwindow.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    formatwindow.ui
 RESOURCES += resources.qrc
 MOC_DIR = obj
 OBJECTS_DIR = obj

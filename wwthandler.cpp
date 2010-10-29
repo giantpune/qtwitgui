@@ -117,7 +117,7 @@ void WwtHandler::ReadyReadStdErrSlot()
     //read text from wwt
     errStr += process->readAllStandardError();
 
-    qDebug() << "gotmessage err" << errStr;
+    //qDebug() << "gotmessage err" << errStr;
 #ifdef Q_WS_WIN
     //get rid of stupid windows new lines
     errStr.replace( "\r\n", "\n" );
@@ -131,20 +131,8 @@ void WwtHandler::ReadyReadStdErrSlot()
     if( errStr.startsWith( rootAskStr ) )
     {
 	errStr.clear();
-	//requestedPassword = true;
 	emit RequestPassword();
 	return;
-	/*while( alreadyAskingForPassword ) sleep( 1 ); //there is already a password dialog, wait for the user to answer it
-	if( rootPass.isEmpty() )
-	{
-	    alreadyAskingForPassword = true;
-	    PasswordDialog dialog;
-	    dialog.exec();
-	    alreadyAskingForPassword = false;
-	}
-	QString pass = rootPass.isEmpty() ? "iLikeDicks" : rootPass; //crashes with an empty password
-	process->write( QByteArray( pass.toLatin1() ) );
-	return;*/
     }
     if( errStr == rootFailStr )
     {
@@ -160,7 +148,7 @@ void WwtHandler::ReadyReadStdErrSlot()
 
 void WwtHandler::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 {
-    qDebug() << "wwt finished:" << i << s << "job:" << wwtJob;
+    //qDebug() << "wwt finished:" << i << s << "job:" << wwtJob;
     if( i || s )
     {
 #ifdef Q_WS_WIN
@@ -204,31 +192,49 @@ void WwtHandler::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	{
 	    QStringList parts = stdStr.split( "\n", QString::SkipEmptyParts );
 #ifdef Q_WS_MAC//mac version prints out more than just the list we want, so remove all entries that dont start with "/dev/"
-            int s = parts.size();
-            QStringList filtered;
-            for( int i = 0; i < s; i++ )
-            {
-                if( parts.at( i ).startsWith( "/dev/") )
-                    filtered << parts.at( i );
-            }
-            parts = filtered;
+	    int s = parts.size();
+	    QStringList filtered;
+	    for( int i = 0; i < s; i++ )
+	    {
+		if( parts.at( i ).startsWith( "/dev/") )
+		    filtered << parts.at( i );
+	    }
+	    parts = filtered;
 #endif
 	    emit SendPartitionList( parts );
 	}
+	case wwtFind_long:
+	{
+	    QStringList parts = stdStr.split( "\n", QString::SkipEmptyParts );
+#ifdef Q_WS_MAC//mac version prints out more than just the list we want, so remove all entries that dont start with "CHAR"
+	    int s = parts.size();
+	    QStringList filtered;
+	    for( int i = 0; i < s; i++ )
+	    {
+		if( parts.at( i ).startsWith( "CHAR") )
+		    filtered << parts.at( i );
+	    }
+	    parts = filtered;
+#endif
+	    emit SendPartitionList( parts );
+	}
+
 	case wwtAdd:
 	case wwtRemove:
 	{
 	    emit SendJobDone( wwtJob );
 	}
 	break;
+	case wwtFormat:
+	{
+	    stdStr.remove( 0xC );//IDK where this comes from, but there is a byte in the wwt output that makes no sense to me.  just delete it
+	    emit SendStdOut( stdStr );
+	    //emit SendJobDone( wwtFormat );
+	}
+	break;
 
 	default:
 	break;
-
-
-
-
-
     }
 
     //clear old errors
@@ -284,10 +290,20 @@ void WwtHandler::RunJob( QStringList args, int jobType )
     }
 
 }
-void WwtHandler::GetPartitions()
+void WwtHandler::GetPartitions( bool verbose )
 {
+    //qDebug() << "WwtHandler::GetPartitions" << verbose;
     QStringList args = QStringList() << "FIND";
-    RunJob( args, wwtFind );
+    if( !verbose )
+    {
+	RunJob( args, wwtFind );
+	return;
+    }
+    else
+    {
+	args << "-ll" << "--no-header";
+	RunJob( args, wwtFind_long );
+    }
 }
 
 //get the wwt path from the settings and check that it exists
@@ -298,8 +314,9 @@ QString WwtHandler::GetWwtPath()
     if( ret.isEmpty() )
     {
 	emit SendFatalErr( tr("No path is set for wwt.  Look in the settings."), wwtJob );
+
     }
-    if( !QFile::exists( ret ) )
+    else if( !QFile::exists( ret ) )
     {
 	emit SendFatalErr( tr("Invalid path is set for wwt.  Look in the settings."), wwtJob );
     }
