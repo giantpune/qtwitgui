@@ -496,31 +496,4 @@ QPixmap GC_Game::BannerImage( int height )
     return QPixmap::fromImage( im2 );
 }
 
-char ascii( char s ) {
-    if ( s < 0x20 ) return '.';
-    if ( s > 0x7E ) return '.';
-    return s;
-}
-void hexdump( void *d, int len ) {
-    unsigned char *data;
-    int i, off;
-    data = (unsigned char*)d;
-    printf("\n");
-    for ( off = 0; off < len; off += 16 ) {
-	printf( "%08x  ", off );
-	for ( i=0; i<16; i++ )
-	    if ( ( i + off ) >= len ) printf("   ");
-	    else printf("%02x ",data[ off + i ]);
-
-	printf(" ");
-	for ( i = 0; i < 16; i++ )
-	    if ( ( i + off) >= len ) printf(" ");
-	    else printf("%c", ascii( data[ off + i ]));
-	printf("\n");
-    }
-    fflush( stdout );
-}
-
-
-
 

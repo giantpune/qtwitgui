@@ -1,0 +1,226 @@
+#include "formatwindow.h"
+#include "ui_formatwindow.h"
+#include "passworddialog.h"
+#include "tools.h"
+#include "savedialog.h"
+
+FormatWindow::FormatWindow(QWidget *parent) : QDialog(parent), ui(new Ui::FormatWindow)
+{
+    ui->setupUi(this);
+    alreadyAskingForPassword = false;
+
+
+    QFontMetrics fm( fontMetrics() );
+    ui->treeWidget->header()->resizeSection( 0, fm.width( QString( 18, 'W' ) ) );//location
+    ui->treeWidget->header()->resizeSection( 1, fm.width( "WWWWW" ) );//GiB
+    ui->treeWidget->header()->resizeSection( 2, fm.width( "WWWWWWW" ) );//WBFS status
+
+#ifndef Q_WS_WIN
+    QSettings s( settingsPath, QSettings::IniFormat );
+    bool root = s.value( "root/enabled" ).toBool();
+    wwt.SetRunAsRoot( root );
+    connect( &wwt, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
+    connect( this, SIGNAL( UserEnteredPassword() ), &wwt, SLOT( PasswordIsEntered() ) );
+#endif
+    connect( &wwt, SIGNAL( SendStdOut( QString ) ), this, SLOT( FormatDone( QString ) ) );
+    connect( &wwt, SIGNAL( SendPartitionList( QStringList ) ), this, SLOT( GetPartitionList( QStringList ) ) );
+    connect( &wwt, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
+
+    //get the initial HDD listing
+    wwt.GetPartitions( true );
+}
+
+FormatWindow::~FormatWindow()
+{
+    wwt.Kill();
+    wwt.Wait();
+    delete ui;
+}
+
+//close the window
+void FormatWindow::on_pushButton_done_clicked()
+{
+    QDialog::accept();
+}
+
+#ifndef Q_WS_WIN
+//wwt has asked for a password
+void FormatWindow::NeedToAskForPassword()
+{
+    if( alreadyAskingForPassword )
+	return;
+
+    alreadyAskingForPassword = true;
+    PasswordDialog dialog( this );
+    dialog.exec();
+    alreadyAskingForPassword = false;
+    emit UserEnteredPassword();
+}
+#endif
+
+//ask the list of partitions from wwt
+void FormatWindow::on_pushButton_refresh_clicked()
+{
+    ui->pushButton_format->setEnabled( false );
+    wwt.GetPartitions( true );
+}
+
+//receive partitions from wwt
+void FormatWindow::GetPartitionList( QStringList list )
+{
+    qDebug() << "FormatWindow::GetPartitionList";
+    QList<QTreeWidgetItem* > oldItems = ui->treeWidget->invisibleRootItem()->takeChildren();
+    while( !oldItems.isEmpty() )
+    {
+	QTreeWidgetItem* i = oldItems.takeFirst();
+	delete i;
+    }
+    unsetCursor();
+    foreach( QString part, list )
+    {
+	AddItemToTree( part );
+    }
+}
+
+//get a line from wwt's output and figure out where it goes in the tree
+void FormatWindow::AddItemToTree( const QString &part )
+{
+    QStringList sections = part.split( " ", QString::SkipEmptyParts );
+    if( sections.size() != 5 )
+    {
+	qDebug() << "sections.size() != 5" << sections;
+	return;
+    }
+    QString path = sections.at( 4 );
+    if( !path.startsWith( "/dev/s" ) )
+    {
+	qDebug() << "skipping" << path;
+	return;
+    }
+    QString location;
+    QString sizeStr = sections.at( 3 );
+
+    QTreeWidgetItem* parent = ui->treeWidget->invisibleRootItem();
+    int size = ui->treeWidget->topLevelItemCount();
+    for( int i = 0; i < size; i++ )
+    {
+	QString hdd = ui->treeWidget->topLevelItem( i )->text( 3 );
+	if( path.startsWith( hdd ) )
+	{
+	    parent = ui->treeWidget->topLevelItem( i );
+	    location = tr( "Partition %1" ).arg( ui->treeWidget->topLevelItem( i )->childCount() + 1 );
+
+	    if( sizeStr != "0" )
+		ui->pushButton_format->setEnabled( true );
+	}
+    }
+
+    QTreeWidgetItem* item = new QTreeWidgetItem( parent );
+
+    //not found, this must be a HDD and not a partition
+    if( location.isEmpty() )
+	location = tr( "Disc %1" ).arg( ui->treeWidget->topLevelItemCount() );
+
+    item->setTextAlignment( 1, Qt::AlignRight | Qt::AlignVCenter );
+    item->setTextAlignment( 2, Qt::AlignHCenter | Qt::AlignVCenter );
+
+    item->setText( 0, location );
+    if( sections.at( 1 ) == "WBFS" )
+    {
+	parent->setText( 2, "*" );
+	item->setText( 2, "WBFS" );
+    }
+    item->setText( 1, SizeTextGiB( sizeStr ) );
+    item->setText( 3, path );
+
+}
+
+//respond somehow to fatal errors
+void FormatWindow::HandleWiimmsErrors( QString err, int id )
+{
+    //qDebug() << "wiimms error" << err << id;
+    unsetCursor();
+    ui->pushButton_format->setEnabled( true );
+    ui->pushButton_refresh->setEnabled( true );
+    ui->pushButton_done->setEnabled( true );
+    switch( id )
+    {
+    case wwtFormat:
+    {
+	QMessageBox::critical( this, tr( "Formatting Error" ), err, QMessageBox::Ok, QMessageBox::Ok );
+	break;
+    }
+    break;
+    case wwtFind_long:
+    {
+	QMessageBox::critical( this, tr( "Error getting partition list" ), err, QMessageBox::Ok, QMessageBox::Ok );
+	break;
+    }
+    break;
+	default:
+	break;
+    }
+}
+
+//formatting is done, text is all the stdout from wwt
+void FormatWindow::FormatDone( QString text )
+{
+    ui->pushButton_format->setEnabled( true );
+    ui->pushButton_refresh->setEnabled( true );
+    ui->pushButton_done->setEnabled( true );
+
+    //just recycle the save dialog.  its good for the environment
+    SaveDialog w( this, tr( "Partition Formatted" ), tr( "Here is the output from wwt" ), text, tr( "Ok" ), QString(), false );
+    w.exec();
+
+    QTimer::singleShot( 500, this, SLOT( on_pushButton_refresh_clicked() ) );
+}
+
+void FormatWindow::on_pushButton_format_clicked()
+{
+    QList< QTreeWidgetItem * > selected = ui->treeWidget->selectedItems();
+    if( selected.size() != 1 )
+	return;
+    QTreeWidgetItem* item = selected.at( 0 );
+    int button;
+    bool recover = ui->checkBox_recover->isChecked();
+    if( !item->parent() )//top level item, must be a physical drive
+    {
+	qDebug() << "if";
+	button = QMessageBox::question( this, tr( "Are you sure?" ), \
+		tr( "You have chosen to format %1.  This is a physical device, not a partition.  If you aren\'t sure what you are doing, you probably want to format a partition.  "  \
+		    "If you continue, all data on this device will be destroyed, possibly irreparably.%2" ).arg( item->text( 3 ) )\
+		.arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
+		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
+	qDebug() << "messagebox";
+    }
+    else if( !item->parent()->parent() )//second level item, must be a partition
+    {
+	button = QMessageBox::question( this, tr( "Are you sure?" ), \
+		tr( "You are about to format %1 (%2 GiB).  "  \
+		"If you continue, all data on this partition will be destroyed, possibly irreparably.%3" ).arg( item->text( 3 ) ).arg( item->text( 1 ) )\
+		.arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
+		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
+    }
+    else//what the fuck is this?  coused by a really broken partition or an error parsing the output text from wwt.
+    {
+	qDebug() << "z0mg.  something went wrong in the format window";
+	return;
+    }
+    if( button != QMessageBox::Ok )
+	return;
+
+    //qDebug() << "formatting" << item->text( 3 );
+
+    QStringList args = QStringList() << "FORMAT" << item->text( 3 ) << "--force";
+    if( ui->checkBox_recover->isChecked() )
+	args << "--recover";
+
+    if( ui->checkBox_hss->isChecked() && ui->spinBox_hss->value() != 512 )//defined hss value and not default
+	args << QString( "--hss=%1").arg( ui->spinBox_hss->value() );
+
+    ui->pushButton_format->setEnabled( false );
+    ui->pushButton_refresh->setEnabled( false );
+    ui->pushButton_done->setEnabled( false );
+    wwt.RunJob( args, wwtFormat );
+}

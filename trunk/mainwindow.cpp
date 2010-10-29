@@ -12,6 +12,7 @@
 #include "aboutdialog.h"
 #include "fsinfo.h"
 #include "tools.h"
+#include "formatwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -638,7 +639,8 @@ void MainWindow::OpenGames( QStringList games )
 //test button for triggering shit
 void MainWindow::on_actionTest_triggered()
 {
-    pFlow->SetGameLists( gameMap );
+    //qDebug() << "MainWindow::on_actionTest_triggered()";
+    // pFlow->SetGameLists( gameMap );
     //gc = new GC_ShrinkThread( this, "/media/WiiEXT3_500GB/iso/Aquaman - Battle of Atlantis NTSC-U.iso" );
     //if( !gc->fileOk )
 	//return;
@@ -931,3 +933,9 @@ void MainWindow::on_actionRefresh_Current_Window_triggered()
 
 
 
+//tools -> format WBFS
+void MainWindow::on_actionFormat_WBFS_triggered()
+{
+    FormatWindow w( this );
+    w.exec();
+}

@@ -63,9 +63,10 @@ QStringList GameCopyDialog::WitCopyCommand( QWidget *parent, QString currentPart
 //different partition selected
 void GameCopyDialog::on_comboBox_dest_currentIndexChanged( QString part )
 {
-    bool other = part == tr( "Other" );
-    ui->lineEdit_destOther->setEnabled( other );
-    ui->pushButton_destOther->setEnabled( other );
+    Q_UNUSED( part );
+    //bool other = part == tr( "Other" );
+    //ui->lineEdit_destOther->setEnabled( other );
+    //ui->pushButton_destOther->setEnabled( other );
 
     UpdateGuiWithCurrentSettings();
 }

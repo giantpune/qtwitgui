@@ -158,9 +158,4 @@ class GC_ShrinkThread : public QThread , public GC_Game
 
  };
 
-
-
-void hexdump( void *d, int len );
-
-
 #endif // GC_SHRINKTHREAD_H
