@@ -85,7 +85,7 @@ void CoverManagerWindow::ShowTextAndProgress( bool show )
 
 void CoverManagerWindow::SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > gameMap )
 {
-    qDebug() << "CoverManagerWindow::SetGameLists";
+    //qDebug() << "CoverManagerWindow::SetGameLists";
     gameLists.clear();
     QMap<QString, QList<QTreeWidgetItem *> >::iterator i = gameMap.begin();
     while( i != gameMap.constEnd() )

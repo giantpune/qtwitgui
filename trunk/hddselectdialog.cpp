@@ -65,6 +65,7 @@ void HDDSelectDialog::DestroyProcessesAndWait()
 void HDDSelectDialog::closeEvent( QCloseEvent * closeEvent )
 {
     DestroyProcessesAndWait();
+    emit SendHDDList( ui->treeWidget->invisibleRootItem()->takeChildren() );
     QWidget::closeEvent( closeEvent );
 }
 
