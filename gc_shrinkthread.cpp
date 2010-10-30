@@ -29,6 +29,13 @@ extern "C" void * _aligned_malloc( size_t size, size_t alignment );
 extern "C" void _aligned_free( void *memblock );
 #endif
 
+#if Q_BYTE_ORDER == Q_BIG_ENDIAN
+#error "This file has not been tested on a big endian machine."
+#error "You can remove this error and compile the program, but be careful while using the"
+#error "functions in this file - shrinking and aligning gamecube games."
+#error "If you would like to help out, please test a few gamecube games and"
+#error "let me know if everything is working properly or not."
+#endif
 
 
 
@@ -268,7 +275,11 @@ void GC_ShrinkThread::run()
 
 quint32 swap24( quint32 i )
 {
+#if Q_BYTE_ORDER == Q_BIG_ENDIAN
+    return i & 0xffffff;
+#else
     return qFromBigEndian( i ) >> 8;
+#endif
 }
 
 quint32 get_dol_size( const quint32 *header )
