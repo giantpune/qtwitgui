@@ -73,6 +73,14 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     //if( sel >= 0 )
 	//ui->comboBox_partitionSelect->setCurrentIndex( sel );
     s.endGroup();
+
+    int size = s.beginReadArray( "ignoreFolders" );
+    for( int i = 0; i < size; i++ )
+    {
+	 s.setArrayIndex( i );
+	 ui->listWidget_ignore->insertItem( ui->listWidget_ignore->count(), s.value( "path" ).toString() );
+    }
+    s.endArray();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -116,6 +124,21 @@ void SettingsDialog::on_pushButton_ok_clicked()
     //s.setValue( "defaultRegion", ui->comboBox_defaultRegion->currentIndex() );
     //s.setValue( "partitionSelect", ui->comboBox_partitionSelect->currentText() );
     s.endGroup();
+
+    //QList<QListWidgetItem *> ignorePaths = ui->listWidget_ignore->i
+    int size = ui->listWidget_ignore->count();
+    //if( size )
+    //{
+	s.beginWriteArray("ignoreFolders");
+	for( int i = 0; i < size; i++ )
+	{
+	    QListWidgetItem * item = ui->listWidget_ignore->takeItem( 0 );
+	    s.setArrayIndex( i );
+	    s.setValue("path", item->text() );
+	    delete item;
+	}
+	s.endArray();
+    //}
 
     s.sync();
 
@@ -182,4 +205,24 @@ void SettingsDialog::on_pushButton_coverPath_clicked()
 {
     QString p = QFileDialog::getExistingDirectory( this, tr( "Select a Base Path for Covers" ) );
     ui->lineEdit_coverPath->setText( p );
+}
+
+void SettingsDialog::on_pushButton_ignore_add_clicked()
+{
+    QString p = QFileDialog::getExistingDirectory( this, tr( "Select a folder to ignore" ) );
+    if( !p.isEmpty() && !ui->listWidget_ignore->findItems( p, Qt::MatchExactly ).count() )
+	ui->listWidget_ignore->insertItem( ui->listWidget_ignore->count(), p );
+}
+
+void SettingsDialog::on_pushButton_ignore_minus_clicked()
+{
+    QList<QListWidgetItem *> items = ui->listWidget_ignore->selectedItems();
+    if( !items.size() )
+	return;
+
+    foreach( QListWidgetItem *item, items )
+    {
+	ui->listWidget_ignore->removeItemWidget( item );
+	delete item;
+    }
 }

@@ -57,6 +57,10 @@ private:
     void DestroyProcessesAndWait();
     void RequestFsTypes();
 
+    //paths to ignore - set in the settings dialog
+    QStringList ignorePaths;
+    bool PathIsIgnored( const QString &path );
+
 public slots:
     void accept();
     void HandleWiimmsErrors( QString err, int id );
