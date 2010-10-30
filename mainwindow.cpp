@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     alreadyAskingForPassword = false;
     ui->setupUi( this );
 
+    //ui->toolBar->addAction( QIcon( ":/images/wifi6.png" ), "test" );
+
     setWindowTitle( PROGRAM_NAME );
 
     LoadSettings();

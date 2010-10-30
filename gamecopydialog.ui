@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Copy &amp; Convert Parameters</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -396,7 +396,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="resources.qrc">
          <normaloff>:/images/sneek.png</normaloff>:/images/sneek.png</iconset>
        </property>
        <property name="iconSize">
@@ -624,7 +624,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

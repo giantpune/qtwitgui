@@ -21,7 +21,7 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
 
     oktoRequestNextLIST_LLL = true;
     alreadyAskingForPassword = false;
-    setWindowTitle( tr( "Partition Selection" ) );
+    //setWindowTitle( tr( "Partition Selection" ) );
 
     connect( ui->treeWidget, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( CustomTreeWidgetContentmenu( const QPoint& ) ) );
 

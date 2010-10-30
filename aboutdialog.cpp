@@ -8,7 +8,7 @@ AboutDialog::AboutDialog(QWidget *parent, const QString &qtwitguiVersion, const 
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    setWindowTitle( tr( "About" ) );
+    //setWindowTitle( tr( "About" ) );
     QString unk = tr( "Unknown" );
     ui->label_qtwitgui_version->setText( qtwitguiVersion.isEmpty() ? unk : qtwitguiVersion );
     ui->label_wit_text->setText( witVersion.isEmpty() ? unk : witVersion );
