@@ -49,6 +49,7 @@ private:
     QTreeWidgetItem *partition;
     WitHandler wit;
     WwtHandler wwt;
+    bool ignoreFst;
 
     bool writingToWBFS;//keep track of a WBFS partition if we are writing to it so we can enable it when done
     QString busyWBFSPath;

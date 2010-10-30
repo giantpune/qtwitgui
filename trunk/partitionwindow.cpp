@@ -28,6 +28,7 @@ PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui(
     wit.SetRunAsRoot( root );
     wwt.SetRunAsRoot( root );
     wit.SetTitlesTxtPath( s.value( "paths/titlesTxt", "" ).toString() );
+    ignoreFst = s.value( "ignoreFst", false ).toBool();
 
     connect( ui->treeWidget, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( CustomTreeWidgetContentmenu( const QPoint& ) ) );
 
@@ -117,7 +118,7 @@ void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, QList<QTre
 	setCursor( Qt::BusyCursor );
 	QSettings s( settingsPath, QSettings::IniFormat );
 	int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
-	wit.ListLLL_HDD( partition->text( 0 ), rDepth );
+	wit.ListLLL_HDD( partition->text( 0 ), rDepth, ignoreFst );
 	//wit.ListLLL_HDD( partition->text( 0 ) );
     }
 

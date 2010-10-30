@@ -81,6 +81,8 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
 	 ui->listWidget_ignore->insertItem( ui->listWidget_ignore->count(), s.value( "path" ).toString() );
     }
     s.endArray();
+
+    ui->checkBox_ignoreFst->setChecked( s.value( "ignoreFst", false ).toBool() );
 }
 
 SettingsDialog::~SettingsDialog()
@@ -127,17 +129,16 @@ void SettingsDialog::on_pushButton_ok_clicked()
 
     //QList<QListWidgetItem *> ignorePaths = ui->listWidget_ignore->i
     int size = ui->listWidget_ignore->count();
-    //if( size )
-    //{
-	s.beginWriteArray("ignoreFolders");
-	for( int i = 0; i < size; i++ )
-	{
-	    QListWidgetItem * item = ui->listWidget_ignore->takeItem( 0 );
-	    s.setArrayIndex( i );
-	    s.setValue("path", item->text() );
-	    delete item;
-	}
-	s.endArray();
+    s.beginWriteArray("ignoreFolders");
+    for( int i = 0; i < size; i++ )
+    {
+	QListWidgetItem * item = ui->listWidget_ignore->takeItem( 0 );
+	s.setArrayIndex( i );
+	s.setValue("path", item->text() );
+	delete item;
+    }
+    s.endArray();
+    s.setValue( "ignoreFst", ui->checkBox_ignoreFst->isChecked() );
     //}
 
     s.sync();

@@ -24,12 +24,8 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     setWindowTitle( tr( "Partition Selection" ) );
 
     connect( ui->treeWidget, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( CustomTreeWidgetContentmenu( const QPoint& ) ) );
-#ifndef Q_WS_WIN
+
     QSettings s( settingsPath, QSettings::IniFormat );
-    bool root = s.value( "root/enabled" ).toBool();
-    wit.SetRunAsRoot( root );
-    wwt.SetRunAsRoot( root );
-    wit.SetNamesFromWiiTDB( false );//dont replace games name on our own.  just accept teh names that wit gives
     wit.SetTitlesTxtPath( s.value( "paths/titlesTxt", "" ).toString() );
 
     int size = s.beginReadArray( "ignoreFolders" );
@@ -40,6 +36,12 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     }
     s.endArray();
 
+    ignoreFst = s.value( "ignoreFst", false ).toBool();
+
+#ifndef Q_WS_WIN
+    bool root = s.value( "root/enabled" ).toBool();
+    wit.SetRunAsRoot( root );
+    wwt.SetRunAsRoot( root );
 
     connect( &wwt, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wwt, SLOT( PasswordIsEntered() ) );
@@ -209,7 +211,7 @@ bool HDDSelectDialog::PathIsIgnored( const QString &path )
     {
 	if( path.startsWith( ignorePaths.at( i ) ) )
 	{
-	    qDebug() << "ignoring" << path << "based on ignore rule" << ignorePaths.at( i );
+	    //qDebug() << "ignoring" << path << "based on ignore rule" << ignorePaths.at( i );
 	    return true;
 	}
     }
@@ -365,7 +367,7 @@ void HDDSelectDialog::RequestNextLIST_LLLL()
 	    setCursor( Qt::BusyCursor );
 	    QSettings s( settingsPath, QSettings::IniFormat );
 	    int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
-	    wit.ListLLL_HDD( item->text( 0 ), rDepth );
+	    wit.ListLLL_HDD( item->text( 0 ), rDepth, ignoreFst );
 	    return;
 	}
     }
