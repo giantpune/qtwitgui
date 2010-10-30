@@ -14,7 +14,7 @@
    <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>CoverFlow</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <property name="margin">
@@ -110,7 +110,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="PictureFlow" name="pictureFlow" native="true">
+       <widget class="PictureFlow" name="pictureFlow">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -126,7 +126,7 @@
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
         </property>
-        <property name="backgroundColor" stdset="0">
+        <property name="backgroundColor">
          <color>
           <red>0</red>
           <green>0</green>

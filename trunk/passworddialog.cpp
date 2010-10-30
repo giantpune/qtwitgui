@@ -7,7 +7,7 @@ PasswordDialog::PasswordDialog(QWidget *parent) :
     ui(new Ui::PasswordDialog)
 {
     ui->setupUi(this);
-    this->setWindowTitle( tr( "Password Requested" ) );
+    //this->setWindowTitle( tr( "Password Requested" ) );
 }
 
 PasswordDialog::~PasswordDialog()
