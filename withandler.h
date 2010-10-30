@@ -52,7 +52,7 @@ public:
 
     void SetRunAsRoot( bool root = true );
     void SetTitlesTxtPath( const QString &path );
-    void ListLLL_HDD( QString path, int recurse = 10 );
+    void ListLLL_HDD( QString path, int recurse = 10, bool ignoreFst = false );
 
     void SetNamesFromWiiTDB( bool wiitdb = true );
 

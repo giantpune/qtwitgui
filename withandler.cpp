@@ -454,13 +454,18 @@ QString WitHandler::GetWitPath()
 }
 
 //LIST-LLL
-void WitHandler::ListLLL_HDD( QString path, int recurse )
+void WitHandler::ListLLL_HDD( QString path, int recurse, bool ignoreFst )
 {
     QString rDepth;
     QTextStream( &rDepth ) << "--rdepth=" << recurse;
     QStringList args = QStringList() << "LIST-LLL" << "--recurse" << path << rDepth << "--sections";
+
     if( !titlesTxtPath.isEmpty() )
 	args << "--titles=" + titlesTxtPath;
+
+    if( ignoreFst )
+	args << "--ignore-fst";
+
     //qDebug() << args;
     RunJob( args, witListLLLHDD );
 }

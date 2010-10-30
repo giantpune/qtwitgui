@@ -59,6 +59,7 @@ private:
 
     //paths to ignore - set in the settings dialog
     QStringList ignorePaths;
+    bool ignoreFst;
     bool PathIsIgnored( const QString &path );
 
 public slots:
