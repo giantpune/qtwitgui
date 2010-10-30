@@ -325,7 +325,7 @@ void GameCopyDialog::on_buttonBox_accepted()
 	    text += "%F" + ext;
 	    break;
 	case 0:
-	    text += "%X";
+            text += "%I" + ext;
 	    break;
 	case 10:
 	    text += "%F_[%I]" + ext;
@@ -337,13 +337,13 @@ void GameCopyDialog::on_buttonBox_accepted()
 	    text += "%I_%F" + ext;
 	    break;
 	case 13:
-	    text += "%F_[%I]/%X";
+            text += "%F_[%I]/%I" + ext;
 	    break;
 	case 12:
-	    text += "%F [%I]/%X";
+            text += "%F [%I]/%I" + ext;
 	    break;
 	case 14:
-	    text += "%I_%F/%X";
+            text += "%I_%F/%I" + ext;
 	    break;
 	case 3:
 	    text += "%T_[%I]" + ext;
@@ -355,13 +355,13 @@ void GameCopyDialog::on_buttonBox_accepted()
 	    text += "%I_%T" + ext;
 	    break;
 	case 6:
-	    text += "%N_[%I]/%X";
+            text += "%N_[%I]/%I" + ext;
 	    break;
 	case 5:
-	    text += "%Y/%X";
+            text += "%Y/%I" + ext;
 	    break;
 	case 7:
-	    text += "%I_%T/%X";
+            text += "%I_%T/%I" + ext;
 	    break;
 	}
 	args << text;
