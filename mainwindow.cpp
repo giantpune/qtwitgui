@@ -274,10 +274,11 @@ void MainWindow::SaveSettings()
     settings.remove( "" );			//remove all existing settings
     settings.endGroup();
 
-    if( partList.size() )
-    {
+    int size = partList.size();
+    //if( size )
+    //{
 	settings.beginWriteArray("partitionOptions");
-	for( int i = 0; i < partList.size(); i++ )
+	for( int i = 0; i < size; i++ )
 	{
 	    QTreeWidgetItem* item = partList.at( i );
 	    settings.setArrayIndex( i );
@@ -287,7 +288,7 @@ void MainWindow::SaveSettings()
 	    settings.setValue("filesystem", item->text( 5 ) );
 	}
 	settings.endArray();
-    }
+    //}
 }
 
 //respond to items in the mdi being closed

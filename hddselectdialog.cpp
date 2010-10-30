@@ -32,6 +32,14 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     wit.SetNamesFromWiiTDB( false );//dont replace games name on our own.  just accept teh names that wit gives
     wit.SetTitlesTxtPath( s.value( "paths/titlesTxt", "" ).toString() );
 
+    int size = s.beginReadArray( "ignoreFolders" );
+    for( int i = 0; i < size; i++ )
+    {
+	 s.setArrayIndex( i );
+	 ignorePaths << s.value( "path" ).toString();
+    }
+    s.endArray();
+
 
     connect( &wwt, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wwt, SLOT( PasswordIsEntered() ) );
@@ -163,19 +171,49 @@ void HDDSelectDialog::on_pushButton_find_clicked()
     for( int i = 0; i < list.size(); ++i )
     {
 	QFileInfo fileInfo = list.at( i );
+	if( PathIsIgnored( fileInfo.absoluteFilePath() ) )
+	    continue;
+
 	QDir subDir( fileInfo.absoluteFilePath() );
 	//QDir subDir( dir.absoluteFilePath( fileInfo.fileName() ) );
 
 	if( subDir.exists( "wbfs" ) )
+	{
+	    if( PathIsIgnored( subDir.absoluteFilePath( "wbfs" ) ) )
+		continue;
 	    AddNewPartitionToList( subDir.absoluteFilePath( "wbfs" ), tr( "Auto" ) );
+	}
 
 	if( subDir.exists( "iso" ) )
+	{
+	    if( PathIsIgnored( subDir.absoluteFilePath( "iso" ) ) )
+		continue;
 	    AddNewPartitionToList( subDir.absoluteFilePath( "iso" ), tr( "Auto" ) );
+	}
 
 	if( subDir.exists( "games" ) )
+	{
+	    if( PathIsIgnored( subDir.absoluteFilePath( "games" ) ) )
+		continue;
 	    AddNewPartitionToList( subDir.absoluteFilePath( "games" ), tr( "Auto" ) );
+	}
     }
     wwt.GetPartitions();
+}
+
+//check if a path is ignored, or is a subfolder of an ignored path
+bool HDDSelectDialog::PathIsIgnored( const QString &path )
+{
+    int size  = ignorePaths.size();
+    for( int i = 0; i < size; i++ )
+    {
+	if( path.startsWith( ignorePaths.at( i ) ) )
+	{
+	    qDebug() << "ignoring" << path << "based on ignore rule" << ignorePaths.at( i );
+	    return true;
+	}
+    }
+    return false;
 }
 
 //receive WBFS partitions from wwt
