@@ -230,6 +230,7 @@ void PartitionWindow::SettingsHaveChanged()
     wit.SetRunAsRoot( root );
     wwt.SetRunAsRoot( root );
     wit.SetTitlesTxtPath( s.value( "paths/titlesTxt", "" ).toString() );
+    ignoreFst = s.value( "ignoreFst", false ).toBool();
 }
 
 //get a copy of the partition list from the main window
