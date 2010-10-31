@@ -185,11 +185,10 @@ void GameWindow::ReceiveGameInfo( QString type, QString id, QString name, int io
     {
     case 0://gamegube
 	{
-	GC_Game gc( lastPathLoadedCorrectly );
-
-	ui->label_sigtype->setText( "" );
-	ui->label_trucha_icon->setPixmap( gc.BannerImage( ui->lineEdit_id->height() + 10 ) );
-    }
+	    GC_Game gc( lastPathLoadedCorrectly );//this is blocking.  the program freezes while it tries to load the game
+	    ui->label_sigtype->setText( "" );
+	    ui->label_trucha_icon->setPixmap( gc.BannerImage( ui->lineEdit_id->height() + 10 ) );
+	}
 	break;
 
     default:
