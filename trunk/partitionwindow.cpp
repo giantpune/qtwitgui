@@ -77,8 +77,11 @@ void PartitionWindow::TreeSelectionChanged( QTreeWidgetItem * current, QTreeWidg
 void PartitionWindow::closeEvent( QCloseEvent * closeEvent )
 {
     //qDebug() << "PartitionWindow::closeEvent()";
-    QList<QTreeWidgetItem *> list( ui->treeWidget->invisibleRootItem()->takeChildren() );
-    emit SendGamelistFor_1_Partition( partition->text( 0 ), list );
+    if( ui->treeWidget->topLevelItemCount() )
+    {
+	QList<QTreeWidgetItem *> list( ui->treeWidget->invisibleRootItem()->takeChildren() );
+	emit SendGamelistFor_1_Partition( partition->text( 0 ), list );
+    }
     QWidget::closeEvent( closeEvent );
 }
 
