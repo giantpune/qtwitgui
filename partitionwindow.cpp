@@ -365,6 +365,12 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 	}
 	else if( selectedItem == &rmA )//should only happen if the current games are on a wbfs partition
 	{
+	    int ok = QMessageBox::critical( this, tr( "Are you sure?" ), tr( "You are about to remove %1 games from %2.  This is your last chance to back out.")\
+				   .arg( ui->treeWidget->selectedItems().count() ).arg( partition->text( 0 ) ), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
+
+	    if( ok != QMessageBox::Ok )
+		return;
+
 	    busy = true;
 	    QStringList args = QStringList() << "REMOVE" << "--part=" + partition->text( 0 );
 	    foreach( QTreeWidgetItem* item, ui->treeWidget->selectedItems() )
