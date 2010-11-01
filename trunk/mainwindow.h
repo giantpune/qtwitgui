@@ -99,6 +99,7 @@ private slots:
     void NeedToAskForPassword();
     void OpenGames( QStringList );
     void ReactToInvalidPartionReport( QString part );
+    void ReceiveDirtyPartition( QString part );
 
     void on_menuFile_aboutToShow();
     void on_menuView_aboutToShow();

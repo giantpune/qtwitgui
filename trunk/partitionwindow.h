@@ -65,6 +65,11 @@ private:
     QStringList gcGameList;
     QString gcDestination;
 
+    QString dirtyPartition;//remember which partition we are writing to. on successful write, tell the main window that the gamelist needs to be reloaded
+
+    bool needToReload;
+    bool busy;
+
 
 private slots:
     void on_actionRefresh_List_triggered();
@@ -82,6 +87,7 @@ public slots:
     void SettingsHaveChanged();
     void SetPartitionList( QList<QTreeWidgetItem *> pList );
     void GetPasswordFromMainWindow();
+    //void Reload();
 
 
 protected:
@@ -95,6 +101,7 @@ signals:
     void AskMainWindowForPassword();
     void BrowseGames( QStringList );
     void ReportInvalidPartition( QString );
+    void PartitionIsDirty( QString );
 };
 
 #endif // PARTITIONWINDOW_H

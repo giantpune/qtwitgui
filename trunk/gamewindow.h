@@ -80,6 +80,8 @@ private:
     QString busyWBFSPath;
     void SetPartitionEnabled( QString part, bool enabled );
 
+    QString dirtyPartition;//remember which partition we are writing to. on successful write, tell the main window that the gamelist needs to be reloaded
+
     void ClearTreeView();
     void InsertText( QString s, QString c);
 
@@ -107,6 +109,7 @@ signals:
     void UserEnteredPassword();
     void AskMainWindowForPassword();
     void SendUpdatedPartitionInfo( QTreeWidgetItem * );
+    void PartitionIsDirty( QString );
 
 protected:
 //    void dropEvent( QDropEvent *event );

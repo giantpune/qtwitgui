@@ -322,11 +322,13 @@ void GameWindow::on_actionSave_As_triggered()
     if( prog == "wwt" )
     {
 	SetPartitionEnabled( args.at( 2 ), false );
+	dirtyPartition = args.at( 2 );
 	wwt.RunJob( args, wwtAdd );
     }
     else if( prog == "wit" )
     {
 	writingToWBFS = false;
+	dirtyPartition = args.takeFirst();
 	wit.RunJob( args, witCopy );
     }
     else
@@ -341,9 +343,11 @@ void GameWindow::HideProgressBar( int job )
     switch( job )
     {
     case wwtAdd:
+	emit PartitionIsDirty( dirtyPartition );
 	ui->statusbar->showMessage( tr( "Done adding game to WBFS partition" ) );
 	break;
     case witCopy:
+	emit PartitionIsDirty( dirtyPartition );
 	ui->statusbar->showMessage( tr( "Done copying & converting game" ) );
 	break;
     case witEdit:

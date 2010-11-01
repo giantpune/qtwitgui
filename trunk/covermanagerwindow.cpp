@@ -103,8 +103,30 @@ void CoverManagerWindow::SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > 
 
 	i++;
     }
+    //check if the gamelist being shown needs reloaded
+    i = gameMap.find( currentPartition );
+    if( i != gameMap.constEnd() )
+    {
+	bool needToReload = false;
+	int size = i.value().size();
+	for( int j = 0; j < size; j++ )
+	{
+	    QTreeWidgetItem *item = i.value().at( j );
+	    if( !loadedList.contains( item->text( 0 ) ) )
+	    {
+		needToReload = true;
+		break;
+	    }
+	}
+	if( needToReload )
+	{
+	    qDebug() << "gamelist has changed, reloading";
+	    LoadCoversForPartition( currentPartition );
+	}
+    }
+
     //not synced with any partition yet, load one
-    if( currentPartition.isEmpty() )
+    else if( currentPartition.isEmpty() )
     {
 	i = gameMap.begin();
 	if( i != gameMap.constEnd() )
