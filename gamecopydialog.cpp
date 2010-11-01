@@ -310,7 +310,8 @@ void GameCopyDialog::on_buttonBox_accepted()
 	return;
     }
     QStringList args;
-    args << "wit" << "COPY" << "--DEST";
+    QString dirtyPart = ( ui->groupBox_partition->isChecked() || !singleGame ) ? ui->comboBox_dest->currentText() : "_NO_PART_";
+    args << "wit" << dirtyPart << "COPY" << "--DEST";//add the actual partition name as an argument here just to be able to refresh later, this arg will be removed before wit gets them
     if( ui->groupBox_partition->isChecked() || !singleGame )//use an existing partition
     {
 	QString text = ui->comboBox_dest->currentText() + "/";

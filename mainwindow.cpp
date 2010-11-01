@@ -574,6 +574,7 @@ void MainWindow::OpenSelectedPartitions( QList<QTreeWidgetItem *> list )
 	connect( this, SIGNAL( SendNewPartitionListToSubWindows( QList<QTreeWidgetItem *> ) ), w, SLOT( SetPartitionList( QList<QTreeWidgetItem *> ) ) );
 	connect( this, SIGNAL( TellOpenWindowsThatTheSettingsAreChanged() ), w, SLOT( SettingsHaveChanged() ) );
 	connect( w, SIGNAL( SendUpdatedPartitionInfo( QTreeWidgetItem * ) ), this, SLOT( RecieveUpdatedPartitionInfo( QTreeWidgetItem * ) ) );
+	connect( w, SIGNAL( PartitionIsDirty( QString ) ), this, SLOT( ReceiveDirtyPartition( QString ) ) );
 	connect( w, SIGNAL( ReportInvalidPartition( QString ) ), this, SLOT( ReactToInvalidPartionReport( QString ) ) );
 	connect( this, SIGNAL( UserEnteredPassword() ), w, SLOT( GetPasswordFromMainWindow() ) );
 	connect( w, SIGNAL( AskMainWindowForPassword() ), this, SLOT( NeedToAskForPassword() ) );
@@ -622,6 +623,7 @@ void MainWindow::OpenGames( QStringList games )
 	connect( this, SIGNAL( UserEnteredPassword() ), w, SLOT( GetPasswordFromMainWindow() ) );
 	connect( w, SIGNAL( AskMainWindowForPassword() ), this, SLOT( NeedToAskForPassword() ) );
 	connect( w, SIGNAL( SendUpdatedPartitionInfo( QTreeWidgetItem * ) ), this, SLOT( RecieveUpdatedPartitionInfo( QTreeWidgetItem * ) ) );
+	connect( w, SIGNAL( PartitionIsDirty( QString ) ), this, SLOT( ReceiveDirtyPartition( QString ) ) );
 	//mdiItem->show();
 
 	QSettings settings( settingsPath, QSettings::IniFormat );
@@ -689,6 +691,18 @@ CustomMdiItem *MainWindow::findMdiChild( const QString &name, int type )
 	    return mdiChild;
     }
     return 0;
+}
+
+//get a message that a parttion needs to be reloaded ( from a different window ) and request for that partition to refresh its gamelist
+void MainWindow::ReceiveDirtyPartition( QString part )
+{
+    qDebug() << "MainWindow::ReceiveDirtyPartition(" << part << ")";
+    CustomMdiItem *subW = findMdiChild( part, mdiPartition );
+    if( !subW )
+	return;
+
+    PartitionWindow *w = qobject_cast<PartitionWindow *>( subW->widget() );
+    QTimer::singleShot( 0, w, SLOT( on_actionRefresh_List_triggered() ) );
 }
 
 //read settings for each partition and get them in the form of a treewidgetitemlist

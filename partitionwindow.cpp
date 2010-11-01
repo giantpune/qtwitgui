@@ -9,6 +9,8 @@ PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui(
 {
     partition = NULL;
     shrinkingGc = false;
+    busy = false;
+    needToReload = false;
 
     ui->setupUi( this );
     ui->progressBar->setVisible( false );
@@ -118,11 +120,7 @@ void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, QList<QTre
     else
     {
 	//we werent given a gamelist, but only a partition.  ask wit for the games
-	setCursor( Qt::BusyCursor );
-	QSettings s( settingsPath, QSettings::IniFormat );
-	int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
-	wit.ListLLL_HDD( partition->text( 0 ), rDepth, ignoreFst );
-	//wit.ListLLL_HDD( partition->text( 0 ) );
+	on_actionRefresh_List_triggered();
     }
 
     //ui->treeWidget->addTopLevelItems( gameList );
@@ -134,6 +132,7 @@ void PartitionWindow::HandleWiimmsErrors( QString err, int id )
     //qDebug() << "PartitionWindow::HandleWiimmsErrors" << err << id;
     unsetCursor();
     ui->progressBar->setVisible( false );
+    busy = false;
     switch( id )
     {
     case witListLLLHDD:
@@ -142,7 +141,8 @@ void PartitionWindow::HandleWiimmsErrors( QString err, int id )
 	break;
     case wwtAdd:
     case witCopy:
-    case witEdit:
+    //case witEdit:
+	emit PartitionIsDirty( dirtyPartition );
 	QMessageBox::critical( this, tr( "Error writing games" ), err );
 	if( writingToWBFS )
 	    SetPartitionEnabled( busyWBFSPath, true );
@@ -170,6 +170,7 @@ void PartitionWindow::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     unsetCursor();
     QString gameCntStr;
     QTextStream( &gameCntStr ) << games.size();
+    busy = false;
 
     //add new games from the list
     partition->setText( 1, gameCntStr );
@@ -217,11 +218,21 @@ void PartitionWindow::on_actionRefresh_List_triggered()
     if( !partition )
 	return;
 
-    setCursor( Qt::BusyCursor );
-    QSettings s( settingsPath, QSettings::IniFormat );
-    int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
-    wit.ListLLL_HDD( partition->text( 0 ), rDepth );
-    //wit.ListLLL_HDD( partition->text( 0 ) );
+    if( !busy )
+    {
+	//qDebug() << "PartitionWindow::Reload() - reloading now";
+	needToReload = false;
+	busy = true;
+	setCursor( Qt::BusyCursor );
+	QSettings s( settingsPath, QSettings::IniFormat );
+	int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
+	wit.ListLLL_HDD( partition->text( 0 ), rDepth, ignoreFst );
+    }
+    else
+    {
+	//qDebug() << "PartitionWindow::Reload() - reloading later";
+	needToReload = true;
+    }
 }
 
 //respond to message that the user has edited the settings
@@ -303,18 +314,17 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 
     myMenu.addAction( &infoA );
     myMenu.addSeparator();
-    myMenu.addAction( &cpA );
-    if( partition->text( 5 ) == "WBFS" )
-	myMenu.addAction( &rmA );
-    if( allGamesAreGcIso )
-	myMenu.addAction( &gcAlA );
-
-    if( selectedCount == 1 )
+    if( !busy )
     {
-	myMenu.addAction( &browseA );
-	if( allSelectedGamesAreWii )
-	    myMenu.addAction( &verifyA );
+	myMenu.addAction( &cpA );
+	if( partition->text( 5 ) == "WBFS" )//WBFS remove
+	    myMenu.addAction( &rmA );
+	if( allGamesAreGcIso )//align GC games
+	    myMenu.addAction( &gcAlA );
+	if( selectedCount == 1 && allSelectedGamesAreWii )//verify wii games
+	myMenu.addAction( &verifyA );
     }
+    myMenu.addAction( &browseA );
 
     //execute the menu
     QAction* selectedItem = myMenu.exec( globalPos );
@@ -339,11 +349,15 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 	    setCursor( Qt::BusyCursor );
 	    if( prog == "wwt" )
 	    {
+		busy = true;
 		SetPartitionEnabled( args.at( 2 ), false );
+		dirtyPartition = args.at( 2 );
 		wwt.RunJob( args, wwtAdd );
 	    }
 	    else if( prog == "wit" )
 	    {
+		busy = true;
+		dirtyPartition = args.takeFirst();
 		wit.RunJob( args, witCopy );
 	    }
 	    else
@@ -351,7 +365,7 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 	}
 	else if( selectedItem == &rmA )//should only happen if the current games are on a wbfs partition
 	{
-	    qDebug() << "delete";
+	    busy = true;
 	    QStringList args = QStringList() << "REMOVE" << "--part=" + partition->text( 0 );
 	    foreach( QTreeWidgetItem* item, ui->treeWidget->selectedItems() )
 		args << item->text( 0 );
@@ -387,6 +401,7 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 	    }
 	    if( gcDestination.isEmpty() )
 		return;
+	    busy = true;
 	    gcTotalgames = selectedCount;
 	    foreach( QTreeWidgetItem* item, ui->treeWidget->selectedItems() )
 	    {
@@ -418,27 +433,26 @@ void PartitionWindow::HideProgressBar( int job )
 {
     ui->progressBar->setVisible( false );
     unsetCursor();
+    busy = false;
     switch( job )
     {
     case wwtAdd:
+	emit PartitionIsDirty( dirtyPartition );
 	ui->statusbar->showMessage( tr( "Done adding games to WBFS partition" ) );
 	break;
     case wwtRemove://refresh the game list
 	{
 	    ui->statusbar->showMessage( tr( "Games successfully deleted from WBFS partition" ) );
-	    setCursor( Qt::BusyCursor );
-	    QSettings s( settingsPath, QSettings::IniFormat );
-	    int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
-	    wit.ListLLL_HDD( partition->text( 0 ), rDepth );
-	    //wit.ListLLL_HDD( partition->text( 0 ) );
+	    needToReload = true;
 	}
 	break;
     case witCopy:
+	emit PartitionIsDirty( dirtyPartition );
 	ui->statusbar->showMessage( tr( "Done copying & converting games" ) );
 	break;
-    case witEdit:
-	ui->statusbar->showMessage( tr( "Game patched OK" ) );
-	break;
+    //case witEdit:
+	//ui->statusbar->showMessage( tr( "Game patched OK" ) );
+	//break;
     default:
 	ui->statusbar->showMessage( QString( "You shouldn\'t see this ( %1 )" ).arg( job ) );
 	break;
@@ -449,6 +463,9 @@ void PartitionWindow::HideProgressBar( int job )
 	qDebug() << "GameWindow::HideProgressBar -> about to enable the wbfs partition";
 	SetPartitionEnabled( busyWBFSPath, true );
     }
+
+    if( needToReload )
+	on_actionRefresh_List_triggered();
 }
 
 //get status message and append it to the status bar
@@ -554,6 +571,24 @@ void PartitionWindow::ShrinkNextGame()
 
 }
 
+//slot to reload the gamelist.  if the window is currently busy, just set a variable so it can be reloaded when the current job is done
+/*void PartitionWindow::Reload()
+{
+    if( !busy )
+    {
+	qDebug() << "PartitionWindow::Reload() - reloading now";
+	needToReload = false;
+	setCursor( Qt::BusyCursor );
+	QSettings s( settingsPath, QSettings::IniFormat );
+	int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
+	wit.ListLLL_HDD( partition->text( 0 ), rDepth, ignoreFst );
+    }
+    else
+    {
+	qDebug() << "PartitionWindow::Reload() - reloading later";
+	needToReload = true;
+    }
+}*/
 
 
 
