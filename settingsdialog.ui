@@ -128,7 +128,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <widget class="QWidget" name="layoutWidget">
@@ -423,6 +423,16 @@
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLineEdit" name="lineEdit_ignore_entry">
+               <property name="minimumSize">
+                <size>
+                 <width>202</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
+             </item>
              <item>
               <widget class="QPushButton" name="pushButton_ignore_add">
                <property name="text">

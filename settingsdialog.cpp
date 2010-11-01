@@ -208,13 +208,22 @@ void SettingsDialog::on_pushButton_coverPath_clicked()
     ui->lineEdit_coverPath->setText( p );
 }
 
+//add item to the ignore path list
 void SettingsDialog::on_pushButton_ignore_add_clicked()
 {
-    QString p = QFileDialog::getExistingDirectory( this, tr( "Select a folder to ignore" ) );
+    //if there is text entered in the lineEdit, use that text, otherwise open a window to allow searching for a path
+    QString p = ui->lineEdit_ignore_entry->text();
+
+    if( p.isEmpty() )
+	p = QFileDialog::getExistingDirectory( this, tr( "Select a folder to ignore" ) );
+    else
+	ui->lineEdit_ignore_entry->clear();
+
     if( !p.isEmpty() && !ui->listWidget_ignore->findItems( p, Qt::MatchExactly ).count() )
 	ui->listWidget_ignore->insertItem( ui->listWidget_ignore->count(), p );
 }
 
+//remove items from the ignore path list
 void SettingsDialog::on_pushButton_ignore_minus_clicked()
 {
     QList<QListWidgetItem *> items = ui->listWidget_ignore->selectedItems();

@@ -497,14 +497,16 @@ QPixmap GC_Game::BannerImage( int height )
     //qDebug() << "deleting buffer with free()";
     free( bitmapdata );
 #elif defined Q_WS_MAC
-    qDebug() << "deleting buffer with aligned_free()";
+    //qDebug() << "deleting buffer with aligned_free()";
     aligned_free( bitmapdata );
 #else//not linux or mac.  must be windows
-    qDebug() << "deleting buffer with _aligned_free()";
+    //qDebug() << "deleting buffer with _aligned_free()";
     _aligned_free( bitmapdata );
 #endif
 
     return QPixmap::fromImage( im2 );
 }
+
+
 
 
