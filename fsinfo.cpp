@@ -292,7 +292,9 @@ QStringList FsInfo::GetDvdDrives()
     QStringList list = output.split( "\n", QString::SkipEmptyParts );
     return list;
 #elif defined Q_WS_MAC//TODO...
-
+    //vmware + osx + my dvd drives + burned wii games dont really work out to well.
+    //for now, just don't do anything.  somebody that knows macs can fix this and submit a patch
+    return QStringList();
 #else
     QDir dir( "/dev" );
     QStringList dvds = dir.entryList( QStringList() << "sr*", QDir::AllEntries | QDir::System );
