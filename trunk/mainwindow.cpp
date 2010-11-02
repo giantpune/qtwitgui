@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     pFlowIsOpen = false;
     alreadyAskingForPassword = false;
     ui->setupUi( this );
+#ifdef Q_WS_MAC
+    ui->actionOpen_DVD_r->setEnabled( false );//needs the listing of DVD drives fixed in fsinfo.cpp
+#endif
 
     //ui->toolBar->addAction( QIcon( ":/images/wifi6.png" ), "test" );
 
