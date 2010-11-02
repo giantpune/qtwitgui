@@ -294,7 +294,11 @@ QStringList FsInfo::GetDvdDrives()
 #elif defined Q_WS_MAC//TODO...
 
 #else
-
-
+    QDir dir( "/dev" );
+    QStringList dvds = dir.entryList( QStringList() << "sr*", QDir::AllEntries | QDir::System );
+    QStringList ret;
+    foreach( QString str, dvds )
+	ret << "/dev/" + str;
+    return ret;
 #endif
 }
