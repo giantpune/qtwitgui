@@ -10,6 +10,7 @@ public:
     explicit FsInfo(QObject *parent = 0);
 
     static QString GetFilesystem( QString path );
+    static QStringList GetDvdDrives();
 
     //only used for vindows stuff
     static bool Check();

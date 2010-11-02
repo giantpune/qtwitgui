@@ -57,7 +57,7 @@
      <x>0</x>
      <y>0</y>
      <width>980</width>
-     <height>27</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -66,6 +66,7 @@
     </property>
     <addaction name="actionOpen_Partition"/>
     <addaction name="actionOpenGame"/>
+    <addaction name="actionOpen_DVD_r"/>
     <addaction name="separator"/>
     <addaction name="actionTest"/>
     <addaction name="actionSave"/>
@@ -140,7 +141,7 @@
     <string>Settings</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+D</string>
+    <string>Ctrl+W</string>
    </property>
   </action>
   <action name="actionCovers">
@@ -206,6 +207,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionOpen_DVD_r">
+   <property name="text">
+    <string>Open DVD +/- r...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>

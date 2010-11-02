@@ -13,6 +13,7 @@
 #include "fsinfo.h"
 #include "tools.h"
 #include "formatwindow.h"
+#include "dvdselectdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -947,12 +948,16 @@ void MainWindow::on_actionRefresh_Current_Window_triggered()
     }
 }
 
-
-
-
 //tools -> format WBFS
 void MainWindow::on_actionFormat_WBFS_triggered()
 {
     FormatWindow w( this );
     w.exec();
+}
+
+void MainWindow::on_actionOpen_DVD_r_triggered()
+{
+    QStringList drives = DvdSelectDialog::GetDvdToOpen( this );
+    if( drives.size() )
+        OpenGames( drives );
 }

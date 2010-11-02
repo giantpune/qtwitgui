@@ -265,7 +265,36 @@ QString FsInfo::GetFilesystem( QString path )
 #endif
 }
 
+QStringList FsInfo::GetDvdDrives()
+{
 
-/*
-"wmic /output:stdout /interactive:off /locale:ms_409 OS GET caption
-             */
+#ifdef Q_WS_WIN
+    QProcess p;
+    p.start( "listDvd" );
+    if( !p.waitForStarted( 5000 ) )
+    {
+        qDebug() << "FsInfo::GetDvdDrives() failed to start";
+        return QStringList();
+    }
+
+    if( !p.waitForFinished() )
+    {
+        qDebug() << "!p.waitForFinished() ( FsInfo::GetDvdDrives() )";
+        return QStringList();
+    }
+    if( p.exitCode() != QProcess::NormalExit )
+    {
+        qDebug() << "exit status ( FsInfo::GetDvdDrives() )" << p.exitCode();
+        return QStringList();
+    }
+    QString output = p.readAll();
+    output.remove( "\r" );
+    QStringList list = output.split( "\n", QString::SkipEmptyParts );
+    return list;
+#elif defined Q_WS_MAC//TODO...
+
+#else
+
+
+#endif
+}
