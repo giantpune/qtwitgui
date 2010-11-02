@@ -224,13 +224,14 @@ void GameWindow::HandleThreadErrors( QString err, int id )
     case witDump:
 	{
 	    QMessageBox::critical( this, tr( "Error Getting game Data" ), err );
+	    ui->statusbar->showMessage( tr( "Error getting game information" ) );
 	}
+	break;
     case wwtAdd:
     case witCopy:
     case witEdit:
 	QMessageBox::critical( this, tr( "Error writing games" ), err );
 	ui->statusbar->showMessage( tr( "Error writing games" ) );
-	break;
 	break;
     }
     if( writingToWBFS )
