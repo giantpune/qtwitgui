@@ -718,8 +718,11 @@ QList<QTreeWidgetItem *> MainWindow::ReadPartitionSettings()
     for( int i = 0; i < size; i++ )
     {
 	 settings.setArrayIndex( i );
+	 QString path = settings.value( "path" ).toString();
+	 if( !QFile::exists( path ) )//dont add partitions that dont exist any more
+	     continue;
 	 QTreeWidgetItem *item = new QTreeWidgetItem;
-	 item->setText( 0, settings.value( "path" ).toString() );
+	 item->setText( 0, path );
 	 item->setText( 3, settings.value( "split" ).toString() );
 	 item->setText( 4, settings.value( "source" ).toString() );
 	 item->setText( 5, settings.value( "filesystem" ).toString() );
