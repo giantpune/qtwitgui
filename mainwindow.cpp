@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 #endif
 
     //ui->toolBar->addAction( QIcon( ":/images/wifi6.png" ), "test" );
+    //ui->toolBar->addAction( ui->actionSettings );
 
     setWindowTitle( PROGRAM_NAME );
 
@@ -55,6 +56,7 @@ void MainWindow::CreateWiiTDBSubWindow()
     subWiiTDB->setWidget( wiiTDBwindow );
     subWiiTDB->setWindowTitle( "WiiTDB" );
     subWiiTDB->setWindowFlags( Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint );
+    //subWiiTDB->setWindowIcon( QIcon( ":/images/wiitdbIcon.png" ) );
 
     subWiiTDB->show();
 
@@ -100,6 +102,7 @@ void MainWindow::CreatePFlowSubWindow()
     subPFlow->type = mdiCovers;
     subPFlow->setWidget( pFlow );
     subPFlow->setWindowTitle( tr( "CoverFlow" ) );
+    //subPFlow->setWindowIcon( QIcon( ":/images/coverFlowIcon.png" ) );
     subPFlow->show();
 
     QSettings settings( settingsPath, QSettings::IniFormat );

@@ -385,6 +385,11 @@ void GameWindow::HideProgressBar( int job )
 QStringList GameWindow::AvailableActions()
 {
     QStringList ret = QStringList() << "save as";//this one is always available
+
+    //assume this is a game on DVD-r.  these are read-only, so dont allow "save"
+    if( lastPathLoadedCorrectly.startsWith( "/dev/sr" ) )
+	return ret;
+
     QString current = gameTypeStr;
     current.resize( current.indexOf( "/" ) );
     if( wit.NameSupportsAttribute( current, "modify") )
