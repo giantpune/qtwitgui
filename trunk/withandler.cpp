@@ -219,36 +219,35 @@ void WitHandler::PasswordIsEntered()
 
 void WitHandler::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 {
+    int witJobcopy = witJob;//make a copy and reset the original so we can emit signals and allow other processes to run
+    witJob = witNoJob;
     //qDebug() << "wit finished:" << i << s << "job:" << witJob;
     if( i || s )
     {
 #ifdef Q_WS_WIN
 	if( i == 128 )
 	{
-	    emit SendFatalErr( tr( "Maybe cygwin1.dll is missing" ), witJob );
+	    emit SendFatalErr( tr( "Maybe cygwin1.dll is missing" ), witJobcopy );
 	    return;
 	}
 #endif
 	if( s )
 	{
-	    emit SendFatalErr( tr( "Wit appears to have crashed" ), witJob );
+	    emit SendFatalErr( tr( "Wit appears to have crashed" ), witJobcopy );
 	    return;
 	}
 
 	if( !errStr.isEmpty() )
 	{
-	    emit SendFatalErr( errStr, witJob );
+	    emit SendFatalErr( errStr, witJobcopy );
 	    return;
 	}
 
 	//clear old errors
 	errStr.clear();
-	witJob = witNoJob;
     }
 
     SendProgress( 100 );
-    int witJobcopy = witJob;//make a copy and reset the original so we can emit signals and allow other processes to run
-    witJob = witNoJob;
     switch( witJobcopy )
     {
 	case witListLLLHDD:

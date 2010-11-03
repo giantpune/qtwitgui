@@ -107,5 +107,10 @@
         <file>images/keyboard.png</file>
         <file>images/keyboardR.png</file>
         <file>images/pegi_15.png</file>
+        <file>images/coverFlowIcon.png</file>
+        <file>images/settingsIcon.png</file>
+        <file>images/wiitdbIcon.png</file>
+        <file>images/rootIcon.png</file>
+        <file>images/wiimmsIcon.png</file>
     </qresource>
 </RCC>
