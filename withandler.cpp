@@ -88,6 +88,10 @@ void WitHandler::ReadyReadStdOutSlot()
 {
     //read text from wit
     QString curRead = process->readAllStandardOutput();
+    curRead.replace( "\xc2\xa0", " " );//account for errors in wiitdb's version of titles.txt
+					//this will still allow wit to write games to the HDD using these goofy names,
+					//but at least i dont have to see them in the GUI
+
 #ifdef Q_WS_WIN
     //get rid of stupid windows new lines
     curRead.replace( "\r\n", "\n" );
@@ -551,45 +555,55 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( QStringList list, boo
 		if( p.startsWith( "id=" ) )
 		{
 		    id = p;
-		    id.remove( 0, id.indexOf( "=" ) + 1 );
+		    id.remove( 0, 3 );
 
 		    if( namesFromWiiTDB )name = wiiTDB->NameFromID( id );
 		    continue;
 		}
-		if( p.startsWith( "name=" ) && ( !namesFromWiiTDB || name.isEmpty() ) )
+		if( p.startsWith( "name=" ) )
 		{
 		    name = p;
-		    name.remove( 0, name.indexOf( "=" ) + 1 );
+		    name.remove( 0, 5 );
+		    continue;
+		}
+		if( p.startsWith( "title=" ) )//overwrite the title from the disc header with the one from titles.txt
+		{
+		    QString title = p;
+		    title.remove( 0, 6 );
+		    if( title == "(null)" )
+			continue;
+
+		    name = title;
 		    continue;
 		}
 		if( p.startsWith( "region=" ) )
 		{
-		    p.remove( 0, p.indexOf( "=" ) + 1 );
+		    p.remove( 0, 7 );
 		    region = p;
 		    continue;
 		}
 		if( p.startsWith( "size=" ) )
 		{
-		    p.remove( 0, p.indexOf( "=" ) + 1 );
+		    p.remove( 0, 5 );
 		    sizeStr = p;
 		    //qDebug() << "list-lll" << sizeStr << name;
 		    continue;
 		}
 		if( p.startsWith( "filetype=" ) )
 		{
-		    p.remove( 0, p.indexOf( "=" ) + 1 );
+		    p.remove( 0, 9 );
 		    type = p;
 		    continue;
 		}
 		if( p.startsWith( "partition-info=" ) )
 		{
-		    p.remove( 0, p.indexOf( "=" ) + 1 );
+		    p.remove( 0, 15 );
 		    partitionInfo = p;
 		    continue;
 		}
 		if( p.startsWith( "source=" ) )
 		{
-		    p.remove( 0, p.indexOf( "=" ) + 1 );
+		    p.remove( 0, 7 );
 		    path = p;
 
 		    if( !id.isEmpty() && !name.isEmpty() && !sizeStr.isEmpty() && !region.isEmpty() && !type.isEmpty() && !partitionInfo.isEmpty() && !path.isEmpty() )
