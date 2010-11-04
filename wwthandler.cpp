@@ -210,6 +210,7 @@ void WwtHandler::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 #endif
 	    emit SendPartitionList( parts );
 	}
+	break;
 	case wwtFind_long:
 	{
 	    QStringList parts = stdStr.split( "\n", QString::SkipEmptyParts );
@@ -225,6 +226,7 @@ void WwtHandler::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 #endif
 	    emit SendPartitionList( parts );
 	}
+	break;
 
 	case wwtAdd:
 	case wwtRemove:

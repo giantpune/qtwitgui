@@ -380,6 +380,7 @@ void WitHandler::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
 	case witCopy:
 	case witEdit:
 	    emit SendJobDone( witJobcopy );
+	    break;
 	default:
 	break;
 
