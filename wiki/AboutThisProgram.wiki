@@ -217,6 +217,8 @@
 </pre>
   * Since Wiimm's tools rely on cygwin, this program uses cygpath.exe to convert windows paths to cygwin paths and back again.  And cygpath.exe relies on the cygwin1.dll.  So, required files include the above dlls, wit, wit's dependencies, and cygpath.exe ( which shares a dependency on cygwin1.dll with wit.  both programs must have access to it ) 
 
+  * In order to support using games on DVD-r as source files, I have created a little helper program called "listDvd.exe" which simply lists dvd drives as the paths that cygwin & Wiimms' tools expect.  This exe should be in the same path as qtwitgui, as well as cygwin1.dll.  You can test that this exe is working properly by inserting a DVd into one of your drives and running the exe from a cmd window.  If it says something like "/dev/sr0", then it is working properly, and you should be able to copy games from DVD-r to any format supported by the wiimms toolset.
+
   * wmic is required.  This SHOULD be already present on your system.  If you get errors about not being able to start wmic, open a cmd windows and run "wmic /output:stdout /interactive:off /locale:ms_409 OS GET caption".  This will tell you if you have the program or not.  And if you don't, check google for how to get it back from wherever it went.
 
   * There is no support for the UAC in this program.  If you want wit/wwt to be able to access WBFS partitions on windows version that have the UAC, run this program as administrator and the external processes will inherit the privileges.
@@ -230,6 +232,7 @@
 == OS-X ==
   * no .zip support for wiitdb
   * Root support doesnt appear to be needed for WBFS access, but it was already there for linux, so i left it in for OSx.
+  * The DVD menu is disabled.  My DVD drives are not working on my test MAC, so I have no way to test & debug this stuff.  If somebody is willing to take a loot at the source and submit a patch, I will enable this menu.
   * results of "otool -L ./QtWitGui" ( from r112 )
 {{{
 /Users/noskill/c/qtWitGui/_69_/QtWitGui.app/Contents/MacOS/QtWitGui:
@@ -239,3 +242,8 @@
 	/usr/lib/libgcc_s.1.dylib (compatibility version 1.0.0, current version 246.0.0)
 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 125.0.1)
 }}}
+
+== Big Endian Machines ==
+  * The code used to align gamecube games does some endian conversions.  I do not have a big endian machine to test this stuff out.  So, I have simply added a bit that that will cause compile errors on purpose.  This is to make sure that anybody using that will know to be careful.  you can simply delete these forced errors and it should compile fine.  Please do not share these compiled binaries with anybody.  I want to make it obvious to anybody using this program that it is possible that this code is completely broken.
+
+  * After I have a reasonable amount of reports that this code is working properly, I will remove these compile errors.
