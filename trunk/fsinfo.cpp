@@ -19,7 +19,7 @@ bool FsInfo::Check()
 #ifndef Q_WS_WIN
     qDebug() << "FsInfo::Check() called in non-windows platform";
     return false;
-#endif
+#else
     QProcess p;
 
     //check that we have the program to convert windows paths to proper cygwin paths
@@ -77,15 +77,17 @@ bool FsInfo::Check()
 	return false;
     }
     return true;
+#endif
 }
 
 QString FsInfo::ToWinPath( QString cygPath, bool *ok )
 {
     *ok = false;
 #ifndef Q_WS_WIN
+    Q_UNUSED( cygPath );
     qDebug() << "FsInfo::ToWinPath() called in non-windows platform";
     return QString();
-#endif
+#else
     QProcess p;
     p.start( "cygpath", QStringList() << "-w" << cygPath );
     if( !p.waitForStarted() )
@@ -111,15 +113,17 @@ QString FsInfo::ToWinPath( QString cygPath, bool *ok )
     //qDebug() << "FsInfo::ToWinPath:" << cygPath << output;
     *ok = true;
     return output;
+#endif
 }
 
 QString FsInfo::ToCygPath( QString winPath, bool *ok )
 {
     *ok = false;
 #ifndef Q_WS_WIN
+    Q_UNUSED( winPath );
     qDebug() << "FsInfo::ToCygPath() called in non-windows platform";
     return QString();
-#endif
+#else
     QProcess p;
     p.start( "cygpath", QStringList() << "-u" << winPath );
     if( !p.waitForStarted() )
@@ -145,6 +149,7 @@ QString FsInfo::ToCygPath( QString winPath, bool *ok )
     //qDebug() << "FsInfo::ToCygPath:" << winPath << output;
     *ok = true;
     return output;
+#endif
 }
 
 QString FsInfo::GetFilesystem( QString path )
