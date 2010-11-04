@@ -113,7 +113,9 @@ void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, QList<QTre
 	foreach( QTreeWidgetItem *game, gameList )
 	{
 	    QTreeWidgetItem *newGame = game->clone();//make a deep copy of the items so when this window is destroyed, the original list is not touched
-	    newGame->setText( 2, SizeTextGiB( newGame->text( 2 ) ) );
+
+	    if( !newGame->text( 2 ).contains( "." ) )//if the size contains a '.' then we must have already converted the size to GiB.  no need to do it again
+		newGame->setText( 2, SizeTextGiB( newGame->text( 2 ) ) );
 	    ui->treeWidget->addTopLevelItem( newGame );
 	}
     }
