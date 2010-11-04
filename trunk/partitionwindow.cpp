@@ -15,6 +15,7 @@ PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui(
     ui->setupUi( this );
     ui->progressBar->setVisible( false );
     ui->menubar->hide();
+    ui->treeWidget->sortItems( GAME_NAME_COLUMN, Qt::AscendingOrder );
 
     QFontMetrics fm( fontMetrics() );
     ui->treeWidget->header()->resizeSection( GAME_ID_COLUMN, fm.width( "WWWWWWWWW" ) );//id
