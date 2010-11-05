@@ -557,10 +557,10 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( QStringList list, boo
 		    id = p;
 		    id.remove( 0, 3 );
 
-		    if( namesFromWiiTDB )name = wiiTDB->NameFromID( id );
+		    if( namesFromWiiTDB )name = wiiTDB->NameFromID( id );//get the title from the wiitdb.zip
 		    continue;
 		}
-		if( p.startsWith( "name=" ) )
+		if( p.startsWith( "name=" ) && ( !namesFromWiiTDB || name.isEmpty() ) )
 		{
 		    name = p;
 		    name.remove( 0, 5 );
