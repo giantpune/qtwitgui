@@ -24,6 +24,9 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Clears items from this list and checks for available partitions</string>
+       </property>
        <property name="text">
         <string>Detect Hard Drives</string>
        </property>
@@ -45,6 +48,9 @@
          <width>120</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Rescan only the partitions in this list</string>
        </property>
        <property name="text">
         <string>ReScan</string>
@@ -71,6 +77,9 @@
          <width>120</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Manually add a folder to this list</string>
        </property>
        <property name="text">
         <string>Manual Search</string>
@@ -154,6 +163,9 @@
    </item>
    <item row="2" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="toolTip">
+      <string>Open selected partitions</string>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

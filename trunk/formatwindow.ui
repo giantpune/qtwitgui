@@ -16,6 +16,9 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="2">
     <widget class="QTreeWidget" name="treeWidget">
+     <property name="toolTip">
+      <string>Select a partition to format</string>
+     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -47,6 +50,9 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QCheckBox" name="checkBox_recover">
+         <property name="toolTip">
+          <string>Format the partition in recovery mode</string>
+         </property>
          <property name="text">
           <string>Recover Mode</string>
          </property>
@@ -56,6 +62,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QCheckBox" name="checkBox_hss">
+           <property name="toolTip">
+            <string>Check this box to specify a sector size.  This should be a power of 2.</string>
+           </property>
            <property name="text">
             <string>HDD Sector Size</string>
            </property>
@@ -65,6 +74,9 @@
           <widget class="QSpinBox" name="spinBox_hss">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>Check this box to specify a sector size.  This should be a power of 2.</string>
            </property>
            <property name="minimum">
             <number>512</number>
@@ -106,6 +118,9 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+        <string>Format the selected item with WBFS filesystem</string>
+       </property>
        <property name="text">
         <string>Format</string>
        </property>
@@ -128,6 +143,9 @@
       <widget class="QPushButton" name="pushButton_refresh">
        <property name="enabled">
         <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Get the available partitions</string>
        </property>
        <property name="text">
         <string>Refresh List</string>

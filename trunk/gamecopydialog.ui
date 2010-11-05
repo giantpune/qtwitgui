@@ -29,6 +29,9 @@
            <bold>true</bold>
           </font>
          </property>
+         <property name="toolTip">
+          <string>Enter a specific destination for this game</string>
+         </property>
          <property name="text">
           <string>Enter a Filename</string>
          </property>
@@ -40,10 +43,17 @@
           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
          </property>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit_destOther"/>
+          <widget class="QLineEdit" name="lineEdit_destOther">
+           <property name="toolTip">
+            <string>Enter a specific destination for this game</string>
+           </property>
+          </widget>
          </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButton_destOther">
+           <property name="toolTip">
+            <string>Enter a specific destination for this game</string>
+           </property>
            <property name="text">
             <string>Browse...</string>
            </property>
@@ -60,6 +70,9 @@
          <width>0</width>
          <height>153</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Use a known partition as the destination</string>
        </property>
        <property name="title">
         <string>Usa an Existing Partition</string>
@@ -91,6 +104,9 @@
         </item>
         <item>
          <widget class="QCheckBox" name="checkBox_partitionisWBFS">
+          <property name="toolTip">
+           <string>Treat the destination as a WBFS partition</string>
+          </property>
           <property name="text">
            <string>Partition has WBFS filesystem</string>
           </property>
@@ -105,6 +121,9 @@
         </item>
         <item>
          <widget class="QComboBox" name="comboBox_esc">
+          <property name="toolTip">
+           <string>How should the games me named when written to the destination?</string>
+          </property>
           <item>
            <property name="text">
             <string>/ID.ext</string>
@@ -187,6 +206,9 @@
      </item>
      <item>
       <widget class="QCheckBox" name="checkBox_split">
+       <property name="toolTip">
+        <string>Check this box to split games that are larger than 4GB</string>
+       </property>
        <property name="text">
         <string>Split files at 4GB</string>
        </property>
@@ -194,6 +216,9 @@
      </item>
      <item>
       <widget class="QCheckBox" name="checkBox_overwrite">
+       <property name="toolTip">
+        <string>Check this box to overwrite existing files without warning</string>
+       </property>
        <property name="text">
         <string>Overwrite Existing files</string>
        </property>
@@ -201,6 +226,9 @@
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox_partitions">
+       <property name="toolTip">
+        <string>Check the box for each type of partition you would like to remain in teh copied game</string>
+       </property>
        <property name="title">
         <string>Keep Partitions</string>
        </property>
@@ -256,6 +284,9 @@
        </item>
        <item row="0" column="1">
         <widget class="QComboBox" name="comboBox_container">
+         <property name="toolTip">
+          <string>What type of container should hold the game?</string>
+         </property>
          <item>
           <property name="text">
            <string>wbfs</string>
@@ -294,6 +325,9 @@
    </item>
    <item row="1" column="1" colspan="2">
     <widget class="QLabel" name="label_example">
+     <property name="toolTip">
+      <string>Example Output filename</string>
+     </property>
      <property name="text">
       <string>ExampleOutput</string>
      </property>
@@ -351,6 +385,9 @@
          <height>22</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>Truncate the output .iso to a smaller size</string>
+       </property>
        <property name="text">
         <string>Truncate iso</string>
        </property>
@@ -392,6 +429,9 @@
          <height>61</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Keep only needed files for use with SNEEK's DI module</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -425,6 +465,9 @@
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox_wia_presets">
+         <property name="toolTip">
+          <string>Use a preset compression setting</string>
+         </property>
          <property name="title">
           <string>Preset Mode</string>
          </property>
@@ -459,6 +502,9 @@
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox_wia_advanced">
+         <property name="toolTip">
+          <string>Manually enter compression options</string>
+         </property>
          <property name="title">
           <string>Advanced</string>
          </property>
