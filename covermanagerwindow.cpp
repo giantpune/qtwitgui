@@ -370,6 +370,8 @@ void CoverManagerWindow::LoadCoversForPartition( QString part )
     {
 	if( !loadedList.contains( p.value().at( j ) ) )
 	    loadedList << p.value().at( j );
+	else
+	    qDebug() << "CoverManagerWindow::LoadCoversForPartition: duplicate ID" << p.value().at( j );
     }
 
     threadRunning = true;

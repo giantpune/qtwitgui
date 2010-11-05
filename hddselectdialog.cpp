@@ -221,6 +221,7 @@ bool HDDSelectDialog::PathIsIgnored( const QString &path )
 //receive WBFS partitions from wwt
 void HDDSelectDialog::GetWBFSPartitionList( QStringList list )
 {
+    qDebug() << "HDDSelectDialog::GetWBFSPartitionList" << list;
     unsetCursor();
     foreach( QString part, list )
     {

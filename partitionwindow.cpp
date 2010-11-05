@@ -199,6 +199,7 @@ void PartitionWindow::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     {	ui->treeWidget->addTopLevelItems( games );
     }
 
+    ui->statusbar->showMessage( "" );
     emit SendGamelistFor_1_Partition( partition->text( 0 ), gamesCopy );
     emit SendUpdatedPartitionInfo( partition );
 }
@@ -227,6 +228,7 @@ void PartitionWindow::on_actionRefresh_List_triggered()
 	needToReload = false;
 	busy = true;
 	setCursor( Qt::BusyCursor );
+	ui->statusbar->showMessage( tr( "Reading game information..." ) );
 	QSettings s( settingsPath, QSettings::IniFormat );
 	int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
 	wit.ListLLL_HDD( partition->text( 0 ), rDepth, ignoreFst );
