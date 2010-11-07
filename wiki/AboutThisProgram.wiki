@@ -22,7 +22,13 @@
 == Usage ==
   * When the program is started, it checks for the external processes it uses.  If it cannot find them, menus and actions will be disabled.  You will need to go to the settings and enter the necessary paths before it will allow all the features to be used.
 
+  * Once the settings are adjusted, there are 3 ways to proceed.  You can either open a single game in the gameWindow, you can open a partition in a partitionWindow, or you can let the program go ahead and build a list of all the partitions & games in the "open partition" dialog.
+
+  * Using one of these 3 options, you can jump right to patching a single game, converting several games, or going ahead and letting the program cache all the gamelists for later use.
+
   * Opening partitions and games can be done several different ways.  Drag & drop, argv[], the "File" menu, and through right-click menus.
+
+  * To let the QtWitGui get all the gamelists, use the upper left button in the "open partition" dialog.  This will take longer than just reading 1 partition's games, but it will ensure that all available partitions will be flagged and added to the lists used in the "copy & convert" dialog and the cover manager.
 
 ===  Partition Select Dialog ===
 <a target='_blank' href='http://img5.imageshack.us/img5/6967/partitionselect.png'><img src='http://img5.imageshack.us/img5/6967/partitionselect.th.png' border='0'/></a>
