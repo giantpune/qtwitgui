@@ -651,7 +651,9 @@ void MainWindow::OpenGames( QStringList games )
 //test button for triggering shit
 void MainWindow::on_actionTest_triggered()
 {
-    //qDebug() << "MainWindow::on_actionTest_triggered()";
+    extern QString rootPass;
+    qDebug() << "MainWindow::on_actionTest_triggered()";
+    qDebug() << "password:" << rootPass;
     // pFlow->SetGameLists( gameMap );
     //gc = new GC_ShrinkThread( this, "/media/WiiEXT3_500GB/iso/Aquaman - Battle of Atlantis NTSC-U.iso" );
     //if( !gc->fileOk )

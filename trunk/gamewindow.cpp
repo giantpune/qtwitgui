@@ -485,13 +485,15 @@ QStringList GameWindow::GetPatchArgs()
     bool needToModify = false;
     QString mod1;
     QString mod2;
-    if( ui->checkBox_id->isChecked() && ui->lineEdit_id->text() != oldId )
+    if( ui->checkBox_id->isChecked() //dont patch teh ID if it already matches the old one and we are only modifying the disc header ( this is where the old one came from )
+	&& ( ui->lineEdit_id->text() != oldId || ( ui->checkBox_tikTmd->isChecked() || ui->checkBox_partHdr->isChecked() ) ) )
     {
 	needToModify = true;
 	mod1 = "--id=" + ui->lineEdit_id->text();
     }
 
-    if( ui->checkBox_title->isChecked() && ui->lineEdit_name->text() != oldName )
+    if( ui->checkBox_title->isChecked() && //only patch the name if it is different from the original one, or if we are patching the partition header
+	( ui->lineEdit_name->text() != oldName || ui->checkBox_partHdr->isChecked() ) )
     {
 	needToModify = true;
 	mod2 = "--name=" + ui->lineEdit_name->text();
@@ -567,13 +569,15 @@ QString GameWindow::GetChangeList()
 
     bool needToModify = false;
     QString maybeModify;
-    if( ui->checkBox_id->isChecked() && ui->lineEdit_id->text() != oldId )
+    if( ui->checkBox_id->isChecked() //dont patch teh ID if it already matches the old one and we are only modifying the disc header ( this is where the old one came from )
+	&& ( ui->lineEdit_id->text() != oldId || ( ui->checkBox_tikTmd->isChecked() || ui->checkBox_partHdr->isChecked() ) ) )
     {
 	needToModify = true;
 	QTextStream( &maybeModify ) << "ID:\t" << oldId << " -> " << ui->lineEdit_id->text() << "\n";
     }
 
-    if( ui->checkBox_title->isChecked() && ui->lineEdit_name->text() != oldName )
+    if( ui->checkBox_title->isChecked() && //only patch the name if it is different from the original one, or if we are patching the partition header
+	( ui->lineEdit_name->text() != oldName || ui->checkBox_partHdr->isChecked() ) )
     {
 	needToModify = true;
 	QTextStream( &maybeModify ) << tr( "Name" ) << ":\t\"" << oldName << "\" -> \"" << ui->lineEdit_name->text() << "\"\n";
