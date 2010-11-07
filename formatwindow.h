@@ -40,4 +40,15 @@ signals:
 #endif
 };
 
+//spinbox to use for HSS, should only allow values that are a power of 2
+class QSpinBoxPowerOf2 : public QSpinBox
+{
+    Q_OBJECT
+public:
+    QSpinBoxPowerOf2( QWidget *parent = 0 );
+    virtual void stepBy( int steps );
+private:
+    int lastGoodValue;
+};
+
 #endif // FORMATWINDOW_H

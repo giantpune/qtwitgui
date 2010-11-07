@@ -180,6 +180,12 @@ void FormatWindow::FormatDone( QString text )
 
 void FormatWindow::on_pushButton_format_clicked()
 {
+    int x = ui->spinBox_hss->value();
+    if( ui->checkBox_hss->isChecked() && ( !x || ( ( x & ( x - 1 ) ) ) ) )//if the user typed in a bad value and clicked format before the 1337 spinbox had time to fix it for them
+    {
+	QMessageBox::warning( this, tr( "Bad value" ), tr( "The sector size should be a power of 2" ), QMessageBox::Ok );
+	return;
+    }
     QList< QTreeWidgetItem * > selected = ui->treeWidget->selectedItems();
     if( selected.size() != 1 )
 	return;
@@ -223,4 +229,26 @@ void FormatWindow::on_pushButton_format_clicked()
     ui->pushButton_refresh->setEnabled( false );
     ui->pushButton_done->setEnabled( false );
     wwt.RunJob( args, wwtFormat );
+}
+
+QSpinBoxPowerOf2::QSpinBoxPowerOf2( QWidget *parent ) : QSpinBox( parent )
+{
+    lastGoodValue = 512;
+}
+
+void QSpinBoxPowerOf2::stepBy( int steps )
+{
+    int v = value();
+    if( v < 512 || ( ( v & ( v - 1 ) ) ) )//should only get here if the user typed in a bad value.  fix it for them
+    {
+	v = lastGoodValue;
+	setValue( lastGoodValue );
+    }
+    else
+	lastGoodValue = v;
+
+    if( steps < 0 )
+	QAbstractSpinBox::stepBy( -( v / 2 ) );
+    else if( steps > 0 )
+	QAbstractSpinBox::stepBy( v );
 }

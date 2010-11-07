@@ -644,9 +644,9 @@ void DownloadManager::startNextDownload()
     request.setRawHeader("User-Agent", PROGRAM_NAME );
 
     currentDownload = manager.get( request );
-    connect( currentDownload, SIGNAL( downloadProgress( qint64, qint64 ) ), this, SLOT( downloadProgress( qint64, qint64 ) ) );
-    connect( currentDownload, SIGNAL( finished() ), this, SLOT( downloadFinished() ) );
-    connect( currentDownload, SIGNAL( readyRead() ), this, SLOT( downloadReadyRead() ) );
+    connect( currentDownload, SIGNAL( downloadProgress( qint64, qint64 ) ), this, SLOT( downloadProgress( qint64, qint64 ) ), Qt::UniqueConnection );
+    connect( currentDownload, SIGNAL( finished() ), this, SLOT( downloadFinished() ), Qt::UniqueConnection );
+    connect( currentDownload, SIGNAL( readyRead() ), this, SLOT( downloadReadyRead() ), Qt::UniqueConnection );
 
     // prepare the output
     //printf("Downloading %s...\n", url.toEncoded().constData());
