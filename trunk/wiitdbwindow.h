@@ -58,6 +58,8 @@ public slots:
     void LoadGameFromID( const QString &id );
 
 private slots:
+    void on_treeWidget_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
+    void on_treeWidget_itemClicked(QTreeWidgetItem* item, int column);
     void on_pushButton_search_clicked();
     void on_pushButton_searchBack_clicked();
     void ReceiveErrorFromWiiTDB( QString title, QString detail );

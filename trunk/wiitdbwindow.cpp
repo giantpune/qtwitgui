@@ -246,7 +246,9 @@ void WiiTDBWindow::on_pushButton_search_clicked()
 	QTreeWidgetItem *game = games.takeFirst();
 	delete game;
     }
-    games = wiiTDB->Search( ui->lineEdit_search_id->text(), ui->lineEdit_searchTitle->text() );
+    games = wiiTDB->Search( ui->lineEdit_search_id->text(), ui->lineEdit_searchTitle->text(), \
+			    ui->lineEdit_searchPlayers->text(), ui->comboBox_searchPlayers->currentIndex(),\
+			    ui->lineEdit_searchWiFiPlayers->text(), ui->comboBox_searchWiFiPlayers->currentIndex() );
     int size = games.size();
     if( !size )
 	ui->label_searchResultInfo->setText( tr( "No entries matched the search terms" ) );
@@ -260,4 +262,18 @@ void WiiTDBWindow::on_pushButton_search_clicked()
 	ui->treeWidget->addTopLevelItems( games );
     }
     ui->stackedWidget->setCurrentIndex( 1 );
+}
+
+//search result is clicked
+void WiiTDBWindow::on_treeWidget_itemClicked( QTreeWidgetItem* item, int column )
+{
+    Q_UNUSED( column );
+    LoadGameFromID( item->text( 0 ) );
+}
+
+//different search result highlited
+void WiiTDBWindow::on_treeWidget_currentItemChanged( QTreeWidgetItem* current, QTreeWidgetItem* previous )
+{
+    Q_UNUSED( previous );
+    LoadGameFromID( current->text( 0 ) );
 }
