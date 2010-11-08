@@ -502,5 +502,57 @@ QMap<QString, bool> WiiTDB::InputControllersFromGameElement( QDomElement parent 
 }
 
 
+QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name )
+{
+    QDomElement root = domDocument.documentElement();
+    QDomElement child = root.firstChildElement( "game" );
+    if( child.isNull() )
+    {
+	emit SendError( tr("WiiTDB Error"), tr("No \"game\" tag found.") );
+	return QList< QTreeWidgetItem * >();
+    }
+
+    QList< QTreeWidgetItem * >ret;
+
+    while( !child.isNull() )
+    {
+	QDomElement idNode = child.firstChildElement( "id" );
+	if( !idNode.isNull() )
+	{
+	    QString curID = idNode.text();
+	    QString title;
+	    if( checkRegEx( curID, id ) )
+	    {
+		title = NameFromGameElement( child );
+		if( checkRegEx( title, name ) )
+		{
+		    QTreeWidgetItem *item = new QTreeWidgetItem( QStringList() << curID << title );
+		    ret << item;
+		}
+	    }
+	}
+	child = child.nextSiblingElement( "game" );
+    }
+    return ret;
+}
+
+bool WiiTDB::checkRegEx( const QString &text, const QString &regex )
+{
+    if( regex.isEmpty() )
+	return true;
+
+    if( text.isEmpty() )
+	return false;
+
+    QRegExp rx( regex, Qt::CaseInsensitive );
+    if( !rx.isValid() )
+    {
+	qDebug() << regex << "invalid";
+	return text.contains( regex, Qt::CaseInsensitive );
+    }
+
+    return text.contains( rx );
+}
+
 
 

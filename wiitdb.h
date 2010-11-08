@@ -66,6 +66,8 @@ public:
     int inputPlayers;
     QMap<QString, bool> inputControlers;
 
+    QList< QTreeWidgetItem * >Search( const QString &id = QString(), const QString &name = QString() );
+
 private:
     QFile file;//if reading from a unzipped xml, use this
     QBuffer buf;//store the unziped xml here in memory
@@ -91,6 +93,9 @@ private:
     QString WifiFeaturesFromGameElement( QDomElement parent );
     int InputPlayersFromGameElement( QDomElement parent );
     QMap<QString, bool> InputControllersFromGameElement( QDomElement parent );
+
+    //check if text matches a qregex
+    bool checkRegEx( const QString &text, const QString &regex );
 
 signals:
     void SendError( QString title, QString detials );
