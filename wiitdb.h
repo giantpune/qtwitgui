@@ -46,7 +46,7 @@ public:
     bool LoadGameFromID( const QString &id );
 
     //access function for getting a name without setting all the other variables to the new game
-    QString NameFromID( QString id );
+    QString NameFromID( const QString &id );
 
     //variables for exposing game info
     QString id_loaded;
@@ -66,13 +66,14 @@ public:
     int inputPlayers;
     QMap<QString, bool> inputControlers;
 
-    QList< QTreeWidgetItem * >Search( const QString &id = QString(), const QString &name = QString() );
+    QList< QTreeWidgetItem * >Search( const QString &id = QString(), const QString &name = QString(), const QString &players = QString(),\
+			    int playerCmpType = -1, const QString &wifiPlayers = QString(), int wifiCmpType = -1 );
 
 private:
     QFile file;//if reading from a unzipped xml, use this
     QBuffer buf;//store the unziped xml here in memory
     QDomDocument domDocument;
-    QDomElement GameFromID( QString id );
+    QDomElement GameFromID( const QString &id );
     QString localeStr;
 
     void ClearGame();
@@ -95,7 +96,10 @@ private:
     QMap<QString, bool> InputControllersFromGameElement( QDomElement parent );
 
     //check if text matches a qregex
-    bool checkRegEx( const QString &text, const QString &regex );
+    bool CheckRegEx( const QString &text, const QRegExp &rx );
+
+    //check if a # of players falls within the searched rules
+    bool CheckPlayerRule( int num, int cmpType, int cmpval );
 
 signals:
     void SendError( QString title, QString detials );

@@ -238,7 +238,7 @@ void WiiTDB::ClearGame()
 }
 
 //get the "<game>" tag for a give ID
-QDomElement WiiTDB::GameFromID( QString id )
+QDomElement WiiTDB::GameFromID( const QString &id )
 {
     QDomElement root = domDocument.documentElement();
     QDomElement child = root.firstChildElement( "game" );
@@ -263,7 +263,7 @@ QDomElement WiiTDB::GameFromID( QString id )
 }
 
 //get a game from an ID
-QString WiiTDB::NameFromID( QString id )
+QString WiiTDB::NameFromID( const QString &id )
 {
     if( !file.isOpen() )
 	return QString();
@@ -502,7 +502,8 @@ QMap<QString, bool> WiiTDB::InputControllersFromGameElement( QDomElement parent 
 }
 
 
-QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name )
+QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name, const QString &players, int playerCmpType, \
+					  const QString &wifiPlayers, int wifiCmpType )
 {
     QDomElement root = domDocument.documentElement();
     QDomElement child = root.firstChildElement( "game" );
@@ -514,20 +515,44 @@ QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name
 
     QList< QTreeWidgetItem * >ret;
 
+    //only do these conversions 1 time
+    QRegExp rxTitle( name, Qt::CaseInsensitive );
+    QRegExp rxID( id, Qt::CaseInsensitive );
+    bool okPlr = true;
+    int plr = -1;
+    if( !players.isEmpty() )
+	plr = players.toInt( &okPlr );
+    if( !okPlr )
+	return ret;
+    int plrWiFi = -1;
+    if( !wifiPlayers.isEmpty() )
+	plrWiFi = wifiPlayers.toInt( &okPlr );
+    if( !okPlr )
+	return ret;
+
     while( !child.isNull() )
     {
 	QDomElement idNode = child.firstChildElement( "id" );
 	if( !idNode.isNull() )
 	{
 	    QString curID = idNode.text();
-	    QString title;
-	    if( checkRegEx( curID, id ) )
+	    if( id.isEmpty() || CheckRegEx( curID, rxID ) )
 	    {
-		title = NameFromGameElement( child );
-		if( checkRegEx( title, name ) )
+		QString title = NameFromGameElement( child );
+		if( name.isEmpty() || CheckRegEx( title, rxTitle ) )
 		{
-		    QTreeWidgetItem *item = new QTreeWidgetItem( QStringList() << curID << title );
-		    ret << item;
+		    int curPly = InputPlayersFromGameElement( child );
+		    if( players.isEmpty() || CheckPlayerRule( curPly, playerCmpType, plr ) )
+		    {
+			int curWPly = WifiPlayersGameElement( child );
+			if( wifiPlayers.isEmpty() || CheckPlayerRule( curWPly, wifiCmpType, plrWiFi ) )
+			{
+			    QString plyStr = QString( "%1" ).arg( curPly );
+			    QString plyWStr = QString( "%1" ).arg( curWPly );
+			    QTreeWidgetItem *item = new QTreeWidgetItem( QStringList() << curID << title << plyStr << plyWStr );
+			    ret << item;
+			}
+		    }
 		}
 	    }
 	}
@@ -536,22 +561,46 @@ QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name
     return ret;
 }
 
-bool WiiTDB::checkRegEx( const QString &text, const QString &regex )
+bool WiiTDB::CheckRegEx( const QString &text, const QRegExp &rx )
 {
-    if( regex.isEmpty() )
-	return true;
-
     if( text.isEmpty() )
 	return false;
 
-    QRegExp rx( regex, Qt::CaseInsensitive );
     if( !rx.isValid() )
     {
-	qDebug() << regex << "invalid";
-	return text.contains( regex, Qt::CaseInsensitive );
+	qDebug() << rx.pattern() << "invalid";
+	return text.contains( rx.pattern(), Qt::CaseInsensitive );
     }
 
     return text.contains( rx );
+}
+
+bool WiiTDB::CheckPlayerRule( int num, int cmpType, int cmpval )
+{
+    switch( cmpType )
+    {
+    case 0:
+	return num < cmpval;
+	break;
+    case 1:
+	return num <= cmpval;
+	break;
+    case 2:
+	return num == cmpval;
+	break;
+    case 3:
+	return num >= cmpval;
+	break;
+    case 4:
+	return num > cmpval;
+	break;
+    case 5:
+	return num != cmpval;
+	break;
+    }
+    //shouldnt happen
+    return false;
+
 }
 
 
