@@ -34,7 +34,7 @@ class SaveDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SaveDialog(QWidget *parent = 0, const QString boldText = QString(), const QString lightText = QString(), const QString details = QString()
+    explicit SaveDialog( QWidget *parent = 0, const QString boldText = QString(), const QString lightText = QString(), const QString details = QString()
 			, const QString saveText = QString(), const QString cancelText = QString(), bool showCancel = true );
     ~SaveDialog();
 
@@ -45,9 +45,6 @@ private:
     QSize smallSize;
     bool detailsVisible;
     void SaveSettings();
-
-protected:
-    //void reject();
 
 private slots:
     void on_pushButton_details_clicked();

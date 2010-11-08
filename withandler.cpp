@@ -458,7 +458,7 @@ QString WitHandler::GetWitPath()
 }
 
 //LIST-LLL
-void WitHandler::ListLLL_HDD( QString path, int recurse, bool ignoreFst )
+void WitHandler::ListLLL_HDD( const QString &path, int recurse, bool ignoreFst )
 {
     QString rDepth;
     QTextStream( &rDepth ) << "--rdepth=" << recurse;
@@ -489,7 +489,7 @@ void WitHandler::Kill()
 }
 
 //parse the text from LIST-LLL
-QList<QTreeWidgetItem *> WitHandler::StringListToGameList( QStringList list, bool *okRet )
+QList<QTreeWidgetItem *> WitHandler::StringListToGameList( const QStringList &list, bool *okRet )
 {
 
     int lines = list.size();
@@ -768,7 +768,7 @@ bool WitHandler::ReadAttributes()
     return true;
 
 }
-bool WitHandler::NameSupportsAttribute( QString name, QString attr )
+bool WitHandler::NameSupportsAttribute( const QString &name, const QString &attr )
 {
     //qDebug() << "WitHandler::NameSupportsAttribute" << name << attr;
     foreach( WitOptionAttr a, optionAttributes )
@@ -779,7 +779,7 @@ bool WitHandler::NameSupportsAttribute( QString name, QString attr )
     }
     return false;
 }
-bool WitHandler::OptionSupportsAttribute( QString opt, QString attr )
+bool WitHandler::OptionSupportsAttribute( const QString &opt, const QString &attr )
 {
     foreach( WitOptionAttr a, optionAttributes )
     {
@@ -789,7 +789,7 @@ bool WitHandler::OptionSupportsAttribute( QString opt, QString attr )
     }
     return false;
 }
-bool WitHandler::ExtensionSupportsAttribute( QString ext, QString attr )
+bool WitHandler::ExtensionSupportsAttribute( const QString &ext, const QString &attr )
 {
     foreach( WitOptionAttr a, optionAttributes )
     {
@@ -890,7 +890,7 @@ QString WitHandler::GetVersionString()
 {
     return witVersionString;
 }
-QStringList WitHandler::FileType( QStringList files )
+QStringList WitHandler::FileType( const QStringList &files )
 {
     if( !VersionIsOk() || !files.size() )
 	return QStringList();

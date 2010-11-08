@@ -66,7 +66,7 @@ private:
 
     int downloadedCount;
     int totalCount;
-    bool notFound;//flag for "current download is not found / wiitdb game a 404"
+    bool notFound;//flag for "current download is not found / wiitdb gave a 404"
 
     QString baseCoverPath;
     QString locale;

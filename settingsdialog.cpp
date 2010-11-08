@@ -62,7 +62,7 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     s.beginGroup( "wit_wwt" );
     //ui->checkBox_testMode->setChecked( s.value( "testMode" ).toBool() );
     //ui->checkBox_overWrite->setChecked( s.value( "overWriteFiles" ).toBool() );
-    //ui->checkBox_ignoreSvn->setChecked( s.value( "ignoreSvn" ).toBool() );
+    ui->checkBox_ignoreSvn->setChecked( s.value( "ignoreSvn" ).toBool() );
     //ui->checkBox_Sneek->setChecked( s.value( "sneek" ).toBool() );
     ui->comboBox_key->setCurrentIndex( s.value( "encKey", 0 ).toInt() );
     ui->spinBox_wiimms_recurse->setValue( s.value( "rdepth", 10 ).toInt() );
@@ -118,7 +118,7 @@ void SettingsDialog::on_pushButton_ok_clicked()
     s.beginGroup( "wit_wwt" );
     //s.setValue( "testMode", ui->checkBox_testMode->isChecked() );
     //s.setValue( "overWriteFiles", ui->checkBox_overWrite->isChecked() );
-    //s.setValue( "ignoreSvn", ui->checkBox_ignoreSvn->isChecked() );
+    s.setValue( "ignoreSvn", ui->checkBox_ignoreSvn->isChecked() );
     //s.setValue( "sneek", ui->checkBox_Sneek->isChecked() );
     s.setValue( "encKey", ui->comboBox_key->currentIndex() );
     s.setValue( "rdepth", ui->spinBox_wiimms_recurse->value() );

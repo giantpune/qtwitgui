@@ -32,39 +32,6 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
 #endif
     ui->textEdit->setFont( monoFont );
 
-    //do some color calculating magic to determine colors for additional text in the output tab
-    QPalette p = ui->textEdit->palette();
-
-    //use the colors from the user's desktop theme as a base
-    QColor bg = p.color( QPalette::Base );
-    QColor fg = p.color( QPalette::Text );
-
-    QVector<QColor> colors;
-    const int HUE_BASE = ( bg.hue() == -1 ) ? 90 : bg.hue();
-    int noColors = 3;
-
-    int h, s, v;
-    for( int i = 0; i < noColors; i++ )
-    {
-	h = int ( HUE_BASE + ( 360.0 / noColors * i ) ) % 360;
-	s = 240;
-	v = int( qMax( bg.value(), fg.value()) * 0.85 );
-
-	const int M = 35;
-	if( ( h < bg.hue() + M && h > bg.hue() - M ) || ( h < fg.hue() + M && h > fg.hue() - M ) )
-	{
-	    h = ( ( bg.hue() + fg.hue()) / ( i + 1 ) ) % 360;
-	    s = ( ( bg.saturation() + fg.saturation() + 2 * i ) / 2 ) % 256;
-	    v = ( ( bg.value() + fg.value() + 2 * i ) / 2 ) % 256;
-	}
-
-    colors.append( QColor::fromHsv( h, s, v ) );
-    }
-
-    color1 = colors.at( 0 ).name();
-    color2 = colors.at( 1 ).name();
-    color3 = colors.at( 2 ).name();
-
     wiithread = new WiiTreeThread;
 
     //create stuff for the tree window
@@ -83,7 +50,7 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
 
     connect( &wit, SIGNAL( SendStdOut( QString ) ), ui->textEdit, SLOT( insertPlainText( QString ) ) );
     //TODO: maybe make this a bright color so it is easy to find.
-    //but fatal errors ore shown in a dialog box, so it really isnt necessary
+    //but fatal errors are shown in a dialog box, so it really isnt necessary
     connect( &wit, SIGNAL( SendStdErr( QString ) ), ui->textEdit, SLOT( insertPlainText( QString ) ) );
 
 
@@ -103,8 +70,6 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
     connect( &wwt, SIGNAL( SendMessageForStatusBar( QString ) ), this, SLOT( GetStatusTextFromWiimms( QString ) ) );
     connect( &wit, SIGNAL( SendProgress( int ) ), ui->progressBar, SLOT( setValue( int ) ) );
     connect( &wwt, SIGNAL( SendProgress( int ) ), ui->progressBar, SLOT( setValue( int ) ) );
-
-
 
     if( !game.isEmpty() )
 	LoadGame( game );
@@ -141,8 +106,7 @@ void GameWindow::LoadGame( QString path )
     args << showString;
 
     ui->textEdit->clear();
-    //not exactly true, but 99.999% of the time this will be displayed only while wit is trying to open up the file and read it,
-    ui->statusbar->showMessage( tr( "Waking up your HDD..." ) );
+    ui->statusbar->showMessage( tr( "Getting game contents from wit..." ) );
 
     wit.RunJob( args, witDump );
 }

@@ -36,9 +36,9 @@ class WiiTDBWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit WiiTDBWindow(QWidget *parent = 0);
+    explicit WiiTDBWindow( QWidget *parent = 0 );
     ~WiiTDBWindow();
-    void SetFile( QString path );
+    void SetFile( const QString &path );
 
     QString GetVersion();
     int GameCount();
@@ -49,13 +49,13 @@ private:
     Ui::WiiTDBWindow *ui;
     QGraphicsScene gv;
 
-    void AddImage( QPixmap pm );
-    void AddImage( QString str );
+    void AddImage( const QPixmap &pm );
+    void AddImage( const QString &str );
     //WiiTDB wiiTDB;
     void ClearGui();
 
 public slots:
-    void LoadGameFromID( QString id );
+    void LoadGameFromID( const QString &id );
 
 private slots:
     void ReceiveErrorFromWiiTDB( QString title, QString detail );

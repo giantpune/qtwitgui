@@ -47,7 +47,8 @@ class CoverLoaderThread : public QThread
      CoverLoaderThread( QObject *parent = 0 );
      ~CoverLoaderThread();
 
-     void CheckCovers( const QStringList s, QString baseFolder, QString path2, QString path3, QString pathF, QString pathH, QString pathD, int m, bool r );
+     void CheckCovers( const QStringList &s, const QString &baseFolder, const QString &path2, const QString &path3, const QString &pathF, \
+		       const QString &pathH, const QString &pathD, int m, bool r );
      void ForceQuit();
 
  protected:

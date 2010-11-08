@@ -35,7 +35,7 @@ WiiTreeThread::~WiiTreeThread()
 //! b is weather or not to skip entries with "/.svn" in them
 //! ficon is the folder icon to use
 //! dicon is the icon to use for directories
-void WiiTreeThread::DoCommand( const QStringList s, bool b, QIcon ficon, QIcon dicon, int type, const QStringList list )
+void WiiTreeThread::DoCommand( const QStringList &s, bool b, QIcon ficon, QIcon dicon, int type, const QStringList &list )
 {
     //qDebug() << "WiiTreeThread::DoCommand";
     QMutexLocker locker(&mutex);
@@ -111,7 +111,7 @@ void WiiTreeThread::run()
 
 
 //adds an item to the tree view given a full path
-void WiiTreeThread::AddItemToTree( const QString s, QTreeWidgetItem *parent )
+void WiiTreeThread::AddItemToTree( const QString &s, QTreeWidgetItem *parent )
 {
     QString path = s;
     path = path.simplified();
@@ -205,7 +205,7 @@ void WiiTreeThread::AddItemToTree( const QString s, QTreeWidgetItem *parent )
 }
 
 //returns the index of the child named "s" of the given parent or -1 if the child is not found
-int WiiTreeThread::findItem( const QString s, QTreeWidgetItem *parent )
+int WiiTreeThread::findItem( const QString &s, QTreeWidgetItem *parent )
 {
     int ret = -1;
     int cnt = parent->childCount();

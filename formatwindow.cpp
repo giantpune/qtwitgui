@@ -150,16 +150,14 @@ void FormatWindow::HandleWiimmsErrors( QString err, int id )
     case wwtFormat:
     {
 	QMessageBox::critical( this, tr( "Formatting Error" ), err, QMessageBox::Ok, QMessageBox::Ok );
-	break;
     }
-    break;
+	break;
     case wwtFind_long:
     {
 	QMessageBox::critical( this, tr( "Error getting partition list" ), err, QMessageBox::Ok, QMessageBox::Ok );
-	break;
     }
-    break;
-	default:
+	break;
+    default:
 	break;
     }
 }
@@ -208,7 +206,7 @@ void FormatWindow::on_pushButton_format_clicked()
 		.arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
 		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
     }
-    else//what the fuck is this?  coused by a really broken partition or an error parsing the output text from wwt.
+    else//what the fuck is this?  caused by a really broken partition or an error parsing the output text from wwt.
     {
 	qDebug() << "z0mg.  something went wrong in the format window";
 	return;
