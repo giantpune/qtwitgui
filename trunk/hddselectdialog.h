@@ -43,7 +43,6 @@ public:
 
 private:
     Ui::HDDSelectDialog *ui;
-    //QAction *changeSplitAct;
 
     WitHandler wit;
     WwtHandler wwt;
@@ -89,8 +88,6 @@ private slots:
 protected:
     void closeEvent( QCloseEvent * closeEvent );
     void reject();
-    //void contextMenuEvent( QContextMenuEvent * event );
-    //void mousePressEvent ( QMouseEvent * event );
 };
 
 #endif // HDDSELECTDIALOG_H

@@ -40,7 +40,7 @@ WiiTDB::~WiiTDB()
 }
 
 //load the wiitdb.xml file
-bool WiiTDB::LoadFile( QString name )
+bool WiiTDB::LoadFile( const QString &name )
 {
     //qDebug() << "WiiTDB::LoadFile" << name;
     if( file.isOpen() )
@@ -169,7 +169,7 @@ bool WiiTDB::LoadFile( QString name )
     return true;
 }
 
-bool WiiTDB::LoadGameFromID( QString id )
+bool WiiTDB::LoadGameFromID( const QString &id )
 {
     if( !file.isOpen() && !buf.isOpen() )
 	return false;
@@ -178,7 +178,25 @@ bool WiiTDB::LoadGameFromID( QString id )
     ClearGame();
     QDomElement e = GameFromID( id );
     if( e.isNull() )
+    {
+	if( id.at( 0 ) == QChar( '0' ) || id.at( 0 ) == QChar( '1' ) )//if this game starts with 0 or 1 then it is an autoboot game.  try to change it to R or S and see if the game exists
+	{
+	    QString i = id;
+	    i[ 0 ] = QChar( 'R' );
+	    e = GameFromID( i );
+	    if( e.isNull() )
+	    {
+		i[ 0 ] = QChar( 'S' );
+		e = GameFromID( i );
+		if( e.isNull() )
+		{
+		    return false;
+		}
+		return false;
+	    }
+	}
 	return false;
+    }
     id_loaded = id;
     title = NameFromGameElement( e );
     synopsis = SynopsisFromGameElement( e );

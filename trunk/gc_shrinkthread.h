@@ -78,28 +78,18 @@ public:
     GC_Game( const QString path = QString() );
     ~GC_Game();
 
-	//get the text from the banner.  pal banners can have different languages
-	QString GetSHTitle ( int lang ){ return QString( opening_bnr.text[ lang ].shTitle ); }
-	QString GetTitle   ( int lang ){ return QString( opening_bnr.text[ lang ].title ); }
-	QString GetSHMaker ( int lang ){ return QString( opening_bnr.text[ lang ].shMaker ); }
-	QString GetMaker   ( int lang ){ return QString( opening_bnr.text[ lang ].maker ); }
-	QString GetComment ( int lang ){ return QString( opening_bnr.text[ lang ].comment ); }
-	QString GetName() { return QString( hdrname ); }
-	QString GetID(){ return QString( id ); }
-	QPixmap BannerImage( int height );
+    //get the text from the banner.  pal banners can have different languages
+    QString GetSHTitle ( int lang ){ return QString( opening_bnr.text[ lang ].shTitle ); }
+    QString GetTitle   ( int lang ){ return QString( opening_bnr.text[ lang ].title ); }
+    QString GetSHMaker ( int lang ){ return QString( opening_bnr.text[ lang ].shMaker ); }
+    QString GetMaker   ( int lang ){ return QString( opening_bnr.text[ lang ].maker ); }
+    QString GetComment ( int lang ){ return QString( opening_bnr.text[ lang ].comment ); }
+    QString GetName() { return QString( hdrname ); }
+    QString GetID(){ return QString( id ); }
+    QPixmap BannerImage( int height );
 
-
-	int   GetLangCnt()      { return langCnt; }
-	//bool HasStreamingAudio(){ return stream; }
-	//void Shrink( QString outPath );
-	bool fileOk;
-
-/*private slots:
-	void GetFatalErrorFromShrinker( QString );
-	void ShrinkerIsDone();
-	void GetShrinkProgress( int );*/
-
-//private:
+    int   GetLangCnt()      { return langCnt; }
+    bool fileOk;
 protected:
     GCBanner opening_bnr;
     QString pathstr;
@@ -121,9 +111,6 @@ protected:
     quint32 ReadU32();
 
     void FatalError( QString str );//not used in this class
-
-    //GC_ShrinkThread shrinker;
-
 };
 
 class GC_ShrinkThread : public QThread , public GC_Game

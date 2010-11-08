@@ -52,7 +52,7 @@ public:
 
     void SetRunAsRoot( bool root = true );
     void SetTitlesTxtPath( const QString &path );
-    void ListLLL_HDD( QString path, int recurse = 10, bool ignoreFst = false );
+    void ListLLL_HDD( const QString &path, int recurse = 10, bool ignoreFst = false );
 
     void SetNamesFromWiiTDB( bool wiitdb = true );
 
@@ -66,13 +66,13 @@ public:
     //static functions are blocking, and will halt the current thread until the process finishes
     //static functions dont respect the "root" settings
     static bool ReadAttributes();
-    static bool NameSupportsAttribute( QString name, QString attr );
-    static bool OptionSupportsAttribute( QString opt, QString attr );
-    static bool ExtensionSupportsAttribute( QString ext, QString attr );
+    static bool NameSupportsAttribute( const QString &name, const QString &attr );
+    static bool OptionSupportsAttribute( const QString &opt, const QString &attr );
+    static bool ExtensionSupportsAttribute( const QString &ext, const QString &attr );
     static bool ReadVersion();
     static bool VersionIsOk();
     static QString GetVersionString();
-    static QStringList FileType( QStringList files );
+    static QStringList FileType( const QStringList &files );
     static QString GetTitlesTxtPath();
     //static bool OptionSupports( QString option, QString attr );
 
@@ -92,7 +92,7 @@ private:
 
     QString GetWitPath();
 
-    QList<QTreeWidgetItem *> StringListToGameList( QStringList list, bool *ok );
+    QList<QTreeWidgetItem *> StringListToGameList( const QStringList &list, bool *ok );
 
 signals:
     void KillProcess();

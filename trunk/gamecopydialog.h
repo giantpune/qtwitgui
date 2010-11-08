@@ -62,7 +62,6 @@ private slots:
     void on_comboBox_container_currentIndexChanged(int index);
     void on_lineEdit_destOther_textChanged(QString );
     void on_pushButton_destOther_clicked();
-    //void on_comboBox_container_currentIndexChanged(QString );
     void on_groupBox_partition_clicked(bool );
     void on_buttonBox_accepted();
     void on_comboBox_esc_currentIndexChanged(QString );

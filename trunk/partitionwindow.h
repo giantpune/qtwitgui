@@ -81,14 +81,11 @@ private slots:
     void NeedToAskForPassword();
     void GetStatusTextFromWiimms( QString text );
     void ShrinkNextGame();
-    //void AskForGameListIfThereIsntOne();
 
 public slots:
     void SettingsHaveChanged();
     void SetPartitionList( QList<QTreeWidgetItem *> pList );
     void GetPasswordFromMainWindow();
-    //void Reload();
-
 
 protected:
     void closeEvent( QCloseEvent * closeEvent );

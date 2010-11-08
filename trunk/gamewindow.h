@@ -53,9 +53,6 @@ private:
 
     QIcon groupIcon;
     QIcon keyIcon;
-    QString color1;
-    QString color2;
-    QString color3;
 
     QString lastPathLoadedCorrectly;
     QString gameTypeStr;
@@ -110,10 +107,6 @@ signals:
     void AskMainWindowForPassword();
     void SendUpdatedPartitionInfo( QTreeWidgetItem * );
     void PartitionIsDirty( QString );
-
-protected:
-//    void dropEvent( QDropEvent *event );
-//    void dragEnterEvent( QDragEnterEvent *event );
 };
 
 

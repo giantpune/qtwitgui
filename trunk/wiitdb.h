@@ -33,7 +33,7 @@ public:
     ~WiiTDB();
 
     //load up a wiitdb.xml file ( .zip not supported yet )
-    bool LoadFile( QString name );
+    bool LoadFile( const QString &name );
 
     //date and time of the xml file ( from the version attribute )
     QDate xmlDate;
@@ -42,8 +42,8 @@ public:
     //number of games in the loaded xml
     int xmlGameNum;
 
-    //populates the gui with data from a given id
-    bool LoadGameFromID( QString id );
+    //populates the strings with data from a given id
+    bool LoadGameFromID( const QString &id );
 
     //access function for getting a name without setting all the other variables to the new game
     QString NameFromID( QString id );
@@ -74,10 +74,6 @@ private:
     QString localeStr;
 
     void ClearGame();
-
-
-
-
     //returns localized strings if they exist.
     //they expect the "<game>" element
     QString NameFromGameElement( QDomElement parent );

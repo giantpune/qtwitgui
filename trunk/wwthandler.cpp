@@ -128,7 +128,7 @@ void WwtHandler::ReadyReadStdErrSlot()
 	rootPass.clear();
     }
 
-    if( errStr.startsWith( rootAskStr ) )
+    else if( errStr.startsWith( rootAskStr ) )
     {
 	errStr.clear();
 	if( !rootPass.isEmpty() )
@@ -141,7 +141,7 @@ void WwtHandler::ReadyReadStdErrSlot()
 	}
 	return;
     }
-    if( errStr == rootFailStr )
+    else if( errStr == rootFailStr )
     {
 	emit KillProcess();
 	process->waitForFinished();//force kill the thing

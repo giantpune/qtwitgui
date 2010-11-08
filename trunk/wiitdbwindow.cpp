@@ -31,18 +31,18 @@ int WiiTDBWindow::GameCount()
     return wiiTDB->xmlGameNum;
 }
 
-void WiiTDBWindow::SetFile( QString path )
+void WiiTDBWindow::SetFile( const QString &path )
 {
     wiiTDB->LoadFile( path );
 }
 
-void WiiTDBWindow::AddImage( QPixmap pm )
+void WiiTDBWindow::AddImage( const QPixmap &pm )
 {
     QGraphicsPixmapItem *pmi = new QGraphicsPixmapItem( pm );
     gv.addItem( pmi );
 }
 
-void WiiTDBWindow::AddImage( QString str )
+void WiiTDBWindow::AddImage( const QString &str )
 {
     if( !QFile::exists( str ) )
     {
@@ -73,7 +73,7 @@ void WiiTDBWindow::ClearGui()
     }
 }
 
-void WiiTDBWindow::LoadGameFromID( QString id )
+void WiiTDBWindow::LoadGameFromID( const QString &id )
 {
     ClearGui();
     ui->label_id->setText( id );
