@@ -12,6 +12,15 @@ WiiTDBWindow::WiiTDBWindow(QWidget *parent) : QWidget(parent), ui(new Ui::WiiTDB
     ui->graphicsView->setAlignment( Qt::AlignRight );
     ui->graphicsView->setRenderHint( QPainter::Antialiasing );
 
+    //search result list
+    QFontMetrics fm( fontMetrics() );
+    ui->treeWidget->header()->resizeSection( 0, fm.width( "WWWWWWW" ) );//id
+    ui->treeWidget->header()->resizeSection( 1, fm.width( QString( 22, 'W' ) ) );//name
+    ui->treeWidget->header()->resizeSection( 2, fm.width( "WW" ) );//#p
+    ui->treeWidget->header()->resizeSection( 3, fm.width( "WW" ) );//#wifi
+    ui->treeWidget->header()->resizeSection( 4, fm.width( "WWWWWWW" ) );//
+    ui->treeWidget->header()->resizeSection( 5, fm.width( "WWWWW" ) );//
+
     connect( wiiTDB, SIGNAL( SendError( QString, QString ) ), this, SLOT( ReceiveErrorFromWiiTDB( QString, QString ) ) );
 }
 
@@ -222,3 +231,33 @@ void WiiTDBWindow::ReceiveErrorFromWiiTDB( QString title, QString detail )
 }
 
 
+//search "back" button clicked
+void WiiTDBWindow::on_pushButton_searchBack_clicked()
+{
+    ui->stackedWidget->setCurrentIndex( 0 );
+}
+
+// "search" button clicked
+void WiiTDBWindow::on_pushButton_search_clicked()
+{
+    QList< QTreeWidgetItem * >games = ui->treeWidget->invisibleRootItem()->takeChildren();
+    while( !games.isEmpty() )
+    {
+	QTreeWidgetItem *game = games.takeFirst();
+	delete game;
+    }
+    games = wiiTDB->Search( ui->lineEdit_search_id->text(), ui->lineEdit_searchTitle->text() );
+    int size = games.size();
+    if( !size )
+	ui->label_searchResultInfo->setText( tr( "No entries matched the search terms" ) );
+    else
+    {
+	if( size == 1 )
+	    ui->label_searchResultInfo->setText( tr( "%1 search result" ).arg( 1 ) );
+	else
+	    ui->label_searchResultInfo->setText( tr( "%1 search results" ).arg( size ) );
+
+	ui->treeWidget->addTopLevelItems( games );
+    }
+    ui->stackedWidget->setCurrentIndex( 1 );
+}
