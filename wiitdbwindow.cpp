@@ -1,6 +1,7 @@
 #include "includes.h"
 #include "wiitdbwindow.h"
 #include "ui_wiitdbwindow.h"
+#include "tools.h"
 
 WiiTDBWindow::WiiTDBWindow(QWidget *parent) : QWidget(parent), ui(new Ui::WiiTDBWindow)
 {
@@ -12,14 +13,33 @@ WiiTDBWindow::WiiTDBWindow(QWidget *parent) : QWidget(parent), ui(new Ui::WiiTDB
     ui->graphicsView->setAlignment( Qt::AlignRight );
     ui->graphicsView->setRenderHint( QPainter::Antialiasing );
 
-    //search result list
+
     QFontMetrics fm( fontMetrics() );
+    //search tab
+    int min = fm.width( ui->label_searchPlayers->text() );
+    min = MAX( min, fm.width( ui->label_searchRating->text() ) );
+    min = MAX( min, fm.width( ui->label_searchTitle->text() ) );
+    min = MAX( min, fm.width( ui->label_searchID->text() ) );
+    min = MAX( min, fm.width( ui->label_searchType->text() ) );
+    min = MAX( min, fm.width( ui->label_searchWifiPlayers->text() ) );
+    min += 20;
+    ui->label_searchPlayers->setMinimumWidth( min );
+    ui->label_searchWifiPlayers->setMinimumWidth( min );
+    ui->label_searchType->setMinimumWidth( min );
+    ui->label_searchID->setMinimumWidth( min );
+    ui->label_searchTitle->setMinimumWidth( min );
+    ui->label_searchRating->setMinimumWidth( min );
+
+
+    //search result list
+    ui->treeWidget->sortItems( 1, Qt::AscendingOrder );//sort the name column in alphabetical order
     ui->treeWidget->header()->resizeSection( 0, fm.width( "WWWWWWW" ) );//id
     ui->treeWidget->header()->resizeSection( 1, fm.width( QString( 22, 'W' ) ) );//name
     ui->treeWidget->header()->resizeSection( 2, fm.width( "WW" ) );//#p
     ui->treeWidget->header()->resizeSection( 3, fm.width( "WW" ) );//#wifi
-    ui->treeWidget->header()->resizeSection( 4, fm.width( "WWWWWWW" ) );//
-    ui->treeWidget->header()->resizeSection( 5, fm.width( "WWWWW" ) );//
+    ui->treeWidget->header()->resizeSection( 4, fm.width( "WWWWWWWW" ) );//rating
+    ui->treeWidget->header()->resizeSection( 5, fm.width( "WWWWWWW" ) );//type
+    ui->treeWidget->header()->resizeSection( 6, fm.width( QString( 22, 'W' ) ) );//accessories
 
     connect( wiiTDB, SIGNAL( SendError( QString, QString ) ), this, SLOT( ReceiveErrorFromWiiTDB( QString, QString ) ) );
 }
@@ -84,6 +104,9 @@ void WiiTDBWindow::ClearGui()
 
 void WiiTDBWindow::LoadGameFromID( const QString &id )
 {
+    if( ui->label_id->text() == id )//dont bother to load a game thats already loaded
+	return;
+
     ClearGui();
     ui->label_id->setText( id );
 

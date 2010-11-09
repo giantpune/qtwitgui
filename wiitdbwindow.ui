@@ -26,7 +26,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -667,6 +667,9 @@
        <string>Synopsis</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item row="0" column="0">
         <widget class="QTextBrowser" name="textBrowser_synopsis"/>
        </item>
@@ -739,7 +742,7 @@
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_3">
                      <item>
-                      <widget class="QLabel" name="label_id_2">
+                      <widget class="QLabel" name="label_searchID">
                        <property name="text">
                         <string>ID</string>
                        </property>
@@ -1061,7 +1064,7 @@
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_8">
                      <item>
-                      <widget class="QLabel" name="label_searchRatng">
+                      <widget class="QLabel" name="label_searchRating">
                        <property name="text">
                         <string>Rating</string>
                        </property>
@@ -1643,6 +1646,9 @@
            </property>
            <item row="1" column="0">
             <widget class="QTreeWidget" name="treeWidget">
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
              <property name="sortingEnabled">
               <bool>true</bool>
              </property>
@@ -1661,7 +1667,7 @@
              </column>
              <column>
               <property name="text">
-               <string notr="true"/>
+               <string notr="true">Players</string>
               </property>
               <property name="icon">
                <iconset resource="resources.qrc">
@@ -1670,7 +1676,7 @@
              </column>
              <column>
               <property name="text">
-               <string notr="true"/>
+               <string notr="true">Online Players</string>
               </property>
               <property name="icon">
                <iconset resource="resources.qrc">
