@@ -67,7 +67,9 @@ public:
     QMap<QString, bool> inputControlers;
 
     QList< QTreeWidgetItem * >Search( const QString &id = QString(), const QString &name = QString(), const QString &players = QString(),\
-			    int playerCmpType = -1, const QString &wifiPlayers = QString(), int wifiCmpType = -1 );
+		int playerCmpType = -1, const QString &wifiPlayers = QString(), int wifiCmpType = -1, const QString &type = QString(),\
+		const QStringList &accessories = QStringList(), const QStringList &required = QStringList(),\
+		const QString &ratingType = QString(), int ratingCmp = -1, const QString &ratingVal = QString() );
 
 private:
     QFile file;//if reading from a unzipped xml, use this
@@ -100,6 +102,13 @@ private:
 
     //check if a # of players falls within the searched rules
     bool CheckPlayerRule( int num, int cmpType, int cmpval );
+
+    //check of a game's accessory tag falls inside a set of rules
+    bool CheckAccessories( QMap<QString, bool>tag, const QStringList &acc, const QStringList &accReq );
+
+    //check if a game's rating falls inside a set of rules
+    bool CheckRating( const QString &testType, const QString &testVal, int oper, const QString &cmpType, const QString &cmpVal );
+    QString ConvertRating( const QString &fromType, const QString &fromVal, const QString &toType );
 
 signals:
     void SendError( QString title, QString detials );

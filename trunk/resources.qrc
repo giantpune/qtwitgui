@@ -112,5 +112,7 @@
         <file>images/wiitdbIcon.png</file>
         <file>images/rootIcon.png</file>
         <file>images/wiimmsIcon.png</file>
+        <file>images/Wiimote.png</file>
+        <file>images/WiimoteR.png</file>
     </qresource>
 </RCC>

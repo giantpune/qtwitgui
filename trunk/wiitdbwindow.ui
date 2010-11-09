@@ -20,6 +20,9 @@
    <string>WiiTDB</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>4</number>
+   </property>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
@@ -674,248 +677,1028 @@
        <string>Search</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
+       <property name="margin">
+        <number>2</number>
+       </property>
        <item row="0" column="0">
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="currentIndex">
           <number>0</number>
          </property>
          <widget class="QWidget" name="page">
-          <widget class="QWidget" name="">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>10</y>
-             <width>191</width>
-             <height>27</height>
-            </rect>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <property name="margin">
+            <number>0</number>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QLabel" name="label_id_2">
-              <property name="text">
-               <string>ID</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_search_id">
-              <property name="maxLength">
-               <number>200</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QPushButton" name="pushButton_search">
-           <property name="geometry">
-            <rect>
-             <x>260</x>
-             <y>20</y>
-             <width>89</width>
-             <height>27</height>
-            </rect>
+           <property name="horizontalSpacing">
+            <number>6</number>
            </property>
-           <property name="text">
-            <string>Search</string>
-           </property>
-          </widget>
-          <widget class="QWidget" name="">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>50</y>
-             <width>221</width>
-             <height>27</height>
-            </rect>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <item>
-             <widget class="QLabel" name="label_searchTitle">
-              <property name="text">
-               <string>Title</string>
+           <item row="1" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <spacer name="horizontalSpacer_8">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_search">
+               <property name="text">
+                <string>Search</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="0" column="0">
+            <widget class="QScrollArea" name="scrollArea">
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>572</width>
+                <height>536</height>
+               </rect>
               </property>
+              <layout class="QGridLayout" name="gridLayout_7">
+               <item row="0" column="0">
+                <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_3">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_3">
+                     <item>
+                      <widget class="QLabel" name="label_id_2">
+                       <property name="text">
+                        <string>ID</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEdit_search_id">
+                       <property name="maxLength">
+                        <number>200</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_9">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_5">
+                     <item>
+                      <widget class="QLabel" name="label_searchTitle">
+                       <property name="text">
+                        <string>Title</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEdit_searchTitle">
+                       <property name="minimumSize">
+                        <size>
+                         <width>392</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_10">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_6">
+                     <item>
+                      <widget class="QLabel" name="label_searchPlayers">
+                       <property name="text">
+                        <string>Players</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_searchPlayers">
+                       <property name="currentIndex">
+                        <number>2</number>
+                       </property>
+                       <item>
+                        <property name="text">
+                         <string>&lt;</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&lt;=</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>==</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&gt;=</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&gt;</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>!=</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEdit_searchPlayers">
+                       <property name="maximumSize">
+                        <size>
+                         <width>48</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="inputMethodHints">
+                        <set>Qt::ImhDigitsOnly</set>
+                       </property>
+                       <property name="maxLength">
+                        <number>2</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_4">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_7">
+                     <item>
+                      <widget class="QLabel" name="label_searchWifiPlayers">
+                       <property name="text">
+                        <string>WiFi Players</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_searchWiFiPlayers">
+                       <property name="currentIndex">
+                        <number>2</number>
+                       </property>
+                       <item>
+                        <property name="text">
+                         <string>&lt;</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&lt;=</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>==</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&gt;=</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&gt;</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>!=</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEdit_searchWiFiPlayers">
+                       <property name="maximumSize">
+                        <size>
+                         <width>48</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="inputMethodHints">
+                        <set>Qt::ImhDigitsOnly</set>
+                       </property>
+                       <property name="maxLength">
+                        <number>2</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_5">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_9">
+                     <item>
+                      <widget class="QLabel" name="label_searchType">
+                       <property name="text">
+                        <string>Type</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_searchType">
+                       <item>
+                        <property name="text">
+                         <string notr="true"/>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">WiiWare</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">Gamecube</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-NES</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-SNES</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-N64</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-SMS</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-MD</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-PCE</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-NEOGEO</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-Arcade</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">VC-C64</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">Channel</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">Homebrew</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">CUSTOM</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_6">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_8">
+                     <item>
+                      <widget class="QLabel" name="label_searchRatng">
+                       <property name="text">
+                        <string>Rating</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_searchRatingType">
+                       <item>
+                        <property name="text">
+                         <string/>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>ESRB</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>PEGI</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>CERO</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_searchRatingCmp">
+                       <property name="enabled">
+                        <bool>false</bool>
+                       </property>
+                       <property name="currentIndex">
+                        <number>2</number>
+                       </property>
+                       <item>
+                        <property name="text">
+                         <string>&lt;</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&lt;=</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>==</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&gt;=</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>&gt;</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>!=</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_searchRatingValue">
+                       <property name="enabled">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_7">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_4">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_11">
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchWiimote">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/Wiimote.png</normaloff>:/images/Wiimote.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>30</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchNunchuk">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/nunchuk.png</normaloff>:/images/nunchuk.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>60</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_search_7">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/zapper.png</normaloff>:/images/zapper.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>63</width>
+                         <height>62</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchBB">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/balanceboard.png</normaloff>:/images/balanceboard.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>60</width>
+                         <height>72</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchBongos">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/bongos.png</normaloff>:/images/bongos.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_12">
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchMP">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/motionplus.png</normaloff>:/images/motionplus.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>30</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchCC">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/classiccontroller.png</normaloff>:/images/classiccontroller.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchWheel">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/wheel.png</normaloff>:/images/wheel.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchDDR">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/dancepad.png</normaloff>:/images/dancepad.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchGCN">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/gamecube.png</normaloff>:/images/gamecube.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_13">
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchGuitar">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/guitar.png</normaloff>:/images/guitar.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>60</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_search_Drums">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/drums.png</normaloff>:/images/drums.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchMic">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/microphone.png</normaloff>:/images/microphone.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchGBA">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/gba.png</normaloff>:/images/gba.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_12">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_14">
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchKB">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/keyboard.png</normaloff>:/images/keyboard.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchWS">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/wiispeak.png</normaloff>:/images/wiispeak.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_searchDS">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/nintendods.png</normaloff>:/images/nintendods.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="checkBox_search_LFF">
+                       <property name="toolTip">
+                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/forceFeedback.png</normaloff>:/images/forceFeedback.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>58</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="tristate">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_13">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="1">
+                <spacer name="horizontalSpacer_11">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>84</width>
+                   <height>110</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_searchTitle"/>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>90</y>
-             <width>201</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <item>
-             <widget class="QLabel" name="label_searchPlayers">
-              <property name="text">
-               <string>Players</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QComboBox" name="comboBox_searchPlayers">
-              <property name="currentIndex">
-               <number>2</number>
-              </property>
-              <item>
-               <property name="text">
-                <string>&lt;</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>&lt;=</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>==</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>&gt;=</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>&gt;</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>!=</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_searchPlayers">
-              <property name="maximumSize">
-               <size>
-                <width>48</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="inputMethodHints">
-               <set>Qt::ImhDigitsOnly</set>
-              </property>
-              <property name="maxLength">
-               <number>2</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>130</y>
-             <width>231</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
-            <item>
-             <widget class="QLabel" name="label_searchWifiPlayers">
-              <property name="text">
-               <string>WiFi Players</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QComboBox" name="comboBox_searchWiFiPlayers">
-              <property name="currentIndex">
-               <number>2</number>
-              </property>
-              <item>
-               <property name="text">
-                <string>&lt;</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>&lt;=</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>==</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>&gt;=</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>&gt;</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>!=</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_searchWiFiPlayers">
-              <property name="maximumSize">
-               <size>
-                <width>48</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="inputMethodHints">
-               <set>Qt::ImhDigitsOnly</set>
-              </property>
-              <property name="maxLength">
-               <number>2</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
+            </widget>
+           </item>
+          </layout>
          </widget>
          <widget class="QWidget" name="page_2">
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="0" column="0">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item row="1" column="0">
+            <widget class="QTreeWidget" name="treeWidget">
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="columnCount">
+              <number>7</number>
+             </property>
+             <column>
+              <property name="text">
+               <string>ID</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Title</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string notr="true"/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/Wiimote1.png</normaloff>:/images/Wiimote1.png</iconset>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string notr="true"/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/wifi1.png</normaloff>:/images/wifi1.png</iconset>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Rating</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Type</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Accessories</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item row="2" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="leftMargin">
+              <number>9</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_searchResultInfo">
                <property name="text">
@@ -945,45 +1728,6 @@
              </item>
             </layout>
            </item>
-           <item row="1" column="0">
-            <widget class="QTreeWidget" name="treeWidget">
-             <column>
-              <property name="text">
-               <string>ID</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Title</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>#P</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>#WiFi</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Rating</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Accessories</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Type</string>
-              </property>
-             </column>
-            </widget>
-           </item>
           </layout>
          </widget>
         </widget>
@@ -994,6 +1738,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

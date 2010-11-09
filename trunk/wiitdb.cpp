@@ -334,6 +334,7 @@ QString WiiTDB::TypeFromGameElement( QDomElement parent )
     if( !e.isNull() )
 	ret = e.text();
 
+    //as of nov-9-2010, wii games dont have a type string. they have an empty tag
     return ret;
 }
 QString WiiTDB::RegionFromGameElement( QDomElement parent )
@@ -501,9 +502,9 @@ QMap<QString, bool> WiiTDB::InputControllersFromGameElement( QDomElement parent 
     return ret;
 }
 
-
 QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name, const QString &players, int playerCmpType, \
-					  const QString &wifiPlayers, int wifiCmpType )
+	const QString &wifiPlayers, int wifiCmpType, const QString &type, const QStringList &accessories, const QStringList &required,\
+	const QString &ratingType, int ratingCmp, const QString &ratingVal )
 {
     QDomElement root = domDocument.documentElement();
     QDomElement child = root.firstChildElement( "game" );
@@ -532,31 +533,63 @@ QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name
 
     while( !child.isNull() )
     {
-	QDomElement idNode = child.firstChildElement( "id" );
-	if( !idNode.isNull() )
-	{
-	    QString curID = idNode.text();
-	    if( id.isEmpty() || CheckRegEx( curID, rxID ) )
-	    {
-		QString title = NameFromGameElement( child );
-		if( name.isEmpty() || CheckRegEx( title, rxTitle ) )
-		{
-		    int curPly = InputPlayersFromGameElement( child );
-		    if( players.isEmpty() || CheckPlayerRule( curPly, playerCmpType, plr ) )
-		    {
-			int curWPly = WifiPlayersGameElement( child );
-			if( wifiPlayers.isEmpty() || CheckPlayerRule( curWPly, wifiCmpType, plrWiFi ) )
-			{
-			    QString plyStr = QString( "%1" ).arg( curPly );
-			    QString plyWStr = QString( "%1" ).arg( curWPly );
-			    QTreeWidgetItem *item = new QTreeWidgetItem( QStringList() << curID << title << plyStr << plyWStr );
-			    ret << item;
-			}
-		    }
-		}
-	    }
-	}
+	QDomElement c = child;
 	child = child.nextSiblingElement( "game" );
+
+	QDomElement idNode = c.firstChildElement( "id" );
+	if( idNode.isNull() )
+	    continue;
+
+	int curPly = InputPlayersFromGameElement( c );//check the int stuff first as it is quicker and move on to the slower checks
+	if( !( players.isEmpty() || CheckPlayerRule( curPly, playerCmpType, plr ) ) )
+	    continue;
+
+	int curWPly = WifiPlayersGameElement( c );
+	if( !( wifiPlayers.isEmpty() || CheckPlayerRule( curWPly, wifiCmpType, plrWiFi ) ) )
+	    continue;
+
+	QString curType = TypeFromGameElement( c );
+	if( !( type.isEmpty() || type == curType ) )
+	    continue;
+
+	QString curID = idNode.text();
+	if( !( id.isEmpty() || CheckRegEx( curID, rxID ) ) )
+	    continue;
+
+	QString title = NameFromGameElement( c );
+	if( !( name.isEmpty() || CheckRegEx( title, rxTitle ) ) )
+	    continue;
+
+	QMap<QString, bool>acc = InputControllersFromGameElement( c );
+	if( !CheckAccessories( acc, accessories, required ) )
+	    continue;
+
+	QString rType = RatingTypeFromGameElement( c );
+	QString rVal = RatingValueFromGameElement( c );
+	if( !( ratingType.isEmpty() || CheckRating( rType, rVal, ratingCmp, ratingType, ratingVal ) ) )
+	{
+	    //qDebug() << "rating failed:" << curID << rType << rVal;
+	    continue;
+	}
+
+	QString plyStr = QString( "%1" ).arg( curPly );
+	QString plyWStr = QString( "%1" ).arg( curWPly );
+	QString accStr;
+	QMapIterator<QString, bool> i( acc );//turn all the accessories into a string
+	while( i.hasNext() )
+	{
+	    i.next();
+	    accStr += i.key();
+	    if( i.hasNext() )
+		accStr += ", ";
+	}
+
+	//make a new item and add all the text to it
+	QTreeWidgetItem *item = new QTreeWidgetItem( QStringList() << curID << title << plyStr << plyWStr );
+	item->setText( 4, rType.isEmpty() || rVal.isEmpty() ? "" : rType + " : " + rVal );
+	item->setText( 5, curType );
+	item->setText( 6, accStr );
+	ret << item;
     }
     return ret;
 }
@@ -600,8 +633,186 @@ bool WiiTDB::CheckPlayerRule( int num, int cmpType, int cmpval )
     }
     //shouldnt happen
     return false;
+}
+
+bool WiiTDB::CheckAccessories( QMap<QString, bool>tags, const QStringList &acc, const QStringList &accReq )
+{
+    //check the supported accessories first
+    foreach( QString str, acc )
+    {
+	if( tags.constFind( str ) == tags.constEnd() )//game doesnt support this accessory
+	    return false;
+    }
+
+    //check the required accessories
+    foreach( QString str, accReq )
+    {
+	QMap<QString, bool>::const_iterator it = tags.constFind( str );
+	if( it == tags.constEnd() )//game doesnt support this accessory
+	    return false;
+	if( !it.value() )//accessory is not required to play this game
+	    return false;
+    }
+    return true;
+}
+
+static int ConvertRatingToIndex( const QString &ratingtext )
+{
+    if( ratingtext == "CERO" )
+	return 0;
+    if( ratingtext == "ESRB" )
+	return  1;
+    if( ratingtext == "PEGI" )
+	return  2;
+    if( ratingtext == "GRB" )
+	return  3;
+    return -1;
+}
+
+QString WiiTDB::ConvertRating( const QString &fromType, const QString &fromVal, const QString &toType )
+{
+    if( fromType == toType )
+    {
+	return fromVal;
+    }
+
+    //set a default return value
+    QString ret;
+    if( toType == "CERO" )
+	ret = "A";
+    else if( toType == "ESRB" )
+	ret = "E";
+    else if( toType == "GRB" )
+	ret = "ALL";
+    else ret = "3";
+
+
+
+    int type = -1;
+    int desttype = -1;
+
+    type = ConvertRatingToIndex( fromType );
+    desttype = ConvertRatingToIndex( toType );
+    if( type == -1 || desttype == -1 )
+	return ret;
+
+    /* rating conversion table */
+    /* the list is ordered to pick the most likely value first: */
+    /* EC and AO are less likely to be used so they are moved down to only be picked up when converting ESRB to PEGI or CERO */
+    /* the conversion can never be perfect because ratings can differ between regions for the same game */
+    char ratingtable[ 12 ][ 4 ][ 5 ] =
+    { { { "A" }, { "E" }, { "3" }, { "ALL" } },
+      { { "A" }, { "E" }, { "4" }, { "ALL" } },
+      { { "A" }, { "E" }, { "6" }, { "ALL" } },
+      { { "A" }, { "E" }, { "7" }, { "ALL" } },
+      { { "A" }, { "EC" }, { "3" }, { "ALL" } },
+      { { "A" }, { "E10+" }, { "7" }, { "ALL" } },
+      { { "B" }, { "T" }, { "12" }, { "12" } },
+      { { "D" }, { "M" }, { "18" }, { "18" } },
+      { { "D" }, { "M" }, { "16" }, { "18" } },
+      { { "C" }, { "T" }, { "16" }, { "15" } },
+      { { "C" }, { "T" }, { "15" }, { "15" } },
+      { { "Z" }, { "AO" }, { "18" }, { "18" } } };
+
+    for( int i = 0; i < 12; i++ )
+    {
+	if( fromVal == ratingtable[ i ][ type ] )
+	{
+	    return ratingtable[ i ][ desttype ];
+	}
+    }
+    return ret;
 
 }
 
+bool WiiTDB::CheckRating( const QString &testType, const QString &testVal, int oper, const QString &cmpType, const QString &cmpVal )
+{
+    if(  testType.isEmpty() || testVal.isEmpty() )
+	return true;
+
+    QString convVal = ConvertRating( testType, testVal, cmpType );
+
+    //test "==" and "!=" here before bothering to do any un-necessary stuff
+    if( oper == 2 )
+    {
+	return convVal == cmpVal;
+    }
+    if( oper == 5 )
+    {
+	return convVal != cmpVal;
+    }
+    QStringList cmpVals;
+    if( cmpType == "CERO" )
+	cmpVals << "A" << "B" << "C" << "D" << "Z";
+    else if( cmpType == "ESRB" )
+	cmpVals << "EC" << "E" << "E10+" << "T" << "M" << "AO";
+    else if( cmpType == "PEGI" )
+	cmpVals << "3" << "4" << "5" << "6" << "7" << "12" << "15" << "16" << "18";
+    else
+	return false;
+
+    int size = cmpVals.size();
+    switch( oper )
+    {
+    case 0:// <
+	{
+	    for( int i = 0; i < size; i++ )
+	    {
+		if( cmpVals.at( i ) == cmpVal )
+		    return false;
+
+		if( cmpVals.at( i ) == convVal )
+		    return true;
+	    }
+	}
+	break;
+    case 1:// <=
+	{
+	    if( convVal == cmpVal )
+		return true;
+
+	    for( int i = 0; i < size; i++ )
+	    {
+		if( cmpVals.at( i ) == cmpVal )
+		    return false;
+
+		if( cmpVals.at( i ) == convVal )
+		    return true;
+	    }
+	}
+	break;
+    case 3:// >=
+	{
+	    if( convVal == cmpVal )
+		return true;
+
+	    for( int i = size - 1 ; i >= 0; i-- )
+	    {
+		if( cmpVals.at( i ) == cmpVal )
+		    return false;
+
+		if( cmpVals.at( i ) == convVal )
+		    return true;
+	    }
+	}
+	break;
+    case 4:// >
+	{
+	    for( int i = size - 1; i >= 0; i-- )
+	    {
+		if( cmpVals.at( i ) == cmpVal )
+		    return false;
+
+		if( cmpVals.at( i ) == convVal )
+		    return true;
+	    }
+	}
+	break;
+    default:
+	return false;
+    }
+    return false;
+
+}
 
 
