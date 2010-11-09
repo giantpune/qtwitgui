@@ -815,6 +815,12 @@
                      </item>
                      <item>
                       <widget class="QComboBox" name="comboBox_searchPlayers">
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
                        <property name="currentIndex">
                         <number>2</number>
                        </property>
@@ -892,6 +898,12 @@
                      </item>
                      <item>
                       <widget class="QComboBox" name="comboBox_searchWiFiPlayers">
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
                        <property name="currentIndex">
                         <number>2</number>
                        </property>
@@ -1092,12 +1104,23 @@
                          <string>CERO</string>
                         </property>
                        </item>
+                       <item>
+                        <property name="text">
+                         <string>GRB</string>
+                        </property>
+                       </item>
                       </widget>
                      </item>
                      <item>
                       <widget class="QComboBox" name="comboBox_searchRatingCmp">
                        <property name="enabled">
                         <bool>false</bool>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>16777215</height>
+                        </size>
                        </property>
                        <property name="currentIndex">
                         <number>2</number>
@@ -1165,7 +1188,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchWiimote">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Wiimote</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1188,7 +1211,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchNunchuk">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Nunchuk</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1211,7 +1234,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_search_7">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Zapper</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1234,7 +1257,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchBB">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Balance Board</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1257,7 +1280,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchBongos">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>DK Bongos</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1284,7 +1307,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchMP">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Motion Plus</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1307,7 +1330,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchCC">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Classic Controller</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1330,7 +1353,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchWheel">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Wii Wheel</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1353,7 +1376,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchDDR">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Dance Mat</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1376,7 +1399,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchGCN">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>GameCube Controller</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1403,7 +1426,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchGuitar">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Guitar</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1426,7 +1449,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_search_Drums">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Drums</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1449,7 +1472,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchMic">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Microphone</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1472,7 +1495,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchGBA">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Gameboy Advance</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1512,7 +1535,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchKB">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Keyboard</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1535,7 +1558,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchWS">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>WiiSpeak</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1558,7 +1581,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_searchDS">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Nintendo DS</string>
                        </property>
                        <property name="text">
                         <string/>
@@ -1581,7 +1604,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBox_search_LFF">
                        <property name="toolTip">
-                        <string>These are tri-state checkboxes.  Simi-checked means teh accessory is supported.  Fully checked is used for &quot;required&quot;.</string>
+                        <string>Force Feedback</string>
                        </property>
                        <property name="text">
                         <string/>

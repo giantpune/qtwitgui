@@ -609,6 +609,15 @@ void WiiTDBWindow::on_comboBox_searchRatingType_currentIndexChanged( int index )
 	ui->comboBox_searchRatingCmp->setEnabled( true );
 	ui->comboBox_searchRatingValue->setEnabled( true );
 	break;
+    case 4://grb
+	ui->comboBox_searchRatingValue->addItem( "ALL" );
+	ui->comboBox_searchRatingValue->addItem( "12" );
+	ui->comboBox_searchRatingValue->addItem( "15" );
+	ui->comboBox_searchRatingValue->addItem( "18" );
+
+	ui->comboBox_searchRatingCmp->setEnabled( true );
+	ui->comboBox_searchRatingValue->setEnabled( true );
+	break;
 
     default:
 	ui->comboBox_searchRatingCmp->setEnabled( false );
