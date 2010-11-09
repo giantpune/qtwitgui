@@ -58,6 +58,25 @@ public slots:
     void LoadGameFromID( const QString &id );
 
 private slots:
+    void on_comboBox_searchRatingType_currentIndexChanged(int index);
+    void on_checkBox_search_LFF_stateChanged(int );
+    void on_checkBox_searchDS_stateChanged(int );
+    void on_checkBox_searchWS_stateChanged(int );
+    void on_checkBox_searchKB_stateChanged(int );
+    void on_checkBox_searchGBA_stateChanged(int );
+    void on_checkBox_searchMic_stateChanged(int );
+    void on_checkBox_search_Drums_stateChanged(int );
+    void on_checkBox_searchGuitar_stateChanged(int );
+    void on_checkBox_searchGCN_stateChanged(int );
+    void on_checkBox_searchDDR_stateChanged(int );
+    void on_checkBox_searchWheel_stateChanged(int );
+    void on_checkBox_searchCC_stateChanged(int );
+    void on_checkBox_searchMP_stateChanged(int );
+    void on_checkBox_searchBongos_stateChanged(int );
+    void on_checkBox_searchBB_stateChanged(int );
+    void on_checkBox_search_7_stateChanged(int );
+    void on_checkBox_searchNunchuk_stateChanged(int );
+    void on_checkBox_searchWiimote_stateChanged(int );
     void on_treeWidget_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
     void on_treeWidget_itemClicked(QTreeWidgetItem* item, int column);
     void on_pushButton_search_clicked();
