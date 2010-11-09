@@ -727,9 +727,10 @@ QString WiiTDB::ConvertRating( const QString &fromType, const QString &fromVal, 
 
 bool WiiTDB::CheckRating( const QString &testType, const QString &testVal, int oper, const QString &cmpType, const QString &cmpVal )
 {
-    if(  testType.isEmpty() || testVal.isEmpty() )
+    if(  ( testType.isEmpty() || testVal.isEmpty() ) &&  oper != 2 )
+    {
 	return true;
-
+    }
     QString convVal = ConvertRating( testType, testVal, cmpType );
 
     //test "==" and "!=" here before bothering to do any un-necessary stuff
@@ -741,6 +742,7 @@ bool WiiTDB::CheckRating( const QString &testType, const QString &testVal, int o
     {
 	return convVal != cmpVal;
     }
+
     QStringList cmpVals;
     if( cmpType == "CERO" )
 	cmpVals << "A" << "B" << "C" << "D" << "Z";
@@ -748,6 +750,8 @@ bool WiiTDB::CheckRating( const QString &testType, const QString &testVal, int o
 	cmpVals << "EC" << "E" << "E10+" << "T" << "M" << "AO";
     else if( cmpType == "PEGI" )
 	cmpVals << "3" << "4" << "5" << "6" << "7" << "12" << "15" << "16" << "18";
+    else if( cmpType == "GRB" )
+	cmpVals << "ALL" << "12" << "15" << "18";
     else
 	return false;
 
