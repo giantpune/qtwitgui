@@ -199,13 +199,17 @@ protected:
   void paintEvent(QPaintEvent *event);
   void keyPressEvent(QKeyEvent* event);
   void mousePressEvent(QMouseEvent* event);
+  void mouseReleaseEvent( QMouseEvent * event );
   void resizeEvent(QResizeEvent* event);
 
 private slots:
   void updateAnimation();
+  void KeepMovingIfMouseIsStillPressed();
 
 private:
   PictureFlowPrivate* d;
+  int directionToMoveIfMouseIsStillHeldDown;
+
 };
 
 #endif // PICTUREFLOW_H
