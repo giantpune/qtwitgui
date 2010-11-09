@@ -951,6 +951,7 @@ PictureFlow::PictureFlow(QWidget* parent): QWidget(parent)
 
     //this->resize( 800;
   d = new PictureFlowPrivate;
+  directionToMoveIfMouseIsStillHeldDown = 0;
 
   d->state = new PictureFlowState;
   d->state->reset();
@@ -1197,11 +1198,60 @@ void PictureFlow::keyPressEvent(QKeyEvent* event)
   event->ignore();
 }
 
+void PictureFlow::KeepMovingIfMouseIsStillPressed()
+{
+    if( !directionToMoveIfMouseIsStillHeldDown )
+	return;
+
+    /*if( d->animator->step )//the slides are already moving
+    {
+	QTimer::singleShot( 500, this, SLOT( KeepMovingIfMouseIsStillPressed() ) );
+	return;
+    }*/
+
+    if( directionToMoveIfMouseIsStillHeldDown < 0 )
+    {
+	showSlide( centerIndex() - 10 );
+	QTimer::singleShot( 500, this, SLOT( KeepMovingIfMouseIsStillPressed() ) );
+	return;
+    }
+    else
+    {
+	showSlide( centerIndex() + 10 );
+	QTimer::singleShot( 500, this, SLOT( KeepMovingIfMouseIsStillPressed() ) );
+	return;
+    }
+}
+
+void PictureFlow::mouseReleaseEvent( QMouseEvent * event )
+{
+    Q_UNUSED( event );
+    directionToMoveIfMouseIsStillHeldDown = 0;
+}
+
 void PictureFlow::mousePressEvent(QMouseEvent* event)
 {
+    if( !d->state->slideImages.size() )
+	return;
+
     int clicked = PointToImageIndex( QPoint( event->x(), event->y() ) );
     if( clicked < 0 || clicked > d->state->slideImages.size() )
+    {
+	if( d->animator->step )//the slides are already moving
+	    return;
+
+	if( event->x() < this->rect().center().x() )
+	{
+	    directionToMoveIfMouseIsStillHeldDown = -1;
+	}
+	else
+	{
+	    directionToMoveIfMouseIsStillHeldDown = 1;
+	}
+	KeepMovingIfMouseIsStillPressed();
+
 	return;
+    }
 
     if( event->modifiers() == Qt::ShiftModifier )
     {
