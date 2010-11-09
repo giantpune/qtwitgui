@@ -14,6 +14,7 @@ PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui(
 
     ui->setupUi( this );
     ui->progressBar->setVisible( false );
+    ui->statusbar->addPermanentWidget( ui->progressBar, 0 );
     ui->menubar->hide();
     ui->treeWidget->sortItems( GAME_NAME_COLUMN, Qt::AscendingOrder );
 
