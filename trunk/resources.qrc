@@ -114,5 +114,18 @@
         <file>images/wiimmsIcon.png</file>
         <file>images/Wiimote.png</file>
         <file>images/WiimoteR.png</file>
+        <file>images/grb_12.png</file>
+        <file>images/grb_15.png</file>
+        <file>images/grb_18.png</file>
+        <file>images/grb_all.png</file>
+        <file>images/wifi10.png</file>
+        <file>images/Wiimote5.png</file>
+        <file>images/Wiimote6.png</file>
+        <file>images/Wiimote7.png</file>
+        <file>images/Wiimote8.png</file>
+        <file>images/Wiimote10.png</file>
+        <file>images/Wiimote12.png</file>
+        <file>images/Wiimote16.png</file>
+        <file>images/pegi_6.png</file>
     </qresource>
 </RCC>
