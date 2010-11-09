@@ -21,16 +21,13 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <property name="leftMargin">
+    <property name="horizontalSpacing">
      <number>2</number>
     </property>
-    <property name="topMargin">
-     <number>1</number>
+    <property name="verticalSpacing">
+     <number>0</number>
     </property>
-    <property name="rightMargin">
-     <number>1</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>2</number>
     </property>
     <item row="0" column="0">
@@ -85,21 +82,16 @@
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="maximumSize">
+       <size>
+        <width>170</width>
+        <height>16777215</height>
+       </size>
       </property>
-      <widget class="QProgressBar" name="progressBar">
-       <property name="maximumSize">
-        <size>
-         <width>170</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="value">
-        <number>24</number>
-       </property>
-      </widget>
+      <property name="value">
+       <number>24</number>
+      </property>
      </widget>
     </item>
    </layout>

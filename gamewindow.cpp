@@ -12,6 +12,7 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
     ui->setupUi(this);
     ui->menubar->hide();
     ui->progressBar->setVisible( false );
+    ui->statusbar->addPermanentWidget( ui->progressBar, 0 );
     setAcceptDrops( true );
     busy = false;
     SetPartitionList( pList );
