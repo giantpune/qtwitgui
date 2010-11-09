@@ -616,3 +616,21 @@ void WiiTDBWindow::on_comboBox_searchRatingType_currentIndexChanged( int index )
 	break;
     }
 }
+//missing images
+/*
+
+bad filename: "SMNC01" ":/images/cero_e.png"//wiitdb errors
+bad filename: "GANP7U" ":/images/esrb_3.png"
+bad filename: "RUHX52" ":/images/esrb_3.png"
+bad filename: "RQPZ52" ":/images/esrb_3.png"
+bad filename: "RGHI52" ":/images/esrb_3.png"
+bad filename: "RU5Y4Q" ":/images/esrb_3.png"
+unhandled shit:: "GB4E51" "logitec force feedback" :  false
+bad filename: "RC7E20" ":/images/esrb_e 10+.png"
+bad filename: "R6FERS" ":/images/esrb_e 10+.png"
+bad filename: "R48E7D" ":/images/esrb_e 10+.png"
+unhandled shit:: "SWBE52" "turn table" :  false//only 1 game uses this
+bad filename: "GFXE5D" ":/images/gc9.png"
+unhandled shit:: "R8OX54" "vitalitysensor" :  true //this hasnt even been invented yet
+unhandled shit:: "STYP52" "board controller" :  false //tony hawk board
+*/

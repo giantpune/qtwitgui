@@ -205,7 +205,7 @@ void MainWindow::LoadSettings()
     if( version != SETTINGS_VERSION )
     {
 	QMessageBox::critical( this, tr( "Settings Version" ),\
-			       tr( "The format of the settings file does not match what is expected my this version of %1.").arg( PROGRAM_NAME )\
+			       tr( "The format of the settings file does not match what is expected by this version of %1.").arg( PROGRAM_NAME )\
 			       + "  " + tr( "Default settings will be used.") );
 	settings.remove( "" );
 
