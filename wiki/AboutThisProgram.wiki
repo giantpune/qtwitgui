@@ -78,7 +78,8 @@
   * This dialog has a memory.  It will do its best to load up the last accepted settings.
 
 == WiiTDB ==
-<a target='_blank' href='http://img835.imageshack.us/img835/9105/wiitdbwindow.png'><img src='http://img835.imageshack.us/img835/9105/wiitdbwindow.th.png' border='0'/></a>
+<a target='_blank' href='http://img835.imageshack.us/img835/9105/wiitdbwindow.png'><img src='http://img835.imageshack.us/img835/9105/wiitdbwindow.th.png' border='0'/></a>  <a href="http://img243.imageshack.us/img243/6852/searchwiitdb.png" target="_blank"><img src="http://img243.imageshack.us/img243/6852/searchwiitdb.th.png" border="0"/></a>
+
   * You can choose "view->wiitdb" and get a window that shows information about your games.  This window should sync automagically with any open partitions.
   * The window is created with "stay on top" flags.  Usually right-clicking the window titlebar will allow to turn off this setting.
   * There is a copy of wiitdb.xml built into the program.  You can also specify a different copy in the settings.  Due to incompatibilities in the zip libraries, wiitdb must be unzipped on OSx.
