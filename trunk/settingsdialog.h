@@ -40,8 +40,13 @@ public:
 private:
     Ui::SettingsDialog *ui;
     void ResizeButtons();
+    void ResetLogPage();
 
 private slots:
+    void on_pushButton_logCrt_clicked();
+    void on_pushButton_logWrn_clicked();
+    void on_pushButton_logTxt_clicked();
+    void on_pushButton_logBg_clicked();
     void on_pushButton_ignore_minus_clicked();
     void on_pushButton_ignore_add_clicked();
     void on_pushButton_coverPath_clicked();
