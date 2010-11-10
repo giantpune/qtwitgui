@@ -58,6 +58,7 @@ public slots:
     void LoadGameFromID( const QString &id );
 
 private slots:
+    void on_comboBox_searchSynopsisLang_currentIndexChanged(int index);
     void on_comboBox_searchRatingType_currentIndexChanged(int index);
     void on_checkBox_search_LFF_stateChanged(int );
     void on_checkBox_searchDS_stateChanged(int );

@@ -731,7 +731,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>572</width>
-                <height>536</height>
+                <height>573</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_7">
@@ -801,6 +801,98 @@
                         </size>
                        </property>
                       </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_15">
+                     <item>
+                      <widget class="QLabel" name="label_searchSynopsis">
+                       <property name="text">
+                        <string>Synopsis</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_searchSynopsisLang">
+                       <item>
+                        <property name="text">
+                         <string notr="true"/>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">US</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">JA</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">FR</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">DE</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">ES</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">IT</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">NL</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">PT</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">AU</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">RU</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">KO</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">ZH</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string notr="true">SE</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEdit_searchSynopsis">
+                       <property name="enabled">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
                      </item>
                     </layout>
                    </item>
@@ -1650,7 +1742,7 @@
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
-                   <width>84</width>
+                   <width>75</width>
                    <height>110</height>
                   </size>
                  </property>

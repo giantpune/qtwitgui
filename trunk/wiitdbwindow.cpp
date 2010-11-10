@@ -22,6 +22,7 @@ WiiTDBWindow::WiiTDBWindow(QWidget *parent) : QWidget(parent), ui(new Ui::WiiTDB
     min = MAX( min, fm.width( ui->label_searchID->text() ) );
     min = MAX( min, fm.width( ui->label_searchType->text() ) );
     min = MAX( min, fm.width( ui->label_searchWifiPlayers->text() ) );
+    min = MAX( min, fm.width( ui->label_searchSynopsis->text() ) );
     min += 20;
     ui->label_searchPlayers->setMinimumWidth( min );
     ui->label_searchWifiPlayers->setMinimumWidth( min );
@@ -29,6 +30,7 @@ WiiTDBWindow::WiiTDBWindow(QWidget *parent) : QWidget(parent), ui(new Ui::WiiTDB
     ui->label_searchID->setMinimumWidth( min );
     ui->label_searchTitle->setMinimumWidth( min );
     ui->label_searchRating->setMinimumWidth( min );
+    ui->label_searchSynopsis->setMinimumWidth( min );
 
 
     //search result list
@@ -427,7 +429,8 @@ void WiiTDBWindow::on_pushButton_search_clicked()
 			    ui->lineEdit_searchPlayers->text(), ui->comboBox_searchPlayers->currentIndex(),\
 			    ui->lineEdit_searchWiFiPlayers->text(), ui->comboBox_searchWiFiPlayers->currentIndex(),\
 			    ui->comboBox_searchType->currentText(), acc, accReq, ui->comboBox_searchRatingType->currentText(),\
-			    ui->comboBox_searchRatingCmp->currentIndex(), ui->comboBox_searchRatingValue->currentText() );
+			    ui->comboBox_searchRatingCmp->currentIndex(), ui->comboBox_searchRatingValue->currentText(),\
+			    ui->lineEdit_searchSynopsis->text(), ui->comboBox_searchSynopsisLang->currentText() );
     int size = games.size();
     if( !size )
 	ui->label_searchResultInfo->setText( tr( "No entries matched the search terms" ) );
@@ -643,3 +646,9 @@ bad filename: "GFXE5D" ":/images/gc9.png"
 unhandled shit:: "R8OX54" "vitalitysensor" :  true //this hasnt even been invented yet
 unhandled shit:: "STYP52" "board controller" :  false //tony hawk board
 */
+
+//synopsis combobox index changed
+void WiiTDBWindow::on_comboBox_searchSynopsisLang_currentIndexChanged( int index )
+{
+    ui->lineEdit_searchSynopsis->setEnabled( index );
+}
