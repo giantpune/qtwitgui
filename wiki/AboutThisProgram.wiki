@@ -83,9 +83,15 @@
   * The window is created with "stay on top" flags.  Usually right-clicking the window titlebar will allow to turn off this setting.
   * There is a copy of wiitdb.xml built into the program.  You can also specify a different copy in the settings.  Due to incompatibilities in the zip libraries, wiitdb must be unzipped on OSx.
   * There is a "search" tab that allows searching through all the games in the currently loaded WiiTDB.  This tab should be pretty self-explanatory.
-   * The ID and Title fields not only accept input as one would expect, but also work with regex expressions ( case-insensitive ).  This makes this it officially the most advanced WiiTDB searcher in the world.  For more information on how to use the qregex see here http://doc.qt.nokia.com/4.7/qregexp.html
+
+   * The ID, Title, and Synopsis fields not only accept input as one would expect, but also work with regex expressions ( case-insensitive ).  This makes this it officially the most advanced WiiTDB searcher in the world.  For more information on how to use the qregex see http://www.regular-expressions.info/ and http://doc.qt.nokia.com/4.7/qregexp.html
+
+   * Possible searches:  "^[0-9a-z]{3}E" in the ID field will return all games with "E" as the 4th character.  "metallica|ozzy" in the synopsis filter will show only games that have either "metallica" or "ozzy" in it's synopsis. 
+
    * There are several checkboxes to add accessories to the search filter.  These are tristate checkboxes.  If you simi-check an accessory, the search will only list games that support that item.  If you fully check an accessory, the icon will turn blue, and the search results will only include games that require that item.
+
    * There are 2 filters for the number of players.  The first is for the amount of players the game supports locally, and the second is the amount of players the game supports online.  You can search "less than", "less than or equal", "equal", "greater than", "greater than or equal", and "not equal".
+
    * The rating filter allows to search for games based on their rating ( duh ).  Ratings from different regions are converted ( roughly ) to the ration of the search filter.  This filter accepts the same 6 comparison types as the player filters.
 
 
