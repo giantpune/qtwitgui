@@ -60,18 +60,16 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     s.endGroup();
 #endif
     s.beginGroup( "wit_wwt" );
-    //ui->checkBox_testMode->setChecked( s.value( "testMode" ).toBool() );
-    //ui->checkBox_overWrite->setChecked( s.value( "overWriteFiles" ).toBool() );
     ui->checkBox_ignoreSvn->setChecked( s.value( "ignoreSvn" ).toBool() );
-    //ui->checkBox_Sneek->setChecked( s.value( "sneek" ).toBool() );
     ui->comboBox_key->setCurrentIndex( s.value( "encKey", 0 ).toInt() );
     ui->spinBox_wiimms_recurse->setValue( s.value( "rdepth", 10 ).toInt() );
-    //ui->spinBox_defaultIos->setValue( s.value( "defaultIos" ).toInt() );
-    //ui->comboBox_defaultRegion->setCurrentIndex( s.value( "defaultRegion" ).toInt() );
+    s.endGroup();
 
-    //int sel = ui->comboBox_partitionSelect->findText( s.value( "partitionSelect" ).toString() );
-    //if( sel >= 0 )
-	//ui->comboBox_partitionSelect->setCurrentIndex( sel );
+    s.beginGroup( "log" );
+    ui->label_logBG->setText( s.value( "bgColor", "#ffffff" ).toString() );
+    ui->label_logTxt->setText( s.value( "txtColor", "#000000" ).toString() );
+    ui->label_logWrn->setText( s.value( "wrnColor", "#0000ff" ).toString() );
+    ui->label_logCrt->setText( s.value( "crtColor", "#ff0000" ).toString() );
     s.endGroup();
 
     int size = s.beginReadArray( "ignoreFolders" );
@@ -83,6 +81,28 @@ SettingsDialog::SettingsDialog( QWidget *parent ) : QDialog( parent ), ui( new U
     s.endArray();
 
     ui->checkBox_ignoreFst->setChecked( s.value( "ignoreFst", false ).toBool() );
+
+    QFont monoFont;
+#ifdef Q_WS_WIN
+    monoFont = QFont( "Courier New", QApplication::font().pointSize() );
+#else
+    monoFont = QFont( "Courier New", QApplication::font().pointSize() - 1 );
+#endif
+    ui->textEdit->setFont( monoFont );
+
+
+    ResetLogPage();
+    ui->label_logBG->setPalette( QPalette( QColor( ui->label_logBG->text() ) ) );
+    ui->label_logBG->setAutoFillBackground( true );
+
+    ui->label_logTxt->setPalette( QPalette( QColor( ui->label_logTxt->text() ) ) );
+    ui->label_logTxt->setAutoFillBackground( true );
+
+    ui->label_logWrn->setPalette( QPalette( QColor( ui->label_logWrn->text() ) ) );
+    ui->label_logWrn->setAutoFillBackground( true );
+
+    ui->label_logCrt->setPalette( QPalette( QColor( ui->label_logCrt->text() ) ) );
+    ui->label_logCrt->setAutoFillBackground( true );
 }
 
 SettingsDialog::~SettingsDialog()
@@ -116,18 +136,18 @@ void SettingsDialog::on_pushButton_ok_clicked()
     s.endGroup();
 #endif
     s.beginGroup( "wit_wwt" );
-    //s.setValue( "testMode", ui->checkBox_testMode->isChecked() );
-    //s.setValue( "overWriteFiles", ui->checkBox_overWrite->isChecked() );
     s.setValue( "ignoreSvn", ui->checkBox_ignoreSvn->isChecked() );
-    //s.setValue( "sneek", ui->checkBox_Sneek->isChecked() );
     s.setValue( "encKey", ui->comboBox_key->currentIndex() );
     s.setValue( "rdepth", ui->spinBox_wiimms_recurse->value() );
-    //s.setValue( "defaultIos", ui->spinBox_defaultIos->value() );
-    //s.setValue( "defaultRegion", ui->comboBox_defaultRegion->currentIndex() );
-    //s.setValue( "partitionSelect", ui->comboBox_partitionSelect->currentText() );
     s.endGroup();
 
-    //QList<QListWidgetItem *> ignorePaths = ui->listWidget_ignore->i
+    s.beginGroup( "log" );
+    s.setValue( "bgColor", ui->label_logBG->text() );
+    s.setValue( "txtColor", ui->label_logTxt->text() );
+    s.setValue( "wrnColor", ui->label_logWrn->text() );
+    s.setValue( "crtColor", ui->label_logCrt->text() );
+    s.endGroup();
+
     int size = ui->listWidget_ignore->count();
     s.beginWriteArray("ignoreFolders");
     for( int i = 0; i < size; i++ )
@@ -139,7 +159,6 @@ void SettingsDialog::on_pushButton_ok_clicked()
     }
     s.endArray();
     s.setValue( "ignoreFst", ui->checkBox_ignoreFst->isChecked() );
-    //}
 
     s.sync();
 
@@ -235,4 +254,75 @@ void SettingsDialog::on_pushButton_ignore_minus_clicked()
 	ui->listWidget_ignore->removeItemWidget( item );
 	delete item;
     }
+}
+
+void SettingsDialog::ResetLogPage()
+{
+    QPalette p = ui->textEdit->palette();
+    p.setColor( QPalette::Base, QColor( ui->label_logBG->text() ) );
+    p.setColor( QPalette::Text, QColor( ui->label_logTxt->text() ) );
+    ui->textEdit->setPalette( p );
+
+    ui->textEdit->clear();
+    QString htmlString = QString( "%1<br><b><text style=\"color:" + ui->label_logWrn->text() + "\"> %2 </text></b><br>"\
+				  "<b><text style=\"color:" + ui->label_logCrt->text() + "\"> %3 </text></b><br>" ).\
+			 arg( tr( "This is text" ) ).\
+			 arg( tr( "This is example warning text" ) ).\
+			 arg( tr( "This is example critical text" ) );
+
+    ui->textEdit->insertHtml( htmlString );
+}
+
+//search for log colors
+//BG
+void SettingsDialog::on_pushButton_logBg_clicked()
+{
+    QColor color = QColorDialog::getColor( QColor( ui->label_logBG->text() ), this );
+
+    if( color.isValid() )
+    {
+	ui->label_logBG->setText( color.name() );
+	ui->label_logBG->setPalette( QPalette( color ) );
+	ui->label_logBG->setAutoFillBackground( true );
+    }
+    ResetLogPage();
+}
+//text
+void SettingsDialog::on_pushButton_logTxt_clicked()
+{
+    QColor color = QColorDialog::getColor( QColor( ui->label_logTxt->text() ), this );
+
+    if( color.isValid() )
+    {
+	ui->label_logTxt->setText( color.name() );
+	ui->label_logTxt->setPalette( QPalette( color ) );
+	ui->label_logTxt->setAutoFillBackground( true );
+    }
+    ResetLogPage();
+}
+//warning
+void SettingsDialog::on_pushButton_logWrn_clicked()
+{
+    QColor color = QColorDialog::getColor( QColor( ui->label_logWrn->text() ), this );
+
+    if( color.isValid() )
+    {
+	ui->label_logWrn->setText( color.name() );
+	ui->label_logWrn->setPalette( QPalette( color ) );
+	ui->label_logWrn->setAutoFillBackground( true );
+    }
+    ResetLogPage();
+}
+
+void SettingsDialog::on_pushButton_logCrt_clicked()
+{
+    QColor color = QColorDialog::getColor( QColor( ui->label_logCrt->text() ), this );
+
+    if( color.isValid() )
+    {
+	ui->label_logCrt->setText( color.name() );
+	ui->label_logCrt->setPalette( QPalette( color ) );
+	ui->label_logCrt->setAutoFillBackground( true );
+    }
+    ResetLogPage();
 }

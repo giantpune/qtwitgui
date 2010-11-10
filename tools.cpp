@@ -101,6 +101,8 @@ void hexdump( void *d, int len ) {
     fflush( stdout );
 }
 
+QString warningColor = "#0000ff";
+QString criticalColor = "#ff0000";
 QTextEdit *logWindow;
 void SetupLog()
 {
@@ -114,8 +116,15 @@ void SetupLog()
 #endif
     logWindow->setFont( monoFont );
     QPalette p = logWindow->palette();
-    p.setColor( QPalette::Base, Qt::white );
-    p.setColor( QPalette::Text, Qt::black );
+
+    QSettings s( settingsPath, QSettings::IniFormat );
+    s.beginGroup( "log" );
+    p.setColor( QPalette::Base, QColor( s.value( "bgColor", "#ffffff" ).toString() ) );
+    p.setColor( QPalette::Text, QColor( s.value( "txtColor", "#000000" ).toString() ) );
+    warningColor = s.value( "wrnColor", "#0000ff" ).toString();
+    criticalColor = s.value( "crtColor", "#ff0000" ).toString();
+    s.endGroup();
+
     logWindow->setPalette( p );
     qInstallMsgHandler( DebugHandler );
 }
@@ -130,13 +139,13 @@ void DebugHandler( QtMsgType type, const char *msg )
 	break;
     case QtWarningMsg:
 	{
-	    QString htmlString = "<b><text style=\"color:blue\">" + QString( msg ) + "</text></b><br>";
+	    QString htmlString = "<b><text style=\"color:" + warningColor + "\">" + QString( msg ) + "</text></b><br>";
 	    logWindow->insertHtml( htmlString );
 	}
 	break;
     case QtCriticalMsg:
 	{
-	    QString htmlString = "<b><text style=\"color:red\">" + QString( msg ) + "</text></b><br>";
+	    QString htmlString = "<b><text style=\"color:" + criticalColor + "\">" + QString( msg ) + "</text></b><br>";
 	    logWindow->insertHtml( htmlString );
 	}
 	break;

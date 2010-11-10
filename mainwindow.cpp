@@ -398,7 +398,21 @@ void MainWindow::on_actionSettings_triggered()
     if( dialog.exec() )
     {
 	//qDebug() << "mainwindow: settings changed";
+
+	//set the log colors
+	QPalette p = logWindow->palette();
+	QSettings s( settingsPath, QSettings::IniFormat );
+	s.beginGroup( "log" );
+	p.setColor( QPalette::Base, QColor( s.value( "bgColor", "#ffffff" ).toString() ) );
+	p.setColor( QPalette::Text, QColor( s.value( "txtColor", "#000000" ).toString() ) );
+	warningColor = s.value( "wrnColor", "#0000ff" ).toString();
+	criticalColor = s.value( "crtColor", "#ff0000" ).toString();
+	s.endGroup();
+	logWindow->setPalette( p );
+
+	//check that the external processes are working
 	CheckWit();
+
 	emit TellOpenWindowsThatTheSettingsAreChanged();
     }
 }

@@ -72,6 +72,10 @@ void SetGamePath( QTreeWidgetItem* item, QString s );
 void hexdump( void *d, int len );
 
 extern QTextEdit *logWindow;
+
+extern QString warningColor;
+extern QString criticalColor;
+
 void SetupLog();
 void DebugHandler( QtMsgType type, const char *msg );
 #endif // TOOLS_H

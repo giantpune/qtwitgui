@@ -529,7 +529,7 @@ void GameCopyDialog::on_pushButton_destOther_clicked()
 
     QString ext = path;
     ext.remove( 0, ext.lastIndexOf( "." ) + 1 );
-    qDebug() << "ext:" << ext;
+    //qDebug() << "ext:" << ext;
     if( ext.length() == 3 || ext.length() == 4 )
     {
 	int idx = ui->comboBox_container->findText( ext );
@@ -652,7 +652,7 @@ void GameCopyDialog::LoadSettings()
     s.beginGroup( "copydialog" );
     QString lastPart = s.value( "partition", tr("/<Enter a Directory>") ).toString();
     int p = ui->comboBox_dest->findText( lastPart );
-    qDebug() << lastPart << p;
+    //qDebug() << lastPart << p;
     if( p >= 0 )
 	ui->comboBox_dest->setCurrentIndex( p );
 

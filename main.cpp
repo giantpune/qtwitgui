@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
     Q_INIT_RESOURCE( resources );
 
     QApplication a(argc, argv);
+    settingsPath = QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) + "/QtWitGui.ini";
     SetupLog();
     qDebug() << "<b><text style=\"color:green\">" << PROGRAM_NAME << ":" << SVN_REV_STR << "</text></b>";
 
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
 
     QApplication::setWindowIcon( QIcon( ":images/icon.ico" ) );
 
-    settingsPath = QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) + "/QtWitGui.ini";
+
     MainWindow w;
 
     QStringList args = QApplication::arguments();
