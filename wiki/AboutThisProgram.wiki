@@ -82,6 +82,10 @@
   * You can choose "view->wiitdb" and get a window that shows information about your games.  This window should sync automagically with any open partitions.
   * The window is created with "stay on top" flags.  Usually right-clicking the window titlebar will allow to turn off this setting.
   * There is a copy of wiitdb.xml built into the program.  You can also specify a different copy in the settings.  Due to incompatibilities in the zip libraries, wiitdb must be unzipped on OSx.
+  * There is a "search" tab that allows searching through all the games in the currently loaded WiiTDB.  This tab should be pretty self-explanatory.
+   * The ID and Title fields not only accept input as one would expect, but also work with regex expressions ( case-insensitive ).  This makes this it officially the most advanced WiiTDB searcher in the world.  For more information on how to use the qregex see here http://doc.qt.nokia.com/4.7/qregexp.html
+   * There are several checkboxes to add accessories to the search filter.  These are tristate checkboxes.  If you simi-check an accessory, the search will only list games that support that item.  If you fully check an accessory, the icon will turn blue, and the search results will only include games that require that item.
+   * There are 2 filters for the number of players.  The first is for the amount of players the game supports locally, and the second is the amount of players the game supports online.  You can search "less than", "less than or equal", "equal", "greater than", "greater than or equal", and "not equal".
 
 
 == Settings ==
