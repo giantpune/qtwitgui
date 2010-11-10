@@ -42,6 +42,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent( QCloseEvent * closeEvent )
 {
+    //tell all the subwindows to close to trigger the stuff to save their position
+    QList<QMdiSubWindow *>list = ui->mdiArea->subWindowList();
+
+    //store these variables, as they are set to false when we call "close"
+    bool wiitdb = wiiTDBisOpen;
+    bool covers = pFlowIsOpen;
+    bool logOpen = logIsOpen;
+    foreach( QMdiSubWindow *window, list )
+	window->close();
+
+    wiiTDBisOpen = wiitdb;
+    pFlowIsOpen = covers;
+    logIsOpen = logOpen;
+
     SaveSettings();
     QWidget::closeEvent( closeEvent );
 }
@@ -267,23 +281,9 @@ void MainWindow::SaveSettings()
     settings.setValue("pos", pos());
     settings.endGroup();
 
-    //wiitdb window settings
+    //special windows
     settings.setValue( "wiitdb/visible", wiiTDBisOpen );
-    if( wiiTDBisOpen )
-    {
-	settings.setValue( "wiitdb/size", subWiiTDB->size() );
-	settings.setValue( "wiitdb/pos", subWiiTDB->pos() );
-    }
-
-    // coverflow window settings
     settings.setValue( "pflow/visible", pFlowIsOpen );
-    if( pFlowIsOpen )
-    {
-	settings.setValue( "pflow/size", subPFlow->size() );
-	settings.setValue( "pflow/pos", subPFlow->pos() );
-    }
-
-    //logwindow
     settings.setValue( "logwindow/visible", logIsOpen );
 
     //partition options
@@ -292,26 +292,24 @@ void MainWindow::SaveSettings()
     settings.endGroup();
 
     int size = partList.size();
-    //if( size )
-    //{
-	settings.beginWriteArray("partitionOptions");
-	for( int i = 0; i < size; i++ )
-	{
-	    QTreeWidgetItem* item = partList.at( i );
-	    settings.setArrayIndex( i );
-	    settings.setValue("path", item->text( 0 ) );
-	    settings.setValue("split", item->text( 3 ) );
-	    settings.setValue("source", item->text( 4 ) );
-	    settings.setValue("filesystem", item->text( 5 ) );
-	}
-	settings.endArray();
-    //}
+
+    settings.beginWriteArray("partitionOptions");
+    for( int i = 0; i < size; i++ )
+    {
+	QTreeWidgetItem* item = partList.at( i );
+	settings.setArrayIndex( i );
+	settings.setValue("path", item->text( 0 ) );
+	settings.setValue("split", item->text( 3 ) );
+	settings.setValue("source", item->text( 4 ) );
+	settings.setValue("filesystem", item->text( 5 ) );
+    }
+    settings.endArray();
 }
 
 //respond to items in the mdi being closed
 void MainWindow::MdiItemDestroyed( QString title, QPoint pos, QSize size, int type )
 {
-    //qDebug() << "MdiItemDestroyed()" << title << pos << size;
+    qDebug() << "MdiItemDestroyed()" << title << pos << size;
     bool max = size == QSize( 999, 999 );
     QSettings settings( settingsPath, QSettings::IniFormat );
     switch( type )
