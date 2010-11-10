@@ -70,6 +70,10 @@ private:
     CustomMdiItem *CurrentMdiSubWindow();
     int CurrentMidSubwindowType();
 
+    //logwindow stuff
+    bool logIsOpen;
+    void ShowLogWindow();
+
     void LoadSettings();
     void SaveSettings();
 
@@ -78,6 +82,7 @@ private:
 
 
 private slots:
+    void on_actionLog_triggered(bool checked);
     void on_actionOpen_DVD_r_triggered();
     void on_actionFormat_WBFS_triggered();
     void on_actionRefresh_Current_Window_triggered();

@@ -1,10 +1,13 @@
 #include "includes.h"
 #include "custommdiitem.h"
 
-CustomMdiItem::CustomMdiItem( QWidget * parent, Qt::WindowFlags flags, QString windowTitle ) : QMdiSubWindow( parent, flags )
+CustomMdiItem::CustomMdiItem( QWidget * parent, Qt::WindowFlags flags, QString windowTitle, bool deleteOnClose ) : QMdiSubWindow( parent, flags )
 {
     title = windowTitle;
-    setAttribute( Qt::WA_DeleteOnClose );
+
+    if( deleteOnClose )
+	setAttribute( Qt::WA_DeleteOnClose );
+
     QWidget::setWindowTitle( windowTitle );
 }
 

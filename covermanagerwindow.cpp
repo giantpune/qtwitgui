@@ -370,8 +370,8 @@ void CoverManagerWindow::LoadCoversForPartition( QString part )
     {
 	if( !loadedList.contains( p.value().at( j ) ) )
 	    loadedList << p.value().at( j );
-	else
-	    qDebug() << "CoverManagerWindow::LoadCoversForPartition: duplicate ID" << p.value().at( j );
+	//else
+	    //qDebug() << "CoverManagerWindow::LoadCoversForPartition: duplicate ID" << p.value().at( j );
     }
 
     threadRunning = true;
@@ -380,8 +380,8 @@ void CoverManagerWindow::LoadCoversForPartition( QString part )
 
     //forget all old missing covers
     missingCovers.clear();
-    if( missingCovers.size() )
-	qDebug() << "missingCovers.size()";
+    //if( missingCovers.size() )
+	//qDebug() << "missingCovers.size()";
     loader.CheckCovers( loadedList, coverDir, PATH2D, PATH3D, PATHFULL, PATHFULL_HQ, PATHDISC, mode_load, true );
 }
 

@@ -17,7 +17,7 @@ FsInfo::FsInfo(QObject *parent) :
 bool FsInfo::Check()
 {
 #ifndef Q_WS_WIN
-    qDebug() << "FsInfo::Check() called in non-windows platform";
+    qCritical() << "FsInfo::Check() called in non-windows platform";
     return false;
 #else
     QProcess p;
@@ -26,25 +26,25 @@ bool FsInfo::Check()
     p.start( "cygpath -v" );
     if( !p.waitForStarted() )
     {
-	qDebug() << "failed to start cygpath ( check )";
+	qCritical() << "failed to start cygpath ( check )";
 	return false;
     }
 
     if( !p.waitForFinished() )
     {
-	qDebug() << "!p.waitForFinished() ( winfs stuff )";
+	qCritical() << "!p.waitForFinished() ( winfs stuff )";
 	return false;
     }
     if( p.exitCode() != QProcess::NormalExit )
     {
-	qDebug() << "exit status ( winfs stuff )" << p.exitCode() << QProcess::NormalExit;
+	qCritical() << "exit status ( winfs stuff )" << p.exitCode() << QProcess::NormalExit;
 	return false;
     }
 
     QString output = p.readAll();
     if( !output.contains( "Cygwin pathconv" ) )
     {
-	qDebug() << "cygpath text output wrong ( winfs stuff ):" << output;
+	qCritical() << "cygpath text output wrong ( winfs stuff ):" << output;
 	return false;
     }
 
@@ -54,26 +54,26 @@ bool FsInfo::Check()
 	     "OS" << "GET" << "caption" );
     if( !p.waitForStarted() )
     {
-	qDebug() << "failed to start wmic ( check )";
+	qCritical() << "failed to start wmic ( check )";
 	return false;
     }
     p.closeWriteChannel();
 
     if( !p.waitForFinished() )
     {
-	qDebug() << "!p.waitForFinished() wmic ( winfs stuff )";
+	qCritical() << "!p.waitForFinished() wmic ( winfs stuff )";
 	return false;
     }
     if( p.exitCode() != QProcess::NormalExit )
     {
-	qDebug() << "exit status wmic ( winfs stuff )";
+	qCritical() << "exit status wmic ( winfs stuff )";
 	return false;
     }
 
     output = p.readAll();
     if( !output.contains( "Windows" ) )
     {
-	qDebug() << "wmic text output wrong ( winfs stuff ):" << output;
+	qCritical() << "wmic text output wrong ( winfs stuff ):" << output;
 	return false;
     }
     return true;
@@ -85,25 +85,25 @@ QString FsInfo::ToWinPath( QString cygPath, bool *ok )
     *ok = false;
 #ifndef Q_WS_WIN
     Q_UNUSED( cygPath );
-    qDebug() << "FsInfo::ToWinPath() called in non-windows platform";
+    qCritical() << "FsInfo::ToWinPath() called in non-windows platform";
     return QString();
 #else
     QProcess p;
     p.start( "cygpath", QStringList() << "-w" << cygPath );
     if( !p.waitForStarted() )
     {
-	qDebug() << "failed to start cygpath ( towinpath )";
+	qCritical() << "failed to start cygpath ( towinpath )";
 	return QString();
     }
 
     if( !p.waitForFinished() )
     {
-	qDebug() << "!p.waitForFinished() ( winfs stuff )";
+	qCritical() << "!p.waitForFinished() ( winfs stuff )";
 	return QString();
     }
     if( p.exitCode() != QProcess::NormalExit )
     {
-	qDebug() << "exit status ( winfs stuff )";
+	qCritical() << "exit status ( winfs stuff )";
 	return QString();
     }
 
@@ -121,25 +121,25 @@ QString FsInfo::ToCygPath( QString winPath, bool *ok )
     *ok = false;
 #ifndef Q_WS_WIN
     Q_UNUSED( winPath );
-    qDebug() << "FsInfo::ToCygPath() called in non-windows platform";
+    qCritical() << "FsInfo::ToCygPath() called in non-windows platform";
     return QString();
 #else
     QProcess p;
     p.start( "cygpath", QStringList() << "-u" << winPath );
     if( !p.waitForStarted() )
     {
-	qDebug() << "failed to start cygpath ( tocygpath )";
+	qCritical() << "failed to start cygpath ( tocygpath )";
 	return QString();
     }
 
     if( !p.waitForFinished() )
     {
-	qDebug() << "!p.waitForFinished() ( winfs stuff )";
+	qCritical() << "!p.waitForFinished() ( winfs stuff )";
 	return QString();
     }
     if( p.exitCode() != QProcess::NormalExit )
     {
-	qDebug() << "exit status ( winfs stuff )";
+	qCritical() << "exit status ( winfs stuff )";
 	return QString();
     }
 
@@ -161,7 +161,7 @@ QString FsInfo::GetFilesystem( QString path )
     int colon = drive.indexOf( ":" );
     if( colon != 1 || !ok )
     {
-	qDebug() << "FsInfo::GetFilesystem() colon != 1" << colon << ok;
+	qCritical() << "FsInfo::GetFilesystem() colon != 1" << colon << ok;
 	return QString();
     }
     drive.resize( 1 );
@@ -174,7 +174,6 @@ QString FsInfo::GetFilesystem( QString path )
     //try statfs first as it is the fastest.  but its descriptors are less than descriptive for ext variants
     struct statfs fInfo;
     int r = statfs( path.toLatin1().data(), &fInfo );
-    //qDebug() << "statfs::" << path.toLatin1().data() << r << "type:" << hex << fInfo.f_type;
     if( !r )
     {
 	switch( fInfo.f_type )
@@ -198,19 +197,19 @@ QString FsInfo::GetFilesystem( QString path )
 #endif
     if( !p.waitForStarted( 5000 ) )
     {
-	qDebug() << "FsInfo::GetFilesystem failed to start";
+	qCritical() << "FsInfo::GetFilesystem failed to start";
 	return QString();
     }
     p.closeWriteChannel();
 
     if( !p.waitForFinished() )
     {
-	qDebug() << "!p.waitForFinished() ( getfs )";
+	qCritical() << "!p.waitForFinished() ( getfs )";
 	return QString();
     }
     if( p.exitCode() != QProcess::NormalExit )
     {
-	qDebug() << "exit status ( getfs )" << p.exitCode();
+	qCritical() << "exit status ( getfs )" << p.exitCode();
 	return QString();
     }
 
@@ -220,7 +219,7 @@ QString FsInfo::GetFilesystem( QString path )
 #ifdef Q_WS_WIN
     if( !list.contains( "FileSystem  " ) || list.size() != 2 )
     {
-	qDebug() << "wrong output ( getfs )" << list;
+	qCritical() << "wrong output ( getfs )" << list;
 	return QString();
     }
     QString fs = list.at( 1 );
@@ -249,21 +248,21 @@ QString FsInfo::GetFilesystem( QString path )
     int size = list.size();
     if( size != 2 )
     {
-	qDebug() << "size != 2 ( getfs )" << list;
+	qCritical() << "size != 2 ( getfs )" << list;
 	return QString();
     }
     QString fs = list.at( 1 );
     fs = fs.simplified();
     if( fs.count( " " ) < 2 )
     {
-	qDebug() << "spaces < 2 ( getfs )" << fs;
+	qCritical() << "spaces < 2 ( getfs )" << fs;
 	return QString();
     }
     fs.remove( 0, fs.indexOf( " ") + 1 );
     fs.resize( fs.indexOf( " " ) );
     if( fs == "devtmpfs" )//this is what it shows if if has permission to read a block device -- ie,  WBFS partition at /dev/sdc2
     {
-	qDebug() << "fs == devtmpfs ( getfs )";
+	qCritical() << "fs == devtmpfs ( getfs )";
 	return QString();
     }
     return fs;
@@ -278,18 +277,18 @@ QStringList FsInfo::GetDvdDrives()
     p.start( "listDvd" );
     if( !p.waitForStarted( 5000 ) )
     {
-        qDebug() << "FsInfo::GetDvdDrives() failed to start";
+	qCritical() << "FsInfo::GetDvdDrives() failed to start";
         return QStringList();
     }
 
     if( !p.waitForFinished() )
     {
-        qDebug() << "!p.waitForFinished() ( FsInfo::GetDvdDrives() )";
+	qCritical() << "!p.waitForFinished() ( FsInfo::GetDvdDrives() )";
         return QStringList();
     }
     if( p.exitCode() != QProcess::NormalExit )
     {
-        qDebug() << "exit status ( FsInfo::GetDvdDrives() )" << p.exitCode();
+	qCritical() << "exit status ( FsInfo::GetDvdDrives() )" << p.exitCode();
         return QStringList();
     }
     QString output = p.readAll();

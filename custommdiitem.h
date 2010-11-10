@@ -33,14 +33,15 @@ enum
     mdiPartition,
     mdiGame,
     mdiWiiTDB,
-    mdiCovers
+    mdiCovers,
+    mdiLog
 };
 
 class CustomMdiItem : public QMdiSubWindow
 {
     Q_OBJECT
 public:
-    CustomMdiItem( QWidget * parent = 0, Qt::WindowFlags flags = 0, QString windowTitle = QString() );
+    CustomMdiItem( QWidget * parent = 0, Qt::WindowFlags flags = 0, QString windowTitle = QString(), bool deleteOnClose = true );
 
     //provide a way to distinguish mdi windows
     QString GetTitle();

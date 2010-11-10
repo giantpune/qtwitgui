@@ -417,6 +417,17 @@ void WitHandler::RunJob( QStringList args, int jobType )
     }
     emit SendProgress( 0 );
 
+    QString dbgtxt = witPath;
+    foreach( QString arg, args )
+    {
+	if( arg.contains( " " ) )
+	    dbgtxt += " \'" + arg + "\'";
+	else
+	    dbgtxt += " " + arg;
+    }
+
+    qDebug() << "<b>CMD:</b>" << dbgtxt;
+
     QString command = runAsRoot ? "sudo" : witPath;
     if( runAsRoot )
     {
@@ -876,6 +887,7 @@ bool WitHandler::ReadVersion()
 		return false;
 
 	    witVersionString = name + " " + version + " r" + rev + " " + sys;
+	    qDebug() << "<b><text style=\"color:green\">" << witVersionString << "</text></b>";
 	    return true;
 	}
     }

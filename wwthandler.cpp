@@ -280,6 +280,17 @@ void WwtHandler::RunJob( QStringList args, int jobType )
     }
     emit SendProgress( 0 );
 
+    QString dbgtxt = wwtPath;
+    foreach( QString arg, args )
+    {
+	if( arg.contains( " " ) )
+	    dbgtxt += " \'" + arg + "\'";
+	else
+	    dbgtxt += " " + arg;
+    }
+
+    qDebug() << "<b>CMD:</b>" << dbgtxt;
+
     QString command = runAsRoot ? "sudo" : wwtPath;
     if( runAsRoot )
     {
@@ -294,7 +305,7 @@ void WwtHandler::RunJob( QStringList args, int jobType )
     process->start( command, args );
     if( !process->waitForStarted() )//default timeout 30,000 msecs
     {
-	qDebug() << "failed to start wwt";
+	qCritical() << "failed to start wwt";
 	SendFatalErr( tr( "Error starting wwt!" ), jobType );
     }
 
@@ -358,7 +369,7 @@ bool WwtHandler::ReadVersion()
     QString wwtPath = w.GetWwtPath();
     if( wwtPath.isEmpty() )
     {
-	qDebug() << "path is empty" << __FUNCTION__;
+	qWarning() << "path is empty" << __FUNCTION__;
 	return false;
     }
 
@@ -366,13 +377,13 @@ bool WwtHandler::ReadVersion()
     p.start( wwtPath, QStringList() << "VERSION" << "--sections" );
     if( !p.waitForStarted() )
     {
-	qDebug() << "failed to start wwt" << __FUNCTION__;
+	qWarning() << "failed to start wwt" << __FUNCTION__;
 	return false;
     }
 
     if( !p.waitForFinished() )
     {
-	qDebug() << "!p.waitForFinished()" << __FUNCTION__;
+	qWarning() << "!p.waitForFinished()" << __FUNCTION__;
 	return false;
     }
 
@@ -383,7 +394,7 @@ bool WwtHandler::ReadVersion()
     QStringList list = output.split( "\n", QString::SkipEmptyParts );
     if( list.isEmpty() )
     {
-	qDebug() << "list.isEmpty()" << __FUNCTION__;
+	qWarning() << "list.isEmpty()" << __FUNCTION__;
 	return false;
     }
 
@@ -397,7 +408,7 @@ bool WwtHandler::ReadVersion()
 	{
 	    if( !str.endsWith( "=wwt" ) )
 	    {
-		qDebug() << "wrong program" << __FUNCTION__;
+		qWarning() << "wrong program" << __FUNCTION__;
 		return false;
 	    }
 	}
@@ -433,7 +444,7 @@ bool WwtHandler::ReadVersion()
 	    return true;
 	}
     }
-    qDebug() << "wtf" << __FUNCTION__;
+    qWarning() << "wtf" << __FUNCTION__;
     return false;
 }
 bool WwtHandler::VersionIsOk()

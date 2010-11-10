@@ -100,6 +100,7 @@
     </property>
     <addaction name="actionWiiTDB"/>
     <addaction name="actionCovers"/>
+    <addaction name="actionLog"/>
     <addaction name="separator"/>
     <addaction name="actionSettings"/>
     <addaction name="actionRefresh_Current_Window"/>
@@ -234,6 +235,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionLog">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Log</string>
    </property>
   </action>
  </widget>

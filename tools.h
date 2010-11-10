@@ -70,4 +70,8 @@ void SetGamePartitions( QTreeWidgetItem* item, QString s );
 void SetGamePath( QTreeWidgetItem* item, QString s );
 
 void hexdump( void *d, int len );
+
+extern QTextEdit *logWindow;
+void SetupLog();
+void DebugHandler( QtMsgType type, const char *msg );
 #endif // TOOLS_H
