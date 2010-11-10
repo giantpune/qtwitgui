@@ -44,10 +44,17 @@ WiiTDBWindow::WiiTDBWindow(QWidget *parent) : QWidget(parent), ui(new Ui::WiiTDB
     ui->treeWidget->header()->resizeSection( 6, fm.width( QString( 22, 'W' ) ) );//accessories
 
     connect( wiiTDB, SIGNAL( SendError( QString, QString ) ), this, SLOT( ReceiveErrorFromWiiTDB( QString, QString ) ) );
+
+    //skip to the last viewed tab
+    QSettings s( settingsPath, QSettings::IniFormat );
+    ui->tabWidget->setCurrentIndex( s.value( "wiitdb/tab", 0 ).toInt() );
 }
 
 WiiTDBWindow::~WiiTDBWindow()
 {
+    QSettings s( settingsPath, QSettings::IniFormat );
+    s.setValue( "wiitdb/tab", ui->tabWidget->currentIndex() );
+
     emit Destroyed();
     delete ui;
 }
