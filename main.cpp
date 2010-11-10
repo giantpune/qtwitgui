@@ -21,10 +21,8 @@ int main(int argc, char *argv[])
     a.installTranslator( &translator );
 
     wiiTDB = new WiiTDB;
-    //qDebug() << PROGRAM_NAME;
 
     QApplication::setWindowIcon( QIcon( ":images/icon.ico" ) );
-
 
     MainWindow w;
 
