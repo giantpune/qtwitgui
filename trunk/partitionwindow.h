@@ -70,6 +70,8 @@ private:
     bool needToReload;
     bool busy;
 
+    void UpdateFlagText();
+
 
 private slots:
     void on_actionRefresh_List_triggered();

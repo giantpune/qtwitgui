@@ -15,6 +15,8 @@ PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui(
     ui->setupUi( this );
     ui->progressBar->setVisible( false );
     ui->statusbar->addPermanentWidget( ui->progressBar, 0 );
+    ui->statusbar->addPermanentWidget( ui->label_status, 0 );
+    ui->label_status->setText( "blabla" );
     ui->menubar->hide();
     ui->treeWidget->sortItems( GAME_NAME_COLUMN, Qt::AscendingOrder );
 
@@ -91,19 +93,21 @@ void PartitionWindow::closeEvent( QCloseEvent * closeEvent )
 
 void PartitionWindow::SetPartition( QTreeWidgetItem *part )
 {
-    //qDebug() << "PartitionWindow::SetPartition";
+    qDebug() << "PartitionWindow::SetPartition" << part->text( 0 ) << part->text( 3 ) << part->text( 5 );
     setWindowTitle( part->text( 0 ) );
     //TODO:  still need to somehow change the name of the parent custommdi window for its GetTitle()
+    if( partition )
+	delete partition;
+
     partition = part->clone();
 
     QList<QTreeWidgetItem *> oldList = ui->treeWidget->invisibleRootItem()->takeChildren();
     while( !oldList.isEmpty() )
     {
 	QTreeWidgetItem *item = oldList.takeFirst();
-	//qDebug() << "deleting:" << item->text( 0 );
 	delete item;
     }
-    //qDebug() << oldList.size();
+    UpdateFlagText();
 }
 
 void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, QList<QTreeWidgetItem *> gameList )
@@ -171,6 +175,7 @@ void PartitionWindow::HandleWiimmsErrors( QString err, int id )
 
 void PartitionWindow::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString MibUsed )
 {
+    //qDebug() << "PartitionWindow::GetPartitionInfo" << games.size() << MibUsed;
     unsetCursor();
     QString gameCntStr;
     QTextStream( &gameCntStr ) << games.size();
@@ -201,6 +206,7 @@ void PartitionWindow::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     }
 
     ui->statusbar->showMessage( "" );
+    UpdateFlagText();
     emit SendGamelistFor_1_Partition( partition->text( 0 ), gamesCopy );
     emit SendUpdatedPartitionInfo( partition );
 }
@@ -265,7 +271,15 @@ void PartitionWindow::SetPartitionList( QList<QTreeWidgetItem *> pList )
 
     int size = pList.size();
     for( int i = 0; i < size; i++ )
+    {
+	if( pList.at( i )->text( 0 ) == partition->text( 0 ) )
+	{
+	    delete partition;
+	    partition = pList.at( i )->clone();
+	    UpdateFlagText();
+	}
 	partList << pList.at( i )->clone();
+    }
 }
 
 //context menu for the partition tree window
@@ -583,24 +597,21 @@ void PartitionWindow::ShrinkNextGame()
 
 }
 
-//slot to reload the gamelist.  if the window is currently busy, just set a variable so it can be reloaded when the current job is done
-/*void PartitionWindow::Reload()
+//update the text showing this partitions # of games and its flags
+void PartitionWindow::UpdateFlagText()
 {
-    if( !busy )
-    {
-	qDebug() << "PartitionWindow::Reload() - reloading now";
-	needToReload = false;
-	setCursor( Qt::BusyCursor );
-	QSettings s( settingsPath, QSettings::IniFormat );
-	int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
-	wit.ListLLL_HDD( partition->text( 0 ), rDepth, ignoreFst );
-    }
-    else
-    {
-	qDebug() << "PartitionWindow::Reload() - reloading later";
-	needToReload = true;
-    }
-}*/
+    QString fs = partition->text( 5 );
+    int cnt = ui->treeWidget->topLevelItemCount();
+    QString games = cnt == 1 ? tr( "%1 Game" ).arg( cnt ) : tr( "%1 Games" ).arg( cnt );
+    QString flags = fs;
+    if( partition->text( 3 ) == tr( "Yes" ) )
+	flags += " | " + tr( "Split" );
+
+    flags += " | " + games;
+
+    ui->label_status->setText( flags );
+}
+
 
 
 
