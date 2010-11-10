@@ -297,15 +297,16 @@ QString WiiTDB::NameFromGameElement( QDomElement parent )
 
     return QString();
 }
-QString WiiTDB::SynopsisFromGameElement( QDomElement parent )
+QString WiiTDB::SynopsisFromGameElement( QDomElement parent, const QString &locale )
 {
     QDomElement localeElement = parent.firstChildElement( "locale" );
     QString enSynopsis;
+    QString loc = locale.isEmpty() ? localeStr : locale; //if no language is given, use the one set in this PC settings
     while( !localeElement.isNull() )
     {
 	if( localeElement.hasAttribute( "lang" ) )
 	{
-	    if( localeElement.attribute( "lang" ) == localeStr )
+	    if( localeElement.attribute( "lang" ) == loc )
 	    {
 		QDomElement titleElement = localeElement.firstChildElement( "synopsis" );
 		if( !titleElement.isNull() && !titleElement.text().isEmpty() )
@@ -504,7 +505,7 @@ QMap<QString, bool> WiiTDB::InputControllersFromGameElement( QDomElement parent 
 
 QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name, const QString &players, int playerCmpType, \
 	const QString &wifiPlayers, int wifiCmpType, const QString &type, const QStringList &accessories, const QStringList &required,\
-	const QString &ratingType, int ratingCmp, const QString &ratingVal )
+	const QString &ratingType, int ratingCmp, const QString &ratingVal, const QString &synopsisFilter, const QString &synopsisLang )
 {
     QDomElement root = domDocument.documentElement();
     QDomElement child = root.firstChildElement( "game" );
@@ -519,6 +520,7 @@ QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name
     //only do these conversions 1 time
     QRegExp rxTitle( name, Qt::CaseInsensitive );
     QRegExp rxID( id, Qt::CaseInsensitive );
+    QRegExp rxSynopsis( synopsisFilter, Qt::CaseInsensitive );
     bool okPlr = true;
     int plr = -1;
     if( !players.isEmpty() )
@@ -567,10 +569,10 @@ QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name
 	QString rType = RatingTypeFromGameElement( c );
 	QString rVal = RatingValueFromGameElement( c );
 	if( !( ratingType.isEmpty() || CheckRating( rType, rVal, ratingCmp, ratingType, ratingVal ) ) )
-	{
-	    //qDebug() << "rating failed:" << curID << rType << rVal;
 	    continue;
-	}
+
+	if( !( synopsisLang.isEmpty() || CheckRegEx( SynopsisFromGameElement( c, synopsisLang ), rxSynopsis ) ) )//the synopsis should probably be the last check.  it is a regex check done on the longest string on every game
+	    continue;
 
 	QString plyStr = QString( "%1" ).arg( curPly );
 	QString plyWStr = QString( "%1" ).arg( curWPly );
@@ -600,10 +602,7 @@ bool WiiTDB::CheckRegEx( const QString &text, const QRegExp &rx )
 	return false;
 
     if( !rx.isValid() )
-    {
-	qDebug() << rx.pattern() << "invalid";
 	return text.contains( rx.pattern(), Qt::CaseInsensitive );
-    }
 
     return text.contains( rx );
 }

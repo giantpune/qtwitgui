@@ -69,7 +69,8 @@ public:
     QList< QTreeWidgetItem * >Search( const QString &id = QString(), const QString &name = QString(), const QString &players = QString(),\
 		int playerCmpType = -1, const QString &wifiPlayers = QString(), int wifiCmpType = -1, const QString &type = QString(),\
 		const QStringList &accessories = QStringList(), const QStringList &required = QStringList(),\
-		const QString &ratingType = QString(), int ratingCmp = -1, const QString &ratingVal = QString() );
+		const QString &ratingType = QString(), int ratingCmp = -1, const QString &ratingVal = QString(),\
+		const QString &synopsisFilter = QString(), const QString &synopsisLang = QString() );
 
 private:
     QFile file;//if reading from a unzipped xml, use this
@@ -82,7 +83,7 @@ private:
     //returns localized strings if they exist.
     //they expect the "<game>" element
     QString NameFromGameElement( QDomElement parent );
-    QString SynopsisFromGameElement( QDomElement parent );
+    QString SynopsisFromGameElement( QDomElement parent, const QString &locale = QString() );
     QString TypeFromGameElement( QDomElement parent );
     QString RegionFromGameElement( QDomElement parent );
     QString LanguagesFromGameElement( QDomElement parent );
