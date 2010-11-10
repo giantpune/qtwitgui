@@ -133,7 +133,7 @@ void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, QList<QTre
 //respond to fatal errors from the processes
 void PartitionWindow::HandleWiimmsErrors( QString err, int id )
 {
-    //qDebug() << "PartitionWindow::HandleWiimmsErrors" << err << id;
+    qWarning() << "PartitionWindow::HandleWiimmsErrors" << err << id;
     unsetCursor();
     ui->progressBar->setVisible( false );
     busy = false;
@@ -350,7 +350,7 @@ void PartitionWindow::CustomTreeWidgetContentmenu( const QPoint& pos )
 		return;
 
 	    QString prog = args.takeFirst();
-	    qDebug() << args;
+	    //qDebug() << args;
 	    ui->progressBar->setVisible( true );
 	    setCursor( Qt::BusyCursor );
 	    if( prog == "wwt" )

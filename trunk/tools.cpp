@@ -100,3 +100,51 @@ void hexdump( void *d, int len ) {
     }
     fflush( stdout );
 }
+
+QTextEdit *logWindow;
+void SetupLog()
+{
+    logWindow = new QTextEdit;
+    logWindow->setReadOnly( true );
+    QFont monoFont;
+#ifdef Q_WS_WIN
+    monoFont = QFont( "Courier New", QApplication::font().pointSize() );
+#else
+    monoFont = QFont( "Courier New", QApplication::font().pointSize() - 1 );
+#endif
+    logWindow->setFont( monoFont );
+    QPalette p = logWindow->palette();
+    p.setColor( QPalette::Base, Qt::white );
+    p.setColor( QPalette::Text, Qt::black );
+    logWindow->setPalette( p );
+    qInstallMsgHandler( DebugHandler );
+}
+
+void DebugHandler( QtMsgType type, const char *msg )
+{
+    bool needToScroll = logWindow->verticalScrollBar()->value() == logWindow->verticalScrollBar()->maximum();//if the text window is already showing the last line
+    switch( type )
+    {
+    case QtDebugMsg:
+	logWindow->insertHtml( QString( msg ) + "<br>" );
+	break;
+    case QtWarningMsg:
+	{
+	    QString htmlString = "<b><text style=\"color:blue\">" + QString( msg ) + "</text></b><br>";
+	    logWindow->insertHtml( htmlString );
+	}
+	break;
+    case QtCriticalMsg:
+	{
+	    QString htmlString = "<b><text style=\"color:red\">" + QString( msg ) + "</text></b><br>";
+	    logWindow->insertHtml( htmlString );
+	}
+	break;
+    case QtFatalMsg:
+	fprintf(stderr, "Fatal: %s\n", msg);
+	abort();
+	break;
+    }
+    if( needToScroll )//scroll to the new bottom of the screen
+	logWindow->verticalScrollBar()->setValue( logWindow->verticalScrollBar()->maximum() );
+}

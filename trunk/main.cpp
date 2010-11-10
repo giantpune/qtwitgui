@@ -3,12 +3,15 @@
 #include "includes.h"
 #include "wiitdb.h"
 #include "tools.h"
+#include "svnrev.h"
 
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE( resources );
 
     QApplication a(argc, argv);
+    SetupLog();
+    qDebug() << "<b><text style=\"color:green\">" << PROGRAM_NAME << ":" << SVN_REV_STR << "</text></b>";
 
     QTranslator translator;
     if( !translator.load( QString( "language/witGuiLang_" ) + QLocale::system().name() ) )
@@ -36,6 +39,7 @@ int main(int argc, char *argv[])
 
     int ret = a.exec();
     delete wiiTDB;
+    delete logWindow;
 #ifdef Q_WS_WIN    //on windows XP, wmic leaves behind a temp file ( 0 bytes ): just delete it
     if( QFile::exists( "./TempWmicBatchFile.bat" ) )
         QFile::remove( "./TempWmicBatchFile.bat" );

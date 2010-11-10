@@ -109,7 +109,7 @@ void MainWindow::CreatePFlowSubWindow()
     subPFlow->move( settings.value( "pflow/pos", QPoint( 0, 0 ) ).toPoint() );
     subPFlow->resize( settings.value( "pflow/size", QSize( 500, 295 ) ).toSize() );
 
-    pf->setCenterIndex( pf->slideCount() / 2 );
+    //pf->setCenterIndex( pf->slideCount() / 2 );
 
     connect( this, SIGNAL( SendListsToCoverManager( QMap<QString, QList<QTreeWidgetItem *> > ) ), \
 	     pFlow, SLOT( SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > ) ) );
@@ -228,6 +228,11 @@ void MainWindow::LoadSettings()
     if( pFlowIsOpen )
 	CreatePFlowSubWindow();
 
+    logIsOpen = settings.value( "logwindow/visible", true ).toBool();
+    ui->actionLog->setChecked( logIsOpen );
+    if( logIsOpen )
+	ShowLogWindow();
+
 
     //read partition list and settings
 
@@ -277,6 +282,9 @@ void MainWindow::SaveSettings()
 	settings.setValue( "pflow/size", subPFlow->size() );
 	settings.setValue( "pflow/pos", subPFlow->pos() );
     }
+
+    //logwindow
+    settings.setValue( "logwindow/visible", logIsOpen );
 
     //partition options
     settings.beginGroup( "partitionOptions" );
@@ -355,8 +363,16 @@ void MainWindow::MdiItemDestroyed( QString title, QPoint pos, QSize size, int ty
 	}
 	settings.setValue( "gamewindow/maximized", max );
 	break;
-
-
+    case mdiLog:
+	if( !max )
+	{
+	    settings.setValue( "logwindow/size", size );
+	    settings.setValue( "logwindow/pos", pos );
+	}
+	settings.setValue( "logwindow/maximized", max );
+	logIsOpen = false;
+	ui->actionLog->setChecked( false );
+	break;
     }
 
 }
@@ -407,6 +423,43 @@ void MainWindow::on_actionCovers_triggered( bool checked )
 	subPFlow->close();
     }
     else CreatePFlowSubWindow();
+}
+
+//view -> log triggered
+void MainWindow::on_actionLog_triggered( bool checked )
+{
+    logIsOpen = checked;
+    if( !checked )
+    {
+	CustomMdiItem *found = findMdiChild( tr( "Log" ), mdiLog );
+	if( found )
+	{
+	    found->close();
+	}
+    }
+    else ShowLogWindow();
+}
+
+void MainWindow::ShowLogWindow()
+{
+    CustomMdiItem *found = findMdiChild( tr( "Log" ), mdiLog );
+    if( found )
+    {
+	ui->mdiArea->setActiveSubWindow( found );
+	found->show();
+	return;
+    }
+
+    CustomMdiItem *mdiItem = new CustomMdiItem( ui->mdiArea, 0, tr( "Log" ), false );
+    mdiItem->type = mdiLog;
+    mdiItem->setWidget( logWindow );
+    mdiItem->show();
+
+    QSettings settings( settingsPath, QSettings::IniFormat );
+    mdiItem->move( settings.value( "logwindow/pos", QPoint( 0, 0 ) ).toPoint() );
+    mdiItem->resize( settings.value( "logwindow/size", QSize( 610, 375 ) ).toSize() );
+
+    connect( mdiItem, SIGNAL( AboutToClose( QString, QPoint, QSize, int ) ), this, SLOT( MdiItemDestroyed( QString, QPoint, QSize, int ) ) );
 }
 
 //respond to the signal containing a partition path and its gameList
