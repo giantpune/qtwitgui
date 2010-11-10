@@ -103,10 +103,10 @@ void hexdump( void *d, int len ) {
 
 QString warningColor = "#0000ff";
 QString criticalColor = "#ff0000";
-QTextEdit *logWindow;
+QPlainTextEdit *logWindow;
 void SetupLog()
 {
-    logWindow = new QTextEdit;
+    logWindow = new QPlainTextEdit;
     logWindow->setReadOnly( true );
     QFont monoFont;
 #ifdef Q_WS_WIN
@@ -135,18 +135,18 @@ void DebugHandler( QtMsgType type, const char *msg )
     switch( type )
     {
     case QtDebugMsg:
-	logWindow->insertHtml( QString( msg ) + "<br>" );
+	logWindow->appendHtml( QString( msg ) );
 	break;
     case QtWarningMsg:
 	{
-	    QString htmlString = "<b><text style=\"color:" + warningColor + "\">" + QString( msg ) + "</text></b><br>";
-	    logWindow->insertHtml( htmlString );
+	    QString htmlString = "<b><text style=\"color:" + warningColor + "\">" + QString( msg ) + "</text></b>";
+	    logWindow->appendHtml( htmlString );
 	}
 	break;
     case QtCriticalMsg:
 	{
-	    QString htmlString = "<b><text style=\"color:" + criticalColor + "\">" + QString( msg ) + "</text></b><br>";
-	    logWindow->insertHtml( htmlString );
+	    QString htmlString = "<b><text style=\"color:" + criticalColor + "\">" + QString( msg ) + "</text></b>";
+	    logWindow->appendHtml( htmlString );
 	}
 	break;
     case QtFatalMsg:

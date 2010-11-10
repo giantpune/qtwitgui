@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     settingsPath = QDesktopServices::storageLocation( QDesktopServices::HomeLocation ) + "/QtWitGui.ini";
     SetupLog();
-    qDebug() << "<b><text style=\"color:green\">" << PROGRAM_NAME << ":" << SVN_REV_STR << "</text></b>";
+    qDebug().nospace() << "<b><text style=\"color:green\">" << PROGRAM_NAME << " r" << SVN_REV_STR << "</text></b>";
 
     QTranslator translator;
     if( !translator.load( QString( "language/witGuiLang_" ) + QLocale::system().name() ) )
