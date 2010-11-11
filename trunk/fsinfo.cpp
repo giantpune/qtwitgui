@@ -97,16 +97,11 @@ bool FsInfo::IsDVDLetter( const QString &path )
     return dvdLetters.contains( p, Qt::CaseInsensitive );
 }
 
-#endif
+
 
 QString FsInfo::ToWinPath( QString cygPath, bool *ok )
 {
     *ok = false;
-#ifndef Q_WS_WIN
-    Q_UNUSED( cygPath );
-    qCritical() << "FsInfo::ToWinPath() called in non-windows platform";
-    return QString();
-#else
     QProcess p;
     p.start( "cygpath", QStringList() << "-w" << cygPath );
     if( !p.waitForStarted() )
@@ -133,17 +128,11 @@ QString FsInfo::ToWinPath( QString cygPath, bool *ok )
     //qDebug() << "FsInfo::ToWinPath:" << cygPath << output;
     *ok = true;
     return output;
-#endif
 }
 
 QString FsInfo::ToCygPath( QString winPath, bool *ok )
 {
     *ok = false;
-#ifndef Q_WS_WIN
-    Q_UNUSED( winPath );
-    qCritical() << "FsInfo::ToCygPath() called in non-windows platform";
-    return QString();
-#else
     QProcess p;
     p.start( "cygpath", QStringList() << "-u" << winPath );
     if( !p.waitForStarted() )
@@ -169,8 +158,8 @@ QString FsInfo::ToCygPath( QString winPath, bool *ok )
     //qDebug() << "FsInfo::ToCygPath:" << winPath << output;
     *ok = true;
     return output;
-#endif
 }
+#endif
 
 QString FsInfo::GetFilesystem( QString path )
 {
