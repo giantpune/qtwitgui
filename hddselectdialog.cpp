@@ -360,8 +360,11 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
 	ui->buttonBox->setEnabled( true );
 	unsetCursor();
     }
-
+#ifdef Q_WS_WIN
+    emit SendGamelistFor_1_Partition( RemoveDriveLetter( item->text( 0 ) ), games );
+#else
     emit SendGamelistFor_1_Partition( item->text( 0 ), games );
+#endif
 }
 
 //look for the next HDD in the list that hasn't been scanned and ask the data from wit
