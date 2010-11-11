@@ -462,6 +462,7 @@ QString WitHandler::GetWitPath()
     }
     if( !QFile::exists( ret ) )
     {
+        qWarning() << "Invalid path is set for wit.  Look in the settings.";
 	emit SendStdErr( tr("Invalid path is set for wit.  Look in the settings.") );
     }
 
@@ -473,8 +474,11 @@ void WitHandler::ListLLL_HDD( const QString &path, int recurse, bool ignoreFst )
 {
     QString rDepth;
     QTextStream( &rDepth ) << "--rdepth=" << recurse;
+#ifdef Q_WS_WIN//remove the drive letter in windows
+    QStringList args = QStringList() << "LIST-LLL" << "--recurse" << RemoveDriveLetter( path ) << rDepth << "--sections";
+#else
     QStringList args = QStringList() << "LIST-LLL" << "--recurse" << path << rDepth << "--sections";
-
+#endif
     if( !titlesTxtPath.isEmpty() )
 	args << "--titles=" + titlesTxtPath;
 

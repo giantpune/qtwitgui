@@ -1,4 +1,5 @@
 #include "tools.h"
+#include "fsinfo.h"
 
 QString settingsPath;
 
@@ -157,3 +158,27 @@ void DebugHandler( QtMsgType type, const char *msg )
     if( needToScroll )//scroll to the new bottom of the screen
 	logWindow->verticalScrollBar()->setValue( logWindow->verticalScrollBar()->maximum() );
 }
+
+#ifdef Q_WS_WIN//add the drive letter in windows
+QString RemoveDriveLetter( const QString &path )
+{
+    QString ret = path;
+    if( ret.contains( "\t" ) )
+        ret.resize( ret.indexOf( "\t" ) );
+
+    return ret;
+}
+
+QString AddDriveLetter( const QString &path )
+{
+    QString ret = path;
+    bool ok = false;
+    QString letter = FsInfo::ToWinPath( ret, &ok );
+    if( ok && letter.endsWith( ":" ) )
+        ret += "\t[ " + letter + " ]";
+
+    return ret;
+
+}
+
+#endif

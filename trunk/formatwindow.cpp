@@ -3,6 +3,7 @@
 #include "passworddialog.h"
 #include "tools.h"
 #include "savedialog.h"
+#include "fsinfo.h"
 
 FormatWindow::FormatWindow(QWidget *parent) : QDialog(parent), ui(new Ui::FormatWindow)
 {
@@ -99,7 +100,7 @@ void FormatWindow::AddItemToTree( const QString &part )
 #endif
 	) || sizeStr == "0" )
     {
-	qDebug() << "skipping" << path << sizeStr;
+        qDebug() << "FormatWindow::AddItemToTree -> skipping" << path << sizeStr;
 	return;
     }
     QString location;
@@ -112,7 +113,13 @@ void FormatWindow::AddItemToTree( const QString &part )
 	if( path.startsWith( hdd ) )
 	{
 	    parent = ui->treeWidget->topLevelItem( i );
-	    location = tr( "Partition %1" ).arg( ui->treeWidget->topLevelItem( i )->childCount() + 1 );
+            location = tr( "Partition %1" ).arg( ui->treeWidget->topLevelItem( i )->childCount() + 1 );
+#ifdef Q_WS_WIN//add the drive letter in windows
+            bool ok = false;
+            QString letter = FsInfo::ToWinPath( path, &ok );
+            if( ok && letter.endsWith( ":" ) )
+                location += "\t[ " + letter + " ]";
+#endif
 	}
     }
     ui->pushButton_format->setEnabled( true );
@@ -213,8 +220,6 @@ void FormatWindow::on_pushButton_format_clicked()
     }
     if( button != QMessageBox::Ok )
 	return;
-
-    //qDebug() << "formatting" << item->text( 3 );
 
     QStringList args = QStringList() << "FORMAT" << item->text( 3 ) << "--force";
     if( ui->checkBox_recover->isChecked() )

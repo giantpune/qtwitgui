@@ -601,9 +601,19 @@ void PartitionWindow::ShrinkNextGame()
 void PartitionWindow::UpdateFlagText()
 {
     QString fs = partition->text( 5 );
+    QString flags;
+#ifdef Q_WS_WIN
+    if( partition->text( 5 ) == "WBFS" )
+    {
+        bool ok = false;
+        QString letter = FsInfo::ToWinPath( partition->text( 0 ), &ok );
+        if( ok && letter.endsWith( ":" ) )
+            flags += letter + " | ";
+    }
+#endif
     int cnt = ui->treeWidget->topLevelItemCount();
     QString games = cnt == 1 ? tr( "%1 Game" ).arg( cnt ) : tr( "%1 Games" ).arg( cnt );
-    QString flags = fs;
+    flags += fs;
     if( partition->text( 3 ) == tr( "Yes" ) )
 	flags += " | " + tr( "Split" );
 

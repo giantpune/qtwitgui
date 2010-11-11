@@ -1,6 +1,7 @@
 #include "dvdselectdialog.h"
 #include "ui_dvdselectdialog.h"
 #include "fsinfo.h"
+#include "tools.h"
 
 DvdSelectDialog::DvdSelectDialog(QWidget *parent) : QDialog(parent), ui(new Ui::DvdSelectDialog)
 {
@@ -41,7 +42,11 @@ void DvdSelectDialog::on_buttonBox_accepted()
     int size = selected.size();
     for( int i = 0; i < size; i++ )
     {
+#ifdef Q_WS_WIN//remove "helper" drive letters in windows
+        ret << RemoveDriveLetter( selected.at( i )->text() );
+#else
         ret << selected.at( i )->text();
+#endif
     }
 }
 
@@ -62,6 +67,13 @@ void DvdSelectDialog::on_pushButton_refresh_clicked()
         QListWidgetItem *item = ui->listWidget->takeItem( 0 );
         delete item;
     }
+#ifdef Q_WS_WIN//add drive letters to the paths in windows
+    int size = dvds.size();
+    for( int i = 0; i < size; i++ )
+    {
+        dvds[ i ] = AddDriveLetter( dvds[ i ] );
+    }
+#endif
 
     ui->listWidget->addItems( dvds );
     ui->label_info->setText( tr( "Select a Drive to open" ) );
