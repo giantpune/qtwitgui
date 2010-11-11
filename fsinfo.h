@@ -11,12 +11,13 @@ public:
 
     static QString GetFilesystem( QString path );
     static QStringList GetDvdDrives();
-
-    //only used for vindows stuff
+#ifdef Q_WS_WIN
+    //only used for windows stuff
     static bool Check();
     static QString ToWinPath( QString cygPath, bool *ok );
     static QString ToCygPath( QString winPath, bool *ok );
-
+    static bool IsDVDLetter( const QString &path );
+#endif
 signals:
 
 public slots:

@@ -87,12 +87,20 @@ void HDDSelectDialog::AddPartitionsToList( QList<QTreeWidgetItem *> list )
 	bool found = false;
 	for( int j = 0; j < ui->treeWidget->topLevelItemCount(); j++ )
 	{
-	    if( list.at( i )->text( 0 ) == ui->treeWidget->topLevelItem( j )->text( 0 ) )
+#ifdef Q_WS_WIN
+            if( list.at( i )->text( 0 ) == RemoveDriveLetter( ui->treeWidget->topLevelItem( j )->text( 0 ) ) )
+#else
+            if( list.at( i )->text( 0 ) == ui->treeWidget->topLevelItem( j )->text( 0 ) )
+#endif
 		found = true;
 	}
 	if( !found )
 	{
 	    QTreeWidgetItem *item = list.at( i )->clone();
+#ifdef Q_WS_WIN
+            if( item->text( 4 ) == "wwt" )
+                item->setText( 0, AddDriveLetter( item->text( 0 ) ) );
+#endif
 	    if( !item->text( 2 ).contains( "." ) )//this size text doesnt contain a ".", so assume we havent already converted it from bytes to GiB
 		item->setText( 2, SizeTextGiB( item->text( 2 ) ) );
 	    ui->treeWidget->addTopLevelItem( item );
@@ -173,7 +181,11 @@ void HDDSelectDialog::on_pushButton_find_clicked()
     for( int i = 0; i < list.size(); ++i )
     {
 	QFileInfo fileInfo = list.at( i );
-	if( PathIsIgnored( fileInfo.absoluteFilePath() ) )
+        if( PathIsIgnored( fileInfo.absoluteFilePath() )
+#ifdef Q_WS_WIN
+            || FsInfo::IsDVDLetter( fileInfo.absoluteFilePath() )
+#endif
+            )
 	    continue;
 
 	QDir subDir( fileInfo.absoluteFilePath() );
@@ -225,8 +237,7 @@ void HDDSelectDialog::GetWBFSPartitionList( QStringList list )
     unsetCursor();
     foreach( QString part, list )
     {
-	AddNewPartitionToList( part, "wwt" );
-	//wit.ListLLL_HDD( part );
+        AddNewPartitionToList( part, "wwt" );
     }
 }
 
@@ -284,7 +295,12 @@ void HDDSelectDialog::AddNewPartitionToList( QString path, QString source )
     QTreeWidgetItem * item = new QTreeWidgetItem( QStringList() << path );
     item->setText( 4, source );
     if( source == "wwt" )
+    {
+#ifdef Q_WS_WIN
+        item->setText( 0, AddDriveLetter( item->text( 0 ) ) );
+#endif
 	item->setText( 5, "WBFS" );
+    }
     ui->treeWidget->addTopLevelItem( item );
 
     //read partition settings

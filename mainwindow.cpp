@@ -339,8 +339,8 @@ void MainWindow::MdiItemDestroyed( QString title, QPoint pos, QSize size, int ty
 	}
 	break;
     case mdiPartition:
-	{
-	    QString key = title;
+        {
+            QString key = title;
 	    key.replace( "/", "__SLSH__" );
 	    settings.beginGroup( key );
 	    if( !max )
@@ -513,6 +513,13 @@ void MainWindow::ReceiveAllPartitionInfo( QList<QTreeWidgetItem *> list )
 	    qDebug() << "MEM LEAK - not deleted:" << item->text( 0 );
 	}
     }
+#ifdef Q_WS_WIN
+    int size = list.size();
+    for( int i = 0; i < size; i++ )
+    {
+        list[ i ]->setText( 0, RemoveDriveLetter( list[ i ]->text( 0 ) ) );
+    }
+#endif
     partList = list;
     emit SendNewPartitionListToSubWindows( partList );
     //DisableEnablePartitionWindows();
@@ -620,7 +627,11 @@ void MainWindow::OpenSelectedPartitions( QList<QTreeWidgetItem *> list )
 
     foreach( QTreeWidgetItem *item, list )
     {
-	CustomMdiItem *found = findMdiChild( item->text( 0 ), mdiPartition );
+#ifdef Q_WS_WIN
+        item->setText( 0, RemoveDriveLetter( item->text( 0 ) ) );
+#endif
+        CustomMdiItem *found = findMdiChild( item->text( 0 ), mdiPartition );
+
 	if( found )		    //partition is already open in a window.  just make this window active
 	{
 	    //qDebug() << item->text( 0 ) << "is already open";
@@ -658,8 +669,11 @@ void MainWindow::OpenSelectedPartitions( QList<QTreeWidgetItem *> list )
 	    connect( w, SIGNAL( GameClicked( QString ) ), wiiTDBwindow, SLOT( LoadGameFromID( QString ) ) );
 
 	//mdiItem->show();
-
-	QString key = item->text( 0 );
+#ifdef Q_WS_WIN
+        QString key = RemoveDriveLetter( item->text( 0 ) );
+#else
+        QString key = item->text( 0 );
+#endif
 	key.replace( "/", "__SLSH__" );
 
 	QSettings settings( settingsPath, QSettings::IniFormat );
@@ -716,9 +730,8 @@ void MainWindow::OpenGames( QStringList games )
 //test button for triggering shit
 void MainWindow::on_actionTest_triggered()
 {
-    extern QString rootPass;
-    qDebug() << "MainWindow::on_actionTest_triggered()";
-    qDebug() << "password:" << rootPass;
+    bool ok;
+    qDebug() << FsInfo::ToWinPath( "/dev/sr0", &ok );
     // pFlow->SetGameLists( gameMap );
     //gc = new GC_ShrinkThread( this, "/media/WiiEXT3_500GB/iso/Aquaman - Battle of Atlantis NTSC-U.iso" );
     //if( !gc->fileOk )

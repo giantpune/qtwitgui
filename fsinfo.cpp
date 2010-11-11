@@ -9,17 +9,17 @@
 #define	    NTFS_PUNE_MAGIC       0x65735546//all my NTFS return this ( created on XP x64 )
 #endif
 
+#ifdef Q_WS_WIN//keep a list of the dvd drive letters to exclude them from the partition-auto search
+    static QStringList dvdLetters;
+#endif
+
 FsInfo::FsInfo(QObject *parent) :
     QObject(parent)
 {
 }
-
+#ifdef Q_WS_WIN
 bool FsInfo::Check()
 {
-#ifndef Q_WS_WIN
-    qCritical() << "FsInfo::Check() called in non-windows platform";
-    return false;
-#else
     QProcess p;
 
     //check that we have the program to convert windows paths to proper cygwin paths
@@ -42,7 +42,7 @@ bool FsInfo::Check()
     }
 
     QString output = p.readAll();
-    if( !output.contains( "Cygwin pathconv" ) )
+    if( !output.contains( "Cygwin pathconv" ) && !output.contains( "Path Conversion Utility" ) )//LITE and full versions
     {
 	qCritical() << "cygpath text output wrong ( winfs stuff ):" << output;
 	return false;
@@ -76,9 +76,28 @@ bool FsInfo::Check()
 	qCritical() << "wmic text output wrong ( winfs stuff ):" << output;
 	return false;
     }
+
+    //build a list of the did drive letters so we can skip them later
+    for( int j = 0; j < 15; j++ )
+    {
+        bool ok = false;
+        QString tmp = ToWinPath( QString( "/dev/sr%1" ).arg( j ), &ok );
+        if( !tmp.endsWith( ":" ) )
+            break;
+
+        dvdLetters << tmp;
+    }
     return true;
-#endif
 }
+
+bool FsInfo::IsDVDLetter( const QString &path )
+{
+    QString p = path;
+    p.resize( 2 );
+    return dvdLetters.contains( p, Qt::CaseInsensitive );
+}
+
+#endif
 
 QString FsInfo::ToWinPath( QString cygPath, bool *ok )
 {
@@ -110,6 +129,7 @@ QString FsInfo::ToWinPath( QString cygPath, bool *ok )
     QString output = p.readAll();
     output.remove( "\r" );
     output.remove( "\n" );
+    output.remove( "\\\\.\\" );//if the path maps to a drive letter, it will have these badboys on it.  just remove them
     //qDebug() << "FsInfo::ToWinPath:" << cygPath << output;
     *ok = true;
     return output;
