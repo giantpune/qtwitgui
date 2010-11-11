@@ -26,8 +26,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->actionOpen_DVD_r->setEnabled( false );//needs the listing of DVD drives fixed in fsinfo.cpp
 #endif
 
+    ui->menuView->insertAction( ui->actionLog, ui->toolBar->toggleViewAction() );
+    ui->toolBar->setVisible( false );
     //ui->toolBar->addAction( QIcon( ":/images/wifi6.png" ), "test" );
-    //ui->toolBar->addAction( ui->actionSettings );
+    ui->toolBar->addAction( ui->actionSettings );
 
     setWindowTitle( PROGRAM_NAME );
 
@@ -477,7 +479,7 @@ void MainWindow::ShowLogWindow()
 //respond to the signal containing a partition path and its gameList
 void MainWindow::ReceiveListFor_1_Partition( QString path, QList<QTreeWidgetItem *> list )
 {
-    //qDebug() << "ReceiveListFor_1_Partition:" << path << list.size();
+    qDebug() << "ReceiveListFor_1_Partition:" << path << list.size();
     //check if partition is already known
     QMap<QString, QList<QTreeWidgetItem *> >::iterator i = gameMap.find( path );
     if( i == gameMap.end() )
@@ -751,13 +753,13 @@ void MainWindow::on_actionTest_triggered()
 	}
     }*/
 
-    /*qDebug() << "plistSize:" << partList.size();
+    qDebug() << "plistSize:" << partList.size();
     int size = partList.size();
     for( int i = 0; i < size; i++ )
     {
 	QTreeWidgetItem *item = partList.at( i );
 	qDebug() << item->text( 0 ) << item->text( 1 ) << item->text( 2 ) << item->text( 3 );
-    }*/
+    }
     /*qDebug() << "open mdiwindows:";
     foreach( QMdiSubWindow *window, ui->mdiArea->subWindowList() )
     {

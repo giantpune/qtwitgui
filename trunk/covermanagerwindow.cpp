@@ -85,7 +85,7 @@ void CoverManagerWindow::ShowTextAndProgress( bool show )
 
 void CoverManagerWindow::SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > gameMap )
 {
-    //qDebug() << "CoverManagerWindow::SetGameLists";
+    qDebug() << "CoverManagerWindow::SetGameLists";
     gameLists.clear();
     QMap<QString, QList<QTreeWidgetItem *> >::iterator i = gameMap.begin();
     while( i != gameMap.constEnd() )
@@ -133,16 +133,16 @@ void CoverManagerWindow::SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > 
 	    LoadCoversForPartition( i.key() );
     }
     //debug shit
-    /*QMap<QString, QStringList >::iterator p = gameLists.begin();
+    QMap<QString, QStringList >::iterator p = gameLists.begin();
     while( p != gameLists.constEnd() )
     {
 	qDebug() << p.key() << p.value().size();
 	p++;
-    }*/
+    }
 
 }
 
-void CoverManagerWindow::on_frame_customContextMenuRequested(QPoint pos)
+void CoverManagerWindow::on_frame_customContextMenuRequested( QPoint pos )
 {
     //qDebug() << "CoverManagerWindow::on_frame_customContextMenuRequested" << pos;
     QPoint globalPos = ui->frame->mapToGlobal( pos );
