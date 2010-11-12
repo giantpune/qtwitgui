@@ -7,7 +7,9 @@ QT += core \
     network
 TARGET = QtWitGui
 TEMPLATE = app
-DEFINES += PROGRAM_NAME='\\"${TARGET}\\"'
+DEFINES += PROGRAM_NAME='\\"${TARGET}\\"' \
+    QT_USE_FAST_CONCATENATION \
+    QT_USE_FAST_OPERATOR_PLUS
 !win32:!macx:DEFINES += Q_WS_LINUX
 SOURCES += main.cpp \
     mainwindow.cpp \
