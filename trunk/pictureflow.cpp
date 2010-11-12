@@ -1229,9 +1229,9 @@ void PictureFlow::mouseReleaseEvent( QMouseEvent * event )
     directionToMoveIfMouseIsStillHeldDown = 0;
 }
 
-void PictureFlow::mousePressEvent(QMouseEvent* event)
+void PictureFlow::mousePressEvent( QMouseEvent* event )
 {
-    if( !d->state->slideImages.size() )
+    if( !d->state->slideImages.size() || event->buttons() & Qt::RightButton )
 	return;
 
     int clicked = PointToImageIndex( QPoint( event->x(), event->y() ) );
