@@ -347,7 +347,7 @@
         <rect>
          <x>9</x>
          <y>32</y>
-         <width>420</width>
+         <width>434</width>
          <height>411</height>
         </rect>
        </property>
@@ -365,26 +365,23 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>416</width>
-          <height>407</height>
+          <width>432</width>
+          <height>409</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <layout class="QFormLayout" name="formLayout_3">
-             <property name="fieldGrowthPolicy">
-              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QFormLayout" name="formLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_key">
+             <property name="text">
+              <string>Re-Encryptoin Key</string>
              </property>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_key">
-               <property name="text">
-                <string>Re-Encryptoin Key</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
               <widget class="QComboBox" name="comboBox_key">
                <item>
                 <property name="text">
@@ -403,14 +400,31 @@
                </item>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_recurse">
-               <property name="text">
-                <string>Recurse subfolders</string>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-              </widget>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
              </item>
-             <item row="2" column="1">
+            </layout>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_recurse">
+             <property name="text">
+              <string>Recurse subfolders</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
               <widget class="QSpinBox" name="spinBox_wiimms_recurse">
                <property name="minimum">
                 <number>1</number>
@@ -420,18 +434,31 @@
                </property>
               </widget>
              </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
             </layout>
            </item>
           </layout>
          </item>
-         <item row="1" column="0">
+         <item>
           <widget class="QCheckBox" name="checkBox_ignoreFst">
            <property name="text">
-            <string>Exclude extracted games while checking partitions</string>
+            <string>Exclude extracted games ( FST ) while checking partitions</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QLabel" name="label_ignore_paths">
