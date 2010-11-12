@@ -416,7 +416,8 @@ void CoverManagerWindow::ReceiveCovers( QList< QImage > covers, bool reload )
 
 void CoverManagerWindow::Refresh()
 {
-    LoadCoversForPartition( currentPartition );
+    if( !currentPartition.isEmpty() )
+        LoadCoversForPartition( currentPartition );
 }
 
 //convert a number emited from the pictureflow widget to an ID for the WiiTDB widget
