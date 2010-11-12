@@ -588,7 +588,8 @@ QList< QTreeWidgetItem * >WiiTDB::Search( const QString &id, const QString &name
 
 	//make a new item and add all the text to it
 	QTreeWidgetItem *item = new QTreeWidgetItem( QStringList() << curID << title << plyStr << plyWStr );
-	item->setText( 4, rType.isEmpty() || rVal.isEmpty() ? "" : rType + " : " + rVal );
+	if( !rType.isEmpty() && !rVal.isEmpty())
+	    item->setText( 4, rType + " : " + rVal );
 	item->setText( 5, curType );
 	item->setText( 6, accStr );
 	ret << item;

@@ -154,11 +154,17 @@ void WitHandler::ReadyReadStdOutSlot()
 	    if( num > 1 )
 	    {
 		str.remove( 0, num );
-		emit SendMessageForStatusBar( ( currJobText.isEmpty() ? "" : currJobText + "     -     " ) + \
-					      ( str.isEmpty() ? "" : str + "     -     " ) + rate );
+		if( !str.isEmpty() )
+		    rate.prepend( str + "     -     " );
+		//emit SendMessageForStatusBar( ( currJobText.isEmpty() ? "" : currJobText + "     -     " ) + \
+		//			      ( str.isEmpty() ? "" : str + "     -     " ) + rate );
 	    }
-	    else
-		emit SendMessageForStatusBar( ( currJobText.isEmpty() ? "" : currJobText + "     -     " ) + "     -     " + rate );
+	    if( !currJobText.isEmpty() )
+		rate.prepend( currJobText + "     -     " );
+
+	    emit SendMessageForStatusBar( rate );
+	    //else
+		//emit SendMessageForStatusBar( ( currJobText.isEmpty() ? "" : currJobText + "     -     " ) + "     -     " + rate );
 	}
 	break;
     default:

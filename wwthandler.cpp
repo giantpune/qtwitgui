@@ -64,14 +64,7 @@ void WwtHandler::ReadyReadStdOutSlot()
     switch ( wwtJob )
     {
 	case wwtAdd:
-	    if( curRead.contains( " - ADD " ) )
-	    {
-		currJobText = curRead;
-		currJobText.remove( 0, curRead.indexOf( " - ADD " ) + 7 );
-		currJobText.resize( currJobText.indexOf( " " ) );
-		emit SendMessageForStatusBar( currJobText );
-		break;
-	    }
+	    //curRead.remove( "\n" );
 	    //turn the % message into a int and pass it to the progress bar
 	    if( curRead.contains( "%" ) )
 	    {
@@ -97,13 +90,68 @@ void WwtHandler::ReadyReadStdOutSlot()
 		 if( num > 1 )
 		 {
 		     str.remove( 0, num );
-		     emit SendMessageForStatusBar( currJobText + " : " + str );
+		     emit SendMessageForStatusBar( currJobText.isEmpty() ? str :\
+						   currJobText + " : " + str );
 		     //qDebug() << "wwtAdd:" << str;
 		     //ui->statusBar->showMessage( tr( "Wit is running..." ) + " " + str );
 		 }
 		 break;
 	    }
+	    else//text doesnt contain a "%" sign
+	    {
+		if( curRead.contains( "already exists ->" ) )//show ignored games
+		{
+		    int start  = curRead.indexOf( " - DISC");
+		    int end = curRead.lastIndexOf( "ignore" );
+		    if( start < end )
+		    {
+			end += 7;
+			QString stuff = curRead.mid( start, end - start );
+			stuff = stuff.trimmed();
+			stuff.replace( "\n", "<br>" );
+			qWarning() << qPrintable( stuff );
+		    }
+		}
+		if( curRead.contains( "- REMOVE" ) )
+		{
+		    int start = curRead.indexOf( " - REMOVE " );
+		    int end = curRead.indexOf( "]", start ) + 1;
+		    if( start < end )
+			qWarning() << qPrintable( curRead.mid( start, end - start ) );//show what game is being deleted
+
+		}
+		if( curRead.contains( " - ADD " ) )
+		{
+		    int start = curRead.indexOf( " - ADD " );
+		    int start2 = start + 7;
+		    int end = curRead.indexOf( " ",start2 );
+		    currJobText = curRead.mid( start2, end - start2 );
+		    qWarning() << qPrintable( curRead.mid( start ) );//show what game is being written
+		    emit SendMessageForStatusBar( currJobText );
+		}
+		if( curRead.contains( "copied in" ) )//game is done writing
+		{
+		    currJobText.clear();
+		    qWarning() << qPrintable( curRead.trimmed() );
+		}
+		if( curRead.contains( "disc added." ) || curRead.contains( "discs added." ) )//job done
+		{
+		    int start = curRead.lastIndexOf( "* WBFS" );
+		    qWarning() << qPrintable( curRead.mid( start ).trimmed() );
+		}
+
+	    }
 	    //qDebug() << "unhandled wwtAdd text:" << curRead;
+	    break;
+	    case wwtRemove:
+	    {
+		qDebug() << "REMOVE STDOUT:" << curRead;
+		int start = curRead.indexOf( "WBFSv" );
+		if( start >= 0 )
+		{
+		    qWarning() << qPrintable( curRead.mid( start ).trimmed().replace( "\n", "<br>" ) );
+		}
+	    }
 	    break;
 	default:
 	    break;
