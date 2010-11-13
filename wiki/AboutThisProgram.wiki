@@ -143,6 +143,7 @@
 
 
 == Compiling ==
+  * This project needs wiitdb.xml in the directory with all the source.  I do not supply this file.  Instructions in the .pro file use curl to grab the zipped file from online.  Then it uses unzip to grab the xml from inside the zip archive.  If you have trouble with either of these, you can simply get the xml by any means necessary and put it in the project directory.
 
   * Get your meathooks on the Qt SDK ( http://qt.nokia.com/downloads/ ).  Then just open the .pro file from this svn in Qt Creator ( IDE ) and click the picture of a hammer in the lower-right.
 ----
