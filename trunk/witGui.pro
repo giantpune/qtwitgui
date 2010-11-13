@@ -89,6 +89,9 @@ OBJECTS_DIR = obj
 unix { 
     system( chmod 755 ./makesvnrev.sh )
     system( ./makesvnrev.sh )
+    #grab the latest wiitdb.zip if there isnt already one in the project directory
+    system( chmod 755 ./getWiiTDB.sh )
+    system( ./getWiiTDB.sh )
     macx:# MAC icon & universal binary
     RC_FILE = images/icon.icns
 }
