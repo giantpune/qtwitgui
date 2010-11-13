@@ -311,7 +311,7 @@ void MainWindow::SaveSettings()
 //respond to items in the mdi being closed
 void MainWindow::MdiItemDestroyed( QString title, QPoint pos, QSize size, int type )
 {
-    qDebug() << "MdiItemDestroyed()" << title << pos << size;
+    //qDebug() << "MdiItemDestroyed()" << title << pos << size;
     bool max = size == QSize( 999, 999 );
     QSettings settings( settingsPath, QSettings::IniFormat );
     switch( type )
