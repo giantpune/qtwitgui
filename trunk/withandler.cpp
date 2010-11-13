@@ -111,11 +111,23 @@ void WitHandler::ReadyReadStdOutSlot()
     case witEdit:
 	if( curRead.contains( "* wit SCRUB" ) )
 	{
-	    currJobText = curRead;
-	    currJobText.remove( 0, curRead.indexOf( "* wit SCRUB" ) + 12 );
-	    currJobText.resize( currJobText.indexOf( " " ) );
+	    int start = curRead.indexOf( "* wit SCRUB" ) + 12;
+	    int end = curRead.indexOf( " ", start );
+	    int end2 = curRead.indexOf( "\n", start );
+	    currJobText = curRead.mid( start, end - start );
+	    qWarning() << qPrintable( curRead.mid( start, end2 - start ) );
 	    emit SendMessageForStatusBar( currJobText );
-	    break;
+	    emit SendProgress( 0 );
+	}
+	if( curRead.contains( "* COPY+SCRUB" ) )
+	{
+	    int start = curRead.indexOf( "* COPY+SCRUB" ) + 13;
+	    int end = curRead.indexOf( " ", start );
+	    int end2 = curRead.indexOf( "\n", start );
+	    currJobText = curRead.mid( start, end - start );
+	    qWarning() << qPrintable( curRead.mid( start, end2 - start ) );
+	    emit SendMessageForStatusBar( currJobText );
+	    emit SendProgress( 0 );
 	}
 	//turn the % message into a int and pass it to the progress bar
 	if( curRead.contains( "%" ) )
@@ -161,6 +173,15 @@ void WitHandler::ReadyReadStdOutSlot()
 		rate.prepend( currJobText + "     -     " );
 
             emit SendMessageForStatusBar( rate );
+	}
+	else//doesnt contain "%"
+	{
+	    if( curRead.contains( "copied in" ) )//game is done writing
+	    {
+		currJobText.clear();
+		qWarning() << qPrintable( curRead.trimmed() );
+		emit SendProgress( 100 );
+	    }
 	}
 	break;
     default:
