@@ -92,8 +92,6 @@ void WwtHandler::ReadyReadStdOutSlot()
 		     str.remove( 0, num );
 		     emit SendMessageForStatusBar( currJobText.isEmpty() ? str :\
 						   currJobText + " : " + str );
-		     //qDebug() << "wwtAdd:" << str;
-		     //ui->statusBar->showMessage( tr( "Wit is running..." ) + " " + str );
 		 }
 		 break;
 	    }
@@ -128,11 +126,13 @@ void WwtHandler::ReadyReadStdOutSlot()
 		    currJobText = curRead.mid( start2, end - start2 );
 		    qWarning() << qPrintable( curRead.mid( start ) );//show what game is being written
 		    emit SendMessageForStatusBar( currJobText );
+		    emit SendProgress( 0 );
 		}
 		if( curRead.contains( "copied in" ) )//game is done writing
 		{
 		    currJobText.clear();
 		    qWarning() << qPrintable( curRead.trimmed() );
+		    emit SendProgress( 100 );
 		}
 		if( curRead.contains( "disc added." ) || curRead.contains( "discs added." ) )//job done
 		{
@@ -145,7 +145,6 @@ void WwtHandler::ReadyReadStdOutSlot()
 	    break;
 	    case wwtRemove:
 	    {
-		qDebug() << "REMOVE STDOUT:" << curRead;
 		int start = curRead.indexOf( "WBFSv" );
 		if( start >= 0 )
 		{
