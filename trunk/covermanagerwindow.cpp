@@ -133,12 +133,12 @@ void CoverManagerWindow::SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > 
 	    LoadCoversForPartition( i.key() );
     }
     //debug shit
-    QMap<QString, QStringList >::iterator p = gameLists.begin();
+    /*QMap<QString, QStringList >::iterator p = gameLists.begin();
     while( p != gameLists.constEnd() )
     {
 	qDebug() << p.key() << p.value().size();
 	p++;
-    }
+    }*/
 
 }
 
@@ -694,7 +694,7 @@ void DownloadManager::downloadFinished()
     }
     else
     {
-	//qDebug() << "download complete" << currentJobText;
+	qDebug() << "Downloaded" << currentJobText;
 	downloadedCount++;
     }
 
@@ -707,7 +707,7 @@ void DownloadManager::downloadReadyRead()
     QByteArray data = currentDownload->readAll();
     if( data.startsWith( "<!DOCTYPE HTML PUBLIC" ) && data.contains( "<a href=\"http://wiitdb.com/404.php\"" ) )
     {
-	//qDebug() << "wiitdb 404 error @" << currentJobText;
+	qWarning() << "404" << currentJobText;
 	notFound = true;
 	return;
     }

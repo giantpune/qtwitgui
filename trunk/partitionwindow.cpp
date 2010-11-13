@@ -93,7 +93,7 @@ void PartitionWindow::closeEvent( QCloseEvent * closeEvent )
 
 void PartitionWindow::SetPartition( QTreeWidgetItem *part )
 {
-    qDebug() << "PartitionWindow::SetPartition" << part->text( 0 ) << part->text( 3 ) << part->text( 5 );
+    //qDebug() << "PartitionWindow::SetPartition" << part->text( 0 ) << part->text( 3 ) << part->text( 5 );
     setWindowTitle( part->text( 0 ) );
     //TODO:  still need to somehow change the name of the parent custommdi window for its GetTitle()
     if( partition )
