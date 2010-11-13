@@ -98,7 +98,8 @@ unix {
 
 # CONFIG += x86 ppc      #TODO: something is fucked up with my version of Qt, and this doesnt work out too well
 win32 { 
-    system(SubWCRev.exe "." "./svnrev_template.h" "./svnrev.h")
+    system( SubWCRev.exe "." "./svnrev_template.h" "./svnrev.h" )
+    system( getWiiTDB.bat )
     RC_FILE = rcfile.rc
 }
 OTHER_FILES += darkTheme.qss
