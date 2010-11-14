@@ -400,7 +400,7 @@ GC_Game::GC_Game( const QString path )
     file.seek( 0x2454 );
     quint32 s1 = ReadU32();
     quint32 s2 = ReadU32();
-    apploaderSize = qFromBigEndian( s1 ) + qFromBigEndian( s2 ) + 0x20;
+    apploaderSize = s1 + s2 + 0x20;
     //qDebug() << "apploaderSize:" << hex << apploaderSize;
 
     quint32 bnrSize = 0;
