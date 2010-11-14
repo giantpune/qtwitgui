@@ -338,12 +338,19 @@ int TPL_ConvertRGB5A3ToBitMap(quint8* tplbuf, quint8** bitmapdata, qint32 width,
 						(*(quint32**)bitmapdata)[x + (y * width)] = rgba;
 					}else{
 						// RGB4A3
-						quint8 b = (((oldpixel >> 12) & 0xF) * 255) / 15;
+						/*quint8 b = (((oldpixel >> 12) & 0xF) * 255) / 15;
 						quint8 g = (((oldpixel >> 8)  & 0xF) * 255) / 15;
 						quint8 r = (((oldpixel >> 4)  & 0xF) * 255) / 15;
 						quint8 a = (((oldpixel >> 0)  & 0x7) * 64) / 7;
 						quint32 rgba = (r << 0) | (g << 8) | (b << 16) | (a << 24);
-						(*(quint32**)bitmapdata)[x + (y * width)] = rgba;
+						(*(quint32**)bitmapdata)[x + (y * width)] = rgba;*/
+
+					    quint8 a = (((oldpixel >> 12) & 0x7) * 255) / 7;
+					    quint8 b = (((oldpixel >> 8)  & 0xF) * 255) / 15;
+					    quint8 g = (((oldpixel >> 4)  & 0xF) * 255) / 15;
+					    quint8 r = (((oldpixel >> 0)  & 0xF) * 255) / 15;
+					    quint32 rgba = (r << 0) | (g << 8) | (b << 16) | (a << 24);
+					    (*(quint32**)bitmapdata)[x + (y * width)] = rgba;
 					}
 				}
 			}
