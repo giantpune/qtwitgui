@@ -546,6 +546,8 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( const QStringList &li
     QString partitionInfo;
     QString path;
 
+    int currentGame = 0;
+
     for( int j = 0; j < lines; j++ )
     {
 	QString p = list.at( j );
@@ -584,6 +586,8 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( const QStringList &li
 		    used = p;
 		    if( gameCnt >= 0 )
 			mode = 1;
+
+		    //qdebug() << "got the partition info, gameCnt" << gameCnt << "totalHddUsed:" << totalHddUsed;
 		    continue;
 		}
 	    }
@@ -592,6 +596,7 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( const QStringList &li
 	    {
 		if( p.startsWith( "id=" ) )
 		{
+		    currentGame++;
 		    id = p;
 		    id.remove( 0, 3 );
 
@@ -608,7 +613,7 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( const QStringList &li
 		{
 		    QString title = p;
 		    title.remove( 0, 6 );
-		    if( title == "(null)" )
+		    if( title == "(null)" || title.isEmpty() )
 			continue;
 
 		    name = title;
@@ -673,6 +678,12 @@ QList<QTreeWidgetItem *> WitHandler::StringListToGameList( const QStringList &li
 			    *okRet = true;
 			    return games;
 			}
+		    }
+		    else
+		    {
+			qDebug() << "error parsing game" << currentGame;
+			qDebug() << id << name << sizeStr << region << type << partitionInfo << path;
+
 		    }
 		}
 	    }
