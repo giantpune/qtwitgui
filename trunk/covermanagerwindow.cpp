@@ -636,13 +636,13 @@ void DownloadManager::startNextDownload()
 	dlUrl += locale + "/";
 
     dlUrl += currentId + ".png";
-    //qDebug() << "trying to DL" << dlUrl;
+    qDebug() << "trying to DL" << dlUrl;
     currentJobText = dlUrl;
 
     QUrl url( dlUrl );
 
     QNetworkRequest request( url );
-    request.setRawHeader("User-Agent", PROGRAM_NAME );
+    //request.setRawHeader("User-Agent", PROGRAM_NAME );
 
     currentDownload = manager.get( request );
     connect( currentDownload, SIGNAL( downloadProgress( qint64, qint64 ) ), this, SLOT( downloadProgress( qint64, qint64 ) ), Qt::UniqueConnection );
