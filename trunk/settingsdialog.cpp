@@ -197,7 +197,7 @@ void SettingsDialog::on_pushButton_wiitdbPath_clicked()
     }
 }
 
-//get the width of teh widest text in the "paths" buttons and resize all buttons to match that one
+//get the width of the widest text in the "paths" buttons and resize all buttons to match that one
 void SettingsDialog::ResizeButtons()
 {
     QFontMetrics fm( fontMetrics() );

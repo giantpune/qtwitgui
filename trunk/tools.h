@@ -38,7 +38,7 @@
 #define ALIGN 0x8000		    //alignment for GC files
 
 
-#define WIT_MINIMUM_VERSION 1904
+#define WIT_MINIMUM_VERSION 2260
 #define WWT_MINIMUM_VERSION 1904
 
 extern QString settingsPath;

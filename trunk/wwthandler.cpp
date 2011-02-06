@@ -38,7 +38,7 @@ WwtHandler::~WwtHandler()
 {
     if( wwtJob != wwtNoJob )
     {
-	emit KillProcess();
+		emit KillProcess();
     }
     delete process;
     process = 0;
@@ -68,88 +68,88 @@ void WwtHandler::ReadyReadStdOutSlot()
 	    //turn the % message into a int and pass it to the progress bar
 	    if( curRead.contains( "%" ) )
 	    {
-		 QString str = curRead.simplified(); //remove extra whitespace
-		 QString numText;
-		 int perChar = str.indexOf( "%" );
-		 int num = 0;
-		 if( perChar < 4 && perChar > 0)
-		 {
-		     while( str.at( 0 ) != '%' )
-		     {
-			 numText += str.at( 0 );
-			 str.remove( 0, 1 );
-		     }
+			QString str = curRead.simplified(); //remove extra whitespace
+			QString numText;
+			int perChar = str.indexOf( "%" );
+			int num = 0;
+			if( perChar < 4 && perChar > 0)
+			{
+				while( str.at( 0 ) != '%' )
+				{
+					numText += str.at( 0 );
+					str.remove( 0, 1 );
+				}
 
-		    num = numText.toInt();//convert to int
-		    if( num < 101 )
-			//ui->progressBar->setValue( num );
-			emit SendProgress( num );
-		 }
+				num = numText.toInt();//convert to int
+				if( num < 101 )
+					//ui->progressBar->setValue( num );
+					emit SendProgress( num );
+			}
 
-		 num = str.indexOf( "ETA", 0 );
-		 if( num > 1 )
-		 {
-		     str.remove( 0, num );
-		     emit SendMessageForStatusBar( currJobText.isEmpty() ? str :\
-						   currJobText + " : " + str );
-		 }
-		 break;
+			num = str.indexOf( "ETA", 0 );
+			if( num > 1 )
+			{
+				str.remove( 0, num );
+				emit SendMessageForStatusBar( currJobText.isEmpty() ? str :\
+											  currJobText + " : " + str );
+			}
+			break;
 	    }
 	    else//text doesnt contain a "%" sign
 	    {
-		if( curRead.contains( "already exists ->" ) )//show ignored games
-		{
-		    int start  = curRead.indexOf( " - DISC");
-		    int end = curRead.lastIndexOf( "ignore" );
-		    if( start < end )
-		    {
-			end += 7;
-			QString stuff = curRead.mid( start, end - start );
-			stuff = stuff.trimmed();
-			stuff.replace( "\n", "<br>" );
-			qWarning() << qPrintable( stuff );
-		    }
-		}
-		if( curRead.contains( "- REMOVE" ) )
-		{
-		    int start = curRead.indexOf( " - REMOVE " );
-		    int end = curRead.indexOf( "]", start ) + 1;
-		    if( start < end )
-			qWarning() << qPrintable( curRead.mid( start, end - start ) );//show what game is being deleted
+			if( curRead.contains( "already exists ->" ) )//show ignored games
+			{
+				int start  = curRead.indexOf( " - DISC");
+				int end = curRead.lastIndexOf( "ignore" );
+				if( start < end )
+				{
+					end += 7;
+					QString stuff = curRead.mid( start, end - start );
+					stuff = stuff.trimmed();
+					stuff.replace( "\n", "<br>" );
+					qWarning() << qPrintable( stuff );
+				}
+			}
+			if( curRead.contains( "- REMOVE" ) )
+			{
+				int start = curRead.indexOf( " - REMOVE " );
+				int end = curRead.indexOf( "]", start ) + 1;
+				if( start < end )
+					qWarning() << qPrintable( curRead.mid( start, end - start ) );//show what game is being deleted
 
-		}
-		if( curRead.contains( " - ADD " ) )
-		{
-		    int start = curRead.indexOf( " - ADD " );
-		    int start2 = start + 7;
-		    int end = curRead.indexOf( " ",start2 );
-		    currJobText = curRead.mid( start2, end - start2 );
-		    qWarning() << qPrintable( curRead.mid( start ) );//show what game is being written
-		    emit SendMessageForStatusBar( currJobText );
-		    emit SendProgress( 0 );
-		}
-		if( curRead.contains( "copied in" ) )//game is done writing
-		{
-		    currJobText.clear();
-		    qWarning() << qPrintable( curRead.trimmed() );
-		    emit SendProgress( 100 );
-		}
-		if( curRead.contains( "disc added." ) || curRead.contains( "discs added." ) )//job done
-		{
-		    int start = curRead.lastIndexOf( "* WBFS" );
-		    qWarning() << qPrintable( curRead.mid( start ).trimmed() );
-		}
+			}
+			if( curRead.contains( " - ADD " ) )
+			{
+				int start = curRead.indexOf( " - ADD " );
+				int start2 = start + 7;
+				int end = curRead.indexOf( " ",start2 );
+				currJobText = curRead.mid( start2, end - start2 );
+				qWarning() << qPrintable( curRead.mid( start ) );//show what game is being written
+				emit SendMessageForStatusBar( currJobText );
+				emit SendProgress( 0 );
+			}
+			if( curRead.contains( "copied in" ) )//game is done writing
+			{
+				currJobText.clear();
+				qWarning() << qPrintable( curRead.trimmed() );
+				emit SendProgress( 100 );
+			}
+			if( curRead.contains( "disc added." ) || curRead.contains( "discs added." ) )//job done
+			{
+				int start = curRead.lastIndexOf( "* WBFS" );
+				qWarning() << qPrintable( curRead.mid( start ).trimmed() );
+			}
 
 	    }
 	    //qDebug() << "unhandled wwtAdd text:" << curRead;
 	    break;
 	    case wwtRemove:
 	    {
-		int start = curRead.indexOf( "WBFSv" );
-		if( start >= 0 )
-		{
-		    qWarning() << qPrintable( curRead.mid( start ).trimmed().replace( "\n", "<br>" ) );
-		}
+			int start = curRead.indexOf( "WBFSv" );
+			if( start >= 0 )
+			{
+				qWarning() << qPrintable( curRead.mid( start ).trimmed().replace( "\n", "<br>" ) );
+			}
 	    }
 	    break;
 	default:
@@ -171,32 +171,32 @@ void WwtHandler::ReadyReadStdErrSlot()
 #endif
     if( errStr.startsWith( rootWrongStr ) )
     {
-	errStr.clear();
-	rootPass.clear();
+		errStr.clear();
+		rootPass.clear();
     }
 
     else if( errStr.startsWith( rootAskStr ) )
     {
-	errStr.clear();
-	if( !rootPass.isEmpty() )
-	{
-	    process->write( QByteArray( rootPass.toLatin1() ) );
-	}
-	else
-	{
-	    emit RequestPassword();
-	}
-	return;
+		errStr.clear();
+		if( !rootPass.isEmpty() )
+		{
+			process->write( QByteArray( rootPass.toLatin1() ) );
+		}
+		else
+		{
+			emit RequestPassword();
+		}
+		return;
     }
     else if( errStr == rootFailStr )
     {
-	emit KillProcess();
-	process->waitForFinished();//force kill the thing
-	qDebug() << "killed sudo";
-	emit SendFatalErr( errStr, wwtJob );
-	errStr.clear();
-	rootPass.clear();
-	wwtJob = wwtNoJob;
+		emit KillProcess();
+		process->waitForFinished();//force kill the thing
+		qDebug() << "killed sudo";
+		emit SendFatalErr( errStr, wwtJob );
+		errStr.clear();
+		rootPass.clear();
+		wwtJob = wwtNoJob;
     }
 }
 
@@ -206,91 +206,91 @@ void WwtHandler::ProcessFinishedSlot( int i, QProcess::ExitStatus s )
     if( i || s )
     {
 #ifdef Q_WS_WIN
-	if( i == 128 )
-	{
-	    emit SendFatalErr( tr( "Maybe cygwin1.dll is missing" ), wwtJob );
-	    errStr.clear();
-	    wwtJob = wwtNoJob;
-	    return;
-	}
+		if( i == 128 )
+		{
+			emit SendFatalErr( tr( "Maybe cygwin1.dll is missing" ), wwtJob );
+			errStr.clear();
+			wwtJob = wwtNoJob;
+			return;
+		}
 #endif
-	if( s )
-	{
-	    emit SendFatalErr( tr( "Wwt appears to have crashed" ), wwtJob );
-	    errStr.clear();
-	    wwtJob = wwtNoJob;
-	    return;
-	}
+		if( s )
+		{
+			emit SendFatalErr( tr( "Wwt appears to have crashed" ), wwtJob );
+			errStr.clear();
+			wwtJob = wwtNoJob;
+			return;
+		}
 
-	if( !errStr.isEmpty() )
-	{
-	    emit SendFatalErr( errStr, wwtJob );
-	    errStr.clear();
-	    wwtJob = wwtNoJob;
-	    return;
-	}
+		if( !errStr.isEmpty() )
+		{
+			emit SendFatalErr( errStr, wwtJob );
+			errStr.clear();
+			wwtJob = wwtNoJob;
+			return;
+		}
 
-	if( i == 4 )
-	{
-	    emit SendFatalErr( tr( "At least 1 operation was ignored.<br>Maybe you didn't set the \"overwrite\" option?" ), wwtJob );
-	    errStr.clear();
-	    wwtJob = wwtNoJob;
-	    return;
-	}
+		if( i == 4 )
+		{
+			emit SendFatalErr( tr( "At least 1 operation was ignored.<br>Maybe you didn't set the \"overwrite\" option?" ), wwtJob );
+			errStr.clear();
+			wwtJob = wwtNoJob;
+			return;
+		}
     }
 
     SendProgress( 100 );
     switch( wwtJob )
     {
 	case wwtFind:
-	{
-	    QStringList parts = stdStr.split( "\n", QString::SkipEmptyParts );
+		{
+			QStringList parts = stdStr.split( "\n", QString::SkipEmptyParts );
 #ifdef Q_WS_MAC//mac version prints out more than just the list we want, so remove all entries that dont start with "/dev/"
-	    int s = parts.size();
-	    QStringList filtered;
-	    for( int i = 0; i < s; i++ )
-	    {
-		if( parts.at( i ).startsWith( "/dev/") )
-		    filtered << parts.at( i );
-	    }
-	    parts = filtered;
+			int s = parts.size();
+			QStringList filtered;
+			for( int i = 0; i < s; i++ )
+			{
+				if( parts.at( i ).startsWith( "/dev/") )
+					filtered << parts.at( i );
+			}
+			parts = filtered;
 #endif
-	    emit SendPartitionList( parts );
-	}
-	break;
+			emit SendPartitionList( parts );
+		}
+		break;
 	case wwtFind_long:
-	{
-	    QStringList parts = stdStr.split( "\n", QString::SkipEmptyParts );
+		{
+			QStringList parts = stdStr.split( "\n", QString::SkipEmptyParts );
 #ifdef Q_WS_MAC//mac version prints out more than just the list we want, so remove all entries that dont start with "CHAR"
-	    int s = parts.size();
-	    QStringList filtered;
-	    for( int i = 0; i < s; i++ )
-	    {
-		if( parts.at( i ).startsWith( "CHAR") )
-		    filtered << parts.at( i );
-	    }
-	    parts = filtered;
+			int s = parts.size();
+			QStringList filtered;
+			for( int i = 0; i < s; i++ )
+			{
+				if( parts.at( i ).startsWith( "CHAR") )
+					filtered << parts.at( i );
+			}
+			parts = filtered;
 #endif
-	    emit SendPartitionList( parts );
-	}
-	break;
+			emit SendPartitionList( parts );
+		}
+		break;
 
 	case wwtAdd:
 	case wwtRemove:
-	{
-	    emit SendJobDone( wwtJob );
-	}
-	break;
+		{
+			emit SendJobDone( wwtJob );
+		}
+		break;
 	case wwtFormat:
-	{
-	    stdStr.remove( 0xC );//IDK where this comes from, but there is a byte in the wwt output that makes no sense to me.  just delete it
-	    emit SendStdOut( stdStr );
-	    //emit SendJobDone( wwtFormat );
-	}
-	break;
+		{
+			stdStr.remove( 0xC );//IDK where this comes from, but there is a byte in the wwt output that makes no sense to me.  just delete it
+			emit SendStdOut( stdStr );
+			//emit SendJobDone( wwtFormat );
+		}
+		break;
 
 	default:
-	break;
+		break;
     }
 
     //clear old errors
@@ -303,7 +303,7 @@ void WwtHandler::PasswordIsEntered()
 {
     //qDebug() << "wwt: password entered" << requestedPassword;
     if( wwtJob == wwtNoJob )
-	return;
+		return;
 
     //requestedPassword = false;
     QString pass = rootPass.isEmpty() ? "iLikeDicks" : rootPass; //crashes with an empty password
@@ -316,24 +316,24 @@ void WwtHandler::RunJob( QStringList args, int jobType )
     stdStr.clear();
     if( wwtJob != wwtNoJob )
     {
-	emit SendFatalErr( tr( "Wwt is already running" ), jobType );
-	return;
+		emit SendFatalErr( tr( "Wwt is already running" ), jobType );
+		return;
     }
     QString wwtPath = GetWwtPath();
     if( wwtPath.isEmpty() )
     {
-	emit SendFatalErr( tr( "Job aborted."), jobType );
-	return;
+		emit SendFatalErr( tr( "Job aborted."), jobType );
+		return;
     }
     emit SendProgress( 0 );
 
     QString dbgtxt = wwtPath;
     foreach( QString arg, args )
     {
-	if( arg.contains( " " ) )
-	    dbgtxt += " \'" + arg + "\'";
-	else
-	    dbgtxt += " " + arg;
+		if( arg.contains( " " ) )
+			dbgtxt += " \'" + arg + "\'";
+		else
+			dbgtxt += " " + arg;
     }
 
     qDebug() << "<b>CMD:</b>" << dbgtxt;
@@ -341,19 +341,19 @@ void WwtHandler::RunJob( QStringList args, int jobType )
     QString command = runAsRoot ? "sudo" : wwtPath;
     if( runAsRoot )
     {
-	QStringList newArgs = QStringList() << "-S" << wwtPath;
-	foreach( QString arg, args )
-	    newArgs << arg;
+		QStringList newArgs = QStringList() << "-S" << wwtPath;
+		foreach( QString arg, args )
+			newArgs << arg;
 
-	args = newArgs;
+		args = newArgs;
     }
 
     wwtJob = jobType;
     process->start( command, args );
     if( !process->waitForStarted() )//default timeout 30,000 msecs
     {
-	qCritical() << "failed to start wwt";
-	SendFatalErr( tr( "Error starting wwt!" ), jobType );
+		qCritical() << "failed to start wwt";
+		SendFatalErr( tr( "Error starting wwt!" ), jobType );
     }
 
 }
@@ -363,13 +363,13 @@ void WwtHandler::GetPartitions( bool verbose )
     QStringList args = QStringList() << "FIND";
     if( !verbose )
     {
-	RunJob( args, wwtFind );
-	return;
+		RunJob( args, wwtFind );
+		return;
     }
     else
     {
-	args << "-ll" << "--no-header";
-	RunJob( args, wwtFind_long );
+		args << "-ll" << "--no-header";
+		RunJob( args, wwtFind_long );
     }
 }
 
@@ -380,12 +380,12 @@ QString WwtHandler::GetWwtPath()
     QString ret = settings.value( "paths/wwt" ).toString();
     if( ret.isEmpty() )
     {
-	emit SendFatalErr( tr("No path is set for wwt.  Look in the settings."), wwtJob );
+		emit SendFatalErr( tr("No path is set for wwt.  Look in the settings."), wwtJob );
 
     }
     else if( !QFile::exists( ret ) )
     {
-	emit SendFatalErr( tr("Invalid path is set for wwt.  Look in the settings."), wwtJob );
+		emit SendFatalErr( tr("Invalid path is set for wwt.  Look in the settings."), wwtJob );
     }
 
     return ret;
@@ -416,22 +416,22 @@ bool WwtHandler::ReadVersion()
     QString wwtPath = w.GetWwtPath();
     if( wwtPath.isEmpty() )
     {
-	qWarning() << "path is empty" << __FUNCTION__;
-	return false;
+		qWarning() << "path is empty" << __FUNCTION__;
+		return false;
     }
 
     QProcess p;
     p.start( wwtPath, QStringList() << "VERSION" << "--sections" );
     if( !p.waitForStarted() )
     {
-	qWarning() << "failed to start wwt" << __FUNCTION__;
-	return false;
+		qWarning() << "failed to start wwt" << __FUNCTION__;
+		return false;
     }
 
     if( !p.waitForFinished() )
     {
-	qWarning() << "!p.waitForFinished()" << __FUNCTION__;
-	return false;
+		qWarning() << "!p.waitForFinished()" << __FUNCTION__;
+		return false;
     }
 
     QString output = p.readAll();
@@ -441,8 +441,8 @@ bool WwtHandler::ReadVersion()
     QStringList list = output.split( "\n", QString::SkipEmptyParts );
     if( list.isEmpty() )
     {
-	qWarning() << "list.isEmpty()" << __FUNCTION__;
-	return false;
+		qWarning() << "list.isEmpty()" << __FUNCTION__;
+		return false;
     }
 
     QString name;
@@ -451,45 +451,45 @@ bool WwtHandler::ReadVersion()
     QString sys;
     foreach( QString str, list )
     {
-	if( str.startsWith( "prog=") )
-	{
-	    if( !str.endsWith( "=wwt" ) )
-	    {
-		qWarning() << "wrong program" << __FUNCTION__;
-		return false;
-	    }
-	}
-	else if( str.startsWith( "name=") )
-	{
-	    name = str;
-	    name.remove( 0, 5 );
-	    name.remove( "\"" );
-	}
-	else if( str.startsWith( "version=") )
-	{
-	    version = str;
-	    version.remove( 0, 8 );
-	}
-	else if( str.startsWith( "revision=") )
-	{
-	    rev = str;
-	    rev.remove( 0, 9 );
-	}
-	else if( str.startsWith( "system=") )
-	{
-	    sys = str;
-	    sys.remove( 0, 7 );
-	}
-	if( !name.isEmpty() && !version.isEmpty() && !rev.isEmpty() && !sys.isEmpty() )
-	{
-	    bool ok;
-	    wwtVersion = rev.toInt( &ok );
-	    if( !ok )
-		return false;
+		if( str.startsWith( "prog=") )
+		{
+			if( !str.endsWith( "=wwt" ) )
+			{
+				qWarning() << "wrong program" << __FUNCTION__;
+				return false;
+			}
+		}
+		else if( str.startsWith( "name=") )
+		{
+			name = str;
+			name.remove( 0, 5 );
+			name.remove( "\"" );
+		}
+		else if( str.startsWith( "version=") )
+		{
+			version = str;
+			version.remove( 0, 8 );
+		}
+		else if( str.startsWith( "revision=") )
+		{
+			rev = str;
+			rev.remove( 0, 9 );
+		}
+		else if( str.startsWith( "system=") )
+		{
+			sys = str;
+			sys.remove( 0, 7 );
+		}
+		if( !name.isEmpty() && !version.isEmpty() && !rev.isEmpty() && !sys.isEmpty() )
+		{
+			bool ok;
+			wwtVersion = rev.toInt( &ok );
+			if( !ok )
+				return false;
 
-	    wwtVersionString = name + " " + version + " r" + rev + " " + sys;
-	    return true;
-	}
+			wwtVersionString = name + " " + version + " r" + rev + " " + sys;
+			return true;
+		}
     }
     qWarning() << "wtf" << __FUNCTION__;
     return false;

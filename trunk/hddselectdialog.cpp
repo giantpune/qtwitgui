@@ -31,8 +31,8 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
     int size = s.beginReadArray( "ignoreFolders" );
     for( int i = 0; i < size; i++ )
     {
-	 s.setArrayIndex( i );
-	 ignorePaths << s.value( "path" ).toString();
+		s.setArrayIndex( i );
+		ignorePaths << s.value( "path" ).toString();
     }
     s.endArray();
 
@@ -84,27 +84,27 @@ void HDDSelectDialog::AddPartitionsToList( QList<QTreeWidgetItem *> list )
 {
     for( int i = 0; i < list.size(); i++ )
     {
-	bool found = false;
-	for( int j = 0; j < ui->treeWidget->topLevelItemCount(); j++ )
-	{
+		bool found = false;
+		for( int j = 0; j < ui->treeWidget->topLevelItemCount(); j++ )
+		{
 #ifdef Q_WS_WIN
             if( list.at( i )->text( 0 ) == RemoveDriveLetter( ui->treeWidget->topLevelItem( j )->text( 0 ) ) )
 #else
-            if( list.at( i )->text( 0 ) == ui->treeWidget->topLevelItem( j )->text( 0 ) )
+				if( list.at( i )->text( 0 ) == ui->treeWidget->topLevelItem( j )->text( 0 ) )
 #endif
-		found = true;
-	}
-	if( !found )
-	{
-	    QTreeWidgetItem *item = list.at( i )->clone();
+					found = true;
+		}
+		if( !found )
+		{
+			QTreeWidgetItem *item = list.at( i )->clone();
 #ifdef Q_WS_WIN
             if( item->text( 4 ) == "wwt" )
                 item->setText( 0, AddDriveLetter( item->text( 0 ) ) );
 #endif
-	    if( !item->text( 2 ).contains( "." ) )//this size text doesnt contain a ".", so assume we havent already converted it from bytes to GiB
-		item->setText( 2, SizeTextGiB( item->text( 2 ) ) );
-	    ui->treeWidget->addTopLevelItem( item );
-	}
+			if( !item->text( 2 ).contains( "." ) )//this size text doesnt contain a ".", so assume we havent already converted it from bytes to GiB
+				item->setText( 2, SizeTextGiB( item->text( 2 ) ) );
+			ui->treeWidget->addTopLevelItem( item );
+		}
     }
 }
 
@@ -115,7 +115,7 @@ void HDDSelectDialog::accept()
 
     QList<QTreeWidgetItem *> selected = ui->treeWidget->selectedItems();
     if( !selected.isEmpty() )
-	emit SendSelectedPartition( selected );
+		emit SendSelectedPartition( selected );
 
     emit SendHDDList( ui->treeWidget->invisibleRootItem()->takeChildren() );
     QDialog::accept();
@@ -134,7 +134,7 @@ void HDDSelectDialog::reject()
 void HDDSelectDialog::NeedToAskForPassword()
 {
     if( alreadyAskingForPassword )
-	return;
+		return;
 
     alreadyAskingForPassword = true;
     PasswordDialog dialog( this );
@@ -148,7 +148,7 @@ void HDDSelectDialog::on_pushButton_manualADD_clicked()
 {
     QString str = QFileDialog::getExistingDirectory( this, tr( "Select a folder" ) );
     if( str.isEmpty() )
-	return;
+		return;
 
     AddNewPartitionToList( str, tr( "Manual" ) );
 }
@@ -161,8 +161,8 @@ void HDDSelectDialog::on_pushButton_find_clicked()
     QList<QTreeWidgetItem *> lst = ui->treeWidget->invisibleRootItem()->takeChildren();
     for( int j = 0; j < lst.size(); j++ )
     {
-	QTreeWidgetItem *it = lst.at( j );
-	delete it;
+		QTreeWidgetItem *it = lst.at( j );
+		delete it;
     }
 #ifdef Q_WS_WIN
     QFileInfoList list = QDir::drives();
@@ -180,37 +180,37 @@ void HDDSelectDialog::on_pushButton_find_clicked()
 #endif//#ifdef Q_WS_WIN
     for( int i = 0; i < list.size(); ++i )
     {
-	QFileInfo fileInfo = list.at( i );
+		QFileInfo fileInfo = list.at( i );
         if( PathIsIgnored( fileInfo.absoluteFilePath() )
 #ifdef Q_WS_WIN
             || FsInfo::IsDVDLetter( fileInfo.absoluteFilePath() )
 #endif
             )
-	    continue;
+			continue;
 
-	QDir subDir( fileInfo.absoluteFilePath() );
-	//QDir subDir( dir.absoluteFilePath( fileInfo.fileName() ) );
+		QDir subDir( fileInfo.absoluteFilePath() );
+		//QDir subDir( dir.absoluteFilePath( fileInfo.fileName() ) );
 
-	if( subDir.exists( "wbfs" ) )
-	{
-	    if( PathIsIgnored( subDir.absoluteFilePath( "wbfs" ) ) )
-		continue;
-	    AddNewPartitionToList( subDir.absoluteFilePath( "wbfs" ), tr( "Auto" ) );
-	}
+		if( subDir.exists( "wbfs" ) )
+		{
+			if( PathIsIgnored( subDir.absoluteFilePath( "wbfs" ) ) )
+				continue;
+			AddNewPartitionToList( subDir.absoluteFilePath( "wbfs" ), tr( "Auto" ) );
+		}
 
-	if( subDir.exists( "iso" ) )
-	{
-	    if( PathIsIgnored( subDir.absoluteFilePath( "iso" ) ) )
-		continue;
-	    AddNewPartitionToList( subDir.absoluteFilePath( "iso" ), tr( "Auto" ) );
-	}
+		if( subDir.exists( "iso" ) )
+		{
+			if( PathIsIgnored( subDir.absoluteFilePath( "iso" ) ) )
+				continue;
+			AddNewPartitionToList( subDir.absoluteFilePath( "iso" ), tr( "Auto" ) );
+		}
 
-	if( subDir.exists( "games" ) )
-	{
-	    if( PathIsIgnored( subDir.absoluteFilePath( "games" ) ) )
-		continue;
-	    AddNewPartitionToList( subDir.absoluteFilePath( "games" ), tr( "Auto" ) );
-	}
+		if( subDir.exists( "games" ) )
+		{
+			if( PathIsIgnored( subDir.absoluteFilePath( "games" ) ) )
+				continue;
+			AddNewPartitionToList( subDir.absoluteFilePath( "games" ), tr( "Auto" ) );
+		}
     }
     wwt.GetPartitions();
 }
@@ -221,11 +221,11 @@ bool HDDSelectDialog::PathIsIgnored( const QString &path )
     int size  = ignorePaths.size();
     for( int i = 0; i < size; i++ )
     {
-	if( path.startsWith( ignorePaths.at( i ) ) )
-	{
-	    //qDebug() << "ignoring" << path << "based on ignore rule" << ignorePaths.at( i );
-	    return true;
-	}
+		if( path.startsWith( ignorePaths.at( i ) ) )
+		{
+			//qDebug() << "ignoring" << path << "based on ignore rule" << ignorePaths.at( i );
+			return true;
+		}
     }
     return false;
 }
@@ -251,17 +251,17 @@ void HDDSelectDialog::HandleWiimmsErrors( QString err, int id )
     switch( id )
     {
 	case witListLLLHDD:
-	{
-	    QTreeWidgetItem * item = PartitionBeingRead();
-	    if( item )
-	    {
-		item->setText( 1, "0" );
-		item->setText( 2, tr( "Wit Error" ) + ": " + err );
-		break;
-	    }
+		{
+			QTreeWidgetItem * item = PartitionBeingRead();
+			if( item )
+			{
+				item->setText( 1, "0" );
+				item->setText( 2, tr( "Wit Error" ) + ": " + err );
+				break;
+			}
 
-	    break;
-	}
+			break;
+		}
 
     }
 }
@@ -271,11 +271,11 @@ QTreeWidgetItem *HDDSelectDialog::PartitionBeingRead()
 {
     for( int i = 0; i < ui->treeWidget->topLevelItemCount(); i++ )
     {
-	QTreeWidgetItem * item = ui->treeWidget->topLevelItem( i );
-	if( item->text( 1 ) == tr( "Reading" ) )
-	{
-	    return item;
-	}
+		QTreeWidgetItem * item = ui->treeWidget->topLevelItem( i );
+		if( item->text( 1 ) == tr( "Reading" ) )
+		{
+			return item;
+		}
     }
     qDebug() << "error @ partition being read";
     return 0;
@@ -288,8 +288,8 @@ void HDDSelectDialog::AddNewPartitionToList( QString path, QString source )
 
     if( !found.isEmpty() )
     {
-	qDebug() << "partition already exists" << path;
-	return;
+		qDebug() << "partition already exists" << path;
+		return;
     }
 
     QTreeWidgetItem * item = new QTreeWidgetItem( QStringList() << path );
@@ -299,7 +299,7 @@ void HDDSelectDialog::AddNewPartitionToList( QString path, QString source )
 #ifdef Q_WS_WIN
         item->setText( 0, AddDriveLetter( item->text( 0 ) ) );
 #endif
-	item->setText( 5, "WBFS" );
+		item->setText( 5, "WBFS" );
     }
     ui->treeWidget->addTopLevelItem( item );
 
@@ -308,9 +308,9 @@ void HDDSelectDialog::AddNewPartitionToList( QString path, QString source )
     int size = settings.beginReadArray( "partitionOptions" );
     for( int i = 0; i < size; i++ )
     {
-	 settings.setArrayIndex( i );
-	 if( settings.value( "path" ).toString() == item->text( 0 ) )
-	     item->setText( 3, settings.value( "split" ).toString() );
+		settings.setArrayIndex( i );
+		if( settings.value( "path" ).toString() == item->text( 0 ) )
+			item->setText( 3, settings.value( "split" ).toString() );
     }
     settings.endArray();
 
@@ -324,8 +324,8 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
     QTreeWidgetItem *item = PartitionBeingRead();
     if( !item )
     {
-	qDebug() << "!PartitionBeingRead()";
-	return;
+		qDebug() << "!PartitionBeingRead()";
+		return;
     }
     oktoRequestNextLIST_LLL = true;
     RequestNextLIST_LLLL();
@@ -336,29 +336,29 @@ void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString 
 
     if( item->text( 4 ) != "wwt" )//if the partition came from wwt, assume it is WBFS.  otherwise, get the filesystem and set some flags
     {
-	QString fs = FsInfo::GetFilesystem( item->text( 0 ) );
-	if( fs.isEmpty() )
-	    fs = tr( "Unknown" );
+		QString fs = FsInfo::GetFilesystem( item->text( 0 ) );
+		if( fs.isEmpty() )
+			fs = tr( "Unknown" );
 
-	if( fs.contains( "FAT", Qt::CaseInsensitive ) )
-	{
-	    if( item->text( 0 ).endsWith( "\\games" ) || item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
-	    {
-		fs = "SNEEK";
-	    }
-	    else//no "games" folder, set the flag to split large files
-	    {
-		item->setText( 3, tr( "Yes" ) );
-	    }
-	}
-	item->setText( 5, fs );
+		if( fs.contains( "FAT", Qt::CaseInsensitive ) )
+		{
+			if( item->text( 0 ).endsWith( "\\games" ) || item->text( 0 ).endsWith( "/games" ) )//FAT partition ending with a folder called "games"  flag it as SNEEK
+			{
+				fs = "SNEEK";
+			}
+			else//no "games" folder, set the flag to split large files
+			{
+				item->setText( 3, tr( "Yes" ) );
+			}
+		}
+		item->setText( 5, fs );
     }
 
     if( item == ui->treeWidget->topLevelItem( ui->treeWidget->topLevelItemCount() - 1 ) )
     {
-	ui->pushButton_reScan->setEnabled( true );
-	ui->buttonBox->setEnabled( true );
-	unsetCursor();
+		ui->pushButton_reScan->setEnabled( true );
+		ui->buttonBox->setEnabled( true );
+		unsetCursor();
     }
 #ifdef Q_WS_WIN
     emit SendGamelistFor_1_Partition( RemoveDriveLetter( item->text( 0 ) ), games );
@@ -373,23 +373,23 @@ void HDDSelectDialog::RequestNextLIST_LLLL()
     ui->pushButton_reScan->setEnabled( false );
     if( !oktoRequestNextLIST_LLL )//only list-lll 1 hdd at a time
     {
-	//qDebug() << "!oktoRequestNextLIST_LLL";
-	return;
+		//qDebug() << "!oktoRequestNextLIST_LLL";
+		return;
     }
 
     for( int i = 0; i < ui->treeWidget->topLevelItemCount(); i++ )
     {
-	QTreeWidgetItem * item = ui->treeWidget->topLevelItem( i );
-	if( item->text( 1 ).isEmpty() )
-	{
-	    item->setText( 1, tr( "Reading" ) );
-	    oktoRequestNextLIST_LLL = false;
-	    setCursor( Qt::BusyCursor );
-	    QSettings s( settingsPath, QSettings::IniFormat );
-	    int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
-	    wit.ListLLL_HDD( item->text( 0 ), rDepth, ignoreFst );
-	    return;
-	}
+		QTreeWidgetItem * item = ui->treeWidget->topLevelItem( i );
+		if( item->text( 1 ).isEmpty() )
+		{
+			item->setText( 1, tr( "Reading" ) );
+			oktoRequestNextLIST_LLL = false;
+			setCursor( Qt::BusyCursor );
+			QSettings s( settingsPath, QSettings::IniFormat );
+			int rDepth = s.value( "wit_wwt/rdepth", 10 ).toInt();
+			wit.ListLLL_HDD( item->text( 0 ), rDepth, ignoreFst );
+			return;
+		}
     }
     // all HDDs have been scanned at this point
 }
@@ -399,15 +399,15 @@ void HDDSelectDialog::on_pushButton_reScan_clicked()
 {
     ui->buttonBox->setEnabled( false );
     if( !oktoRequestNextLIST_LLL )//dont allow this button to be clicked until this dialog has "settled"
-	return;
+		return;
 
     ui->pushButton_reScan->setEnabled( false );
 
     for( int i = 0; i < ui->treeWidget->topLevelItemCount(); i++ )
     {
-	QTreeWidgetItem * item = ui->treeWidget->topLevelItem( i );
-	item->setText( 1, QString() );
-	item->setText( 2, QString() );
+		QTreeWidgetItem * item = ui->treeWidget->topLevelItem( i );
+		item->setText( 1, QString() );
+		item->setText( 2, QString() );
     }
 
     oktoRequestNextLIST_LLL = true;
@@ -422,8 +422,8 @@ void HDDSelectDialog::CustomTreeWidgetContentmenu( const QPoint& pos )
     QTreeWidgetItem* selected = ui->treeWidget->itemAt( pos );
     if( !selected )
     {
-	//no item is at the spot clicked
-	return;
+		//no item is at the spot clicked
+		return;
     }
 
     //bool checked = ui->treeWidget->selectedItems().at( 0 )->text( 3 ) == tr( "Yes" );
@@ -456,26 +456,26 @@ void HDDSelectDialog::CustomTreeWidgetContentmenu( const QPoint& pos )
     QAction* selectedAct = myMenu.exec( globalPos );
     if( selectedAct )
     {
-	// something was chosen, do stuff
-	if( selectedAct == &changeSplitAct )//split games
-	{
-	    foreach( QTreeWidgetItem *item, ui->treeWidget->selectedItems() )
-	    {
-		item->setText( 3, checked ? QString() : tr( "Yes" ) );
-	    }
-	}
-	else if( selectedAct == &wbfsFsAct || selectedAct == &fatFsAct || selectedAct == &ntfsFsAct //change FS type
-		 || selectedAct == &extFsAct || selectedAct == &hpfsFsAct || selectedAct == &sneekFsAct )
-	{
-	    foreach( QTreeWidgetItem *item, ui->treeWidget->selectedItems() )
-	    {
-		item->setText( 5, selectedAct->text() );
-	    }
-	}
+		// something was chosen, do stuff
+		if( selectedAct == &changeSplitAct )//split games
+		{
+			foreach( QTreeWidgetItem *item, ui->treeWidget->selectedItems() )
+			{
+				item->setText( 3, checked ? QString() : tr( "Yes" ) );
+			}
+		}
+		else if( selectedAct == &wbfsFsAct || selectedAct == &fatFsAct || selectedAct == &ntfsFsAct //change FS type
+				 || selectedAct == &extFsAct || selectedAct == &hpfsFsAct || selectedAct == &sneekFsAct )
+		{
+			foreach( QTreeWidgetItem *item, ui->treeWidget->selectedItems() )
+			{
+				item->setText( 5, selectedAct->text() );
+			}
+		}
     }
     else
     {
-	// nothing was chosen
+		// nothing was chosen
     }
 }
 
