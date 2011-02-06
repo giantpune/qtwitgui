@@ -49,7 +49,7 @@ void FormatWindow::on_pushButton_done_clicked()
 void FormatWindow::NeedToAskForPassword()
 {
     if( alreadyAskingForPassword )
-	return;
+        return;
 
     alreadyAskingForPassword = true;
     PasswordDialog dialog( this );
@@ -73,13 +73,13 @@ void FormatWindow::GetPartitionList( QStringList list )
     QList<QTreeWidgetItem* > oldItems = ui->treeWidget->invisibleRootItem()->takeChildren();
     while( !oldItems.isEmpty() )
     {
-	QTreeWidgetItem* i = oldItems.takeFirst();
-	delete i;
+        QTreeWidgetItem* i = oldItems.takeFirst();
+        delete i;
     }
     unsetCursor();
     foreach( QString part, list )
     {
-	AddItemToTree( part );
+        AddItemToTree( part );
     }
 }
 
@@ -89,19 +89,19 @@ void FormatWindow::AddItemToTree( const QString &part )
     QStringList sections = part.split( " ", QString::SkipEmptyParts );
     if( sections.size() != 5 )
     {
-	qDebug() << "sections.size() != 5" << sections;
-	return;
+        qDebug() << "sections.size() != 5" << sections;
+        return;
     }
     QString path = sections.at( 4 );
     QString sizeStr = sections.at( 3 );
     if( ( !path.startsWith( "/dev/s" )
 #ifdef Q_WS_MAC
-	&& !path.startsWith( "/dev/rdisk" )
+        && !path.startsWith( "/dev/rdisk" )
 #endif
-	) || sizeStr == "0" )
-    {
+        ) || sizeStr == "0" )
+        {
         qDebug() << "FormatWindow::AddItemToTree -> skipping" << path << sizeStr;
-	return;
+        return;
     }
     QString location;
 
@@ -109,10 +109,10 @@ void FormatWindow::AddItemToTree( const QString &part )
     int size = ui->treeWidget->topLevelItemCount();
     for( int i = 0; i < size; i++ )
     {
-	QString hdd = ui->treeWidget->topLevelItem( i )->text( 3 );
-	if( path.startsWith( hdd ) )
-	{
-	    parent = ui->treeWidget->topLevelItem( i );
+        QString hdd = ui->treeWidget->topLevelItem( i )->text( 3 );
+        if( path.startsWith( hdd ) )
+        {
+            parent = ui->treeWidget->topLevelItem( i );
             location = tr( "Partition %1" ).arg( ui->treeWidget->topLevelItem( i )->childCount() + 1 );
 #ifdef Q_WS_WIN//add the drive letter in windows
             bool ok = false;
@@ -120,7 +120,7 @@ void FormatWindow::AddItemToTree( const QString &part )
             if( ok && letter.endsWith( ":" ) )
                 location += "\t[ " + letter + " ]";
 #endif
-	}
+        }
     }
     ui->pushButton_format->setEnabled( true );
 
@@ -128,7 +128,7 @@ void FormatWindow::AddItemToTree( const QString &part )
 
     //not found, this must be a HDD and not a partition
     if( location.isEmpty() )
-	location = tr( "Disc %1" ).arg( ui->treeWidget->topLevelItemCount() );
+        location = tr( "Disc %1" ).arg( ui->treeWidget->topLevelItemCount() );
 
     item->setTextAlignment( 1, Qt::AlignRight | Qt::AlignVCenter );
     item->setTextAlignment( 2, Qt::AlignHCenter | Qt::AlignVCenter );
@@ -136,8 +136,8 @@ void FormatWindow::AddItemToTree( const QString &part )
     item->setText( 0, location );
     if( sections.at( 1 ) == "WBFS" )
     {
-	parent->setText( 2, "*" );
-	item->setText( 2, "WBFS" );
+        parent->setText( 2, "*" );
+        item->setText( 2, "WBFS" );
     }
     item->setText( 1, SizeTextGiB( sizeStr ) );
     item->setText( 3, path );
@@ -155,17 +155,17 @@ void FormatWindow::HandleWiimmsErrors( QString err, int id )
     switch( id )
     {
     case wwtFormat:
-    {
-	QMessageBox::critical( this, tr( "Formatting Error" ), err, QMessageBox::Ok, QMessageBox::Ok );
-    }
-	break;
+        {
+            QMessageBox::critical( this, tr( "Formatting Error" ), err, QMessageBox::Ok, QMessageBox::Ok );
+        }
+        break;
     case wwtFind_long:
-    {
-	QMessageBox::critical( this, tr( "Error getting partition list" ), err, QMessageBox::Ok, QMessageBox::Ok );
-    }
-	break;
+        {
+            QMessageBox::critical( this, tr( "Error getting partition list" ), err, QMessageBox::Ok, QMessageBox::Ok );
+        }
+        break;
     default:
-	break;
+        break;
     }
 }
 
@@ -188,45 +188,45 @@ void FormatWindow::on_pushButton_format_clicked()
     int x = ui->spinBox_hss->value();
     if( ui->checkBox_hss->isChecked() && ( !x || ( ( x & ( x - 1 ) ) ) ) )//if the user typed in a bad value and clicked format before the 1337 spinbox had time to fix it for them
     {
-	QMessageBox::warning( this, tr( "Bad value" ), tr( "The sector size should be a power of 2" ), QMessageBox::Ok );
-	return;
+        QMessageBox::warning( this, tr( "Bad value" ), tr( "The sector size should be a power of 2" ), QMessageBox::Ok );
+        return;
     }
     QList< QTreeWidgetItem * > selected = ui->treeWidget->selectedItems();
     if( selected.size() != 1 )
-	return;
+        return;
     QTreeWidgetItem* item = selected.at( 0 );
     int button;
     bool recover = ui->checkBox_recover->isChecked();
     if( !item->parent() )//top level item, must be a physical drive
     {
-	button = QMessageBox::question( this, tr( "Are you sure?" ), \
-		tr( "You have chosen to format %1.  This is a physical device, not a partition.  If you aren\'t sure what you are doing, you probably want to format a partition.  "  \
-		    "If you continue, all data on this device will be destroyed, possibly irreparably.%2" ).arg( item->text( 3 ) )\
-		.arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
-		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
+        button = QMessageBox::question( this, tr( "Are you sure?" ), \
+                                        tr( "You have chosen to format %1.  This is a physical device, not a partition.  If you aren\'t sure what you are doing, you probably want to format a partition.  "  \
+                                            "If you continue, all data on this device will be destroyed, possibly irreparably.%2" ).arg( item->text( 3 ) )\
+                                        .arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
+                                        QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
     }
     else if( !item->parent()->parent() )//second level item, must be a partition
     {
-	button = QMessageBox::question( this, tr( "Are you sure?" ), \
-		tr( "You are about to format %1 (%2 GiB).  "  \
-		"If you continue, all data on this partition will be destroyed, possibly irreparably.%3" ).arg( item->text( 3 ) ).arg( item->text( 1 ) )\
-		.arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
-		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
+        button = QMessageBox::question( this, tr( "Are you sure?" ), \
+                                        tr( "You are about to format %1 (%2 GiB).  "  \
+                                            "If you continue, all data on this partition will be destroyed, possibly irreparably.%3" ).arg( item->text( 3 ) ).arg( item->text( 1 ) )\
+                                        .arg( recover ? tr( "<br><br>Formatting is set to run in recover mode." ) : "" ),\
+                                        QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel );
     }
     else//what the fuck is this?  caused by a really broken partition or an error parsing the output text from wwt.
     {
-	qDebug() << "z0mg.  something went wrong in the format window";
-	return;
+        qDebug() << "z0mg.  something went wrong in the format window";
+        return;
     }
     if( button != QMessageBox::Ok )
-	return;
+        return;
 
     QStringList args = QStringList() << "FORMAT" << item->text( 3 ) << "--force";
     if( ui->checkBox_recover->isChecked() )
-	args << "--recover";
+        args << "--recover";
 
     if( ui->checkBox_hss->isChecked() && ui->spinBox_hss->value() != 512 )//defined hss value and not default
-	args << QString( "--hss=%1").arg( ui->spinBox_hss->value() );
+        args << QString( "--hss=%1").arg( ui->spinBox_hss->value() );
 
     ui->pushButton_format->setEnabled( false );
     ui->pushButton_refresh->setEnabled( false );
@@ -244,14 +244,14 @@ void QSpinBoxPowerOf2::stepBy( int steps )
     int v = value();
     if( v < 512 || ( ( v & ( v - 1 ) ) ) )//should only get here if the user typed in a bad value.  fix it for them
     {
-	v = lastGoodValue;
-	setValue( lastGoodValue );
+        v = lastGoodValue;
+        setValue( lastGoodValue );
     }
     else
-	lastGoodValue = v;
+        lastGoodValue = v;
 
     if( steps < 0 )
-	QAbstractSpinBox::stepBy( -( v / 2 ) );
+        QAbstractSpinBox::stepBy( -( v / 2 ) );
     else if( steps > 0 )
-	QAbstractSpinBox::stepBy( v );
+        QAbstractSpinBox::stepBy( v );
 }

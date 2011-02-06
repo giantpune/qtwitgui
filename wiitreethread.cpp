@@ -108,8 +108,6 @@ void WiiTreeThread::run()
 
 }
 
-
-
 //adds an item to the tree view given a full path
 void WiiTreeThread::AddItemToTree( const QString &s, QTreeWidgetItem *parent )
 {
