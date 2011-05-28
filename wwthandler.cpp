@@ -357,6 +357,7 @@ void WwtHandler::RunJob( QStringList args, int jobType )
     }
 
 }
+
 void WwtHandler::GetPartitions( bool verbose )
 {
     //qDebug() << "WwtHandler::GetPartitions" << verbose;
@@ -399,13 +400,12 @@ bool WwtHandler::Wait( int msecs )
     process->closeWriteChannel();
     return process->waitForFinished( msecs );
 }
+
 //send a kill message
 void WwtHandler::Kill()
 {
     emit KillProcess();
 }
-
-
 
 //static public functions
 bool WwtHandler::ReadVersion()
@@ -494,10 +494,12 @@ bool WwtHandler::ReadVersion()
     qWarning() << "wtf" << __FUNCTION__;
     return false;
 }
+
 bool WwtHandler::VersionIsOk()
 {
     return wwtVersion >= WWT_MINIMUM_VERSION;
 }
+
 QString WwtHandler::GetVersionString()
 {
     return wwtVersionString;

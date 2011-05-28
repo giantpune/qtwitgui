@@ -518,6 +518,9 @@ void WitHandler::ListLLL_HDD( const QString &path, int recurse, bool ignoreFst )
     if( ignoreFst )
 		args << "--ignore-fst";
 
+	//ignore uloader settings garbage
+	args << "--exclude=__CFG_";
+
     //qDebug() << args;
     RunJob( args, witListLLLHDD );
 }
