@@ -49,14 +49,16 @@ PartitionWindow::PartitionWindow( QWidget *parent ) : QMainWindow( parent ), ui(
 
     connect( &wwt, SIGNAL( SendJobDone( int ) ), this, SLOT( HideProgressBar( int ) ) );
     connect( &wit, SIGNAL( SendJobDone( int ) ), this, SLOT( HideProgressBar( int ) ) );
-    connect( &wit, SIGNAL( SendMessageForStatusBar( QString ) ), this, SLOT( GetStatusTextFromWiimms( QString ) ) );
-    connect( &wwt, SIGNAL( SendMessageForStatusBar( QString ) ), this, SLOT( GetStatusTextFromWiimms( QString ) ) );
+	connect( &wit, SIGNAL( SendMessageForStatusBar( const QString &) ), this, SLOT( GetStatusTextFromWiimms( const QString &) ) );
+	connect( &wwt, SIGNAL( SendMessageForStatusBar( const QString &) ), this, SLOT( GetStatusTextFromWiimms( const QString &) ) );
 
-    connect( &wwt, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
-    connect( &wit, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
-    connect( &wit, SIGNAL( SendListLLL( QList<QTreeWidgetItem *>, QString ) ), this, SLOT( GetPartitionInfo( QList<QTreeWidgetItem *>, QString ) ) );
+	connect( &wwt, SIGNAL( SendFatalErr( const QString&, int ) ), this, SLOT( HandleWiimmsErrors( const QString&, int ) ) );
+	connect( &wit, SIGNAL( SendFatalErr( const QString&, int ) ), this, SLOT( HandleWiimmsErrors( const QString&, int ) ) );
+	connect( &wit, SIGNAL( SendListLLL( const QList<QTreeWidgetItem *>&, const QString &) ),
+			 this, SLOT( GetPartitionInfo( const QList<QTreeWidgetItem *>&, const QString &) ) );
 
-    connect( ui->treeWidget, SIGNAL( currentItemChanged( QTreeWidgetItem *, QTreeWidgetItem *)  ), this, SLOT( TreeSelectionChanged( QTreeWidgetItem *, QTreeWidgetItem *) ) );
+	connect( ui->treeWidget, SIGNAL( currentItemChanged( QTreeWidgetItem *, QTreeWidgetItem *)  ),
+			 this, SLOT( TreeSelectionChanged( QTreeWidgetItem *, QTreeWidgetItem *) ) );
 
     //
 }
@@ -110,7 +112,7 @@ void PartitionWindow::SetPartition( QTreeWidgetItem *part )
     UpdateFlagText();
 }
 
-void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, QList<QTreeWidgetItem *> gameList )
+void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, const QList<QTreeWidgetItem *> &gameList )
 {
     SetPartition( part );
     //qDebug() << __FUNCTION__ << gameList.size();
@@ -135,7 +137,7 @@ void PartitionWindow::SetPartitionAndGameList( QTreeWidgetItem *part, QList<QTre
 }
 
 //respond to fatal errors from the processes
-void PartitionWindow::HandleWiimmsErrors( QString err, int id )
+void PartitionWindow::HandleWiimmsErrors( const QString &err, int id )
 {
     qWarning() << "PartitionWindow::HandleWiimmsErrors" << err << id;
     unsetCursor();
@@ -173,7 +175,7 @@ void PartitionWindow::HandleWiimmsErrors( QString err, int id )
     }
 }
 
-void PartitionWindow::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString MibUsed )
+void PartitionWindow::GetPartitionInfo( const QList<QTreeWidgetItem *> &games, const QString &MibUsed )
 {
     //qDebug() << "PartitionWindow::GetPartitionInfo" << games.size() << MibUsed;
     unsetCursor();
@@ -260,7 +262,7 @@ void PartitionWindow::SettingsHaveChanged()
 }
 
 //get a copy of the partition list from the main window
-void PartitionWindow::SetPartitionList( QList<QTreeWidgetItem *> pList )
+void PartitionWindow::SetPartitionList( const QList<QTreeWidgetItem *> &pList )
 {
     //qDebug() << "PartitionWindow::SetPartitionList" << pList.size();
     while( !partList.isEmpty() )//delete all known partitions from the list
@@ -495,13 +497,13 @@ void PartitionWindow::HideProgressBar( int job )
 }
 
 //get status message and append it to the status bar
-void PartitionWindow::GetStatusTextFromWiimms( QString text )
+void PartitionWindow::GetStatusTextFromWiimms( const QString &text )
 {
     ui->statusbar->showMessage( text );
 }
 
 //flag a partition as "busy" and send that to the main window so it can tell all other windows not to mess with that partition
-void PartitionWindow::SetPartitionEnabled( QString part, bool enabled )
+void PartitionWindow::SetPartitionEnabled( const QString &part, bool enabled )
 {
     qDebug() << "PartitionWindow::SetPartitionEnabled :" << part << enabled;
     for( int i = 0; i < partList.size(); i++ )
@@ -589,7 +591,7 @@ void PartitionWindow::ShrinkNextGame()
 
     connect( gcGame, SIGNAL( SendProgress( int ) ), ui->progressBar, SLOT( setValue( int ) ) );
     connect( gcGame, SIGNAL( SendDone() ), this, SLOT( ShrinkNextGame() ) );
-    connect( gcGame, SIGNAL( SendFatalError( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
+	connect( gcGame, SIGNAL( SendFatalError( const QString&, int ) ), this, SLOT( HandleWiimmsErrors( const QString&, int ) ) );
 
     QSettings s( settingsPath, QSettings::IniFormat );
     bool overwrite = s.value( "wit_wwt/overWriteFiles" ).toBool();

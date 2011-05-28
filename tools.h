@@ -61,13 +61,13 @@ QString gameType( QTreeWidgetItem* item );
 QString gamePartitions( QTreeWidgetItem* item );
 QString gamePath( QTreeWidgetItem* item );
 
-void SetGameID( QTreeWidgetItem*, QString );
-void SetGameName( QTreeWidgetItem* item, QString s );
-void SetGameSize( QTreeWidgetItem* item, QString s );
-void SetGameRegion( QTreeWidgetItem* item, QString s );
-void SetGameType( QTreeWidgetItem* item, QString s );
-void SetGamePartitions( QTreeWidgetItem* item, QString s );
-void SetGamePath( QTreeWidgetItem* item, QString s );
+void SetGameID( QTreeWidgetItem*, const QString & );
+void SetGameName( QTreeWidgetItem* item, const QString &s );
+void SetGameSize( QTreeWidgetItem* item, const QString &s );
+void SetGameRegion( QTreeWidgetItem* item, const QString &s );
+void SetGameType( QTreeWidgetItem* item, const QString &s );
+void SetGamePartitions( QTreeWidgetItem* item, const QString &s );
+void SetGamePath( QTreeWidgetItem* item, const QString &s );
 
 void hexdump( void *d, int len );
 

@@ -35,7 +35,7 @@ WiiTreeThread::~WiiTreeThread()
 //! b is weather or not to skip entries with "/.svn" in them
 //! ficon is the folder icon to use
 //! dicon is the icon to use for directories
-void WiiTreeThread::DoCommand( const QStringList &s, bool b, QIcon ficon, QIcon dicon, int type, const QStringList &list )
+void WiiTreeThread::DoCommand( const QStringList &s, bool b, const QIcon &ficon, const QIcon &dicon, int type, const QStringList &list )
 {
     //qDebug() << "WiiTreeThread::DoCommand";
     QMutexLocker locker(&mutex);

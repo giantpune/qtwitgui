@@ -56,8 +56,8 @@ class CoverLoaderThread : public QThread
 
  signals:
      void SendProgress( int );
-     void SendDone( QList< QImage >, bool reload );
-     void CoverIsMissing( QString id, int t );
+	 void SendDone( const QList< QImage > &, bool reload );
+	 void CoverIsMissing( const QString &id, int t );
 
 
  //public slots:
@@ -76,10 +76,10 @@ class CoverLoaderThread : public QThread
      bool reload;
      //QStringList subDirs;
 
-     QImage Get( QString id );
-     void Check( QString id );
+	 QImage Get( const QString &id );
+	 void Check( const QString &id );
 
-     QImage To160x224( QImage i );
+	 QImage To160x224( const QImage &i );
 
      int type;
 

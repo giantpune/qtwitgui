@@ -3,7 +3,7 @@
 CoverLoaderThread::CoverLoaderThread(QObject *parent) : QThread(parent)
 {
     abort = false;
-    qRegisterMetaType<QList<QImage> >();
+	qRegisterMetaType< QList<QImage> >();
 }
 
 void CoverLoaderThread::ForceQuit()
@@ -22,7 +22,7 @@ CoverLoaderThread::~CoverLoaderThread()
     wait();
 }
 void CoverLoaderThread::CheckCovers( const QStringList &s, const QString &baseFolder, const QString &path2, const QString &path3, \
-				     const QString &pathF, const QString &pathH, const QString &pathD, int m, bool r )
+									 const QString &pathF, const QString &pathH, const QString &pathD, int m, bool r )
 {
     basePath = baseFolder;
     ids = s;
@@ -36,14 +36,14 @@ void CoverLoaderThread::CheckCovers( const QStringList &s, const QString &baseFo
 
     if ( !isRunning() )
     {
-	start( NormalPriority );
+		start( NormalPriority );
 
     }
     else //not used since this is a 1 time use thread.  just leaving it here for reference material
     {
-	condition.wakeOne();
-	//QString str = "Thread already running\n";
-	//emit SendText( str );
+		condition.wakeOne();
+		//QString str = "Thread already running\n";
+		//emit SendText( str );
     }
 }
 
@@ -73,17 +73,17 @@ void CoverLoaderThread::run()
 	    //qDebug() << "id:" << ids.at( i );
 	    if( mode == mode_load )
 	    {
-		returns << Get( ids.at( i ) );
-		emit SendProgress( (int)( ( (float)( i + 1 ) / (float)size ) * (float)100 ) );
+			returns << Get( ids.at( i ) );
+			emit SendProgress( (int)( ( (float)( i + 1 ) / (float)size ) * (float)100 ) );
 	    }
 	    else if( mode == mode_check )
 	    {
-		Check( ids.at( i ) );
+			Check( ids.at( i ) );
 	    }
 	    else
 	    {
-		qDebug() << "coverthread: unknown mode" << mode;
-		break;
+			qDebug() << "coverthread: unknown mode" << mode;
+			break;
 	    }
 
 	}
@@ -95,95 +95,95 @@ void CoverLoaderThread::run()
 
 }
 //only supports 2d and Full covers for now
-QImage CoverLoaderThread::Get( QString id )
+QImage CoverLoaderThread::Get( const QString &id )
 {
     QImage ret;
     QDir dir( basePath );
     if( !dir.exists() )
     {
-	qDebug() << dir << "doesnt exist";
-	return ret;
+		qDebug() << dir << "doesnt exist";
+		return ret;
     }
     QDir subDir;
     subDir.setPath( dir.filePath( path2D ) );
     if( ret.load( subDir.absolutePath() + "/" + id + ".png" ) )
     {
-	ret = To160x224( ret );
-	if( ret != QImage() )
-	    return ret;
+		ret = To160x224( ret );
+		if( ret != QImage() )
+			return ret;
     }
     subDir.setPath( dir.filePath( pathFull ) );
     if( ret.load( subDir.absolutePath() + "/" + id + ".png" ) )
     {
-	ret = To160x224( ret );
-	if( ret != QImage() )
-	    return ret;
+		ret = To160x224( ret );
+		if( ret != QImage() )
+			return ret;
     }
     subDir.setPath( dir.filePath( pathHQ ) );
     if( ret.load( subDir.absolutePath() + "/" + id + ".png" ) )
     {
-	ret = To160x224( ret );
-	if( ret != QImage() )
-	    return ret;
+		ret = To160x224( ret );
+		if( ret != QImage() )
+			return ret;
     }
     //qDebug() << "couldnt load" << subDir.absolutePath() + "/" + id + ".png";
     if( ret.load( dir.absolutePath() + "/nocover.png" ) )//user defined no-cover
     {
-	return To160x224( ret );
+		return To160x224( ret );
     }
     ret.load( ":/images/nocover.png" );//no-cover compiled in this program
     return ret;
 
 }
 
-void CoverLoaderThread::Check( QString id )
+void CoverLoaderThread::Check( const QString &id )
 {
     QDir dir( basePath );
     if( !dir.exists() )
     {
-	qDebug() << dir << "doesnt exist";
-	return;
+		qDebug() << dir << "doesnt exist";
+		return;
     }
     QDir subDir;
     subDir.setPath( dir.filePath( path2D ) );
     if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
-	emit CoverIsMissing( id, coverType2d );
+		emit CoverIsMissing( id, coverType2d );
 
     subDir.setPath( dir.filePath( pathFull ) );
     if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
-	emit CoverIsMissing( id, coverTypeFull );
+		emit CoverIsMissing( id, coverTypeFull );
 
     subDir.setPath( dir.filePath( pathHQ ) );
     if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
-	emit CoverIsMissing( id, coverTypeFullHQ );
+		emit CoverIsMissing( id, coverTypeFullHQ );
 
     subDir.setPath( dir.filePath( path3D ) );
     if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
-	emit CoverIsMissing( id, coverType3d );
+		emit CoverIsMissing( id, coverType3d );
 
     subDir.setPath( dir.filePath( pathDisc ) );
     if( !QFile::exists( subDir.absolutePath() + "/" + id + ".png" ) )
-	emit CoverIsMissing( id, coverTypeDisc );
+		emit CoverIsMissing( id, coverTypeDisc );
 
 }
 
-QImage CoverLoaderThread::To160x224( QImage i )
+QImage CoverLoaderThread::To160x224( const QImage &i )
 {
     if( i.size() == QSize( 160, 224 ) )//flat 2d image
-	return i;
+		return i;
 
     if( i.size() == QSize( 512, 340 ) )//full cover
     {
-	int fStart = 271;
-	QImage front = i.copy( fStart, 0, 512 - fStart, 340 );
-	return front.scaledToHeight( 224 );
+		int fStart = 271;
+		QImage front = i.copy( fStart, 0, 512 - fStart, 340 );
+		return front.scaledToHeight( 224 );
     }
 
     if( i.size() == QSize( 1024, 680 ) )//full cover HQ ( wiiflow style )
     {
-	int fStart = 535;
-	QImage front = i.copy( fStart, 0, 1024 - fStart, 680 );
-	return front.scaledToHeight( 224 );
+		int fStart = 535;
+		QImage front = i.copy( fStart, 0, 1024 - fStart, 680 );
+		return front.scaledToHeight( 224 );
     }
 
     //TODO: i have no clue how to impliment this.  it should be possible with qtransform

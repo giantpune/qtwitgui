@@ -49,7 +49,7 @@ public:
 signals:
     void finished();
     void SendProgress( int );
-    void SendText( QString );
+	void SendText( const QString & );
 
 private slots:
     void startNextDownload();
@@ -109,12 +109,12 @@ private:
 
 
 signals:
-    void NewIDInFocus( QString );//send whenever a game is clicked or centered - for wiitdb
+	void NewIDInFocus( const QString & );//send whenever a game is clicked or centered - for wiitdb
 
 
 public slots:
-    void SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > gameMap );
-    void LoadCoversForPartition( QString part );
+	void SetGameLists( const QMap<QString, QList<QTreeWidgetItem *> > &gameMap );
+	void LoadCoversForPartition( const QString &part );
     void ReloadSettings();
     void Refresh();
     //void SettingsHaveChanged();
@@ -123,13 +123,13 @@ public slots:
 private slots:
 
 private slots:
-    void on_frame_customContextMenuRequested(QPoint pos);
-    void ReceiveCovers( QList< QImage >, bool reload );
+	void on_frame_customContextMenuRequested( const QPoint &pos);
+	void ReceiveCovers( const QList< QImage > &, bool reload );
     void CoverHasBeenSelected( int );
-    void ReceiveMissingCover( QString id, int type );
+	void ReceiveMissingCover( const QString &id, int type );
 
     //slots to get stuff from the download manager
-    void GetText( QString text );
+	void GetText( const QString &text );
     void DoneDownloading();
 };
 

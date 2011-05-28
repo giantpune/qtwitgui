@@ -75,18 +75,18 @@ class GC_Game
 {
 
 public:
-    GC_Game( const QString path = QString() );
+	GC_Game( const QString &path = QString() );
     ~GC_Game();
 
     //get the text from the banner.  pal banners can have different languages
-    QString GetSHTitle ( int lang ){ return QString( opening_bnr.text[ lang ].shTitle ); }
-    QString GetTitle   ( int lang ){ return QString( opening_bnr.text[ lang ].title ); }
-    QString GetSHMaker ( int lang ){ return QString( opening_bnr.text[ lang ].shMaker ); }
-    QString GetMaker   ( int lang ){ return QString( opening_bnr.text[ lang ].maker ); }
-    QString GetComment ( int lang ){ return QString( opening_bnr.text[ lang ].comment ); }
-    QString GetName() { return QString( hdrname ); }
-    QString GetID(){ return QString( id ); }
-    QPixmap BannerImage( int height );
+	QString GetSHTitle ( int lang ){ return QString( opening_bnr.text[ lang ].shTitle ); }
+	QString GetTitle   ( int lang ){ return QString( opening_bnr.text[ lang ].title ); }
+	QString GetSHMaker ( int lang ){ return QString( opening_bnr.text[ lang ].shMaker ); }
+	QString GetMaker   ( int lang ){ return QString( opening_bnr.text[ lang ].maker ); }
+	QString GetComment ( int lang ){ return QString( opening_bnr.text[ lang ].comment ); }
+	QString GetName() { return QString( hdrname ); }
+	QString GetID(){ return QString( id ); }
+	QPixmap BannerImage( int height );
 
     int   GetLangCnt()      { return langCnt; }
     bool fileOk;
@@ -110,7 +110,7 @@ protected:
 
     quint32 ReadU32();
 
-    void FatalError( QString str );//not used in this class
+	void FatalError( const QString &str );//not used in this class
 };
 
 class GC_ShrinkThread : public QThread , public GC_Game
@@ -118,10 +118,10 @@ class GC_ShrinkThread : public QThread , public GC_Game
     Q_OBJECT
 
  public:
-     GC_ShrinkThread( QObject *parent = 0, const QString path = QString() );
+	 GC_ShrinkThread( QObject *parent = 0, const QString &path = QString() );
      ~GC_ShrinkThread();
 
-     void ShrinkTo( const QString destPath, bool over );
+	 void ShrinkTo( const QString &destPath, bool over );
 
  protected:
      void run();
@@ -130,7 +130,7 @@ class GC_ShrinkThread : public QThread , public GC_Game
      void SendText( const QString & ); // not used here, but left in for copy/paste thread creating later
      void SendProgress( int );
      void SendDone();
-     void SendFatalError( QString, int );
+	 void SendFatalError( const QString &, int );
 
 
  private:
@@ -141,7 +141,7 @@ class GC_ShrinkThread : public QThread , public GC_Game
 
      bool abort;
 
-     void FatalError( QString str );
+	 void FatalError( const QString &str );
 
  };
 

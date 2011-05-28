@@ -41,11 +41,11 @@ class CustomMdiItem : public QMdiSubWindow
 {
     Q_OBJECT
 public:
-    CustomMdiItem( QWidget * parent = 0, Qt::WindowFlags flags = 0, QString windowTitle = QString(), bool deleteOnClose = true );
+	CustomMdiItem( QWidget * parent = 0, Qt::WindowFlags flags = 0, const QString &windowTitle = QString(), bool deleteOnClose = true );
 
     //provide a way to distinguish mdi windows
     QString GetTitle();
-    void setWindowTitle( QString windowTitle );
+	void setWindowTitle( const QString &windowTitle );
     int type;
 
 private:
@@ -53,7 +53,7 @@ private:
 
 signals:
     //provide a way for other stuff to know this window is closing
-    void AboutToClose( QString title, QPoint pos, QSize size, int type );
+	void AboutToClose( const QString &title, const QPoint &pos, const QSize &size, int type );
 
 public slots:
 

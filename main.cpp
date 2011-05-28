@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     QTranslator translator;
     if( !translator.load( QString( "language/witGuiLang_" ) + QLocale::system().name() ) )
-	translator.load( QString( ":/language/witGuiLang_" ) + QLocale::system().name() );
+		translator.load( QString( ":/language/witGuiLang_" ) + QLocale::system().name() );
 
     a.installTranslator( &translator );
 
@@ -29,10 +29,10 @@ int main(int argc, char *argv[])
     QStringList args = QApplication::arguments();
     if( args.contains( "--greyness") )
     {
-	QFile file( ":/darkTheme.qss" );
-	file.open( QFile::ReadOnly );
-	QString styleSheet = QLatin1String( file.readAll() );
-	w.setStyleSheet( styleSheet );
+		QFile file( ":/darkTheme.qss" );
+		file.open( QFile::ReadOnly );
+		QString styleSheet = QLatin1String( file.readAll() );
+		w.setStyleSheet( styleSheet );
     }
     w.show();
 

@@ -23,9 +23,9 @@ FormatWindow::FormatWindow(QWidget *parent) : QDialog(parent), ui(new Ui::Format
     connect( &wwt, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wwt, SLOT( PasswordIsEntered() ) );
 #endif
-    connect( &wwt, SIGNAL( SendStdOut( QString ) ), this, SLOT( FormatDone( QString ) ) );
-    connect( &wwt, SIGNAL( SendPartitionList( QStringList ) ), this, SLOT( GetPartitionList( QStringList ) ) );
-    connect( &wwt, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
+	connect( &wwt, SIGNAL( SendStdOut( const QString & ) ), this, SLOT( FormatDone( const QString & ) ) );
+	connect( &wwt, SIGNAL( SendPartitionList( const QStringList & ) ), this, SLOT( GetPartitionList( const QStringList & ) ) );
+	connect( &wwt, SIGNAL( SendFatalErr( const QString &, int ) ), this, SLOT( HandleWiimmsErrors( const QString &, int ) ) );
 
     //get the initial HDD listing
     wwt.GetPartitions( true );
@@ -67,7 +67,7 @@ void FormatWindow::on_pushButton_refresh_clicked()
 }
 
 //receive partitions from wwt
-void FormatWindow::GetPartitionList( QStringList list )
+void FormatWindow::GetPartitionList( const QStringList &list )
 {
     qDebug() << "FormatWindow::GetPartitionList";
     QList<QTreeWidgetItem* > oldItems = ui->treeWidget->invisibleRootItem()->takeChildren();
@@ -145,7 +145,7 @@ void FormatWindow::AddItemToTree( const QString &part )
 }
 
 //respond somehow to fatal errors
-void FormatWindow::HandleWiimmsErrors( QString err, int id )
+void FormatWindow::HandleWiimmsErrors( const QString &err, int id )
 {
     //qDebug() << "wiimms error" << err << id;
     unsetCursor();
@@ -170,7 +170,7 @@ void FormatWindow::HandleWiimmsErrors( QString err, int id )
 }
 
 //formatting is done, text is all the stdout from wwt
-void FormatWindow::FormatDone( QString text )
+void FormatWindow::FormatDone( const QString &text )
 {
     ui->pushButton_format->setEnabled( true );
     ui->pushButton_refresh->setEnabled( true );

@@ -96,16 +96,16 @@ private slots:
     void on_actionOpen_Partition_triggered();
     void on_actionAbout_triggered();
 
-    void MdiItemDestroyed( QString name, QPoint pos, QSize size, int type );
+	void MdiItemDestroyed( const QString &name, const QPoint &pos, const QSize &size, int type );
 
-    void ReceiveListFor_1_Partition( QString, QList<QTreeWidgetItem *> );
+	void ReceiveListFor_1_Partition( const QString &, const QList<QTreeWidgetItem *> & );
     void RecieveUpdatedPartitionInfo( QTreeWidgetItem * );
-    void ReceiveAllPartitionInfo( QList<QTreeWidgetItem *> );
-    void OpenSelectedPartitions( QList<QTreeWidgetItem *> list );
+	void ReceiveAllPartitionInfo( const QList<QTreeWidgetItem *> & );
+	void OpenSelectedPartitions( const QList<QTreeWidgetItem *> &list );
     void NeedToAskForPassword();
-    void OpenGames( QStringList );
-    void ReactToInvalidPartionReport( QString part );
-    void ReceiveDirtyPartition( QString part );
+	void OpenGames( const QStringList & );
+	void ReactToInvalidPartionReport( const QString &part );
+	void ReceiveDirtyPartition( const QString &part );
 
     void on_menuFile_aboutToShow();
     void on_menuView_aboutToShow();
@@ -119,9 +119,9 @@ protected:
 
 signals:
     void TellOpenWindowsThatTheSettingsAreChanged();
-    void SendNewPartitionListToSubWindows( QList<QTreeWidgetItem *> );
+	void SendNewPartitionListToSubWindows( const QList<QTreeWidgetItem *> & );
     void UserEnteredPassword();
-    void SendListsToCoverManager( QMap<QString, QList<QTreeWidgetItem *> > );//send all the current gamelists and partition names to the covermanager
+	void SendListsToCoverManager( const QMap<QString, QList<QTreeWidgetItem *> > & );//send all the current gamelists and partition names to the covermanager
 };
 
 #endif // MAINWINDOW_H

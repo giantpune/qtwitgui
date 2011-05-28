@@ -7,7 +7,8 @@
 #include "gc_shrinkthread.h"
 
 
-GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> pList ) : QMainWindow( parent ), ui( new Ui::GameWindow )
+GameWindow::GameWindow( QWidget *parent, const QString &game, const QList<QTreeWidgetItem *> &pList )
+	: QMainWindow( parent ), ui( new Ui::GameWindow )
 {
     ui->setupUi(this);
     ui->menubar->hide();
@@ -49,26 +50,26 @@ GameWindow::GameWindow( QWidget *parent, QString game, QList<QTreeWidgetItem *> 
     connect( wiithread , SIGNAL( SendProgress( int ) ), ui->progressBar, SLOT( setValue( int ) ) );
     connect( wiithread , SIGNAL( SendDone( QTreeWidgetItem * ) ), this, SLOT( ThreadIsDoneRunning( QTreeWidgetItem * ) ) );
 
-    connect( &wit, SIGNAL( SendStdOut( QString ) ), ui->textEdit, SLOT( insertPlainText( QString ) ) );
+	connect( &wit, SIGNAL( SendStdOut( const QString &) ), ui->textEdit, SLOT( insertPlainText( const QString &) ) );
     //TODO: maybe make this a bright color so it is easy to find.
     //but fatal errors are shown in a dialog box, so it really isnt necessary
-    connect( &wit, SIGNAL( SendStdErr( QString ) ), ui->textEdit, SLOT( insertPlainText( QString ) ) );
+	connect( &wit, SIGNAL( SendStdErr( const QString &) ), ui->textEdit, SLOT( insertPlainText( const QString &) ) );
 
 
     connect( &wit, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wit, SLOT( PasswordIsEntered() ) );
-    connect( &wit, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleThreadErrors( QString, int ) ) );
-    connect( &wit, SIGNAL( SendGameInfo( QString, QString, QString, int, int, QStringList, QStringList, bool ) ), \
-	     this, SLOT( ReceiveGameInfo( QString, QString, QString, int, int, QStringList, QStringList, bool ) ) );
+	connect( &wit, SIGNAL( SendFatalErr( const QString &, int ) ), this, SLOT( HandleThreadErrors( const QString &, int ) ) );
+	connect( &wit, SIGNAL( SendGameInfo( const QString &, const QString &, const QString &, int, int, const QStringList &, const QStringList &, bool ) ), \
+		 this, SLOT( ReceiveGameInfo( const QString &, const QString &, const QString &, int, int, const QStringList &, const QStringList &, bool ) ) );
 
     connect( &wwt, SIGNAL( RequestPassword() ), this, SLOT( NeedToAskForPassword() ) );
     connect( this, SIGNAL( UserEnteredPassword() ), &wwt, SLOT( PasswordIsEntered() ) );
-    connect( &wwt, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleThreadErrors( QString, int ) ) );
+	connect( &wwt, SIGNAL( SendFatalErr( const QString &, int ) ), this, SLOT( HandleThreadErrors( const QString &, int ) ) );
 
     connect( &wwt, SIGNAL( SendJobDone( int ) ), this, SLOT( HideProgressBar( int ) ) );
     connect( &wit, SIGNAL( SendJobDone( int ) ), this, SLOT( HideProgressBar( int ) ) );
-    connect( &wit, SIGNAL( SendMessageForStatusBar( QString ) ), this, SLOT( GetStatusTextFromWiimms( QString ) ) );
-    connect( &wwt, SIGNAL( SendMessageForStatusBar( QString ) ), this, SLOT( GetStatusTextFromWiimms( QString ) ) );
+	connect( &wit, SIGNAL( SendMessageForStatusBar( const QString & ) ), this, SLOT( GetStatusTextFromWiimms( const QString & ) ) );
+	connect( &wwt, SIGNAL( SendMessageForStatusBar( const QString & ) ), this, SLOT( GetStatusTextFromWiimms( const QString & ) ) );
     connect( &wit, SIGNAL( SendProgress( int ) ), ui->progressBar, SLOT( setValue( int ) ) );
     connect( &wwt, SIGNAL( SendProgress( int ) ), ui->progressBar, SLOT( setValue( int ) ) );
 
@@ -83,7 +84,7 @@ GameWindow::~GameWindow()
     delete ui;
 }
 
-void GameWindow::LoadGame( QString path )
+void GameWindow::LoadGame( const QString &path )
 {
     if( !wit.VersionIsOk() || path.isEmpty() )
 	return;
@@ -120,7 +121,8 @@ void GameWindow::ReloadGame()
     LoadGame( lastPathLoadedCorrectly );
 }
 
-void GameWindow::ReceiveGameInfo( QString type, QString id, QString name, int ios, int region, QStringList files, QStringList partitionOffsets, bool fakesigned )
+void GameWindow::ReceiveGameInfo( const QString &type, const QString &id, const QString &name, int ios, int region, const QStringList &files,
+								  const QStringList &partitionOffsets, bool fakesigned )
 {
     //qDebug() << "GameWindow::ReceiveGameInfo:" << id << name << type << ( fakesigned ? "" : "Not" ) << "fakesigned";
     ui->statusbar->showMessage( tr( "Parsing game contents..." ) );
@@ -179,7 +181,7 @@ void GameWindow::ReceiveGameInfo( QString type, QString id, QString name, int io
     EnableDisableStuff();
 }
 
-void GameWindow::HandleThreadErrors( QString err, int id )
+void GameWindow::HandleThreadErrors( const QString &err, int id )
 {
     qDebug() << "GameWindow::HandleThreadErrors" << id << err;
     ui->progressBar->setVisible( false );
@@ -588,7 +590,7 @@ QString GameWindow::GetChangeList()
 //flag a partition as "busy" and send that to the main window so it can tell all other windows not to mess with that partition
 //only really needed for WBFS partitions to prevent tring to write 2 games at the same time.
 //reading & writing at the same time by 2 different processes should be ok, but im not sure
-void GameWindow::SetPartitionEnabled( QString part, bool enabled )
+void GameWindow::SetPartitionEnabled( const QString &part, bool enabled )
 {
     qDebug() << "GameWindow::SetPartitionEnabled :" << part << enabled;
     for( int i = 0; i < partList.size(); i++ )
@@ -609,7 +611,7 @@ void GameWindow::SetPartitionEnabled( QString part, bool enabled )
 }
 
 //get status message and append it to the status bar
-void GameWindow::GetStatusTextFromWiimms( QString text )
+void GameWindow::GetStatusTextFromWiimms( const QString &text )
 {
     ui->statusbar->showMessage( text );
 }
@@ -627,7 +629,7 @@ void GameWindow::ClearTreeView()
 //insert text int the ui->plaintext
 //! s is the text
 //! c is a color
-void GameWindow::InsertText( QString s, QString c)
+void GameWindow::InsertText( const QString &s, const QString &c )
 {
     //copy the string so we can alter it and leave the original alone
     QString textCopy = s;

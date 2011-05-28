@@ -39,7 +39,7 @@ class GameWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit GameWindow(QWidget *parent = 0, QString game = QString(), QList<QTreeWidgetItem *> pList = QList<QTreeWidgetItem *>() );
+	explicit GameWindow(QWidget *parent = 0, const QString &game = QString(), const QList<QTreeWidgetItem *> &pList = QList<QTreeWidgetItem *>() );
     ~GameWindow();
 
     QStringList AvailableActions();//return a list of actions that are allowed to be performed on this game ( save, save as, etc )
@@ -75,12 +75,12 @@ private:
 
     bool writingToWBFS;//keep track of a WBFS partition if we are writing to it so we can enable it when done
     QString busyWBFSPath;
-    void SetPartitionEnabled( QString part, bool enabled );
+	void SetPartitionEnabled( const QString &part, bool enabled );
 
     QString dirtyPartition;//remember which partition we are writing to. on successful write, tell the main window that the gamelist needs to be reloaded
 
     void ClearTreeView();
-    void InsertText( QString s, QString c);
+	void InsertText( const QString &s, const QString &c );
 
 
 private slots:
@@ -88,13 +88,13 @@ private slots:
     void on_actionSave_As_triggered();
     void on_checkBox_id_clicked();
     void on_checkBox_title_clicked();
-    void LoadGame( QString path );
-    void ReceiveGameInfo( QString type, QString id, QString name, int ios, int region, QStringList files, QStringList partitionOffsets, bool fakesigned );
-    void HandleThreadErrors( QString err, int id );
+	void LoadGame( const QString &path );
+	void ReceiveGameInfo( const QString &type, const QString &id, const QString &name, int ios, int region, const QStringList &files, const QStringList &partitionOffsets, bool fakesigned );
+	void HandleThreadErrors( const QString &err, int id );
     void ThreadIsDoneRunning( QTreeWidgetItem *i );
     void NeedToAskForPassword();
     void HideProgressBar( int job );
-    void GetStatusTextFromWiimms( QString text );
+	void GetStatusTextFromWiimms( const QString &text );
     void ReloadGame();
 
 public slots:

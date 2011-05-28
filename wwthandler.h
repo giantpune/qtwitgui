@@ -51,7 +51,7 @@ public:
     bool Wait( int msecs = 30000 );
     void Kill();
 
-    void RunJob( QStringList args, int jobType );
+	void RunJob( QStringList args, int jobType );
 
     //static functions to mirror the ones in the WitHandler
     static bool ReadVersion();
@@ -74,12 +74,12 @@ private:
 
 signals:
     void KillProcess();
-    void SendFatalErr( QString, int );
+	void SendFatalErr( const QString &, int );
     //void SendStdErr( QString );
-    void SendStdOut( QString );
+	void SendStdOut( const QString & );
     void SendProgress( int );
-    void SendMessageForStatusBar( QString );
-    void SendPartitionList( QStringList );
+	void SendMessageForStatusBar( const QString & );
+	void SendPartitionList( const QStringList & );
     void RequestPassword();
     void SendJobDone( int );
 

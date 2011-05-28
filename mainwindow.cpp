@@ -52,7 +52,7 @@ void MainWindow::closeEvent( QCloseEvent * closeEvent )
     bool covers = pFlowIsOpen;
     bool logOpen = logIsOpen;
     foreach( QMdiSubWindow *window, list )
-	window->close();
+		window->close();
 
     wiiTDBisOpen = wiitdb;
     pFlowIsOpen = covers;
@@ -81,25 +81,28 @@ void MainWindow::CreateWiiTDBSubWindow()
     subWiiTDB->resize( settings.value( "wiitdb/size", QSize( 610, 375 ) ).toSize() );
 
 
-    connect( subWiiTDB, SIGNAL( AboutToClose( QString, QPoint, QSize, int ) ), this, SLOT( MdiItemDestroyed( QString, QPoint, QSize, int ) ) );
+	connect( subWiiTDB, SIGNAL( AboutToClose( const QString &, const QPoint &, const QSize &, int ) ),
+			 this, SLOT( MdiItemDestroyed( const QString &, const QPoint &, const QSize &, int ) ) );
 
     if( pFlowIsOpen )
-	connect( pFlow, SIGNAL( NewIDInFocus( QString ) ), wiiTDBwindow, SLOT( LoadGameFromID( QString ) ) );
+		connect( pFlow, SIGNAL( NewIDInFocus( const QString & ) ),
+				 wiiTDBwindow, SLOT( LoadGameFromID( const QString & ) ) );
 
     //connect the window to any open partitions
     foreach( QMdiSubWindow *window, ui->mdiArea->subWindowList() )
     {
-	CustomMdiItem *mdiChild = qobject_cast<CustomMdiItem *>( window );
-	if( mdiChild->type != mdiPartition )
-	    continue;
-	foreach( QTreeWidgetItem* item, partList )
-	{
-	    if( mdiChild->GetTitle() == item->text( 0 ) )
-	    {
-		PartitionWindow *w = qobject_cast<PartitionWindow *>( mdiChild->widget() );
-		connect( w, SIGNAL( GameClicked( QString ) ), wiiTDBwindow, SLOT( LoadGameFromID( QString ) ) );
-	    }
-	}
+		CustomMdiItem *mdiChild = qobject_cast<CustomMdiItem *>( window );
+		if( mdiChild->type != mdiPartition )
+			continue;
+		foreach( QTreeWidgetItem* item, partList )
+		{
+			if( mdiChild->GetTitle() == item->text( 0 ) )
+			{
+				PartitionWindow *w = qobject_cast<PartitionWindow *>( mdiChild->widget() );
+				connect( w, SIGNAL( GameClicked( const QString & ) ),
+						 wiiTDBwindow, SLOT( LoadGameFromID( const QString & ) ) );
+			}
+		}
     }
 }
 
@@ -127,14 +130,18 @@ void MainWindow::CreatePFlowSubWindow()
 
     //pf->setCenterIndex( pf->slideCount() / 2 );
 
-    connect( this, SIGNAL( SendListsToCoverManager( QMap<QString, QList<QTreeWidgetItem *> > ) ), \
-	     pFlow, SLOT( SetGameLists( QMap<QString, QList<QTreeWidgetItem *> > ) ) );
+	connect( this, SIGNAL( SendListsToCoverManager( const QMap<QString, QList<QTreeWidgetItem *> > & ) ), \
+			 pFlow, SLOT( SetGameLists( const QMap<QString, QList<QTreeWidgetItem *> > & ) ) );
+
     //connect( pf, SIGNAL( centerIndexChanged( int ) ), this, SLOT( UpdateInfoFromPFlow( int ) ) );
     if( wiiTDBisOpen )
-	connect( pFlow, SIGNAL( NewIDInFocus( QString ) ), wiiTDBwindow, SLOT( LoadGameFromID( QString ) ) );
+		connect( pFlow, SIGNAL( NewIDInFocus( const QString & ) ),
+				 wiiTDBwindow, SLOT( LoadGameFromID( const QString & ) ) );
 
-    connect( subPFlow, SIGNAL( AboutToClose( QString, QPoint, QSize, int ) ), this, SLOT( MdiItemDestroyed( QString, QPoint, QSize, int ) ) );
-    connect( this, SIGNAL( TellOpenWindowsThatTheSettingsAreChanged() ), pFlow, SLOT( ReloadSettings() ) );
+	connect( subPFlow, SIGNAL( AboutToClose( const QString &, const QPoint &, const QSize &, int ) ),
+			 this, SLOT( MdiItemDestroyed( const QString &, const QPoint &, const QSize &, int ) ) );
+	connect( this, SIGNAL( TellOpenWindowsThatTheSettingsAreChanged() ),
+			 pFlow, SLOT( ReloadSettings() ) );
 }
 
 //help->about
@@ -143,19 +150,19 @@ void MainWindow::on_actionAbout_triggered()
     QString thisProgVersion = "r" + QString( SVN_REV_STR ) + "  :  " + tr( "Built %1").arg( __DATE__ );
     QString witVers = WitHandler::GetVersionString();
     if( witVers.isEmpty() )
-	witVers = tr( "Missing" );
+		witVers = tr( "Missing" );
     else if( !WitHandler::VersionIsOk() )
-	witVers += "   " + tr( "Unsupported" );
+		witVers += "   " + tr( "Unsupported" );
 
     QString wwtVers = WwtHandler::GetVersionString();
     if( wwtVers.isEmpty() )
-	wwtVers = tr( "Missing" );
+		wwtVers = tr( "Missing" );
     else if( !WwtHandler::VersionIsOk() )
-	wwtVers += "   " + tr( "Unsupported" );
+		wwtVers += "   " + tr( "Unsupported" );
 
     QString wiitdbVers = wiiTDBwindow->GetVersion();
     if( wiitdbVers.length() < 10 )
-	wiitdbVers = tr( "Not Loaded" );
+		wiitdbVers = tr( "Not Loaded" );
 
     QString wiitdbGames = QString( "%1" ).arg( wiiTDBwindow->GameCount() );
     AboutDialog dialog( this, thisProgVersion, witVers, wwtVers,wiitdbVers, wiitdbGames );
@@ -170,10 +177,10 @@ void MainWindow::CheckWit()
     bool witOk = false;
     if( WitHandler::ReadVersion() )
     {
-	if( WitHandler::VersionIsOk() )
-	{
-	    if( WitHandler::ReadAttributes() )
-	    {
+		if( WitHandler::VersionIsOk() )
+		{
+			if( WitHandler::ReadAttributes() )
+			{
 #ifdef Q_WS_WIN
                 if( !FsInfo::Check() )
                 {
@@ -190,20 +197,20 @@ void MainWindow::CheckWit()
 #ifdef Q_WS_WIN
                 }
 #endif
-	    }
-	    else
-	    {
-		ui->statusBar->showMessage( tr( "Error reading \"wit info\"" ) );
-	    }
-	}
-	else
-	{
-	    ui->statusBar->showMessage( tr( "Wit version is too low" ) );
-	}
+			}
+			else
+			{
+				ui->statusBar->showMessage( tr( "Error reading \"wit info\"" ) );
+			}
+		}
+		else
+		{
+			ui->statusBar->showMessage( tr( "Wit version is too low" ) );
+		}
     }
     else
     {
-	ui->statusBar->showMessage( tr( "Error getting wit version" ) );
+		ui->statusBar->showMessage( tr( "Error getting wit version" ) );
     }
 
     WwtHandler::ReadVersion();//dont bother checking return value here, as wwt is not necessary for most of what this program does.
@@ -220,12 +227,12 @@ void MainWindow::LoadSettings()
     int version = settings.value( "settingsversion", 0 ).toInt();
     if( version != SETTINGS_VERSION )
     {
-	QMessageBox::critical( this, tr( "Settings Version" ),\
-			       tr( "The format of the settings file does not match what is expected by this version of %1.").arg( PROGRAM_NAME )\
-			       + "  " + tr( "Default settings will be used.") );
-	settings.remove( "" );
+		QMessageBox::critical( this, tr( "Settings Version" ),\
+							   tr( "The format of the settings file does not match what is expected by this version of %1.").arg( PROGRAM_NAME )\
+							   + "  " + tr( "Default settings will be used.") );
+		settings.remove( "" );
 
-	settings.setValue( "settingsversion", SETTINGS_VERSION );
+		settings.setValue( "settingsversion", SETTINGS_VERSION );
 
     }
 
@@ -237,25 +244,25 @@ void MainWindow::LoadSettings()
     wiiTDBisOpen = settings.value( "wiitdb/visible", false ).toBool();
     ui->actionWiiTDB->setChecked( wiiTDBisOpen );
     if( wiiTDBisOpen )
-	CreateWiiTDBSubWindow();
+		CreateWiiTDBSubWindow();
 
     pFlowIsOpen = settings.value( "pflow/visible", false ).toBool();
     ui->actionCovers->setChecked( pFlowIsOpen );
     if( pFlowIsOpen )
-	CreatePFlowSubWindow();
+		CreatePFlowSubWindow();
 
     logIsOpen = settings.value( "logwindow/visible", true ).toBool();
     ui->actionLog->setChecked( logIsOpen );
     if( logIsOpen )
-	ShowLogWindow();
+		ShowLogWindow();
 
 
     //read partition list and settings
 
     while( !partList.isEmpty() )//delete all known partitions from the list
     {
-	QTreeWidgetItem *item = partList.takeFirst();
-	delete item;
+		QTreeWidgetItem *item = partList.takeFirst();
+		delete item;
     }
 
     partList = ReadPartitionSettings();
@@ -298,18 +305,18 @@ void MainWindow::SaveSettings()
     settings.beginWriteArray("partitionOptions");
     for( int i = 0; i < size; i++ )
     {
-	QTreeWidgetItem* item = partList.at( i );
-	settings.setArrayIndex( i );
-	settings.setValue("path", item->text( 0 ) );
-	settings.setValue("split", item->text( 3 ) );
-	settings.setValue("source", item->text( 4 ) );
-	settings.setValue("filesystem", item->text( 5 ) );
+		QTreeWidgetItem* item = partList.at( i );
+		settings.setArrayIndex( i );
+		settings.setValue("path", item->text( 0 ) );
+		settings.setValue("split", item->text( 3 ) );
+		settings.setValue("source", item->text( 4 ) );
+		settings.setValue("filesystem", item->text( 5 ) );
     }
     settings.endArray();
 }
 
 //respond to items in the mdi being closed
-void MainWindow::MdiItemDestroyed( QString title, QPoint pos, QSize size, int type )
+void MainWindow::MdiItemDestroyed( const QString &title, const QPoint &pos, const QSize &size, int type )
 {
     //qDebug() << "MdiItemDestroyed()" << title << pos << size;
     bool max = size == QSize( 999, 999 );
@@ -317,62 +324,62 @@ void MainWindow::MdiItemDestroyed( QString title, QPoint pos, QSize size, int ty
     switch( type )
     {
     case mdiWiiTDB:
-	{
-	    if( !max )
-	    {
-		settings.setValue( "wiitdb/size", size );
-		settings.setValue( "wiitdb/pos", pos );
-	    }
-	    ui->actionWiiTDB->setChecked( false );
-	    wiiTDBisOpen = false;
-	    return;
-	}
-	break;
+		{
+			if( !max )
+			{
+				settings.setValue( "wiitdb/size", size );
+				settings.setValue( "wiitdb/pos", pos );
+			}
+			ui->actionWiiTDB->setChecked( false );
+			wiiTDBisOpen = false;
+			return;
+		}
+		break;
     case mdiCovers:
-	{
-	    if( !max )
-	    {
-		settings.setValue( "pflow/size", size );
-		settings.setValue( "pflow/pos", pos );
-	    }
-	    ui->actionCovers->setChecked( false );
-	    pFlowIsOpen = false;
-	    return;
-	}
-	break;
+		{
+			if( !max )
+			{
+				settings.setValue( "pflow/size", size );
+				settings.setValue( "pflow/pos", pos );
+			}
+			ui->actionCovers->setChecked( false );
+			pFlowIsOpen = false;
+			return;
+		}
+		break;
     case mdiPartition:
         {
             QString key = title;
-	    key.replace( "/", "__SLSH__" );
-	    settings.beginGroup( key );
-	    if( !max )
-	    {
-		settings.setValue( "size", size );
-		settings.setValue( "pos", pos );
-	    }
-	    settings.setValue( "maximized", max );
-	    settings.endGroup();
-	    settings.sync();
-	}
-	break;
+			key.replace( "/", "__SLSH__" );
+			settings.beginGroup( key );
+			if( !max )
+			{
+				settings.setValue( "size", size );
+				settings.setValue( "pos", pos );
+			}
+			settings.setValue( "maximized", max );
+			settings.endGroup();
+			settings.sync();
+		}
+		break;
     case mdiGame:
-	if( !max )
-	{
-	    settings.setValue( "gamewindow/size", size );
-	    settings.setValue( "gamewindow/pos", pos );
-	}
-	settings.setValue( "gamewindow/maximized", max );
-	break;
+		if( !max )
+		{
+			settings.setValue( "gamewindow/size", size );
+			settings.setValue( "gamewindow/pos", pos );
+		}
+		settings.setValue( "gamewindow/maximized", max );
+		break;
     case mdiLog:
-	if( !max )
-	{
-	    settings.setValue( "logwindow/size", size );
-	    settings.setValue( "logwindow/pos", pos );
-	}
-	settings.setValue( "logwindow/maximized", max );
-	logIsOpen = false;
-	ui->actionLog->setChecked( false );
-	break;
+		if( !max )
+		{
+			settings.setValue( "logwindow/size", size );
+			settings.setValue( "logwindow/pos", pos );
+		}
+		settings.setValue( "logwindow/maximized", max );
+		logIsOpen = false;
+		ui->actionLog->setChecked( false );
+		break;
     }
 
 }
@@ -385,9 +392,15 @@ void MainWindow::on_actionOpen_Partition_triggered()
     HDDSelectDialog dialog( this );
     dialog.AddPartitionsToList( partList );
 
-    connect( &dialog, SIGNAL( SendGamelistFor_1_Partition( QString, QList<QTreeWidgetItem *> ) ), this, SLOT( ReceiveListFor_1_Partition( QString, QList<QTreeWidgetItem *> ) ) );
-    connect( &dialog, SIGNAL( SendSelectedPartition( QList<QTreeWidgetItem *> ) ), this, SLOT( OpenSelectedPartitions( QList<QTreeWidgetItem *> ) ) );
-    connect( &dialog, SIGNAL( SendHDDList( QList<QTreeWidgetItem *> ) ), this, SLOT( ReceiveAllPartitionInfo( QList<QTreeWidgetItem *> ) ) );
+	connect( &dialog, SIGNAL( SendGamelistFor_1_Partition( const QString &, const QList<QTreeWidgetItem *> & ) ),
+			 this, SLOT( ReceiveListFor_1_Partition( const QString &, const QList<QTreeWidgetItem *> & ) ) );
+
+	connect( &dialog, SIGNAL( SendSelectedPartition( const QList<QTreeWidgetItem *> & ) ),
+			 this, SLOT( OpenSelectedPartitions( const QList<QTreeWidgetItem *> & ) ) );
+
+	connect( &dialog, SIGNAL( SendHDDList( const QList<QTreeWidgetItem *> & ) ),
+			 this, SLOT( ReceiveAllPartitionInfo( const QList<QTreeWidgetItem *> & ) ) );
+
     dialog.exec();
 }
 
@@ -397,23 +410,23 @@ void MainWindow::on_actionSettings_triggered()
     SettingsDialog dialog( this );
     if( dialog.exec() )
     {
-	//qDebug() << "mainwindow: settings changed";
+		//qDebug() << "mainwindow: settings changed";
 
-	//set the log colors
-	QPalette p = logWindow->palette();
-	QSettings s( settingsPath, QSettings::IniFormat );
-	s.beginGroup( "log" );
-	p.setColor( QPalette::Base, QColor( s.value( "bgColor", "#ffffff" ).toString() ) );
-	p.setColor( QPalette::Text, QColor( s.value( "txtColor", "#000000" ).toString() ) );
-	warningColor = s.value( "wrnColor", "#0000ff" ).toString();
-	criticalColor = s.value( "crtColor", "#ff0000" ).toString();
-	s.endGroup();
-	logWindow->setPalette( p );
+		//set the log colors
+		QPalette p = logWindow->palette();
+		QSettings s( settingsPath, QSettings::IniFormat );
+		s.beginGroup( "log" );
+		p.setColor( QPalette::Base, QColor( s.value( "bgColor", "#ffffff" ).toString() ) );
+		p.setColor( QPalette::Text, QColor( s.value( "txtColor", "#000000" ).toString() ) );
+		warningColor = s.value( "wrnColor", "#0000ff" ).toString();
+		criticalColor = s.value( "crtColor", "#ff0000" ).toString();
+		s.endGroup();
+		logWindow->setPalette( p );
 
-	//check that the external processes are working
-	CheckWit();
+		//check that the external processes are working
+		CheckWit();
 
-	emit TellOpenWindowsThatTheSettingsAreChanged();
+		emit TellOpenWindowsThatTheSettingsAreChanged();
     }
 }
 
@@ -423,7 +436,7 @@ void MainWindow::on_actionWiiTDB_triggered( bool checked )
     wiiTDBisOpen = checked;
     if( !checked )
     {
-	subWiiTDB->close();
+		subWiiTDB->close();
     }
     else CreateWiiTDBSubWindow();
 }
@@ -434,7 +447,7 @@ void MainWindow::on_actionCovers_triggered( bool checked )
     pFlowIsOpen = checked;
     if( !checked )
     {
-	subPFlow->close();
+		subPFlow->close();
     }
     else CreatePFlowSubWindow();
 }
@@ -445,11 +458,11 @@ void MainWindow::on_actionLog_triggered( bool checked )
     logIsOpen = checked;
     if( !checked )
     {
-	CustomMdiItem *found = findMdiChild( tr( "Log" ), mdiLog );
-	if( found )
-	{
-	    found->close();
-	}
+		CustomMdiItem *found = findMdiChild( tr( "Log" ), mdiLog );
+		if( found )
+		{
+			found->close();
+		}
     }
     else ShowLogWindow();
 }
@@ -459,9 +472,9 @@ void MainWindow::ShowLogWindow()
     CustomMdiItem *found = findMdiChild( tr( "Log" ), mdiLog );
     if( found )
     {
-	ui->mdiArea->setActiveSubWindow( found );
-	found->show();
-	return;
+		ui->mdiArea->setActiveSubWindow( found );
+		found->show();
+		return;
     }
 
     CustomMdiItem *mdiItem = new CustomMdiItem( ui->mdiArea, 0, tr( "Log" ), false );
@@ -473,47 +486,48 @@ void MainWindow::ShowLogWindow()
     mdiItem->move( settings.value( "logwindow/pos", QPoint( 0, 0 ) ).toPoint() );
     mdiItem->resize( settings.value( "logwindow/size", QSize( 610, 375 ) ).toSize() );
 
-    connect( mdiItem, SIGNAL( AboutToClose( QString, QPoint, QSize, int ) ), this, SLOT( MdiItemDestroyed( QString, QPoint, QSize, int ) ) );
+	connect( mdiItem, SIGNAL( AboutToClose( const QString &, const QPoint &, const QSize &, int ) ),
+			 this, SLOT( MdiItemDestroyed( const QString &, const QPoint &, const QSize &, int ) ) );
 }
 
 //respond to the signal containing a partition path and its gameList
-void MainWindow::ReceiveListFor_1_Partition( QString path, QList<QTreeWidgetItem *> list )
+void MainWindow::ReceiveListFor_1_Partition( const QString &path, const QList<QTreeWidgetItem *> &list )
 {
     qDebug() << "ReceiveListFor_1_Partition:" << path << list.size();
     //check if partition is already known
     QMap<QString, QList<QTreeWidgetItem *> >::iterator i = gameMap.find( path );
     if( i == gameMap.end() )
     {
-	gameMap.insert( path, list );//not known, just add this one
+		gameMap.insert( path, list );//not known, just add this one
     }
     else//partition is known
     {
-	while( !i.value().isEmpty() )//delete old gamelist
-	{
-	    QTreeWidgetItem *item = i.value().takeFirst();
-	    delete item;
-	}
-	i.value() = list;//set pointer to the new list
+		while( !i.value().isEmpty() )//delete old gamelist
+		{
+			QTreeWidgetItem *item = i.value().takeFirst();
+			delete item;
+		}
+		i.value() = list;//set pointer to the new list
     }
     emit SendListsToCoverManager( gameMap );
 }
 
 //get info about all partitions ( sent when partition selector window is closed )
-void MainWindow::ReceiveAllPartitionInfo( QList<QTreeWidgetItem *> list )
+void MainWindow::ReceiveAllPartitionInfo( const QList<QTreeWidgetItem *> &list )
 {
     //qDebug() << "got New List Of partitions:" << list.size();
     while( !partList.isEmpty() )//delete all known partitions from the list
     {
-	QTreeWidgetItem *item = partList.takeFirst();
-	//qDebug() << "deleting:" << item->text( 0 );
-	delete item;
+		QTreeWidgetItem *item = partList.takeFirst();
+		//qDebug() << "deleting:" << item->text( 0 );
+		delete item;
     }
     if( partList.size() )
     {
-	foreach( QTreeWidgetItem *item, partList )
-	{
-	    qDebug() << "MEM LEAK - not deleted:" << item->text( 0 );
-	}
+		foreach( QTreeWidgetItem *item, partList )
+		{
+			qDebug() << "MEM LEAK - not deleted:" << item->text( 0 );
+		}
     }
 #ifdef Q_WS_WIN
     int size = list.size();
@@ -533,22 +547,22 @@ void MainWindow::RecieveUpdatedPartitionInfo( QTreeWidgetItem *partInfo )
     //qDebug() << "MainWindow::RecieveUpdatedPartitionInfo" << partInfo->text( 0 ) << partInfo->text( 1 ) << partInfo->text( 2 ) ;
     int size = partList.size();
     if( !size )
-	partList << partInfo;
+		partList << partInfo;
     else
     {
-	QList<QTreeWidgetItem *> newList;
-	newList << partInfo->clone();
-	if( partList.size() )
-	{
-	    foreach( QTreeWidgetItem *item, partList )
-	    {
-		if( item->text( 0 ) == partInfo->text( 0 ) )
-		    continue;
+		QList<QTreeWidgetItem *> newList;
+		newList << partInfo->clone();
+		if( partList.size() )
+		{
+			foreach( QTreeWidgetItem *item, partList )
+			{
+				if( item->text( 0 ) == partInfo->text( 0 ) )
+					continue;
 
-		newList << item->clone();
-	    }
-	}
-	ReceiveAllPartitionInfo( newList );
+				newList << item->clone();
+			}
+		}
+		ReceiveAllPartitionInfo( newList );
     }
     //DisableEnablePartitionWindows();
 }
@@ -559,22 +573,22 @@ void MainWindow::DisableEnablePartitionWindows()
 {
     if( partList.size() )
     {
-	foreach( QTreeWidgetItem *item, partList )
-	{
-	    if( item->text( 5 ) == "WBFS" )
-	    {
-		bool busy = item->text( 6 ) == "busy";
-		CustomMdiItem *w = findMdiChild( item->text( 0 ), mdiPartition );
-		if( !w )
-		    continue;
-		w->widget()->setDisabled( busy );
-	    }
-	}
+		foreach( QTreeWidgetItem *item, partList )
+		{
+			if( item->text( 5 ) == "WBFS" )
+			{
+				bool busy = item->text( 6 ) == "busy";
+				CustomMdiItem *w = findMdiChild( item->text( 0 ), mdiPartition );
+				if( !w )
+					continue;
+				w->widget()->setDisabled( busy );
+			}
+		}
     }
 }
 
 //if a partition window tries list-lll and gets an error, it will trigger this
-void MainWindow::ReactToInvalidPartionReport( QString part )
+void MainWindow::ReactToInvalidPartionReport( const QString &part )
 {
     qDebug() << "MainWindow::ReactToInvalidPartionReport" << part;
     //remove it first from the list of partitions
@@ -582,10 +596,10 @@ void MainWindow::ReactToInvalidPartionReport( QString part )
     QList<QTreeWidgetItem *> newList;
     while( !partList.isEmpty() )
     {
-	QTreeWidgetItem *i = partList.takeFirst();
-	if( i->text( 0 ) == part )
-	    delete i;
-	else newList << i;
+		QTreeWidgetItem *i = partList.takeFirst();
+		if( i->text( 0 ) == part )
+			delete i;
+		else newList << i;
     }
     partList = newList;
     emit SendNewPartitionListToSubWindows( partList );//send the current list to the subwindows
@@ -594,16 +608,16 @@ void MainWindow::ReactToInvalidPartionReport( QString part )
     QMap<QString, QList<QTreeWidgetItem *> >::iterator i = gameMap.find( part );
     if( i == gameMap.end() )
     {
-	return;//not found, nothing to do
+		return;//not found, nothing to do
     }
     else//partition has a gamelist associated with it
     {
-	while( !i.value().isEmpty() )//delete old gamelist
-	{
-	    QTreeWidgetItem *item = i.value().takeFirst();
-	    delete item;
-	}
-	gameMap.remove( part );//remove key of this partition from the map
+		while( !i.value().isEmpty() )//delete old gamelist
+		{
+			QTreeWidgetItem *item = i.value().takeFirst();
+			delete item;
+		}
+		gameMap.remove( part );//remove key of this partition from the map
     }
 }
 
@@ -611,7 +625,7 @@ void MainWindow::ReactToInvalidPartionReport( QString part )
 void MainWindow::NeedToAskForPassword()
 {
     if( alreadyAskingForPassword )
-	return;
+		return;
 
     alreadyAskingForPassword = true;
     PasswordDialog dialog( this );
@@ -621,11 +635,11 @@ void MainWindow::NeedToAskForPassword()
 }
 
 //respond to signal to open some partitions
-void MainWindow::OpenSelectedPartitions( QList<QTreeWidgetItem *> list )
+void MainWindow::OpenSelectedPartitions( const QList<QTreeWidgetItem *> &list )
 {
     //qDebug() << "OpenSelectedPartitions" << list.size();
     if( !list.size() )
-	return;
+		return;
 
     foreach( QTreeWidgetItem *item, list )
     {
@@ -634,98 +648,119 @@ void MainWindow::OpenSelectedPartitions( QList<QTreeWidgetItem *> list )
 #endif
         CustomMdiItem *found = findMdiChild( item->text( 0 ), mdiPartition );
 
-	if( found )		    //partition is already open in a window.  just make this window active
-	{
-	    //qDebug() << item->text( 0 ) << "is already open";
-	    ui->mdiArea->setActiveSubWindow( found );
-	    continue;
-	}
+		if( found )		    //partition is already open in a window.  just make this window active
+		{
+			//qDebug() << item->text( 0 ) << "is already open";
+			ui->mdiArea->setActiveSubWindow( found );
+			continue;
+		}
 
-	QMap<QString, QList<QTreeWidgetItem *> >::iterator i = gameMap.find( item->text( 0 ) );
-	if( i == gameMap.end() )
-	{
-	    //qDebug() << " partition doesnt match:" << item->text( 0 );
-	    gameMap.insert( item->text( 0 ), QList<QTreeWidgetItem *>() );//not known, just add this one
-	    i = gameMap.find( item->text( 0 ) );
-	}
+		QMap<QString, QList<QTreeWidgetItem *> >::iterator i = gameMap.find( item->text( 0 ) );
+		if( i == gameMap.end() )
+		{
+			//qDebug() << " partition doesnt match:" << item->text( 0 );
+			gameMap.insert( item->text( 0 ), QList<QTreeWidgetItem *>() );//not known, just add this one
+			i = gameMap.find( item->text( 0 ) );
+		}
 
-	CustomMdiItem *mdiItem = new CustomMdiItem( ui->mdiArea );
-	mdiItem->type = mdiPartition;
-	mdiItem->setWindowTitle( item->text( 0 ) );
-	PartitionWindow * w = new PartitionWindow();
-	mdiItem->setWidget( w );
-	w->SetPartitionAndGameList( item, i.value() );
+		CustomMdiItem *mdiItem = new CustomMdiItem( ui->mdiArea );
+		mdiItem->type = mdiPartition;
+		mdiItem->setWindowTitle( item->text( 0 ) );
+		PartitionWindow * w = new PartitionWindow();
+		mdiItem->setWidget( w );
+		w->SetPartitionAndGameList( item, i.value() );
 
-	connect( this, SIGNAL( SendNewPartitionListToSubWindows( QList<QTreeWidgetItem *> ) ), w, SLOT( SetPartitionList( QList<QTreeWidgetItem *> ) ) );
-	connect( this, SIGNAL( TellOpenWindowsThatTheSettingsAreChanged() ), w, SLOT( SettingsHaveChanged() ) );
-	connect( w, SIGNAL( SendUpdatedPartitionInfo( QTreeWidgetItem * ) ), this, SLOT( RecieveUpdatedPartitionInfo( QTreeWidgetItem * ) ) );
-	connect( w, SIGNAL( PartitionIsDirty( QString ) ), this, SLOT( ReceiveDirtyPartition( QString ) ) );
-	connect( w, SIGNAL( ReportInvalidPartition( QString ) ), this, SLOT( ReactToInvalidPartionReport( QString ) ) );
-	connect( this, SIGNAL( UserEnteredPassword() ), w, SLOT( GetPasswordFromMainWindow() ) );
-	connect( w, SIGNAL( AskMainWindowForPassword() ), this, SLOT( NeedToAskForPassword() ) );
-	connect( w, SIGNAL( BrowseGames( QStringList ) ), this, SLOT( OpenGames( QStringList ) ) );
-	connect( w, SIGNAL( SendGamelistFor_1_Partition( QString, QList<QTreeWidgetItem *> ) ), this, SLOT( ReceiveListFor_1_Partition( QString, QList<QTreeWidgetItem *> ) ) );
-	connect( mdiItem, SIGNAL( AboutToClose( QString, QPoint, QSize, int ) ), this, SLOT( MdiItemDestroyed( QString, QPoint, QSize, int ) ) );
+		connect( this, SIGNAL( SendNewPartitionListToSubWindows( const QList<QTreeWidgetItem *> & ) ),
+				 w, SLOT( SetPartitionList( const QList<QTreeWidgetItem *> & ) ) );
 
-	if( findMdiChild( "WiiTDB", mdiWiiTDB ) )
-	    connect( w, SIGNAL( GameClicked( QString ) ), wiiTDBwindow, SLOT( LoadGameFromID( QString ) ) );
+		connect( this, SIGNAL( TellOpenWindowsThatTheSettingsAreChanged() ), w, SLOT( SettingsHaveChanged() ) );
 
-	//mdiItem->show();
+		connect( w, SIGNAL( SendUpdatedPartitionInfo( QTreeWidgetItem * ) ),
+				 this, SLOT( RecieveUpdatedPartitionInfo( QTreeWidgetItem * ) ) );
+
+		connect( w, SIGNAL( PartitionIsDirty( const QString &) ),
+				 this, SLOT( ReceiveDirtyPartition( const QString &) ) );
+
+		connect( w, SIGNAL( ReportInvalidPartition( const QString & ) ),
+				 this, SLOT( ReactToInvalidPartionReport( const QString & ) ) );
+
+		connect( this, SIGNAL( UserEnteredPassword() ), w, SLOT( GetPasswordFromMainWindow() ) );
+		connect( w, SIGNAL( AskMainWindowForPassword() ), this, SLOT( NeedToAskForPassword() ) );
+
+		connect( w, SIGNAL( BrowseGames( const QStringList & ) ), this, SLOT( OpenGames( const QStringList & ) ) );
+
+		connect( w, SIGNAL( SendGamelistFor_1_Partition( const QString &, const QList<QTreeWidgetItem *> & ) ),
+				 this, SLOT( ReceiveListFor_1_Partition( const QString &, const QList<QTreeWidgetItem *> & ) ) );
+
+		connect( mdiItem, SIGNAL( AboutToClose( const QString &, const QPoint &, const QSize &, int ) ),
+				 this, SLOT( MdiItemDestroyed( const QString &, const QPoint &, const QSize &, int ) ) );
+
+		if( findMdiChild( "WiiTDB", mdiWiiTDB ) )
+			connect( w, SIGNAL( GameClicked( const QString & ) ), wiiTDBwindow, SLOT( LoadGameFromID( const QString & ) ) );
+
+		//mdiItem->show();
 #ifdef Q_WS_WIN
         QString key = RemoveDriveLetter( item->text( 0 ) );
 #else
         QString key = item->text( 0 );
 #endif
-	key.replace( "/", "__SLSH__" );
+		key.replace( "/", "__SLSH__" );
 
-	QSettings settings( settingsPath, QSettings::IniFormat );
-	settings.beginGroup( key );
-	bool max = settings.value( "maximized", false ).toBool();
-	if( !max )
-	    mdiItem->show();
-	mdiItem->resize( settings.value( "size", QSize( 745, 425 ) ).toSize() );
-	mdiItem->move( settings.value( "pos", QPoint( 0, 0 ) ).toPoint() );
-	if( max )
-	    mdiItem->showMaximized();
+		QSettings settings( settingsPath, QSettings::IniFormat );
+		settings.beginGroup( key );
+		bool max = settings.value( "maximized", false ).toBool();
+		if( !max )
+			mdiItem->show();
+		mdiItem->resize( settings.value( "size", QSize( 745, 425 ) ).toSize() );
+		mdiItem->move( settings.value( "pos", QPoint( 0, 0 ) ).toPoint() );
+		if( max )
+			mdiItem->showMaximized();
 
-	settings.endGroup();
+		settings.endGroup();
     }
 }
 
 //respond to request to open games in a browser
-void MainWindow::OpenGames( QStringList games )
+void MainWindow::OpenGames( const QStringList &games )
 {
-//    qDebug() << "MainWindow::OpenGames" << games;
+	//    qDebug() << "MainWindow::OpenGames" << games;
     for( int i = 0; i < games.size(); i++ )
     {
-	CustomMdiItem *mdiItem = new CustomMdiItem( ui->mdiArea );
-	mdiItem->type = mdiGame;
-	mdiItem->setWindowTitle( games.at( i ) );
-	GameWindow *w = new GameWindow( this, games.at( i ), partList );
-	mdiItem->setWidget( w );
+		CustomMdiItem *mdiItem = new CustomMdiItem( ui->mdiArea );
+		mdiItem->type = mdiGame;
+		mdiItem->setWindowTitle( games.at( i ) );
+		GameWindow *w = new GameWindow( this, games.at( i ), partList );
+		mdiItem->setWidget( w );
 
 
 
-	connect( this, SIGNAL( SendNewPartitionListToSubWindows( QList<QTreeWidgetItem *> ) ), w, SLOT( SetPartitionList( QList<QTreeWidgetItem *> ) ) );
-	connect( mdiItem, SIGNAL( AboutToClose( QString, QPoint, QSize, int ) ), this, SLOT( MdiItemDestroyed( QString, QPoint, QSize, int ) ) );
-	connect( this, SIGNAL( UserEnteredPassword() ), w, SLOT( GetPasswordFromMainWindow() ) );
-	connect( w, SIGNAL( AskMainWindowForPassword() ), this, SLOT( NeedToAskForPassword() ) );
-	connect( w, SIGNAL( SendUpdatedPartitionInfo( QTreeWidgetItem * ) ), this, SLOT( RecieveUpdatedPartitionInfo( QTreeWidgetItem * ) ) );
-	connect( w, SIGNAL( PartitionIsDirty( QString ) ), this, SLOT( ReceiveDirtyPartition( QString ) ) );
-	//mdiItem->show();
+		connect( this, SIGNAL( SendNewPartitionListToSubWindows( const QList<QTreeWidgetItem *> & ) ),
+				 w, SLOT( SetPartitionList( const QList<QTreeWidgetItem *> & ) ) );
 
-	QSettings settings( settingsPath, QSettings::IniFormat );
-	settings.beginGroup( "gamewindow" );
-	bool max = settings.value( "maximized", false ).toBool();
-	if( !max )
-	    mdiItem->show();
-	mdiItem->resize( settings.value( "size", QSize( 745, 425 ) ).toSize() );
-	mdiItem->move( settings.value( "pos", QPoint( 0, 0 ) ).toPoint() );
-	if( max )
-	    mdiItem->showMaximized();
+		connect( mdiItem, SIGNAL( AboutToClose( const QString &, const QPoint &, const QSize &, int ) ),
+				 this, SLOT( MdiItemDestroyed( const QString &, const QPoint &, const QSize &, int ) ) );
+
+		connect( this, SIGNAL( UserEnteredPassword() ), w, SLOT( GetPasswordFromMainWindow() ) );
+		connect( w, SIGNAL( AskMainWindowForPassword() ), this, SLOT( NeedToAskForPassword() ) );
+
+		connect( w, SIGNAL( SendUpdatedPartitionInfo( QTreeWidgetItem * ) ),
+				 this, SLOT( RecieveUpdatedPartitionInfo( QTreeWidgetItem * ) ) );
+
+		connect( w, SIGNAL( PartitionIsDirty( const QString & ) ), this, SLOT( ReceiveDirtyPartition( const QString & ) ) );
+		//mdiItem->show();
+
+		QSettings settings( settingsPath, QSettings::IniFormat );
+		settings.beginGroup( "gamewindow" );
+		bool max = settings.value( "maximized", false ).toBool();
+		if( !max )
+			mdiItem->show();
+		mdiItem->resize( settings.value( "size", QSize( 745, 425 ) ).toSize() );
+		mdiItem->move( settings.value( "pos", QPoint( 0, 0 ) ).toPoint() );
+		if( max )
+			mdiItem->showMaximized();
 
 
-	settings.endGroup();
+		settings.endGroup();
     }
 }
 
@@ -757,8 +792,8 @@ void MainWindow::on_actionTest_triggered()
     int size = partList.size();
     for( int i = 0; i < size; i++ )
     {
-	QTreeWidgetItem *item = partList.at( i );
-	qDebug() << item->text( 0 ) << item->text( 1 ) << item->text( 2 ) << item->text( 3 );
+		QTreeWidgetItem *item = partList.at( i );
+		qDebug() << item->text( 0 ) << item->text( 1 ) << item->text( 2 ) << item->text( 3 );
     }
     /*qDebug() << "open mdiwindows:";
     foreach( QMdiSubWindow *window, ui->mdiArea->subWindowList() )
@@ -773,22 +808,22 @@ CustomMdiItem *MainWindow::findMdiChild( const QString &name, int type )
 {
     foreach( QMdiSubWindow *window, ui->mdiArea->subWindowList() )
     {
-	CustomMdiItem *mdiChild = qobject_cast<CustomMdiItem *>( window );
-	if( mdiChild->type != type && type != mdiAny )
-	    continue;
-	if( mdiChild->GetTitle() == name )
-	    return mdiChild;
+		CustomMdiItem *mdiChild = qobject_cast<CustomMdiItem *>( window );
+		if( mdiChild->type != type && type != mdiAny )
+			continue;
+		if( mdiChild->GetTitle() == name )
+			return mdiChild;
     }
     return 0;
 }
 
 //get a message that a parttion needs to be reloaded ( from a different window ) and request for that partition to refresh its gamelist
-void MainWindow::ReceiveDirtyPartition( QString part )
+void MainWindow::ReceiveDirtyPartition( const QString &part )
 {
     qDebug() << "MainWindow::ReceiveDirtyPartition(" << part << ")";
     CustomMdiItem *subW = findMdiChild( part, mdiPartition );
     if( !subW )
-	return;
+		return;
 
     PartitionWindow *w = qobject_cast<PartitionWindow *>( subW->widget() );
     QTimer::singleShot( 0, w, SLOT( on_actionRefresh_List_triggered() ) );
@@ -802,17 +837,17 @@ QList<QTreeWidgetItem *> MainWindow::ReadPartitionSettings()
     int size = settings.beginReadArray( "partitionOptions" );
     for( int i = 0; i < size; i++ )
     {
-	 settings.setArrayIndex( i );
-	 QString path = settings.value( "path" ).toString();
-	 if( !QFile::exists( path ) )//dont add partitions that dont exist any more
-	     continue;
-	 QTreeWidgetItem *item = new QTreeWidgetItem;
-	 item->setText( 0, path );
-	 item->setText( 3, settings.value( "split" ).toString() );
-	 item->setText( 4, settings.value( "source" ).toString() );
-	 item->setText( 5, settings.value( "filesystem" ).toString() );
+		settings.setArrayIndex( i );
+		QString path = settings.value( "path" ).toString();
+		if( !QFile::exists( path ) )//dont add partitions that dont exist any more
+			continue;
+		QTreeWidgetItem *item = new QTreeWidgetItem;
+		item->setText( 0, path );
+		item->setText( 3, settings.value( "split" ).toString() );
+		item->setText( 4, settings.value( "source" ).toString() );
+		item->setText( 5, settings.value( "filesystem" ).toString() );
 
-	 ret << item;
+		ret << item;
     }
     settings.endArray();
 
@@ -830,7 +865,7 @@ void MainWindow::on_actionOpenGame_triggered()
 #endif
 
     if ( !dialog.exec() )
-	return;
+		return;
 
     QStringList games = dialog.selectedFiles();
 
@@ -844,61 +879,61 @@ void MainWindow::dropEvent( QDropEvent *event )
     int size = event->mimeData()->urls().size();
     if( !size )
     {
-	event->ignore();
-	return;
+		event->ignore();
+		return;
     }
 
     QStringList urls;
     foreach( QUrl url, event->mimeData()->urls() )
-	urls << url.toLocalFile();
+		urls << url.toLocalFile();
 
     QStringList types = WitHandler::FileType( urls );
     if( types.size() != urls.size() )
     {
         qDebug() << "MainWindow::dropEvent: wrong size" << types.size() << urls.size();
-	event->ignore();
-	return;
+		event->ignore();
+		return;
     }
     int cnt = types.size();
     for( int i = 0; i < cnt; i++ )
     {
-	if( types.at( i ) == "OTHER" || types.at( i ) == "NO-FILE" )//do nothing
-	    continue;
+		if( types.at( i ) == "OTHER" || types.at( i ) == "NO-FILE" )//do nothing
+			continue;
 
-	if( types.at( i ) == "DIR" )//folder.  expect that it is a partition.  an extracted GC game will throw a false positive here as composing them is not supported
-	{
-	    int pcnt = partList.size();
-	    bool found = false;
-	    for( int j = 0; j < pcnt  && !found; j++ )
-	    {
-		if( partList.at( j )->text( 0 ) == urls.at( i ) )//do we already know this partition
+		if( types.at( i ) == "DIR" )//folder.  expect that it is a partition.  an extracted GC game will throw a false positive here as composing them is not supported
 		{
-		    OpenSelectedPartitions( QList<QTreeWidgetItem *>() << partList.at( j ) );
-		    found = true;
-		}
-	    }
-	    //partition not known, add it to the list and open it
-	    QTreeWidgetItem *newPart = new QTreeWidgetItem;
-	    newPart->setText( 0, urls.at( i ) );
-	    partList << newPart;
-	    OpenSelectedPartitions( QList<QTreeWidgetItem *>() << newPart );
+			int pcnt = partList.size();
+			bool found = false;
+			for( int j = 0; j < pcnt  && !found; j++ )
+			{
+				if( partList.at( j )->text( 0 ) == urls.at( i ) )//do we already know this partition
+				{
+					OpenSelectedPartitions( QList<QTreeWidgetItem *>() << partList.at( j ) );
+					found = true;
+				}
+			}
+			//partition not known, add it to the list and open it
+			QTreeWidgetItem *newPart = new QTreeWidgetItem;
+			newPart->setText( 0, urls.at( i ) );
+			partList << newPart;
+			OpenSelectedPartitions( QList<QTreeWidgetItem *>() << newPart );
 
-	    continue;
-	}
-	if( types.at( i ).contains( "/WII" ) || types.at( i ).contains( "/GC" ) )
-	{
-	    //must be a game
-	    CustomMdiItem *w = findMdiChild( urls.at( i ), mdiGame );
-	    if( w )		    //game is already open in a window.  just make this window active
-	    {
-		ui->mdiArea->setActiveSubWindow( w );
-		continue;
-	    }
-	    OpenGames( QStringList() << urls.at( i ) );
-	    continue;
-	}
-	else
-	    qDebug() << "unhandled wit filetype:" << types.at( i );
+			continue;
+		}
+		if( types.at( i ).contains( "/WII" ) || types.at( i ).contains( "/GC" ) )
+		{
+			//must be a game
+			CustomMdiItem *w = findMdiChild( urls.at( i ), mdiGame );
+			if( w )		    //game is already open in a window.  just make this window active
+			{
+				ui->mdiArea->setActiveSubWindow( w );
+				continue;
+			}
+			OpenGames( QStringList() << urls.at( i ) );
+			continue;
+		}
+		else
+			qDebug() << "unhandled wit filetype:" << types.at( i );
 
     }
 }
@@ -908,11 +943,11 @@ void MainWindow::dragEnterEvent( QDragEnterEvent *event )
 {
     if( event->mimeData()->hasUrls() )
     {
-	event->acceptProposedAction();
+		event->acceptProposedAction();
     }
     else
     {
-	event->ignore();
+		event->ignore();
     }
 }
 
@@ -925,21 +960,21 @@ void MainWindow::on_menuFile_aboutToShow()
     switch( type )
     {
     case mdiGame:
-	{
-	    CustomMdiItem *subW = CurrentMdiSubWindow();
-	    GameWindow *gw = qobject_cast<GameWindow *>( subW->widget() );
-	    QStringList actions = gw->AvailableActions();
+		{
+			CustomMdiItem *subW = CurrentMdiSubWindow();
+			GameWindow *gw = qobject_cast<GameWindow *>( subW->widget() );
+			QStringList actions = gw->AvailableActions();
 
-	    ui->actionSave->setEnabled( actions.contains( "save" ) );
-	    ui->actionSave_As->setEnabled( actions.contains( "save as" ) );
-	}
+			ui->actionSave->setEnabled( actions.contains( "save" ) );
+			ui->actionSave_As->setEnabled( actions.contains( "save as" ) );
+		}
 
-	break;
+		break;
     default:
-	ui->actionSave->setEnabled( false );
-	ui->actionSave_As->setEnabled( false );
-	//qDebug() << "mdi:" << type;
-	break;
+		ui->actionSave->setEnabled( false );
+		ui->actionSave_As->setEnabled( false );
+		//qDebug() << "mdi:" << type;
+		break;
     }
 
 }
@@ -954,12 +989,12 @@ void MainWindow::on_menuView_aboutToShow()
     case mdiGame:
     case mdiPartition:
     case mdiCovers:
-	{
-	    canRefresh = true;
-	}
-	break;
+		{
+			canRefresh = true;
+		}
+		break;
     default:
-	break;
+		break;
     }
     ui->actionRefresh_Current_Window->setEnabled( canRefresh );
 }
@@ -969,7 +1004,7 @@ int MainWindow::CurrentMidSubwindowType()
 {
     QMdiSubWindow *subW = ui->mdiArea->activeSubWindow();
     if( !subW )
-	return mdiNone;
+		return mdiNone;
 
     CustomMdiItem *custom = qobject_cast<CustomMdiItem *>( subW );
     return custom->type;
@@ -979,7 +1014,7 @@ CustomMdiItem *MainWindow::CurrentMdiSubWindow()
 {
     QMdiSubWindow *subW = ui->mdiArea->activeSubWindow();
     if( !subW )
-	return 0;
+		return 0;
 
     CustomMdiItem *custom = qobject_cast<CustomMdiItem *>( subW );
     return custom;
@@ -990,7 +1025,7 @@ void MainWindow::on_actionSave_triggered()
 {
     CustomMdiItem *subW = CurrentMdiSubWindow();
     if( !subW || subW->type != mdiGame )
-	return;
+		return;
 
     GameWindow *gw = qobject_cast<GameWindow *>( subW->widget() );
     QTimer::singleShot( 0, gw, SLOT( on_actionSave_triggered() ) );
@@ -1001,7 +1036,7 @@ void MainWindow::on_actionSave_As_triggered()
 {
     CustomMdiItem *subW = CurrentMdiSubWindow();
     if( !subW || subW->type != mdiGame )
-	return;
+		return;
 
     GameWindow *gw = qobject_cast<GameWindow *>( subW->widget() );
     QTimer::singleShot( 0, gw, SLOT( on_actionSave_As_triggered() ) );
@@ -1012,30 +1047,30 @@ void MainWindow::on_actionRefresh_Current_Window_triggered()
 {
     CustomMdiItem *subW = CurrentMdiSubWindow();
     if( !subW )
-	return;
+		return;
 
     switch( subW->type )
     {
     case mdiPartition:
-	{
-	    PartitionWindow *w = qobject_cast<PartitionWindow *>( subW->widget() );
-	    QTimer::singleShot( 0, w, SLOT( on_actionRefresh_List_triggered() ) );
-	}
-	break;
+		{
+			PartitionWindow *w = qobject_cast<PartitionWindow *>( subW->widget() );
+			QTimer::singleShot( 0, w, SLOT( on_actionRefresh_List_triggered() ) );
+		}
+		break;
     case mdiGame:
-	{
-	    GameWindow *w = qobject_cast<GameWindow *>( subW->widget() );
-	    QTimer::singleShot( 0, w, SLOT( ReloadGame() ) );
-	}
-	break;
+		{
+			GameWindow *w = qobject_cast<GameWindow *>( subW->widget() );
+			QTimer::singleShot( 0, w, SLOT( ReloadGame() ) );
+		}
+		break;
     case mdiCovers:
-	{
-	    CoverManagerWindow *w = qobject_cast<CoverManagerWindow *>( subW->widget() );
-	    QTimer::singleShot( 0, w, SLOT( Refresh() ) );
-	}
-	break;
+		{
+			CoverManagerWindow *w = qobject_cast<CoverManagerWindow *>( subW->widget() );
+			QTimer::singleShot( 0, w, SLOT( Refresh() ) );
+		}
+		break;
     default://other window types not supported by "refresh"
-	break;
+		break;
     }
 }
 
