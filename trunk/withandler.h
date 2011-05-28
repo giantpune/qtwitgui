@@ -61,7 +61,7 @@ public:
     void Kill();
 
 
-    void RunJob( QStringList args, int jobType );
+	void RunJob( QStringList args, int jobType );
 
     //static functions are blocking, and will halt the current thread until the process finishes
     //static functions dont respect the "root" settings
@@ -96,17 +96,18 @@ private:
 
 signals:
     void KillProcess();
-    void SendFatalErr( QString, int );
-    void SendStdErr( QString );
-    void SendStdOut( QString );
+	void SendFatalErr( const QString &, int );
+	void SendStdErr( const QString & );
+	void SendStdOut( const QString & );
     void SendProgress( int );
     void RequestPassword();
     void SendJobDone( int );//sent when done copying & editing.  not sent ofter every joy ( yet )
-    void SendMessageForStatusBar( QString );
+	void SendMessageForStatusBar( const QString & );
 
-    void SendListLLL( QList<QTreeWidgetItem *> games, QString MibUsed );
+	void SendListLLL( const QList<QTreeWidgetItem *> &games, const QString &MibUsed );
 
-    void SendGameInfo( QString type, QString id, QString name, int ios, int region, QStringList files, QStringList partitionOffsets, bool fakesigned );
+	void SendGameInfo( const QString &type, const QString &id, const QString &name, int ios, int region, const QStringList &files,
+					   const QStringList &partitionOffsets, bool fakesigned );
 
 public slots:
     void PasswordIsEntered();

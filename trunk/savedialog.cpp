@@ -2,8 +2,8 @@
 #include "ui_savedialog.h"
 #include "tools.h"
 
-SaveDialog::SaveDialog( QWidget *parent, const QString boldText, const QString lightText, const QString details
-			, const QString saveText, const QString cancelText, bool showCancel ) : QDialog(parent), ui(new Ui::SaveDialog)
+SaveDialog::SaveDialog( QWidget *parent, const QString &boldText, const QString &lightText, const QString &details
+			, const QString &saveText, const QString &cancelText, bool showCancel ) : QDialog( parent ), ui(new Ui::SaveDialog)
 {
     ui->setupUi(this);
     setWindowTitle( PROGRAM_NAME );

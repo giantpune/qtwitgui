@@ -39,7 +39,7 @@ public:
     explicit HDDSelectDialog(QWidget *parent = 0);
     ~HDDSelectDialog();
 
-    void AddPartitionsToList( QList<QTreeWidgetItem *> list );
+	void AddPartitionsToList( const QList<QTreeWidgetItem *> &list );
 
 private:
     Ui::HDDSelectDialog *ui;
@@ -50,7 +50,7 @@ private:
 
     bool alreadyAskingForPassword;
 
-    void AddNewPartitionToList( QString path, QString source = QString() );
+	void AddNewPartitionToList( const QString &path, const QString &source = QString() );
     QTreeWidgetItem *PartitionBeingRead();
 
     void DestroyProcessesAndWait();
@@ -63,17 +63,17 @@ private:
 
 public slots:
     void accept();
-    void HandleWiimmsErrors( QString err, int id );
-    void GetWBFSPartitionList( QStringList list );
-    void GetPartitionInfo( QList<QTreeWidgetItem *> games, QString MibUsed );
+	void HandleWiimmsErrors( const QString &err, int id );
+	void GetWBFSPartitionList( const QStringList &list );
+	void GetPartitionInfo( const QList<QTreeWidgetItem *> &games, const QString &MibUsed );
 #ifndef Q_WS_WIN
     void NeedToAskForPassword();
 #endif
 
 signals:
-    void SendHDDList( QList<QTreeWidgetItem *> );//send all hdds
-    void SendSelectedPartition( QList<QTreeWidgetItem *> );//send selected hdds
-    void SendGamelistFor_1_Partition( QString, QList<QTreeWidgetItem *> );
+	void SendHDDList( const QList<QTreeWidgetItem *> & );//send all hdds
+	void SendSelectedPartition( const QList<QTreeWidgetItem *> &);//send selected hdds
+	void SendGamelistFor_1_Partition( const QString &, const QList<QTreeWidgetItem *> & );
 #ifndef Q_WS_WIN
     void UserEnteredPassword();
 #endif

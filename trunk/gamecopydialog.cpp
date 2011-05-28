@@ -5,7 +5,8 @@
 #include "tools.h"
 #include "withandler.h"
 
-GameCopyDialog::GameCopyDialog( QWidget *parent, QList<QTreeWidgetItem *> partitions, QStringList games, QString current, QStringList patchArgs ) : QDialog(parent), ui(new Ui::GameCopyDialog)
+GameCopyDialog::GameCopyDialog( QWidget *parent, const QList<QTreeWidgetItem *> &partitions, const QStringList &games,
+								const QString &current, const QStringList &patchArgs ) : QDialog(parent), ui(new Ui::GameCopyDialog)
 {
     //qDebug() << "GameCopyDialog" << games;
     ui->setupUi(this);
@@ -50,7 +51,8 @@ GameCopyDialog::~GameCopyDialog()
     delete ui;
 }
 
-QStringList GameCopyDialog::WitCopyCommand( QWidget *parent, QString currentPartition, QList<QTreeWidgetItem *> partitions, QStringList games, QStringList patchArgs )
+QStringList GameCopyDialog::WitCopyCommand( QWidget *parent, const QString &currentPartition, const QList<QTreeWidgetItem *> &partitions,
+											const QStringList &games, const QStringList &patchArgs )
 {
     GameCopyDialog d( parent, partitions, games, currentPartition, patchArgs );
     if( d.exec() )
@@ -61,7 +63,7 @@ QStringList GameCopyDialog::WitCopyCommand( QWidget *parent, QString currentPart
 
 
 //different partition selected
-void GameCopyDialog::on_comboBox_dest_currentIndexChanged( QString part )
+void GameCopyDialog::on_comboBox_dest_currentIndexChanged( const QString &part )
 {
     Q_UNUSED( part );
     //bool other = part == tr( "Other" );
@@ -244,7 +246,7 @@ void GameCopyDialog::on_checkBox_partitionisWBFS_clicked( bool )
     UpdateGuiWithCurrentSettings( true );
 }
 
-void GameCopyDialog::on_comboBox_esc_currentIndexChanged( QString )
+void GameCopyDialog::on_comboBox_esc_currentIndexChanged( const QString & )
 {
     UpdateGuiWithCurrentSettings( true );
 }
@@ -542,7 +544,7 @@ void GameCopyDialog::on_pushButton_destOther_clicked()
     }
 }
 
-void GameCopyDialog::on_lineEdit_destOther_textChanged(QString )
+void GameCopyDialog::on_lineEdit_destOther_textChanged( const QString & )
 {
     UpdateGuiWithCurrentSettings();
 }

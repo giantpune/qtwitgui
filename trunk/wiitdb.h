@@ -82,21 +82,21 @@ private:
     void ClearGame();
     //returns localized strings if they exist.
     //they expect the "<game>" element
-    QString NameFromGameElement( QDomElement parent );
-    QString SynopsisFromGameElement( QDomElement parent, const QString &locale = QString() );
-    QString TypeFromGameElement( QDomElement parent );
-    QString RegionFromGameElement( QDomElement parent );
-    QString LanguagesFromGameElement( QDomElement parent );
-    QString DeveloperFromGameElement( QDomElement parent );
-    QString PublisherFromGameElement( QDomElement parent );
-    QDate DateFromGameElement( QDomElement parent );
-    QString GenreFromGameElement( QDomElement parent );
-    QString RatingValueFromGameElement( QDomElement parent );
-    QString RatingTypeFromGameElement( QDomElement parent );
-    int WifiPlayersGameElement( QDomElement parent );
-    QString WifiFeaturesFromGameElement( QDomElement parent );
-    int InputPlayersFromGameElement( QDomElement parent );
-    QMap<QString, bool> InputControllersFromGameElement( QDomElement parent );
+	QString NameFromGameElement( const QDomElement &parent );
+	QString SynopsisFromGameElement( const QDomElement &parent, const QString &locale = QString() );
+	QString TypeFromGameElement( const QDomElement &parent );
+	QString RegionFromGameElement( const QDomElement &parent );
+	QString LanguagesFromGameElement( const QDomElement &parent );
+	QString DeveloperFromGameElement( const QDomElement &parent );
+	QString PublisherFromGameElement( const QDomElement &parent );
+	QDate DateFromGameElement( const QDomElement &parent );
+	QString GenreFromGameElement( const QDomElement &parent );
+	QString RatingValueFromGameElement( const QDomElement &parent );
+	QString RatingTypeFromGameElement( const QDomElement &parent );
+	int WifiPlayersGameElement( const QDomElement &parent );
+	QString WifiFeaturesFromGameElement( const QDomElement &parent );
+	int InputPlayersFromGameElement( const QDomElement &parent );
+	QMap<QString, bool> InputControllersFromGameElement( const QDomElement &parent );
 
     //check if text matches a qregex
     bool CheckRegEx( const QString &text, const QRegExp &rx );
@@ -105,14 +105,14 @@ private:
     bool CheckPlayerRule( int num, int cmpType, int cmpval );
 
     //check of a game's accessory tag falls inside a set of rules
-    bool CheckAccessories( QMap<QString, bool>tag, const QStringList &acc, const QStringList &accReq );
+	bool CheckAccessories( const QMap<QString, bool> &tag, const QStringList &acc, const QStringList &accReq );
 
     //check if a game's rating falls inside a set of rules
     bool CheckRating( const QString &testType, const QString &testVal, int oper, const QString &cmpType, const QString &cmpVal );
     QString ConvertRating( const QString &fromType, const QString &fromVal, const QString &toType );
 
 signals:
-    void SendError( QString title, QString detials );
+	void SendError( const QString &title, const QString &detials );
 
 public slots:
 

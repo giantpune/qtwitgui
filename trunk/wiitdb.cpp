@@ -276,7 +276,7 @@ QString WiiTDB::NameFromID( const QString &id )
 }
 
 //find shit from the game element
-QString WiiTDB::NameFromGameElement( QDomElement parent )
+QString WiiTDB::NameFromGameElement( const QDomElement &parent )
 {
     QDomElement localeElement = parent.firstChildElement( "locale" );
     while( !localeElement.isNull() )
@@ -297,7 +297,8 @@ QString WiiTDB::NameFromGameElement( QDomElement parent )
 
     return QString();
 }
-QString WiiTDB::SynopsisFromGameElement( QDomElement parent, const QString &locale )
+
+QString WiiTDB::SynopsisFromGameElement( const QDomElement &parent, const QString &locale )
 {
     QDomElement localeElement = parent.firstChildElement( "locale" );
     QString enSynopsis;
@@ -328,7 +329,8 @@ QString WiiTDB::SynopsisFromGameElement( QDomElement parent, const QString &loca
     //localized language not found.  return the english one
     return enSynopsis;
 }
-QString WiiTDB::TypeFromGameElement( QDomElement parent )
+
+QString WiiTDB::TypeFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "type" );
@@ -338,7 +340,8 @@ QString WiiTDB::TypeFromGameElement( QDomElement parent )
     //as of nov-9-2010, wii games dont have a type string. they have an empty tag
     return ret;
 }
-QString WiiTDB::RegionFromGameElement( QDomElement parent )
+
+QString WiiTDB::RegionFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "region" );
@@ -347,7 +350,8 @@ QString WiiTDB::RegionFromGameElement( QDomElement parent )
 
     return ret;
 }
-QString WiiTDB::LanguagesFromGameElement( QDomElement parent )
+
+QString WiiTDB::LanguagesFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "languages" );
@@ -356,7 +360,8 @@ QString WiiTDB::LanguagesFromGameElement( QDomElement parent )
 
     return ret;
 }
-QString WiiTDB::DeveloperFromGameElement( QDomElement parent )
+
+QString WiiTDB::DeveloperFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "developer" );
@@ -365,7 +370,8 @@ QString WiiTDB::DeveloperFromGameElement( QDomElement parent )
 
     return ret;
 }
-QString WiiTDB::PublisherFromGameElement( QDomElement parent )
+
+QString WiiTDB::PublisherFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "publisher" );
@@ -374,7 +380,8 @@ QString WiiTDB::PublisherFromGameElement( QDomElement parent )
 
     return ret;
 }
-QDate WiiTDB::DateFromGameElement( QDomElement parent )
+
+QDate WiiTDB::DateFromGameElement( const QDomElement &parent )
 {
     QDate ret;
     QString str;
@@ -400,7 +407,8 @@ QDate WiiTDB::DateFromGameElement( QDomElement parent )
 
     return ret;
 }
-QString WiiTDB::GenreFromGameElement( QDomElement parent )
+
+QString WiiTDB::GenreFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "genre" );
@@ -409,7 +417,8 @@ QString WiiTDB::GenreFromGameElement( QDomElement parent )
 
     return ret;
 }
-QString WiiTDB::RatingTypeFromGameElement( QDomElement parent )
+
+QString WiiTDB::RatingTypeFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "rating" );
@@ -418,7 +427,8 @@ QString WiiTDB::RatingTypeFromGameElement( QDomElement parent )
 
     return ret;
 }
-QString WiiTDB::RatingValueFromGameElement( QDomElement parent )
+
+QString WiiTDB::RatingValueFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "rating" );
@@ -427,7 +437,8 @@ QString WiiTDB::RatingValueFromGameElement( QDomElement parent )
 
     return ret;
 }
-int WiiTDB::WifiPlayersGameElement( QDomElement parent )
+
+int WiiTDB::WifiPlayersGameElement( const QDomElement &parent )
 {
     int ret = 0;
     bool ok;
@@ -443,7 +454,8 @@ int WiiTDB::WifiPlayersGameElement( QDomElement parent )
 
     return 0;
 }
-QString WiiTDB::WifiFeaturesFromGameElement( QDomElement parent )
+
+QString WiiTDB::WifiFeaturesFromGameElement( const QDomElement &parent )
 {
     QString ret;
     QDomElement e = parent.firstChildElement( "wi-fi" );
@@ -462,7 +474,8 @@ QString WiiTDB::WifiFeaturesFromGameElement( QDomElement parent )
     }
     return ret;
 }
-int WiiTDB::InputPlayersFromGameElement( QDomElement parent )
+
+int WiiTDB::InputPlayersFromGameElement( const QDomElement &parent )
 {
     int ret = 0;
     bool ok;
@@ -478,7 +491,8 @@ int WiiTDB::InputPlayersFromGameElement( QDomElement parent )
 
     return 1;
 }
-QMap<QString, bool> WiiTDB::InputControllersFromGameElement( QDomElement parent )
+
+QMap<QString, bool> WiiTDB::InputControllersFromGameElement( const QDomElement &parent )
 {
     QMap<QString, bool> ret;
     QDomElement e = parent.firstChildElement( "input" );
@@ -635,7 +649,7 @@ bool WiiTDB::CheckPlayerRule( int num, int cmpType, int cmpval )
     return false;
 }
 
-bool WiiTDB::CheckAccessories( QMap<QString, bool>tags, const QStringList &acc, const QStringList &accReq )
+bool WiiTDB::CheckAccessories( const QMap<QString, bool> &tags, const QStringList &acc, const QStringList &accReq )
 {
     //check the supported accessories first
     foreach( QString str, acc )

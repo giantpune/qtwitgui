@@ -34,10 +34,13 @@ class GameCopyDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit GameCopyDialog(QWidget *parent = 0, QList<QTreeWidgetItem *> partitions = QList<QTreeWidgetItem *>(), QStringList games = QStringList(), QString current = QString(), QStringList patchArgs = QStringList() );
+	explicit GameCopyDialog(QWidget *parent = 0, const QList<QTreeWidgetItem *> &partitions = QList<QTreeWidgetItem *>(),
+							const QStringList &games = QStringList(), const QString &current = QString(),
+							const QStringList &patchArgs = QStringList() );
     ~GameCopyDialog();
 
-    static QStringList WitCopyCommand( QWidget *parent, QString currentPartition, QList<QTreeWidgetItem *> partitions, QStringList games, QStringList patchArgs );
+	static QStringList WitCopyCommand( QWidget *parent, const QString &currentPartition, const QList<QTreeWidgetItem *> &partitions,
+									   const QStringList &games, const QStringList &patchArgs );
 private:
     Ui::GameCopyDialog *ui;
     QList<QTreeWidgetItem *> partList;
@@ -60,13 +63,13 @@ private slots:
     void on_groupBox_wia_advanced_toggled(bool );
     void on_groupBox_wia_presets_toggled(bool checked);
     void on_comboBox_container_currentIndexChanged(int index);
-    void on_lineEdit_destOther_textChanged(QString );
+	void on_lineEdit_destOther_textChanged( const QString &);
     void on_pushButton_destOther_clicked();
     void on_groupBox_partition_clicked(bool );
     void on_buttonBox_accepted();
-    void on_comboBox_esc_currentIndexChanged(QString );
+	void on_comboBox_esc_currentIndexChanged(const QString &);
     void on_checkBox_partitionisWBFS_clicked(bool checked);
-    void on_comboBox_dest_currentIndexChanged(QString );
+	void on_comboBox_dest_currentIndexChanged(const QString &);
 };
 
 #endif // GAMECOPYDIALOG_H

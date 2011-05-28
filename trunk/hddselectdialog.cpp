@@ -51,10 +51,11 @@ HDDSelectDialog::HDDSelectDialog( QWidget *parent ) : QDialog( parent ), ui( new
 
 #endif
 
-    connect( &wwt, SIGNAL( SendPartitionList( QStringList ) ), this, SLOT( GetWBFSPartitionList( QStringList ) ) );
-    connect( &wwt, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
-    connect( &wit, SIGNAL( SendFatalErr( QString, int ) ), this, SLOT( HandleWiimmsErrors( QString, int ) ) );
-    connect( &wit, SIGNAL( SendListLLL( QList<QTreeWidgetItem *>, QString ) ), this, SLOT( GetPartitionInfo( QList<QTreeWidgetItem *>, QString ) ) );
+	connect( &wwt, SIGNAL( SendPartitionList( const QStringList &) ), this, SLOT( GetWBFSPartitionList( const QStringList &) ) );
+	connect( &wwt, SIGNAL( SendFatalErr( const QString&, int ) ), this, SLOT( HandleWiimmsErrors( const QString&, int ) ) );
+	connect( &wit, SIGNAL( SendFatalErr( const QString&, int ) ), this, SLOT( HandleWiimmsErrors( const QString&, int ) ) );
+	connect( &wit, SIGNAL( SendListLLL( const QList<QTreeWidgetItem *>&, const QString &) ),
+			 this, SLOT( GetPartitionInfo( const QList<QTreeWidgetItem *>&, const QString &) ) );
 }
 
 HDDSelectDialog::~HDDSelectDialog()
@@ -80,7 +81,7 @@ void HDDSelectDialog::closeEvent( QCloseEvent * closeEvent )
 }
 
 //add items to the list if no partition with the same name is already there
-void HDDSelectDialog::AddPartitionsToList( QList<QTreeWidgetItem *> list )
+void HDDSelectDialog::AddPartitionsToList( const QList<QTreeWidgetItem *> &list )
 {
     for( int i = 0; i < list.size(); i++ )
     {
@@ -231,7 +232,7 @@ bool HDDSelectDialog::PathIsIgnored( const QString &path )
 }
 
 //receive WBFS partitions from wwt
-void HDDSelectDialog::GetWBFSPartitionList( QStringList list )
+void HDDSelectDialog::GetWBFSPartitionList( const QStringList &list )
 {
     qDebug() << "HDDSelectDialog::GetWBFSPartitionList" << list;
     unsetCursor();
@@ -242,7 +243,7 @@ void HDDSelectDialog::GetWBFSPartitionList( QStringList list )
 }
 
 //respond somehow to fatal errors
-void HDDSelectDialog::HandleWiimmsErrors( QString err, int id )
+void HDDSelectDialog::HandleWiimmsErrors( const QString &err, int id )
 {
     qDebug() << "wiimms error" << err << id;
     unsetCursor();
@@ -282,7 +283,7 @@ QTreeWidgetItem *HDDSelectDialog::PartitionBeingRead()
 }
 
 //check a path and if it doesn't mach anything already on our list, add it.  trigger the "LIST-LLL" chain to start
-void HDDSelectDialog::AddNewPartitionToList( QString path, QString source )
+void HDDSelectDialog::AddNewPartitionToList( const QString &path, const QString &source )
 {
     QList<QTreeWidgetItem *> found = ui->treeWidget->findItems( path, Qt::MatchFixedString );
 
@@ -318,7 +319,7 @@ void HDDSelectDialog::AddNewPartitionToList( QString path, QString source )
 }
 
 //receive info about a specific partition from wit ( response to list-lll )
-void HDDSelectDialog::GetPartitionInfo( QList<QTreeWidgetItem *> games, QString MibUsed )
+void HDDSelectDialog::GetPartitionInfo( const QList<QTreeWidgetItem *> &games, const QString &MibUsed )
 {
     //qDebug() << MibUsed;
     QTreeWidgetItem *item = PartitionBeingRead();

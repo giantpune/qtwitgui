@@ -39,7 +39,7 @@ extern "C" void _aligned_free( void *memblock );
 
 
 
-GC_ShrinkThread::GC_ShrinkThread( QObject *parent, const QString path ) : QThread( parent ), GC_Game( path )
+GC_ShrinkThread::GC_ShrinkThread( QObject *parent, const QString &path ) : QThread( parent ), GC_Game( path )
 {
     abort = false;
 }
@@ -55,13 +55,13 @@ GC_ShrinkThread::~GC_ShrinkThread()
     wait();
 }
 
-void GC_ShrinkThread::FatalError( QString str )
+void GC_ShrinkThread::FatalError( const QString &str )
 {
     qDebug() << str;
     emit SendFatalError( str, GC_FATAL );
 }
 
-void GC_ShrinkThread::ShrinkTo( const QString destPath, bool over )
+void GC_ShrinkThread::ShrinkTo( const QString &destPath, bool over )
 {
     if( !fileOk )
     {
@@ -359,7 +359,7 @@ int TPL_ConvertRGB5A3ToBitMap(quint8* tplbuf, quint8** bitmapdata, qint32 width,
 	return outsz;
 }
 
-GC_Game::GC_Game( const QString path )
+GC_Game::GC_Game( const QString &path )
 {
     fileOk = false;
     pathstr = path;
@@ -482,7 +482,7 @@ GC_Game::~GC_Game()
 	file.close();
 }
 
-void GC_Game::FatalError( QString str )
+void GC_Game::FatalError( const QString &str )
 {
     Q_UNUSED( str );
 }

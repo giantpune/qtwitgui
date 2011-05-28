@@ -43,7 +43,8 @@ WiiTDBWindow::WiiTDBWindow(QWidget *parent) : QWidget(parent), ui(new Ui::WiiTDB
     ui->treeWidget->header()->resizeSection( 5, fm.width( "WWWWWWW" ) );//type
     ui->treeWidget->header()->resizeSection( 6, fm.width( QString( 22, 'W' ) ) );//accessories
 
-    connect( wiiTDB, SIGNAL( SendError( QString, QString ) ), this, SLOT( ReceiveErrorFromWiiTDB( QString, QString ) ) );
+	connect( wiiTDB, SIGNAL( SendError( const QString&, const QString &) ),
+			 this, SLOT( ReceiveErrorFromWiiTDB( const QString&, const QString &) ) );
 
     //skip to the last viewed tab
     QSettings s( settingsPath, QSettings::IniFormat );
@@ -257,7 +258,7 @@ void WiiTDBWindow::LoadGameFromID( const QString &id )
 }
 
 //get an error from the wiitdb and display it as an error window
-void WiiTDBWindow::ReceiveErrorFromWiiTDB( QString title, QString detail )
+void WiiTDBWindow::ReceiveErrorFromWiiTDB( const QString &title, const QString &detail )
 {
     QMessageBox::information( this, title, detail );
 }

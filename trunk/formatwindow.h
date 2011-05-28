@@ -27,9 +27,9 @@ private slots:
     void on_pushButton_format_clicked();
     void on_pushButton_refresh_clicked();
     void on_pushButton_done_clicked();
-    void HandleWiimmsErrors( QString err, int id );
-    void GetPartitionList( QStringList list );
-    void FormatDone( QString text );
+	void HandleWiimmsErrors( const QString &err, int id );
+	void GetPartitionList( const QStringList &list );
+	void FormatDone( const QString &text );
 #ifndef Q_WS_WIN
     void NeedToAskForPassword();
 #endif

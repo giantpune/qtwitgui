@@ -14,8 +14,8 @@ public:
 #ifdef Q_WS_WIN
     //only used for windows stuff
     static bool Check();
-    static QString ToWinPath( QString cygPath, bool *ok );
-    static QString ToCygPath( QString winPath, bool *ok );
+	static QString ToWinPath( const QString &cygPath, bool *ok );
+	static QString ToCygPath( const QString &winPath, bool *ok );
     static bool IsDVDLetter( const QString &path );
 #endif
 signals:

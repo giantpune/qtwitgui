@@ -36,7 +36,7 @@ class WiiTreeThread : public QThread
      WiiTreeThread( QObject *parent = 0 );
      ~WiiTreeThread();
 
-     void DoCommand( const QStringList &s, bool b, QIcon ficon, QIcon dicon, int type, const QStringList &list );
+	 void DoCommand( const QStringList &s, bool b, const QIcon &ficon, const QIcon &dicon, int type, const QStringList &list );
      void ForceQuit();
 
  protected:

@@ -82,7 +82,7 @@ private slots:
     void on_treeWidget_itemClicked(QTreeWidgetItem* item, int column);
     void on_pushButton_search_clicked();
     void on_pushButton_searchBack_clicked();
-    void ReceiveErrorFromWiiTDB( QString title, QString detail );
+	void ReceiveErrorFromWiiTDB( const QString &title, const QString &detail );
 
 signals:
     void Destroyed();

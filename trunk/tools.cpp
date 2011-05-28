@@ -48,31 +48,31 @@ QString gamePath( QTreeWidgetItem* item )
 {
     return item->text( GAME_PATH_COLUMN );
 }
-void SetGameID( QTreeWidgetItem* item, QString s )
+void SetGameID( QTreeWidgetItem* item, const QString &s )
 {
     item->setText( GAME_ID_COLUMN , s );
 }
-void SetGameName( QTreeWidgetItem* item, QString s )
+void SetGameName( QTreeWidgetItem* item, const QString &s )
 {
     item->setText( GAME_NAME_COLUMN , s );
 }
-void SetGameSize( QTreeWidgetItem* item, QString s )
+void SetGameSize( QTreeWidgetItem* item, const QString &s )
 {
     item->setText( GAME_SIZE_COLUMN , s );
 }
-void SetGameRegion( QTreeWidgetItem* item, QString s )
+void SetGameRegion( QTreeWidgetItem* item, const QString &s )
 {
     item->setText( GAME_REGION_COLUMN , s );
 }
-void SetGameType( QTreeWidgetItem* item, QString s )
+void SetGameType( QTreeWidgetItem* item, const QString &s )
 {
     item->setText( GAME_TYPE_COLUMN , s );
 }
-void SetGamePartitions( QTreeWidgetItem* item, QString s )
+void SetGamePartitions( QTreeWidgetItem* item, const QString &s )
 {
     item->setText( GAME_PARTITIONS_COLUMN , s );
 }
-void SetGamePath( QTreeWidgetItem* item, QString s )
+void SetGamePath( QTreeWidgetItem* item, const QString &s )
 {
     item->setText( GAME_PATH_COLUMN , s );
 }

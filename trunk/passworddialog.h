@@ -44,7 +44,7 @@ private slots:
     void on_pushButton_ok_clicked();
 
 signals:
-    void SendPassword( QString );
+	void SendPassword( const QString & );
 };
 
 #endif // PASSWORDDIALOG_H
